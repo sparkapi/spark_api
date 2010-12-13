@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     "Gemfile.lock",
     "Rakefile",
     "VERSION",
+    "flexmls_api.gemspec",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
     "lib/flexmls_api/client.rb",
