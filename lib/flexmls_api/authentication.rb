@@ -25,13 +25,13 @@ module FlexmlsApi::Authentication
   def build_param_string(param_hash)
     return "" if param_hash.nil?
 
-      sorted_keys = param_hash.keys.sort do |a,b|
+      sorted = param_hash.sort do |a,b|
             a.to_s <=> b.to_s
       end
 
       params = ""
-      sorted_keys.each do |k,v|
-        params += k.to_s + v.to_s[k]
+      sorted.each do |key,val|
+        params += key.to_s + val.to_s
       end
 
       params
