@@ -1,14 +1,21 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    addressable (2.2.2)
     curb (0.7.8)
     diff-lcs (1.1.2)
+    faraday (0.5.3)
+      addressable (~> 2.2.2)
+      multipart-post (~> 1.0.1)
+      rack (>= 1.1.0, < 2)
     git (1.2.5)
     jeweler (1.5.1)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
     json (1.4.6)
+    multipart-post (1.0.1)
+    rack (1.2.1)
     rake (0.8.7)
     rspec (2.2.0)
       rspec-core (~> 2.2)
@@ -24,6 +31,7 @@ PLATFORMS
 
 DEPENDENCIES
   curb
+  faraday
   jeweler
   json
   rspec

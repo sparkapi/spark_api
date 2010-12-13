@@ -1,7 +1,6 @@
 require "rubygems"
 require "rspec"
 require 'rspec/core/rake_task'
-require 'lib/flexmls_api.rb'
 
 begin
   require 'jeweler'
