@@ -18,20 +18,20 @@ module FlexmlsApi::Authentication
     Digest::MD5.hexdigest( sig )
   end
 
-  def sign_token(path, params, data="")
-    sign( "#{@secret}ApiKey#{@key}ServicePath#{service_path}#{build_param_string(parameters)}#{post_data}" )
+  def sign_token(path, params = {}, post_data="")
+    sign( "#{@secret}ApiKey#{@key}ServicePath#{service_path}#{build_param_string(params)}#{post_data}" )
   end
   
   def build_param_string(param_hash)
     return "" if param_hash.nil?
 
-      sorted_keys = param_hash.keys.sort { |a,b|
+      sorted_keys = param_hash.keys.sort do |a,b|
             a.to_s <=> b.to_s
-      }
+      end
 
       params = ""
-      sorted_keys.each do |k|
-        params += k.to_s + param_hash[k]
+      sorted_keys.each do |k,v|
+        params += k.to_s + v.to_s[k]
       end
 
       params
