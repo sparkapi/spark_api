@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'curb'
 require 'json'
+require 'logger'
 
 require File.expand_path('../flexmls_api/configuration', __FILE__)
 require File.expand_path('../flexmls_api/authentication', __FILE__)
@@ -13,9 +14,10 @@ module FlexmlsApi
 
   VERSION = File.read(File.dirname(__FILE__) + "/../VERSION").chomp
   
-  def logger
+  def self.logger
     if @logger.nil?
-    
+      @logger = Logger.new(STDOUT)
+      @logger.level = Logger::DEBUG
     end
     @logger
   end
