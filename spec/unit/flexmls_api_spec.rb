@@ -23,8 +23,7 @@ describe FlexmlsApi::Client do
     end
   end
 
-  describe "configure" do
-
+  describe "instance config" do
     it "should return a properly configured client" do
       client = FlexmlsApi::Client.new(:api_key => "key_of_wade", 
                                       :api_secret => "TopSecret", 
@@ -35,7 +34,25 @@ describe FlexmlsApi::Client do
       client.endpoint.should match "http://api.wade.dev.fbsdata.com"
       client.version.should match "v1"
     end
+  end
 
+  describe "block config" do
+    it "should correctly set up the client" do
+      FlexmlsApi.configure do |config|
+        config.api_key = "my_key"
+        config.api_secret = "my_secret"
+        config.version = "veleventy"
+        config.endpoint = "test.api.flexmls.com"
+        config.user_agent = "my useragent"
+      end
+
+      FlexmlsApi.api_key.should match "my_key"
+      FlexmlsApi.api_secret.should match "my_secret"
+      FlexmlsApi.version.should match "veleventy"
+      FlexmlsApi.endpoint.should match "test.api.flexmls.com"
+      FlexmlsApi.user_agent.should match "my useragent"
+
+    end
   end
 
 end
