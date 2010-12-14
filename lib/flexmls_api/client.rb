@@ -1,11 +1,15 @@
 module FlexmlsApi
-class Client
-  include Authentication
-  def initialize(secret = '', key ='', url='')
-    @secret = secret
-    @key = key
-    @url = url
-  end
+  class Client < Base
+    include Authentication
+    #def initialize(*args)
+    #  super(args)
+    #  puts "Settings: "
+    #  puts "  api_key = #{self.api_key}"
 
-end
+    #  #@secret = secret
+    #  #@key = key
+    #  #@url = url
+    #end
+
+  end
 end
