@@ -11,11 +11,29 @@ describe FlexmlsApi do
 end
 
 describe FlexmlsApi::Client do
-  describe "connect" do
+  describe "default settings" do
+    it "should return the proper defaults when called with no arguments" do
+      FlexmlsApi.api_key.should be_nil
+      FlexmlsApi.api_secret.should be_nil
+      FlexmlsApi.version.should match "v1"
+      FlexmlsApi.endpoint.should match "api.flexmls.com"
 
-    it "should authenticate" do
-      client = FlexmlsApi::Client.new("TopSecret", "key_of_wade", "http://api.wade.dev.fbsdata.com")
-      # TODO 
+      FlexmlsApi.api_key = "my_api_key"
+      FlexmlsApi.api_key.should match "my_api_key"
+    end
+  end
+
+  describe "configure" do
+
+    it "should return a properly configured client" do
+      client = FlexmlsApi::Client.new(:api_key => "key_of_wade", 
+                                      :api_secret => "TopSecret", 
+                                      :endpoint => "http://api.wade.dev.fbsdata.com")
+ 
+      client.api_key.should match "key_of_wade"
+      client.api_secret.should match "TopSecret"
+      client.endpoint.should match "http://api.wade.dev.fbsdata.com"
+      client.version.should match "v1"
     end
 
   end
@@ -46,8 +64,6 @@ describe FlexmlsApi::Authentication do
       @auth_stub.build_param_string({:Akey => "aValue", :aNotherkey => "AnotherValue"}).should 
            match "AkeyaValueaNotherkeyAnotherValue"
     end
-
-
-
   end
 end
+
