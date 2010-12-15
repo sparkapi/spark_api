@@ -1,3 +1,5 @@
+require 'flexmls_api'
+
 describe FlexmlsApi::Listing do
 
   describe "responds to" do
