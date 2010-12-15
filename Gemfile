@@ -6,4 +6,5 @@ group :test do
   gem 'rspec'
   gem 'jeweler'
   gem 'json'
+  gem 'ci_reporter', '>=1.6.3'
 end
