@@ -68,9 +68,19 @@ module FlexmlsApi
     def method_missing(method_symbol, *arguments)
       method_name = method_symbol.to_s
 
-      return @attributes[method_name] if attributes.include?(method_name)
-      return @attributes['StandardFields'][method_name] if attributes['StandardFields'].include?(method_name)
-      super
+      if method_name =~ /(=|\?)$/
+        case $1
+        when "="
+          attributes[$`] = arguments.first
+          # TODO figure out a nice way to present setters for the standard fields
+        when "?"
+          attributes[$`]
+        end  
+      else 
+        return attributes[method_name] if attributes.include?(method_name)
+        return @attributes['StandardFields'][method_name] if attributes['StandardFields'].include?(method_name)
+        super # GTFO
+      end
     end
   end
 end
