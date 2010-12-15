@@ -7,7 +7,9 @@ require 'logger'
 require File.expand_path('../flexmls_api/configuration', __FILE__)
 require File.expand_path('../flexmls_api/authentication', __FILE__)
 require File.expand_path('../flexmls_api/base', __FILE__)
+require File.expand_path('../flexmls_api/request', __FILE__)
 require File.expand_path('../flexmls_api/client', __FILE__)
+require File.expand_path('../flexmls_api/faraday', __FILE__)
 
 module FlexmlsApi
   extend Configuration

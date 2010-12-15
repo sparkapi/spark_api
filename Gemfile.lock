@@ -8,12 +8,14 @@ GEM
       addressable (~> 2.2.2)
       multipart-post (~> 1.0.1)
       rack (>= 1.1.0, < 2)
+    faraday_middleware (0.3.1)
+      faraday (~> 0.5.3)
     git (1.2.5)
     jeweler (1.5.1)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
-    json (1.4.6)
+    multi_json (0.0.5)
     multipart-post (1.0.1)
     rack (1.2.1)
     rake (0.8.7)
@@ -25,6 +27,8 @@ GEM
     rspec-expectations (2.2.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.2.0)
+    typhoeus (0.2.0)
+    yajl-ruby (0.7.8)
 
 PLATFORMS
   ruby
@@ -32,6 +36,9 @@ PLATFORMS
 DEPENDENCIES
   curb
   faraday
+  faraday_middleware
   jeweler
-  json
+  multi_json
   rspec
+  typhoeus
+  yajl-ruby

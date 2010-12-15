@@ -5,5 +5,9 @@ group :test do
   gem 'curb'
   gem 'rspec'
   gem 'jeweler'
-  gem 'json'
+  gem 'yajl-ruby'
+  gem 'typhoeus' 
+  gem 'faraday_middleware'
+  gem 'multi_json'
+
 end
