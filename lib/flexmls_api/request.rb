@@ -39,8 +39,7 @@ module FlexmlsApi
       }
       request_opts.merge!(options)
       sig = sign_token(path, request_opts)
-      request_opts.merge!({"ApiSig" => sig})
-      request_path = "#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+      request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
       response = connection.send(method, request_path)
       response.body["D"]["Results"]
     end
@@ -53,7 +52,7 @@ module FlexmlsApi
       if str.size > 0
         return "&" + str.join("&")
       end
-      ""
+      "" 
     end    
   end
   

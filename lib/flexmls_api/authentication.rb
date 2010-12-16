@@ -22,7 +22,7 @@ module FlexmlsApi::Authentication
   end
 
   def sign_token(path, params = {}, post_data="")
-    sign("#{@api_secret}ApiKey#{@api_key}ServicePath#{path}#{build_param_string(params)}#{post_data}")
+    sign("#{@api_secret}ApiKey#{@api_key}ServicePath/#{version}#{path}#{build_param_string(params)}#{post_data}")
   end
   
   def build_param_string(param_hash)
