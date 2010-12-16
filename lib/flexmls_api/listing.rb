@@ -4,7 +4,6 @@ module FlexmlsApi
 
 
     def initialize(attributes={})
-      puts (attributes.inspect)
       @attributes = {}
       load(attributes)
     end
