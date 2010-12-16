@@ -48,7 +48,7 @@ module FlexmlsApi
 
         def find_single(scope, options)
           resp = FlexmlsApi.client.get("/listings/#{scope}", options)
-          new(resp)
+          new(resp[0])
         end
 
 
