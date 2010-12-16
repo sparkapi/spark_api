@@ -1,4 +1,5 @@
 require "rubygems"
+require 'ci/reporter/rake/rspec'
 require "rspec"
 require 'rspec/core/rake_task'
 

@@ -1,4 +1,4 @@
-
+require 'flexmls_api'
 describe FlexmlsApi do
   describe "VERSION" do
 

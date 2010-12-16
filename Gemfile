@@ -9,5 +9,5 @@ group :test do
   gem 'typhoeus' 
   gem 'faraday_middleware'
   gem 'multi_json'
-
+  gem 'ci_reporter', '>=1.6.3'
 end

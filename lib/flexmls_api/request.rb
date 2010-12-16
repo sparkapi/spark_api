@@ -17,6 +17,11 @@ module FlexmlsApi
       request(:put, path, options)
     end
 
+#  def request(method, path, options={}, raw = false)
+#    fullpath = "http://#{endpoint}/#{version}/#{path}"
+#    puts "#{method.to_s.upcase} #{fullpath}"
+#  end
+
     # Perform an HTTP DELETE request
     def delete(path, options={})
       request(:delete, path, options)

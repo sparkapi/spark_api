@@ -2,6 +2,9 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.2.2)
+    builder (2.1.2)
+    ci_reporter (1.6.3)
+      builder (>= 2.1.2)
     curb (0.7.8)
     diff-lcs (1.1.2)
     faraday (0.5.3)
@@ -34,6 +37,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ci_reporter (>= 1.6.3)
   curb
   faraday
   faraday_middleware
