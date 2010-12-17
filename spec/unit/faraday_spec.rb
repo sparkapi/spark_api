@@ -38,6 +38,18 @@ describe FlexmlsApi do
             "Code": "1234"            
           }}'] 
         }
+        stub.get('/epicfail') { [500, {}, '{"D": { 
+            "Success": false,
+            "Message": "EPIC FAIL",
+            "Code": "0000"            
+          }}'] 
+        }
+        stub.get('/unknownerror') { [499, {}, '{"D": { 
+            "Success": false,
+            "Message": "Some random status error",
+            "Code": "0000"
+          }}'] 
+        }
         stub.get('/invalidjson') { [200, {}, '{"OMG": "THIS IS NOT THE API JSON THAT I KNOW AND <3!!!"}'] }
         stub.get('/garbage') { [200, {}, 'THIS IS TOTAL GARBAGE!'] }
       end
@@ -56,6 +68,8 @@ describe FlexmlsApi do
 
     it "should should raised exception on error" do
       expect { @connection.get('/methodnotallowed')}.to raise_error(NotAllowed){ |e| e.message.should == "Method Not Allowed" }
+      expect { @connection.get('/epicfail')}.to raise_error(ClientError){ |e| e.status.should be 500 }
+      expect { @connection.get('/unknownerror')}.to raise_error(ClientError){ |e| e.status.should be 499 }
     end
 
     it "should should raised exception on invalid responses" do
