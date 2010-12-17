@@ -1,16 +1,5 @@
 module FlexmlsApi
-  class Listing 
-    attr_accessor :attributes
-
-
-    def initialize(attributes={})
-      @attributes = {}
-      load(attributes)
-    end
-
-
-
-    #self.base = '/listings'
+  class Listing < Model 
 
     class << self
       def find(*arguments)
@@ -53,13 +42,8 @@ module FlexmlsApi
 
     end # /class 
 
-    def load(attributes)
-      attributes.each do |key,val|
-        @attributes[key.to_s] = val
-      end
-    end
 
-
+    # TODO trim this down so we're only overriding the StandardFields access
     def method_missing(method_symbol, *arguments)
       method_name = method_symbol.to_s
 

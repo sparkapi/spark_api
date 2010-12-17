@@ -12,6 +12,7 @@ require File.expand_path('../flexmls_api/base', __FILE__)
 require File.expand_path('../flexmls_api/request', __FILE__)
 require File.expand_path('../flexmls_api/client', __FILE__)
 require File.expand_path('../flexmls_api/faraday', __FILE__)
+require File.expand_path('../flexmls_api/model_base', __FILE__)
 require File.expand_path('../flexmls_api/listing', __FILE__)
 require File.expand_path('../flexmls_api/photo', __FILE__)
 
