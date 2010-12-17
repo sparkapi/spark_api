@@ -13,7 +13,7 @@ module FlexmlsApi::Authentication
     conn = connection
     resp = conn.post '/v1/session', "ApiKey" => @api_key, "ApiSig" => sig
     FlexmlsApi.logger.debug("Response: #{resp.inspect}")
-    @session = Session.new(resp.body["D"]["Results"][0])
+    @session = Session.new(resp.body.results[0])
     FlexmlsApi.logger.debug("Session created: #{@session.inspect}")
   end
   
@@ -54,8 +54,8 @@ module FlexmlsApi::Authentication
       :ssl => {:verify => false}, 
       :headers => {:accept => 'application/json'}) do |builder|
       builder.adapter Faraday.default_adapter
-      builder.use FlexmlsApi::FaradayExt::ApiErrors
       builder.use Faraday::Response::ParseJson
+      builder.use FlexmlsApi::FaradayExt::ApiErrors
     end
     FlexmlsApi.logger.debug("Connection: #{conn.inspect}")
     conn

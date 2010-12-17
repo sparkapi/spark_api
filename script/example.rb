@@ -11,9 +11,7 @@ FlexmlsApi.logger.info("Hello!")
 
 client = FlexmlsApi::Client.new(:api_key => "key_of_wade", :api_secret => "TopSecret", :endpoint => "https://api.wade.dev.fbsdata.com")
 
-client.authenticate
-
-sys = client.get '/v1/system'
+sys = client.get '/system'
 
 puts "I can haz system!  #{sys}"
 

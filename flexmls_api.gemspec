@@ -50,9 +50,11 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/spec_helper.rb",
     "spec/unit/configuration_spec.rb",
+    "spec/unit/faraday_spec.rb",
     "spec/unit/flexmls_api_spec.rb",
     "spec/unit/listing_spec.rb",
-    "spec/unit/photo_spec.rb"
+    "spec/unit/photo_spec.rb",
+    "spec/unit/request_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

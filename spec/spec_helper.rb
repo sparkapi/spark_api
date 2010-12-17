@@ -6,5 +6,6 @@ path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require path + '/flexmls_api'
 
+require 'flexmls_api'
 FlexmlsApi.logger.info("Setup gem for rspec testing")
 
