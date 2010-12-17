@@ -1,4 +1,4 @@
-require 'flexmls_api'
+
 describe FlexmlsApi do
   describe "VERSION" do
 
@@ -18,8 +18,6 @@ describe FlexmlsApi::Authentication, "Authentication"  do
       @auth_stub = StubClass.new
       @auth_stub.extend(FlexmlsApi::Authentication)
     end
-
-
 
     it "Should return a blank string when passed nil" do
       @auth_stub.build_param_string(nil).should be_empty
