@@ -8,7 +8,7 @@ begin
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "flexmls_api"
     gemspec.summary = "A library for interacting with the flexmls web services."
-    gemspec.description = "TODO"
+    gemspec.description = "A library for interacting with the flexmls web services."
     gemspec.email = "bhornseth@fbsdata.com"
     gemspec.homepage = "http://www.flexmls.com"
     gemspec.authors = ["Brandon Hornseth"]

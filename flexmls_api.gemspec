@@ -5,27 +5,43 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
-  s.date = %q{2010-12-13}
-  s.description = %q{TODO}
+  s.date = %q{2010-12-17}
+  s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{bhornseth@fbsdata.com}
+  s.extra_rdoc_files = [
+    "README.md"
+  ]
   s.files = [
     ".bundle/config",
     ".rvmrc",
     "Gemfile",
     "Gemfile.lock",
+    "README.md",
     "Rakefile",
     "VERSION",
     "flexmls_api.gemspec",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
+    "lib/flexmls_api/base.rb",
     "lib/flexmls_api/client.rb",
+    "lib/flexmls_api/configuration.rb",
+    "lib/flexmls_api/connection.rb",
+    "lib/flexmls_api/faraday.rb",
+    "lib/flexmls_api/listing.rb",
+    "lib/flexmls_api/model_base.rb",
+    "lib/flexmls_api/photo.rb",
     "lib/flexmls_api/request.rb",
+    "lib/flexmls_api/signature.rb",
+    "script/example.rb",
     "spec/spec_helper.rb",
-    "spec/unit/flexmls_api_spec.rb"
+    "spec/unit/configuration_spec.rb",
+    "spec/unit/flexmls_api_spec.rb",
+    "spec/unit/listing_spec.rb",
+    "spec/unit/photo_spec.rb"
   ]
   s.homepage = %q{http://www.flexmls.com}
   s.require_paths = ["lib"]
@@ -33,7 +49,10 @@ Gem::Specification.new do |s|
   s.summary = %q{A library for interacting with the flexmls web services.}
   s.test_files = [
     "spec/spec_helper.rb",
-    "spec/unit/flexmls_api_spec.rb"
+    "spec/unit/configuration_spec.rb",
+    "spec/unit/flexmls_api_spec.rb",
+    "spec/unit/listing_spec.rb",
+    "spec/unit/photo_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
