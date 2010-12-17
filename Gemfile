@@ -1,13 +1,15 @@
 source :rubygems
 
+gem 'faraday'
+gem 'curb'
+gem 'faraday_middleware'
+gem 'multi_json'
+gem 'json'
+gem 'yajl-ruby'
+
 group :test do
-  gem 'faraday'
-  gem 'curb'
   gem 'rspec'
   gem 'jeweler'
-  gem 'yajl-ruby'
   gem 'typhoeus' 
-  gem 'faraday_middleware'
-  gem 'multi_json'
   gem 'ci_reporter', '>=1.6.3'
 end

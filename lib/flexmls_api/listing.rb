@@ -1,5 +1,19 @@
 module FlexmlsApi
   class Listing < Model 
+    attr_accessor :photos
+
+    def initialize(attributes={})
+      @photos = []
+      if (attributes.has_key?('StandardFields') and attributes['StandardFields'].has_key?('Photos'))
+        attributes['StandardFields']['Photos'].collect do |photo|
+          @photos.push(Photo.new(photo))
+        end
+        attributes['StandardFields'].delete('Photos')
+      end
+    
+      super(attributes)
+    end
+
 
     class << self
       def find(*arguments)

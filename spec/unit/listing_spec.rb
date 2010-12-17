@@ -28,7 +28,21 @@ describe FlexmlsApi::Listing, "Listing model" do
         "BedsTotal"=>2, 
         "ModificationTimestamp"=>"2010-11-22T23:36:42Z", 
         "BathsHalf"=>nil, 
-        "CountyOrParish"=>nil
+        "CountyOrParish"=>nil,
+        "Photos" => [{
+          "Uri300"=>"http=>//images.dev.fbsdata.com/fgo/20101115201631519737000000.jpg",
+          "ResourceUri"=>"/v1/listings/20080619000032866372000000/photos/20101115201631519737000000",
+          "Name"=>"Designer Entry w/14' Ceilings",
+          "Primary"=>true,
+          "Id"=>"20101115201631519737000000",
+          "Uri800"=>"http=>//devresize.flexmls.com/fgo/800x600/true/20101115201631519737000000-o.jpg",
+          "Uri1024"=>"http=>//devresize.flexmls.com/fgo/1024x768/true/20101115201631519737000000-o.jpg",
+          "UriLarge"=>"http=>//images.dev.fbsdata.com/fgo/20101115201631519737000000-o.jpg",
+          "Caption"=>"apostrophe test for CUR-10508",
+          "Uri1280"=>"http=>//devresize.flexmls.com/fgo/1280x1024/true/20101115201631519737000000-o.jpg",
+          "UriThumb"=>"http=>//images.dev.fbsdata.com/fgo/20101115201631519737000000-t.jpg",
+           "Uri640"=>"http=>//devresize.flexmls.com/fgo/640x480/true/20101115201631519737000000-o.jpg"
+        }]
       }, 
       "Id"=>"20080619000032866372000000"
     })
@@ -40,26 +54,31 @@ describe FlexmlsApi::Listing, "Listing model" do
       @listing.StandardFields.should be_a Hash
       @listing.StandardFields['ListingId'].should be_a String
       @listing.StandardFields['ListPrice'].should match @listing.ListPrice
+      @listing.photos.should be_a Array
     end
+
+    it "should not respond to Photos" do
+      @listing.should_not respond_to(:Photos)
+    end
+
   end
 
-  describe "responds to" do
+  describe "class methods" do
     it "should respond to find" do
-      FlexmlsApi::Listing.respond_to?(:find)
+      FlexmlsApi::Listing.should respond_to(:find)
     end
 
     it "should respond to first" do
-      FlexmlsApi::Listing.respond_to?(:first)
+      FlexmlsApi::Listing.should respond_to(:first)
     end
 
     it "should respond to last" do
-      FlexmlsApi::Listing.respond_to?(:last)
+      FlexmlsApi::Listing.should respond_to(:last)
     end
 
-    it "should responsd to my" do
-      FlexmlsApi::Listing.respond_to?(:my)
+    it "should respond to my" do
+      FlexmlsApi::Listing.should respond_to(:my)
     end
-
   end
 
   after(:each) do  

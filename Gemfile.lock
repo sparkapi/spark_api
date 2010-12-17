@@ -18,6 +18,7 @@ GEM
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
+    json (1.4.6)
     multi_json (0.0.5)
     multipart-post (1.0.1)
     rack (1.2.1)
@@ -42,6 +43,7 @@ DEPENDENCIES
   faraday
   faraday_middleware
   jeweler
+  json
   multi_json
   rspec
   typhoeus
