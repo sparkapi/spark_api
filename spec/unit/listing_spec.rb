@@ -56,6 +56,10 @@ describe FlexmlsApi::Listing, "Listing model" do
       FlexmlsApi::Listing.respond_to?(:last)
     end
 
+    it "should responsd to my" do
+      FlexmlsApi::Listing.respond_to?(:my)
+    end
+
   end
 
   after(:each) do  

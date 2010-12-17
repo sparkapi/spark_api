@@ -1,3 +1,4 @@
+require 'pp'
 module FlexmlsApi
   class Listing < Model 
 
@@ -21,6 +22,16 @@ module FlexmlsApi
 
       def last(*arguments)
         find(:last, *arguments)
+      end
+
+      def my(arguments={})
+        my_listings = []
+        response = FlexmlsApi.client.get("/my/listings", arguments)
+        FlexmlsApi.logger.debug(pp(response))
+        response.each do |listing|
+          my_listings.push(new(listing))
+        end
+        my_listings
       end
 
 
