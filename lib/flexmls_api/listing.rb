@@ -1,4 +1,3 @@
-require 'pp'
 module FlexmlsApi
   class Listing < Model 
 
@@ -27,10 +26,7 @@ module FlexmlsApi
       def my(arguments={})
         my_listings = []
         response = FlexmlsApi.client.get("/my/listings", arguments)
-        FlexmlsApi.logger.debug(pp(response))
-        response.each do |listing|
-          my_listings.push(new(listing))
-        end
+        response.collect { |listing| my_listings.push(new(listing)) }
         my_listings
       end
 
