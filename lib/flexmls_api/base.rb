@@ -1,4 +1,3 @@
-#require File.expand_path('../connection', __FILE__)
 module FlexmlsApi 
   class Base
     attr_accessor *Configuration::VALID_OPTION_KEYS
@@ -11,6 +10,5 @@ module FlexmlsApi
     end
 
 
-    include Connection
   end
 end
