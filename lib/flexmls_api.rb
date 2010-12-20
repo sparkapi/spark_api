@@ -18,6 +18,7 @@ require File.expand_path('../flexmls_api/models/model_base', __FILE__)
 require File.expand_path('../flexmls_api/models/listing', __FILE__)
 require File.expand_path('../flexmls_api/models/photo', __FILE__)
 require File.expand_path('../flexmls_api/models/system_info', __FILE__)
+require File.expand_path('../flexmls_api/models/standard_fields', __FILE__)
 
 module FlexmlsApi
   extend Configuration
