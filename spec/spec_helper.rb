@@ -7,5 +7,19 @@ $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require path + '/flexmls_api'
 
 require 'flexmls_api'
+
+FileUtils.mkdir 'log' unless File.exists? 'log'
+
+# TODO, really we should change the library to support configuration without overriding
+module FlexmlsApi
+  def self.logger
+    if @logger.nil?
+      @logger = Logger.new('log/test.log')
+      @logger.level = Logger::DEBUG
+    end
+    @logger
+  end
+end
+
 FlexmlsApi.logger.info("Setup gem for rspec testing")
 
