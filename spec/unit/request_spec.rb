@@ -20,10 +20,19 @@ describe FlexmlsApi do
       expect { ApiResponse.new({"D"=>{}}) }.to raise_error(InvalidResponse)
     end
 
-    it "build a success response"
+    it "should have results when successful" do
+      r = ApiResponse.new({"D"=>{"Success" => true, "Results" => []}})
+      r.success?.should be true
+      r.results.empty?.should be true
+    end
 
-
-    it "build a failure message on error" 
+    it "should have a message on error" do
+      r = ApiResponse.new({"D"=>{"Success" => false, "Message" => "I am a failure."}})
+      r.success?.should be false
+      r.message.should be == "I am a failure."
+    end
 
   end
+
+  
 end

@@ -68,7 +68,7 @@ module FlexmlsApi
   class NotAllowed < ClientError; end
   
   # Nice and handy class wrapper for the api response json
-  # TODO look into using hashie for this business.
+  # TODO look into using hashie for this business. (https://github.com/intridea/hashie)
   class ApiResponse
     attr_accessor :code, :message, :count, :offset, :results, :success
     def initialize(d)
@@ -87,6 +87,10 @@ module FlexmlsApi
         FlexmlsApi.logger.error "Unable to understand the response! #{d}"
         raise
       end
+    end
+    
+    def success?
+      @success
     end
   end
 
