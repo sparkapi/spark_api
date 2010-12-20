@@ -12,9 +12,12 @@ require File.expand_path('../flexmls_api/base', __FILE__)
 require File.expand_path('../flexmls_api/request', __FILE__)
 require File.expand_path('../flexmls_api/client', __FILE__)
 require File.expand_path('../flexmls_api/faraday', __FILE__)
+
+# model classes
 require File.expand_path('../flexmls_api/models/model_base', __FILE__)
 require File.expand_path('../flexmls_api/models/listing', __FILE__)
 require File.expand_path('../flexmls_api/models/photo', __FILE__)
+require File.expand_path('../flexmls_api/models/system_info', __FILE__)
 
 module FlexmlsApi
   extend Configuration
@@ -24,7 +27,7 @@ module FlexmlsApi
   def self.logger
     if @logger.nil?
       @logger = Logger.new(STDOUT)
-      @logger.level = Logger::DEBUG
+      @logger.level = Logger::INFO
     end
     @logger
   end
