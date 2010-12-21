@@ -10,7 +10,7 @@ module FlexmlsApi::Authentication
     sig = sign("#{@api_secret}ApiKey#{@api_key}")
     FlexmlsApi.logger.debug("Authenticating to #{@endpoint}")
     conn = connection
-    resp = conn.post '/#{version}/session', "ApiKey" => @api_key, "ApiSig" => sig
+    resp = conn.post "/#{version}/session", "ApiKey" => @api_key, "ApiSig" => sig
     @session = Session.new(resp.body.results[0])
     FlexmlsApi.logger.debug("Session created: #{@session.inspect}")
     @session
