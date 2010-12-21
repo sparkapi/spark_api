@@ -65,17 +65,17 @@ describe FlexmlsApi do
     end
     
     it "should raised exception when token is expired" do
-      expect { @connection.get('/expired')}.to raise_error(PermissionDenied){ |e| e.code.should == ResponseCodes::SESSION_TOKEN_EXPIRED }
+      expect { @connection.get('/expired')}.to raise_error(FlexmlsApi::PermissionDenied){ |e| e.code.should == FlexmlsApi::ResponseCodes::SESSION_TOKEN_EXPIRED }
     end
 
     it "should raised exception on error" do
-      expect { @connection.get('/methodnotallowed')}.to raise_error(NotAllowed){ |e| e.message.should == "Method Not Allowed" }
-      expect { @connection.get('/epicfail')}.to raise_error(ClientError){ |e| e.status.should be 500 }
-      expect { @connection.get('/unknownerror')}.to raise_error(ClientError){ |e| e.status.should be 499 }
+      expect { @connection.get('/methodnotallowed')}.to raise_error(FlexmlsApi::NotAllowed){ |e| e.message.should == "Method Not Allowed" }
+      expect { @connection.get('/epicfail')}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should be 500 }
+      expect { @connection.get('/unknownerror')}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should be 499 }
     end
 
     it "should raised exception on invalid responses" do
-      expect { @connection.get('/invalidjson')}.to raise_error(InvalidResponse)
+      expect { @connection.get('/invalidjson')}.to raise_error(FlexmlsApi::InvalidResponse)
       # This should be caught in the request code
       expect { @connection.get('/garbage')}.to raise_error(MultiJson::DecodeError)
     end

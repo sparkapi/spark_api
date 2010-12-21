@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
     ".bundle/config",
     ".rvmrc",
     "Gemfile",
-    "Gemfile.lock",
     "README.md",
     "Rakefile",
     "VERSION",
@@ -38,18 +37,19 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/standard_fields.rb",
     "lib/flexmls_api/models/system_info.rb",
     "lib/flexmls_api/request.rb",
+    "lib/flexmls_api/version.rb",
     "script/example.rb",
     "spec/spec_helper.rb",
-    "spec/unit/configuration_spec.rb",
-    "spec/unit/connect_prefs_spec.rb",
-    "spec/unit/faraday_spec.rb",
-    "spec/unit/flexmls_api_spec.rb",
-    "spec/unit/listing_spec.rb",
-    "spec/unit/photo_spec.rb",
-    "spec/unit/property_types_spec.rb",
-    "spec/unit/request_spec.rb",
-    "spec/unit/standard_fields_spec.rb",
-    "spec/unit/system_info_spec.rb"
+    "spec/unit/flexmls_api/configuration_spec.rb",
+    "spec/unit/flexmls_api/faraday_spec.rb",
+    "spec/unit/flexmls_api/models/connect_prefs_spec.rb",
+    "spec/unit/flexmls_api/models/listing_spec.rb",
+    "spec/unit/flexmls_api/models/photo_spec.rb",
+    "spec/unit/flexmls_api/models/property_types_spec.rb",
+    "spec/unit/flexmls_api/models/standard_fields_spec.rb",
+    "spec/unit/flexmls_api/models/system_info_spec.rb",
+    "spec/unit/flexmls_api/request_spec.rb",
+    "spec/unit/flexmls_api_spec.rb"
   ]
   s.homepage = %q{http://www.flexmls.com}
   s.require_paths = ["lib"]
@@ -57,16 +57,16 @@ Gem::Specification.new do |s|
   s.summary = %q{A library for interacting with the flexmls web services.}
   s.test_files = [
     "spec/spec_helper.rb",
-    "spec/unit/configuration_spec.rb",
-    "spec/unit/connect_prefs_spec.rb",
-    "spec/unit/faraday_spec.rb",
-    "spec/unit/flexmls_api_spec.rb",
-    "spec/unit/listing_spec.rb",
-    "spec/unit/photo_spec.rb",
-    "spec/unit/property_types_spec.rb",
-    "spec/unit/request_spec.rb",
-    "spec/unit/standard_fields_spec.rb",
-    "spec/unit/system_info_spec.rb"
+    "spec/unit/flexmls_api/configuration_spec.rb",
+    "spec/unit/flexmls_api/faraday_spec.rb",
+    "spec/unit/flexmls_api/models/connect_prefs_spec.rb",
+    "spec/unit/flexmls_api/models/listing_spec.rb",
+    "spec/unit/flexmls_api/models/photo_spec.rb",
+    "spec/unit/flexmls_api/models/property_types_spec.rb",
+    "spec/unit/flexmls_api/models/standard_fields_spec.rb",
+    "spec/unit/flexmls_api/models/system_info_spec.rb",
+    "spec/unit/flexmls_api/request_spec.rb",
+    "spec/unit/flexmls_api_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

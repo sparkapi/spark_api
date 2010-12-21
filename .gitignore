@@ -2,3 +2,5 @@
 log/
 ._*
 spec/reports/
+.bundle/ruby
+coverage

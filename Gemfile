@@ -12,4 +12,5 @@ group :test do
   gem 'jeweler'
   gem 'typhoeus' 
   gem 'ci_reporter', '>=1.6.3'
+  gem 'rcov'
 end

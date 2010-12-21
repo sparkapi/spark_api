@@ -2,7 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.2.2)
-    builder (2.1.2)
+    builder (3.0.0)
     ci_reporter (1.6.3)
       builder (>= 2.1.2)
     curb (0.7.8)
@@ -14,7 +14,7 @@ GEM
     faraday_middleware (0.3.1)
       faraday (~> 0.5.3)
     git (1.2.5)
-    jeweler (1.5.1)
+    jeweler (1.5.2)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
@@ -23,14 +23,15 @@ GEM
     multipart-post (1.0.1)
     rack (1.2.1)
     rake (0.8.7)
-    rspec (2.2.0)
-      rspec-core (~> 2.2)
-      rspec-expectations (~> 2.2)
-      rspec-mocks (~> 2.2)
-    rspec-core (2.2.1)
-    rspec-expectations (2.2.0)
+    rcov (0.9.9)
+    rspec (2.3.0)
+      rspec-core (~> 2.3.0)
+      rspec-expectations (~> 2.3.0)
+      rspec-mocks (~> 2.3.0)
+    rspec-core (2.3.1)
+    rspec-expectations (2.3.0)
       diff-lcs (~> 1.1.2)
-    rspec-mocks (2.2.0)
+    rspec-mocks (2.3.0)
     typhoeus (0.2.0)
     yajl-ruby (0.7.8)
 
@@ -45,6 +46,7 @@ DEPENDENCIES
   jeweler
   json
   multi_json
+  rcov
   rspec
   typhoeus
   yajl-ruby
