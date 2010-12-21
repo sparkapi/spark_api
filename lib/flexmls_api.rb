@@ -4,6 +4,7 @@ require 'curb'
 require 'json'
 require 'logger'
 
+require File.expand_path('../flexmls_api/version', __FILE__)
 require File.expand_path('../flexmls_api/configuration', __FILE__)
 require File.expand_path('../flexmls_api/authentication', __FILE__)
 require File.expand_path('../flexmls_api/request', __FILE__)
@@ -23,9 +24,7 @@ require File.expand_path('../flexmls_api/models/connect_prefs', __FILE__)
 
 module FlexmlsApi
   extend Configuration
-
-  VERSION = File.read(File.dirname(__FILE__) + "/../VERSION").chomp
-  
+ 
   def self.logger
     if @logger.nil?
       @logger = Logger.new(STDOUT)
