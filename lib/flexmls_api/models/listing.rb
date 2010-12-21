@@ -15,53 +15,49 @@ module FlexmlsApi
     end
 
 
-    class << self
-      def find(*arguments)
-        scope = arguments.slice!(0)
-        options = arguments.slice!(0) || {}
-        
-        case scope
-          when :all   then find_every(options)
-          when :first then find_every(options).first
-          when :last  then find_every(options).last
-          when :one   then find_one(options)
-          else             find_single(scope, options)
-        end
-      end
+    def self.find(*arguments)
+      scope = arguments.slice!(0)
+      options = arguments.slice!(0) || {}
       
-      def first(*arguments)
-        find(:first, *arguments)
+      case scope
+        when :all   then find_every(options)
+        when :first then find_every(options).first
+        when :last  then find_every(options).last
+        when :one   then find_one(options)
+        else             find_single(scope, options)
       end
+    end
+    
+    def self.first(*arguments)
+      find(:first, *arguments)
+    end
 
-      def last(*arguments)
-        find(:last, *arguments)
-      end
+    def self.last(*arguments)
+      find(:last, *arguments)
+    end
 
-      def my(arguments={})
-        my_listings = []
-        response = FlexmlsApi.client.get("/my/listings", arguments)
-        response.collect { |listing| my_listings.push(new(listing)) }
-        my_listings
-      end
-
-
-      private
-
-        def find_every(options)
-          raise NotImplementedError # TODO
-        end
-
-        def find_one(options)
-          raise NotImplementedError # TODO
-        end
-
-        def find_single(scope, options)
-          resp = FlexmlsApi.client.get("/listings/#{scope}", options)
-          new(resp[0])
-        end
+    def self.my(arguments={})
+      my_listings = []
+      response = FlexmlsApi.client.get("/my/listings", arguments)
+      response.collect { |listing| my_listings.push(new(listing)) }
+      my_listings
+    end
 
 
-    end # /class 
+    private
+
+    def self.find_every(options)
+      raise NotImplementedError # TODO
+    end
+
+    def self.find_one(options)
+      raise NotImplementedError # TODO
+    end
+
+    def self.find_single(scope, options)
+      resp = FlexmlsApi.client.get("/listings/#{scope}", options)
+      new(resp[0])
+    end
 
 
     # TODO trim this down so we're only overriding the StandardFields access
