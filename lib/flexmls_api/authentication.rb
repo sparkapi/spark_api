@@ -8,13 +8,12 @@ module FlexmlsApi::Authentication
 
   def authenticate
     sig = sign("#{@api_secret}ApiKey#{@api_key}")
-    url = "#{@endpoint}/v1/session?ApiKey=#{@api_key}&ApiSig=#{sig}"
-    FlexmlsApi.logger.debug("Authenticating to #{url}")
+    FlexmlsApi.logger.debug("Authenticating to #{@endpoint}")
     conn = connection
-    resp = conn.post '/v1/session', "ApiKey" => @api_key, "ApiSig" => sig
-    FlexmlsApi.logger.debug("Response: #{resp.inspect}")
+    resp = conn.post '/#{version}/session', "ApiKey" => @api_key, "ApiSig" => sig
     @session = Session.new(resp.body.results[0])
     FlexmlsApi.logger.debug("Session created: #{@session.inspect}")
+    @session
   end
   
   def sign(sig)
@@ -28,7 +27,7 @@ module FlexmlsApi::Authentication
   def build_param_string(param_hash)
     return "" if param_hash.nil?
       sorted = param_hash.sort do |a,b|
-            a.to_s <=> b.to_s
+        a.to_s <=> b.to_s
       end
       params = ""
       sorted.each do |key,val|

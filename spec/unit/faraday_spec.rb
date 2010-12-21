@@ -13,7 +13,7 @@ describe FlexmlsApi do
                 }]
           }}'] 
         }
-        stub.post('/system') { [200, {}, '{"D": {
+        stub.get('/system') { [200, {}, '{"D": {
           "Success": true, 
           "Results": [{
             "Name": "My User", 
@@ -62,17 +62,17 @@ describe FlexmlsApi do
 
     end
     
-    it "should should raised exception when token is expired" do
+    it "should raised exception when token is expired" do
       expect { @connection.get('/expired')}.to raise_error(PermissionDenied){ |e| e.code.should == ResponseCodes::SESSION_TOKEN_EXPIRED }
     end
 
-    it "should should raised exception on error" do
+    it "should raised exception on error" do
       expect { @connection.get('/methodnotallowed')}.to raise_error(NotAllowed){ |e| e.message.should == "Method Not Allowed" }
       expect { @connection.get('/epicfail')}.to raise_error(ClientError){ |e| e.status.should be 500 }
       expect { @connection.get('/unknownerror')}.to raise_error(ClientError){ |e| e.status.should be 499 }
     end
 
-    it "should should raised exception on invalid responses" do
+    it "should raised exception on invalid responses" do
       expect { @connection.get('/invalidjson')}.to raise_error(InvalidResponse)
       # This should be caught in the request code
       expect { @connection.get('/garbage')}.to raise_error(MultiJson::DecodeError)
@@ -86,7 +86,7 @@ describe FlexmlsApi do
     end
     
     it "should give me an api response" do
-      response = @connection.post('/system').body
+      response = @connection.get('/system').body
       response.success.should eq(true)
       response.results.length.should be > 0 
     end
