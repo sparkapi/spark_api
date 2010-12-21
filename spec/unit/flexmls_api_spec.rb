@@ -1,3 +1,4 @@
+require './spec/spec_helper'
 
 describe FlexmlsApi do
   describe "VERSION" do

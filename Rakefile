@@ -23,7 +23,7 @@ rescue LoadError
 end
 
 RSpec::Core::RakeTask.new do |t|
-  t.rspec_opts = ["-c", "-f progress", "-r ./spec/spec_helper.rb"]
+  t.rspec_opts = ["-c", "-f progress"]
   t.pattern = 'spec/**/*_spec.rb'
 end
 

@@ -1,3 +1,5 @@
+require './spec/spec_helper'
+
 # Test out the faraday connection stack.
 describe FlexmlsApi do
   include FlexmlsApi

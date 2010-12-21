@@ -1,4 +1,4 @@
-require 'flexmls_api'
+require './spec/spec_helper'
 
 describe FlexmlsApi::SystemInfo do
   before(:each) do 

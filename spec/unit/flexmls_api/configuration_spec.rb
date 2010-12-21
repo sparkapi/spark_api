@@ -1,4 +1,4 @@
-require 'flexmls_api'
+require './spec/spec_helper'
 
 describe FlexmlsApi::Client, "Client config"  do
 
