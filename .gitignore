@@ -4,3 +4,4 @@ log/
 spec/reports/
 .bundle/ruby
 coverage
+bundle

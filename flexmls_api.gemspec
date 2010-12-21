@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     ".bundle/config",
     ".rvmrc",
     "Gemfile",
+    "Gemfile.lock",
     "README.md",
     "Rakefile",
     "VERSION",
