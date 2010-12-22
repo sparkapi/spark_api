@@ -1,7 +1,7 @@
 module FlexmlsApi
   module FaradayExt
-    # Map status errors to appropriate api exceptions here.
-    class ApiErrors < Faraday::Response::Middleware
+    # HTTP Response after filter to package api responses and bubble up basic api errors.
+    class FlexmlsMiddleware < Faraday::Response::Middleware
       begin
         def self.register_on_complete(env)
           env[:response].on_complete do |finished_env|
@@ -26,7 +26,7 @@ module FlexmlsApi
           raise NotAllowed.new(response.code, finished_env[:status]), response.message
         when 500
           raise ClientError.new(response.code, finished_env[:status]), response.message
-        when 200
+        when 200..299
           FlexmlsApi.logger.debug("Success!")
         else 
           raise ClientError.new(response.code, finished_env[:status]), response.message

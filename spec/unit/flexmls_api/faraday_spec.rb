@@ -2,8 +2,7 @@ require './spec/spec_helper'
 
 # Test out the faraday connection stack.
 describe FlexmlsApi do
-  include FlexmlsApi
-  describe "ApiErrors" do
+  describe "FlexmlsMiddleware" do
     before(:all) do
       @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
         stub.post('/session') { [200, {}, '{"D": { 
@@ -59,7 +58,7 @@ describe FlexmlsApi do
       @connection = Faraday::Connection.new() do |builder|
         builder.adapter :test, @stubs
         builder.use Faraday::Response::ParseJson
-        builder.use FlexmlsApi::FaradayExt::ApiErrors
+        builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
       end
 
     end

@@ -1,6 +1,6 @@
 
 module FlexmlsApi
-  
+  # Http request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
   module Request
     # Perform an HTTP GET request
     def get(path, options={})
@@ -8,13 +8,13 @@ module FlexmlsApi
     end
 
     # Perform an HTTP POST request
-    def post(path, options={})
-      request(:post, path, options)
+    def post(path, body={}, options={})
+      body_request(:post, path, body, options)
     end
 
     # Perform an HTTP PUT request
-    def put(path, options={})
-      request(:put, path, options)
+    def put(path, body={}, options={})
+      body_request(:put, path, body, options)
     end
 
     # Perform an HTTP DELETE request
@@ -35,7 +35,24 @@ module FlexmlsApi
       request_opts.merge!(options)
       sig = sign_token(path, request_opts)
       request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+      # TODO add rescue to reauthenticate when expire token encountered.
       response = connection.send(method, request_path)
+      response.body.results
+    end
+  
+  def body_request(method, path, body, options)
+      if @session.nil? || @session.expired?
+        authenticate
+      end
+      request_opts = {
+        "AuthToken" => @session.auth_token
+      }
+      request_opts.merge!(options)
+      post_data = {"D" => body }.to_json
+      sig = sign_token(path, request_opts, post_data)
+      request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+      # TODO add rescue to reauthenticate when expire token encountered.
+      response = connection.send(method, request_path, post_data)
       response.body.results
     end
     
@@ -52,7 +69,20 @@ module FlexmlsApi
   end
   
   module ResponseCodes
+    NOT_FOUND = "404"
+    METHOD_NOT_ALLOWED = "405"
+    INVALID_KEY = "1000"
+    DISABLED_KEY = "1010"
+    API_USER_REQUIRED = "1015"
     SESSION_TOKEN_EXPIRED = "1020"
+    SSL_REQUIRED = "1030"
+    INVALID_JSON = "1035"
+    INVALID_FIELD = "1040"
+    MISSING_PARAMETER = "1050"
+    INVALID_PARAMETER = "1050"
+    CONFLICTING_DATA = "1055"
+    NOT_AVAILABLE= "1500"
+    RATE_LIMIT_EXCEEDED = "1550"
   end
   
   class InvalidResponse < StandardError; end

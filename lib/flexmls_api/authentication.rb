@@ -1,7 +1,6 @@
 require 'openssl'
 require 'faraday'
 require 'faraday_middleware'
-#require 'typhoeus'
 require 'yajl'
 require 'date'
 module FlexmlsApi::Authentication
@@ -54,12 +53,11 @@ module FlexmlsApi::Authentication
       :headers => {:accept => 'application/json'}) do |builder|
       builder.adapter Faraday.default_adapter
       builder.use Faraday::Response::ParseJson
-      builder.use FlexmlsApi::FaradayExt::ApiErrors
+      builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
     end
     FlexmlsApi.logger.debug("Connection: #{conn.inspect}")
     conn
   end
-  
 
 end
 
