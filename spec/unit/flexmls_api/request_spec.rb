@@ -1,7 +1,6 @@
 require './spec/spec_helper'
 
 describe FlexmlsApi do
-  include FlexmlsApi
   describe FlexmlsApi::ClientError do
     subject { FlexmlsApi::ClientError.new("1234", 200) }
     it "should have an api code" do
@@ -20,19 +19,16 @@ describe FlexmlsApi do
       expect { FlexmlsApi::ApiResponse.new("KABOOOM") }.to raise_error(FlexmlsApi::InvalidResponse)
       expect { FlexmlsApi::ApiResponse.new({"D"=>{}}) }.to raise_error(FlexmlsApi::InvalidResponse)
     end
-
     it "should have results when successful" do
       r = FlexmlsApi::ApiResponse.new({"D"=>{"Success" => true, "Results" => []}})
       r.success?.should be true
       r.results.empty?.should be true
     end
-
     it "should have a message on error" do
       r = FlexmlsApi::ApiResponse.new({"D"=>{"Success" => false, "Message" => "I am a failure."}})
       r.success?.should be false
       r.message.should be == "I am a failure."
     end
-
   end
   
   describe FlexmlsApi::Request do
@@ -118,37 +114,30 @@ describe FlexmlsApi do
         r.connection = @connection
         r
       end
-
       it "should give me empty string when no parameters" do
         subject.empty_parameters().should == ""
       end
-      
       it "should get a service" do
         subject.get('/system')[0]["Name"].should == "My User"
       end
-
       it "should get a service with parameters" do
         subject.get('/marketstatistics/price', "Options" => "ActiveAverageListPrice")[0]["ActiveAverageListPrice"].should == [100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000]
       end
-
       it "should post to a service" do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
         subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
       end
-
       it "should put to a service" do
         # This is a hypothetical unsupported service action at this time
         data = {"Contacts" => [{"DisplayName"=>"WLMCEWENS Contact","PrimaryEmail"=>"wlmcewen789@fbsdata.com"}]}
         subject.put('/contacts/1000', data).should be nil
         # No validation here, if no error is raised, everything is hunky dory
       end
-
       it "should delete from a service" do
         # This is a hypothetical unsupported service action at this time
         subject.delete('/contacts/1000').should be nil
         # No validation here, if no error is raised, everything is hunky dory
       end
-      
     end
     
     context "when unauthenticated" do
@@ -216,6 +205,7 @@ describe FlexmlsApi do
         subject.reauthenticated?.should == true
       end
     end
+
     context "when expire response" do
       subject do 
         session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now + 60).to_s, "Roles" => "['idx']")
@@ -234,7 +224,7 @@ describe FlexmlsApi do
       end
     end
 
-    context "when the server is being a jerk on expire response" do
+    context "when the server is being a real jerk on expire response" do
       subject do 
         class RequestAlwaysExpiredJerkTest
           include FlexmlsApi::Request

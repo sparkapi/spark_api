@@ -1,6 +1,6 @@
 
 module FlexmlsApi
-  # Http request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
+  # HTTP request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
   module Request
     # Perform an HTTP GET request
     def get(path, options={})
@@ -41,12 +41,13 @@ module FlexmlsApi
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1
-            FlexmlsApi.logger.debug("Reauthenticating")
+            FlexmlsApi.logger.debug("Retrying authentication")
             authenticate
             retry
           end
         end
         # No luck authenticating... KABOOM!
+        FlexmlsApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
         raise
       end
       response.body.results
@@ -65,17 +66,17 @@ module FlexmlsApi
         post_data = {"D" => body }.to_json
         sig = sign_token(path, request_opts, post_data)
         request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
-        # TODO add rescue to reauthenticate when expire token encountered.
         response = connection.send(method, request_path, post_data)
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1
-            FlexmlsApi.logger.debug("Reauthenticating")
+            FlexmlsApi.logger.debug("Retrying authentication")
             authenticate
             retry
           end
         end
         # No luck authenticating... KABOOM!
+        FlexmlsApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
         raise
       end
       response.body.results
@@ -110,6 +111,7 @@ module FlexmlsApi
     RATE_LIMIT_EXCEEDED = "1550"
   end
   
+  # Errors built from API responses
   class InvalidResponse < StandardError; end
   class ClientError < StandardError
     attr_reader :code, :status
@@ -123,7 +125,6 @@ module FlexmlsApi
   class NotAllowed < ClientError; end
   
   # Nice and handy class wrapper for the api response json
-  # TODO look into using hashie for this business. (https://github.com/intridea/hashie)
   class ApiResponse
     attr_accessor :code, :message, :count, :offset, :results, :success
     def initialize(d)
@@ -143,7 +144,6 @@ module FlexmlsApi
         raise
       end
     end
-    
     def success?
       @success
     end
