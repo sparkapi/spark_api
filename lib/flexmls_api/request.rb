@@ -29,14 +29,26 @@ module FlexmlsApi
       if @session.nil? || @session.expired?
         authenticate
       end
-      request_opts = {
-        "AuthToken" => @session.auth_token
-      }
-      request_opts.merge!(options)
-      sig = sign_token(path, request_opts)
-      request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
-      # TODO add rescue to reauthenticate when expire token encountered.
-      response = connection.send(method, request_path)
+      attempts = 0
+      begin
+        request_opts = {
+          "AuthToken" => @session.auth_token
+        }
+        request_opts.merge!(options)
+        sig = sign_token(path, request_opts)
+        request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+        response = connection.send(method, request_path)
+      rescue PermissionDenied => e
+        if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
+          unless (attempts +=1) > 1
+            FlexmlsApi.logger.debug("Reauthenticating")
+            authenticate
+            retry
+          end
+        end
+        # No luck authenticating... KABOOM!
+        raise
+      end
       response.body.results
     end
   
@@ -44,15 +56,28 @@ module FlexmlsApi
       if @session.nil? || @session.expired?
         authenticate
       end
-      request_opts = {
-        "AuthToken" => @session.auth_token
-      }
-      request_opts.merge!(options)
-      post_data = {"D" => body }.to_json
-      sig = sign_token(path, request_opts, post_data)
-      request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
-      # TODO add rescue to reauthenticate when expire token encountered.
-      response = connection.send(method, request_path, post_data)
+      attempts = 0
+      begin
+        request_opts = {
+          "AuthToken" => @session.auth_token
+        }
+        request_opts.merge!(options)
+        post_data = {"D" => body }.to_json
+        sig = sign_token(path, request_opts, post_data)
+        request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+        # TODO add rescue to reauthenticate when expire token encountered.
+        response = connection.send(method, request_path, post_data)
+      rescue PermissionDenied => e
+        if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
+          unless (attempts +=1) > 1
+            FlexmlsApi.logger.debug("Reauthenticating")
+            authenticate
+            retry
+          end
+        end
+        # No luck authenticating... KABOOM!
+        raise
+      end
       response.body.results
     end
     

@@ -36,12 +36,71 @@ describe FlexmlsApi do
   end
   
   describe FlexmlsApi::Request do
+    before(:all) do
+      @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+        stub.get('/v1/system?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
+          "Success": true, 
+          "Results": [{
+            "Name": "My User", 
+            "OfficeId": "20070830184014994915000000", 
+            "Configuration": [], 
+            "Id": "20101202170654111629000000", 
+            "MlsId": "20000426143505724628000000", 
+            "Office": "test office", 
+            "Mls": "flexmls Web Demonstration Database"
+          }]}
+          }'] 
+        }
+        stub.get('/v1/marketstatistics/price?ApiSig=SignedToken&AuthToken=1234&Options=ActiveAverageListPrice') { [200, {}, '{"D": {
+          "Success": true, 
+          "Results": [{
+            "Dates": ["11/1/2010","10/1/2010","9/1/2010","8/1/2010","7/1/2010",
+                               "6/1/2010","5/1/2010","4/1/2010","3/1/2010","2/1/2010",
+                               "1/1/2010","12/1/2009"], 
+            "ActiveAverageListPrice": [100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000]
+          }]}
+          }'] 
+        }
+        stub.post('/v1/contacts?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"Wades Contact","PrimaryEmail":"wade11@fbsdata.com"}]}}') { [201, {}, '{"D": {
+          "Success": true,
+          "Results": [{"ResourceURI": "1000"}]}}'] 
+        }
+        stub.put('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"WLMCEWENS Contact","PrimaryEmail":"wlmcewen789@fbsdata.com"}]}}') { [200, {}, '{"D": {
+          "Success": true}}'] 
+        }
+        stub.delete('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
+          "Success": true}}'] 
+        }
+        # EXPIRED RESPONSES
+        stub.get('/v1/system?ApiSig=SignedToken&AuthToken=EXPIRED') { [401 , {}, '{"D": {
+          "Success": false,
+          "Message": "Session token has expired",
+          "Code": "1020"
+          }}'] 
+        }
+        stub.post('/v1/contacts?ApiSig=SignedToken&AuthToken=EXPIRED', '{"D":{"Contacts":[{"DisplayName":"Wades Contact","PrimaryEmail":"wade11@fbsdata.com"}]}}') { [401 , {}, '{"D": {
+          "Success": false,
+          "Message": "Session token has expired",
+          "Code": "1020"
+          }}'] 
+        }
+      end
+      @connection = Faraday::Connection.new() do |builder|
+        builder.adapter :test, @stubs
+        builder.use Faraday::Response::ParseJson
+        builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
+      end
+    end  
+
     context "when successfully authenticated" do
       subject do 
         class RequestTest
           include FlexmlsApi::Request
+          def initialize(session)
+            @session = session
+          end
           def authenticate()
-            @session = mock_session()
+            raise "Should not be invoked #{@session.inspect}"
           end
           def sign_token(path, params = {}, post_data="")
             "SignedToken"
@@ -51,52 +110,11 @@ describe FlexmlsApi do
           end
           attr_accessor :connection
         end
-        RequestTest.new
+        my_s = mock_session()
+        r = RequestTest.new(my_s)
+        r.connection = @connection
+        r
       end
-
-      before(:all) do
-        @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-          stub.get('/v1/system?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
-            "Success": true, 
-            "Results": [{
-              "Name": "My User", 
-              "OfficeId": "20070830184014994915000000", 
-              "Configuration": [], 
-              "Id": "20101202170654111629000000", 
-              "MlsId": "20000426143505724628000000", 
-              "Office": "test office", 
-              "Mls": "flexmls Web Demonstration Database"
-            }]}
-            }'] 
-          }
-          stub.get('/v1/marketstatistics/price?ApiSig=SignedToken&AuthToken=1234&Options=ActiveAverageListPrice') { [200, {}, '{"D": {
-            "Success": true, 
-            "Results": [{
-              "Dates": ["11/1/2010","10/1/2010","9/1/2010","8/1/2010","7/1/2010",
-                                 "6/1/2010","5/1/2010","4/1/2010","3/1/2010","2/1/2010",
-                                 "1/1/2010","12/1/2009"], 
-              "ActiveAverageListPrice": [100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000,100000]
-            }]}
-            }'] 
-          }
-          stub.post('/v1/contacts?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"Wades Contact","PrimaryEmail":"wade11@fbsdata.com"}]}}') { [201, {}, '{"D": {
-            "Success": true,
-            "Results": [{"ResourceURI": "1000"}]}}'] 
-          }
-          stub.put('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"WLMCEWENS Contact","PrimaryEmail":"wlmcewen789@fbsdata.com"}]}}') { [200, {}, '{"D": {
-            "Success": true}}'] 
-          }
-          stub.delete('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
-            "Success": true}}'] 
-          }
-        end
-        @connection = Faraday::Connection.new() do |builder|
-          builder.adapter :test, @stubs
-          builder.use Faraday::Response::ParseJson
-          builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
-        end
-        subject.connection = @connection 
-      end  
       
       it "should get a service" do
         subject.get('/system')[0]["Name"].should == "My User"
@@ -125,6 +143,90 @@ describe FlexmlsApi do
       end
       
     end
+    
+    context "when unauthenticated" do
+      subject do 
+        class RequestAuthTest
+          include FlexmlsApi::Request
+          def authenticate()
+            @session ||= mock_session()
+          end
+          def sign_token(path, params = {}, post_data="")
+            "SignedToken"
+          end
+          def version()
+            "v1"
+          end
+          attr_accessor :connection
+        end
+        r = RequestAuthTest.new
+        r.connection = @connection
+        r
+      end
+      it "should authenticate and then get a service" do
+        subject.get('/system')[0]["Name"].should == "My User"
+      end
+      it "should authenticate and then post to a service" do
+        data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
+        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+      end
+    end
+
+    context "when expired" do
+      subject do 
+        class RequestExpiredTest
+          include FlexmlsApi::Request
+          def initialize(session)
+            @session = session
+            @reauthenticated = false
+          end
+          def authenticate()
+            @reauthenticated = true
+            @session = mock_session()
+          end
+          def sign_token(path, params = {}, post_data="")
+            "SignedToken"
+          end
+          def version()
+            "v1"
+          end
+          def reauthenticated?
+            @reauthenticated == true
+          end
+          attr_accessor :connection
+        end
+        r = RequestExpiredTest.new(mock_expired_session())
+        r.connection = @connection
+        r
+      end
+      it "should reauthenticate and then get a service" do
+        subject.get('/system')[0]["Name"].should == "My User"
+        subject.reauthenticated?.should == true
+      end
+      it "should reauthenticate and then post to a service" do
+        data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
+        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+        subject.reauthenticated?.should == true
+      end
+    end
+    context "when expire response" do
+      subject do 
+        session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now + 60).to_s, "Roles" => "['idx']")
+        r = RequestExpiredTest.new(session)
+        r.connection = @connection
+        r
+      end
+      it "should reauthenticate and then get a service" do
+        subject.get('/system')[0]["Name"].should == "My User"
+        subject.reauthenticated?.should == true
+      end
+      it "should reauthenticate and then post to a service" do
+        data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
+        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+        subject.reauthenticated?.should == true
+      end
+    end
+    
   end
   
 end
