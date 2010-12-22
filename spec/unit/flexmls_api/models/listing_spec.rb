@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Listing, "Listing model" do
+describe FlexmlsApi::Models::Listing, "Listing model" do
   before(:each) do
-    @listing = FlexmlsApi::Listing.new({
+    @listing = FlexmlsApi::Models::Listing.new({
       "ResourceUri"=>"/v1/listings/20080619000032866372000000", 
       "StandardFields"=>{
         "StreetNumber"=>"********", 
@@ -65,19 +65,19 @@ describe FlexmlsApi::Listing, "Listing model" do
 
   describe "class methods" do
     it "should respond to find" do
-      FlexmlsApi::Listing.should respond_to(:find)
+      FlexmlsApi::Models::Listing.should respond_to(:find)
     end
 
     it "should respond to first" do
-      FlexmlsApi::Listing.should respond_to(:first)
+      FlexmlsApi::Models::Listing.should respond_to(:first)
     end
 
     it "should respond to last" do
-      FlexmlsApi::Listing.should respond_to(:last)
+      FlexmlsApi::Models::Listing.should respond_to(:last)
     end
 
     it "should respond to my" do
-      FlexmlsApi::Listing.should respond_to(:my)
+      FlexmlsApi::Models::Listing.should respond_to(:my)
     end
   end
 

@@ -1,9 +1,9 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Connect do
+describe FlexmlsApi::Models::Connect do
 
   it "should respond to prefs" do
-    FlexmlsApi::Connect.should respond_to(:prefs)
+    FlexmlsApi::Models::Connect.should respond_to(:prefs)
   end
 
 end

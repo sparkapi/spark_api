@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Photo, "Photo model" do
+describe FlexmlsApi::Models::Photo, "Photo model" do
   before(:each) do
-    @photo = FlexmlsApi::Photo.new({
+    @photo = FlexmlsApi::Models::Photo.new({
       "ResourceUri" => "/listings/20100815153524571646000000/photos/20101124153422574618000000",
       "Id"          => "20101124153422574618000000",
       "Name"        => "Photo 1 name",

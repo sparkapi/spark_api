@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::StandardFields do
+describe FlexmlsApi::Models::StandardFields do
   before(:each) do 
-    @stdfields = FlexmlsApi::StandardFields.new({
+    @stdfields = FlexmlsApi::Models::StandardFields.new({
       "StreetNumber"=>{"Searchable"=>false}, 
       "ListingId"=>{"Searchable"=>true}, 
       "City"=>{"Searchable"=>true}, 
@@ -31,7 +31,7 @@ describe FlexmlsApi::StandardFields do
   end
 
   it "should respond to get" do
-    FlexmlsApi::StandardFields.should respond_to(:get)
+    FlexmlsApi::Models::StandardFields.should respond_to(:get)
   end
   
 
