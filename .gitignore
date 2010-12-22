@@ -5,3 +5,4 @@ spec/reports/
 .bundle/ruby
 coverage
 bundle
+vendor/cache/
