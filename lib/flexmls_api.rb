@@ -13,14 +13,8 @@ require File.expand_path('../flexmls_api/request', __FILE__)
 require File.expand_path('../flexmls_api/client', __FILE__)
 require File.expand_path('../flexmls_api/faraday', __FILE__)
 
-# model classes
-require File.expand_path('../flexmls_api/models/model_base', __FILE__)
-require File.expand_path('../flexmls_api/models/listing', __FILE__)
-require File.expand_path('../flexmls_api/models/photo', __FILE__)
-require File.expand_path('../flexmls_api/models/system_info', __FILE__)
-require File.expand_path('../flexmls_api/models/standard_fields', __FILE__)
-require File.expand_path('../flexmls_api/models/property_types', __FILE__)
-require File.expand_path('../flexmls_api/models/connect_prefs', __FILE__)
+# load model classes
+require File.expand_path('../flexmls_api/models', __FILE__)
 
 module FlexmlsApi
   extend Configuration
