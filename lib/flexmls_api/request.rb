@@ -52,7 +52,7 @@ module FlexmlsApi
       response.body.results
     end
   
-  def body_request(method, path, body, options)
+    def body_request(method, path, body, options)
       if @session.nil? || @session.expired?
         authenticate
       end

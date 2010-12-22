@@ -108,12 +108,19 @@ describe FlexmlsApi do
           def version()
             "v1"
           end
+          def empty_parameters()
+            build_url_parameters()
+          end
           attr_accessor :connection
         end
         my_s = mock_session()
         r = RequestTest.new(my_s)
         r.connection = @connection
         r
+      end
+
+      it "should give me empty string when no parameters" do
+        subject.empty_parameters().should == ""
       end
       
       it "should get a service" do
@@ -226,7 +233,44 @@ describe FlexmlsApi do
         subject.reauthenticated?.should == true
       end
     end
+
+    context "when the server is being a jerk on expire response" do
+      subject do 
+        class RequestAlwaysExpiredJerkTest
+          include FlexmlsApi::Request
+          def initialize()
+            @reauthenticated = 0
+          end
+          def authenticate()
+            @reauthenticated += 1
+            @session = session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now + 60).to_s, "Roles" => "['idx']")
+          end
+          def sign_token(path, params = {}, post_data="")
+            "SignedToken"
+          end
+          def version()
+            "v1"
+          end
+          def reauthenticated
+            @reauthenticated
+          end
+          attr_accessor :connection
+        end
+        r = RequestAlwaysExpiredJerkTest.new
+        r.connection = @connection
+        r
+      end
+      it "should fail horribly on a get" do
+        expect { subject.get('/system')}.to raise_error(FlexmlsApi::PermissionDenied){ |e| e.code.should == FlexmlsApi::ResponseCodes::SESSION_TOKEN_EXPIRED }
+        subject.reauthenticated.should == 2
+      end
+      it "should fail horribly on a post" do
+        data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
+        expect { subject.post('/contacts', data)}.to raise_error(FlexmlsApi::PermissionDenied){ |e| e.code.should == FlexmlsApi::ResponseCodes::SESSION_TOKEN_EXPIRED }
+        subject.reauthenticated.should == 2
+      end
+    end
     
   end
-  
+
 end
