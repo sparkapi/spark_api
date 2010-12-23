@@ -1,4 +1,5 @@
 require "rubygems"
+require 'rake/gempackagetask'
 require 'ci/reporter/rake/rspec'
 require "rspec"
 require 'rspec/core/rake_task'
@@ -51,3 +52,18 @@ end
 remove_task 'release'
 remove_task 'rubygems:release'
 
+spec = Gem::Specification::load("flexmls_api.gemspec")
+Rake::GemPackageTask.new(spec) do |p|
+  p.gem_spec = spec
+  p.need_tar = true
+  p.need_zip = true
+end
+
+task :deploy do
+  gems = FileList['pkg/*.gem']
+  FileUtils.cp gems, '/opt/gems/dev/gems'
+  require 'rubygems'
+  require 'rubygems/indexer'
+  i=Gem::Indexer.new '/opt/gems/dev'
+  i.generate_index
+end

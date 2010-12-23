@@ -6,3 +6,5 @@ spec/reports/
 coverage
 bundle
 vendor/cache/
+pkg/
+
