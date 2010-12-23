@@ -6,6 +6,7 @@ gem 'faraday_middleware'
 gem 'multi_json'
 gem 'json'
 gem 'yajl-ruby'
+gem 'builder', '2.1.2'
 
 group :test do
   gem 'rspec'
