@@ -30,3 +30,11 @@ end
 def mock_expired_session()
   FlexmlsApi::Authentication::Session.new("AuthToken" => "1234", "Expires" => (Time.now - 60).to_s, "Roles" => "['idx']")
 end
+
+def test_connection(stubs)
+  Faraday::Connection.new(nil, {:headers => FlexmlsApi::Client.new.headers}) do |builder|
+    builder.adapter :test, stubs
+    builder.use Faraday::Response::ParseJson
+    builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
+  end
+end

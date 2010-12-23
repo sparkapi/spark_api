@@ -33,7 +33,7 @@ describe FlexmlsApi do
   
   describe FlexmlsApi::Request do
     before(:all) do
-      @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+      stubs = Faraday::Adapter::Test::Stubs.new do |stub|
         stub.get('/v1/system?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
           "Success": true, 
           "Results": [{
@@ -81,11 +81,7 @@ describe FlexmlsApi do
           }}'] 
         }
       end
-      @connection = Faraday::Connection.new() do |builder|
-        builder.adapter :test, @stubs
-        builder.use Faraday::Response::ParseJson
-        builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
-      end
+      @connection = test_connection(stubs)
     end  
 
     context "when successfully authenticated" do

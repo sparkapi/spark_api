@@ -4,7 +4,7 @@ require './spec/spec_helper'
 describe FlexmlsApi do
   describe "FlexmlsMiddleware" do
     before(:all) do
-      @stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+      stubs = Faraday::Adapter::Test::Stubs.new do |stub|
         stub.post('/session') { [200, {}, '{"D": { 
             "Success": true,
             "Results": [{
@@ -55,11 +55,7 @@ describe FlexmlsApi do
         stub.get('/garbage') { [200, {}, 'THIS IS TOTAL GARBAGE!'] }
       end
 
-      @connection = Faraday::Connection.new() do |builder|
-        builder.adapter :test, @stubs
-        builder.use Faraday::Response::ParseJson
-        builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
-      end
+      @connection = test_connection(stubs)
 
     end
     

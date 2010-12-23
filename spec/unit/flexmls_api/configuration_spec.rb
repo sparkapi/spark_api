@@ -1,6 +1,9 @@
 require './spec/spec_helper'
 
 describe FlexmlsApi::Client, "Client config"  do
+  after(:each) do
+    FlexmlsApi.reset
+  end
 
   describe "default settings" do
     it "should return the proper defaults when called with no arguments" do
@@ -43,6 +46,21 @@ describe FlexmlsApi::Client, "Client config"  do
       FlexmlsApi.endpoint.should match "test.api.flexmls.com"
       FlexmlsApi.user_agent.should match "my useragent"
 
+    end
+    
+    it "should reset" do
+      FlexmlsApi.configure do |config|
+        config.api_key = "my_key"
+        config.api_secret = "my_secret"
+        config.version = "veleventy"
+        config.endpoint = "test.api.flexmls.com"
+        config.user_agent = "my useragent"
+      end
+      
+      FlexmlsApi.api_key.should match "my_key"
+      FlexmlsApi.reset
+      FlexmlsApi.api_key.should == FlexmlsApi::Configuration::DEFAULT_API_KEY
+    
     end
   end
 end

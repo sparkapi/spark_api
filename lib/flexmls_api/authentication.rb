@@ -47,16 +47,25 @@ module FlexmlsApi::Authentication
     end
   end
   
-  def connection()
+  def connection
     conn = Faraday::Connection.new(:url => @endpoint, 
       :ssl => {:verify => false}, 
-      :headers => {:accept => 'application/json'}) do |builder|
+      :headers => headers) do |builder|
       builder.adapter Faraday.default_adapter
       builder.use Faraday::Response::ParseJson
       builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
     end
     FlexmlsApi.logger.debug("Connection: #{conn.inspect}")
     conn
+  end
+  
+  def headers
+    {
+      :accept => 'application/json',
+      :content_type => 'application/json',
+      :user_agent => user_agent,
+      'flexmlsAPI-User-Agent' => user_agent
+    }
   end
 
 end
