@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.0.3"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
-  s.date = %q{2010-12-21}
+  s.date = %q{2010-12-23}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{bhornseth@fbsdata.com}
   s.extra_rdoc_files = [
@@ -30,7 +30,9 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/client.rb",
     "lib/flexmls_api/configuration.rb",
     "lib/flexmls_api/faraday.rb",
+    "lib/flexmls_api/models.rb",
     "lib/flexmls_api/models/connect_prefs.rb",
+    "lib/flexmls_api/models/contact.rb",
     "lib/flexmls_api/models/listing.rb",
     "lib/flexmls_api/models/model_base.rb",
     "lib/flexmls_api/models/photo.rb",
@@ -81,6 +83,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<multi_json>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<yajl-ruby>, [">= 0"])
+      s.add_runtime_dependency(%q<builder>, ["= 2.1.2"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<curb>, [">= 0"])
@@ -92,6 +95,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<multi_json>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<yajl-ruby>, [">= 0"])
+      s.add_dependency(%q<builder>, ["= 2.1.2"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<curb>, [">= 0"])
@@ -104,6 +108,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<multi_json>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<yajl-ruby>, [">= 0"])
+    s.add_dependency(%q<builder>, ["= 2.1.2"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<curb>, [">= 0"])
