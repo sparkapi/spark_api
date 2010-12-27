@@ -31,6 +31,7 @@ RSpec::Core::RakeTask.new do |t|
 end
 
 task :install do
+  require './lib/flexmls_api'
   rm_rf "*.gem"
   puts `gem build flexmls_api.gemspec`
   puts `sudo gem install flexmls_api-#{FlexmlsApi::VERSION}.gem`
