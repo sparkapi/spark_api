@@ -27,7 +27,7 @@ RSpec::Core::RakeTask.new do |t|
   t.rspec_opts = ["-c", "-f progress"]
   t.pattern = 'spec/**/*_spec.rb'
   t.rcov = true
-  t.rcov_opts = %w{--exclude bundle,spec}
+  t.rcov_opts = %w{--exclude /usr/local/rvm/gems/,bundle,spec}
 end
 
 task :install do
