@@ -1,30 +1,31 @@
 module FlexmlsApi
   module Models
-    class MarketStatistics < Model
-    
+    class MarketStatistics < Base
+      self.element_name="marketstatistics"
+      
       def self.absorption(parameters={})
-        self.get('absorption',parameters)
+        self.stat('absorption',parameters)
       end
       def self.inventory(parameters={})
-        self.get('inventory',parameters)
+        self.stat('inventory',parameters)
       end
       def self.price(parameters={})
-        self.get('price',parameters)
+        self.stat('price',parameters)
       end
       def self.ratio(parameters={})
-        self.get('ratio',parameters)
+        self.stat('ratio',parameters)
       end
       def self.dom(parameters={})
-        self.get('dom',parameters)
+        self.stat('dom',parameters)
       end
       def self.volume(parameters={})
-        self.get('volume',parameters)
+        self.stat('volume',parameters)
       end
 
       private 
-      def self.get(stat_name, parameters={})
+      def self.stat(stat_name, parameters={})
         instances = []
-        resp = FlexmlsApi.client.get("/marketstatistics/#{stat_name}", parameters)
+        resp = connection.get("#{path}/#{stat_name}", parameters)
         new(resp[0])
       end
       

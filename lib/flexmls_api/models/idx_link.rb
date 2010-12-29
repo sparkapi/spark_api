@@ -1,17 +1,8 @@
 module FlexmlsApi
   module Models
-    class IdxLink < Model
+    class IdxLink < Base
+      self.element_name="idxlinks"
 
-      def self.get
-        instances = []
-        resp = FlexmlsApi.client.get('/idxlinks')
-        resp.each do |p|
-          instances.push(new(p))
-        end
-        instances
-      end
-      
-      
       #TODO Work all below into common base class
       def self.find(*arguments)
         scope = arguments.slice!(0)

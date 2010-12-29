@@ -1,11 +1,10 @@
 module FlexmlsApi
   module Models
-    class Connect < Model
-
+    class Connect < Base
+      self.element_name="connect"
       def self.prefs
-        FlexmlsApi.client.get('/connect/prefs')
+        connection.get("#{path}/prefs")
       end
-      
     end
   end
 end
