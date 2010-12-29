@@ -10,6 +10,7 @@ gem 'builder', '2.1.2'
 
 group :test do
   gem 'rspec'
+  gem 'webmock'
   gem 'jeweler'
   gem 'typhoeus' 
   gem 'ci_reporter', '>=1.6.3'

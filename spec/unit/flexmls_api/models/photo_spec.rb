@@ -31,7 +31,20 @@ describe FlexmlsApi::Models::Photo do
     @photo.primary?.should be_false
   end
 
-  it "can find photos by listing id" 
+  describe "find photos by listing id"  do
+    before do
+      stub_auth_request
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234/photos").
+                   with(:query => {:ApiSig => "994cc72e9be237981ae18f2bed87cee4", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}).
+                   to_return(:body => fixture('listing_photos_index.json'))
+    end
+
+    it "should get an array of photos" do
+      p = FlexmlsApi::Models::Photo.find_by_listing_key('1234')
+      p.should be_an Array
+    end
+
+  end
 
 
   after(:each) do  
