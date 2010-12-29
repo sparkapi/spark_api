@@ -71,13 +71,13 @@ describe FlexmlsApi do
         stub.get('/v1/system?ApiSig=SignedToken&AuthToken=EXPIRED') { [401 , {}, '{"D": {
           "Success": false,
           "Message": "Session token has expired",
-          "Code": "1020"
+          "Code": 1020
           }}'] 
         }
         stub.post('/v1/contacts?ApiSig=SignedToken&AuthToken=EXPIRED', '{"D":{"Contacts":[{"DisplayName":"Wades Contact","PrimaryEmail":"wade11@fbsdata.com"}]}}') { [401 , {}, '{"D": {
           "Success": false,
           "Message": "Session token has expired",
-          "Code": "1020"
+          "Code": 1020
           }}'] 
         }
       end

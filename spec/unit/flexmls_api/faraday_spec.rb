@@ -30,7 +30,7 @@ describe FlexmlsApi do
         stub.get('/expired') { [401, {}, '{"D": { 
             "Success": false,
             "Message": "Session token has expired",
-            "Code": "1020"            
+            "Code": 1020            
           }}'] 
         }
         stub.get('/methodnotallowed') { [405, {}, '{"D": { 
