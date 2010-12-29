@@ -1,6 +1,13 @@
 require "rubygems"
 require "json"
 require "rspec"
+require 'webmock/rspec'
+
+
+Rspec.configure do |config|
+  config.include WebMock::API
+end
+
 begin require "redgreen" unless ENV['TM_CURRENT_LINE']; rescue LoadError; end
 path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
@@ -38,3 +45,20 @@ def test_connection(stubs)
     builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
   end
 end
+
+
+def stub_auth_request()
+  stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/session").
+              with(:query => {:ApiKey => "", :ApiSig => "806737984ab19be2fd08ba36030549ac"}).
+              to_return(:body => fixture("session.json"))
+end
+
+
+
+
+def fixture(file)
+  File.new(File.expand_path("../fixtures", __FILE__) + '/' + file)
+end
+
+
+

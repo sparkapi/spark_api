@@ -5,6 +5,7 @@ GEM
     builder (2.1.2)
     ci_reporter (1.6.3)
       builder (>= 2.1.2)
+    crack (0.1.8)
     curb (0.7.8)
     diff-lcs (1.1.2)
     faraday (0.5.3)
@@ -33,6 +34,9 @@ GEM
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.3.0)
     typhoeus (0.2.0)
+    webmock (1.4.0)
+      addressable (>= 2.2.2)
+      crack (>= 0.1.7)
     yajl-ruby (0.7.8)
 
 PLATFORMS
@@ -50,4 +54,5 @@ DEPENDENCIES
   rcov
   rspec
   typhoeus
+  webmock
   yajl-ruby
