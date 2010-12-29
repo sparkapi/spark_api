@@ -1,4 +1,4 @@
-require File.expand_path('../models/model_base', __FILE__)
+require File.expand_path('../models/base', __FILE__)
 require File.expand_path('../models/listing', __FILE__)
 require File.expand_path('../models/photo', __FILE__)
 require File.expand_path('../models/system_info', __FILE__)

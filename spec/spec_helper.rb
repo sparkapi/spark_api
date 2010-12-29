@@ -27,6 +27,18 @@ def mock_session()
   FlexmlsApi::Authentication::Session.new("AuthToken" => "1234", "Expires" => (Time.now + 3600).to_s, "Roles" => "['idx']")
 end
 
+
+class MockClient < FlexmlsApi::Client
+  attr_accessor :connection, :session
+end
+
+def mock_client(stubs)
+  c = MockClient.new
+  c.session = mock_session()
+  c.connection = test_connection(stubs)
+  c
+end
+
 def mock_expired_session()
   FlexmlsApi::Authentication::Session.new("AuthToken" => "1234", "Expires" => (Time.now - 60).to_s, "Roles" => "['idx']")
 end

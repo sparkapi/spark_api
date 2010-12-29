@@ -10,7 +10,7 @@ module FlexmlsApi
       Configuration::VALID_OPTION_KEYS.each do |key|
         send("#{key}=", options[key])
       end
-    end    
+    end
 
   end
 end
