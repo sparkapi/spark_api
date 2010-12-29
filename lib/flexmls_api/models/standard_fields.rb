@@ -1,12 +1,7 @@
 module FlexmlsApi
   module Models
-    class StandardFields < Model
-
-
-      def self.get
-        new(FlexmlsApi.client.get('/standardfields')[0])
-      end
-
+    class StandardFields < Base
+      self.element_name="standardfields"
     end
   end
 end

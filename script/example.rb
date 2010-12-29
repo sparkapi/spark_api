@@ -9,10 +9,19 @@ require path + '/flexmls_api'
 
 FlexmlsApi.logger.info("Hello!")
 
-client = FlexmlsApi::Client.new(:api_key => "key_of_wade", :api_secret => "TopSecret", :endpoint => "https://api.wade.dev.fbsdata.com")
+FlexmlsApi.configure do |config|
+  config.api_key = "fvt_agent_key"
+  config.api_secret = "TopSecret"
+  config.version = "v1"
+  config.endpoint = "https://api.wade.dev.fbsdata.com"
+end
 
-sys = client.get '/system'
+client = FlexmlsApi.client
 
-puts "I can haz system!  #{sys}"
+list = client.get '/contacts'
+puts "client: #{list.inspect}"
+list = FlexmlsApi::Models::Contact.get
+puts "model: #{list.inspect}"
+
 
 

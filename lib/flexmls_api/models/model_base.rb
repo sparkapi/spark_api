@@ -1,8 +1,36 @@
 module FlexmlsApi
   module Models
-    class Model
+    class Base
 
       attr_accessor :attributes
+      
+      # Name of the resource as related to the path name
+      def self.element_name
+        # TODO I'd love to pull in active model at this point to provide default naming
+        @element_name ||= "resource"
+      end
+
+      def self.element_name=(name)
+        @element_name = name
+      end
+      
+      # Resource path prefix, prepended to the url
+      def self.prefix
+        @prefix ||= "/"
+      end
+      def self.prefix=(prefix)
+        @prefix = prefix
+      end
+      def self.path
+        "#{prefix}#{element_name}"
+      end
+      
+      def self.connection
+        @connection ||= FlexmlsApi.client
+      end
+      def connection
+        self.class.connection
+      end
 
       def initialize(attributes={})
         @attributes = {}
@@ -13,6 +41,19 @@ module FlexmlsApi
         attributes.each do |key,val|
           @attributes[key.to_s] = val
         end
+      end
+      
+      def self.get(options={})
+        instances = []
+        resp = connection.get(path, options)
+        resp.each do |p|
+          instances.push(new(p))
+        end
+        instances
+      end
+
+      def self.first(options={})
+        get(options)[0]
       end
 
       def method_missing(method_symbol, *arguments)

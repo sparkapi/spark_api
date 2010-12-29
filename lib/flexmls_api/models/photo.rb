@@ -1,7 +1,6 @@
 module FlexmlsApi
   module Models
-    class Photo < Model
-      
+    class Photo < Base
 
       def primary? 
         @attributes["Primary"] == true 

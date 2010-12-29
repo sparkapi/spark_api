@@ -1,7 +1,8 @@
 module FlexmlsApi
   module Models
-    class Listing < Model 
+    class Listing < Base 
       attr_accessor :photos
+      self.element_name="listings"
 
       def initialize(attributes={})
         @photos = []
@@ -39,7 +40,7 @@ module FlexmlsApi
 
       def self.my(arguments={})
         my_listings = []
-        response = FlexmlsApi.client.get("/my/listings", arguments)
+        response = connection.get("/my/listings", arguments)
         response.collect { |listing| my_listings.push(new(listing)) }
         my_listings
       end
