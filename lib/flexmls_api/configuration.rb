@@ -5,7 +5,7 @@ module FlexmlsApi
 
     DEFAULT_API_KEY = nil
     DEFAULT_API_SECRET = nil
-    DEFAULT_ENDPOINT = 'api.flexmls.com'
+    DEFAULT_ENDPOINT = 'https://api.flexmls.com'
     DEFAULT_VERSION = 'v1'
     DEFAULT_USER_AGENT = "flexmls API Ruby Gem #{VERSION}"
 
