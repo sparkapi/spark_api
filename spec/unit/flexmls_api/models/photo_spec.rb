@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::Photo, "Photo model" do
+describe FlexmlsApi::Models::Photo do
   before(:each) do
     @photo = FlexmlsApi::Models::Photo.new({
       "ResourceUri" => "/listings/20100815153524571646000000/photos/20101124153422574618000000",
@@ -20,12 +20,19 @@ describe FlexmlsApi::Models::Photo, "Photo model" do
   end
 
 
-  describe "responds to" do
-    it "should respond to primary?" do
-      @photo.respond_to?(:primary?)
-    end
-
+  it "responds to" do
+    @photo.should respond_to(:primary?)
+    FlexmlsApi::Models::Photo.should respond_to(:find_by_listing_key)
   end
+
+  it "knows if it's the primary photo" do
+    @photo.primary?.should be_true
+    @photo.Primary = false
+    @photo.primary?.should be_false
+  end
+
+  it "can find photos by listing id" 
+
 
   after(:each) do  
     @photo = nil
