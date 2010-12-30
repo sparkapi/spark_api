@@ -49,7 +49,10 @@ module FlexmlsApi
       private
 
       def self.find_every(options)
-        raise NotImplementedError # TODO
+        listings = []
+        resp = connection.get('/listings', options)
+        resp.collect { |listing| listings.push(new(listing)) }
+        listings
       end
 
       def self.find_one(options)
