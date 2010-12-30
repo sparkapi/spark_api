@@ -6,9 +6,9 @@ module FlexmlsApi
         @attributes["Primary"] == true 
       end
 
-      def self.find_by_listing_key(key)
+      def self.find_by_listing_key(key, options = {})
         photos = []
-        resp = FlexmlsApi.client.get("/listings/#{key}/photos")
+        resp = FlexmlsApi.client.get("/listings/#{key}/photos", options)
         resp.collect { |photo| photos.push(new(photo)) }
         photos
       end
