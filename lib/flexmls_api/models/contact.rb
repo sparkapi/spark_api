@@ -3,7 +3,7 @@ module FlexmlsApi
     class Contact < Base
       self.element_name="contacts"
       
-      def save()
+      def save
         begin
           return save!
         rescue ClientError => e
@@ -12,7 +12,7 @@ module FlexmlsApi
         end
         false
       end
-      def save!()
+      def save!
         results = connection.post self.class.path, "Contacts" => [ attributes ]
         result = results.first
         attributes['ResourceUri'] = result['ResourceUri']

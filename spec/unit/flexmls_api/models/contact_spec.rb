@@ -3,6 +3,7 @@ require './spec/spec_helper'
 
 class FlexmlsApi::Models::Contact
   class << self
+    # Neato trick, using the accessor function nested here acts on the class methods!
     attr_accessor :connection
   end
 end
