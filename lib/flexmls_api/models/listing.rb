@@ -29,6 +29,11 @@ module FlexmlsApi
           else             find_single(scope, options)
         end
       end
+
+      def self.find_by_cart_id(cart_id, owner, options={}) 
+        options.merge!({ :ApiUser => owner, :_filter => "ListingCart Eq '#{cart_id}'" })
+        find(:all, options) 
+      end
       
       def self.first(*arguments)
         find(:first, *arguments)
@@ -52,6 +57,7 @@ module FlexmlsApi
         listings = []
         resp = connection.get('/listings', options)
         resp.collect { |listing| listings.push(new(listing)) }
+        FlexmlsApi.logger.info("Cart size: #{listings.length}")
         listings
       end
 

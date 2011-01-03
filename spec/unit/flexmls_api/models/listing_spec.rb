@@ -79,6 +79,10 @@ describe FlexmlsApi::Models::Listing, "Listing model" do
     it "should respond to my" do
       FlexmlsApi::Models::Listing.should respond_to(:my)
     end
+    
+    it "should respond to find_by_cart_id" do
+      FlexmlsApi::Models::Listing.should respond_to(:find_by_cart_id)
+    end
   end
 
   after(:each) do  
