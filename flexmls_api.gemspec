@@ -40,10 +40,12 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/property_types.rb",
     "lib/flexmls_api/models/standard_fields.rb",
     "lib/flexmls_api/models/system_info.rb",
+    "lib/flexmls_api/models/video.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
     "script/example.rb",
     "spec/fixtures/listing_photos_index.json",
+    "spec/fixtures/listing_videos_index.json",
     "spec/fixtures/session.json",
     "spec/spec_helper.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
@@ -55,6 +57,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",
     "spec/unit/flexmls_api/models/system_info_spec.rb",
+    "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
@@ -73,6 +76,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",
     "spec/unit/flexmls_api/models/system_info_spec.rb",
+    "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
