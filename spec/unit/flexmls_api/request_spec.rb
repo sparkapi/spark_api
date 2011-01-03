@@ -59,7 +59,7 @@ describe FlexmlsApi do
         }
         stub.post('/v1/contacts?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"Wades Contact","PrimaryEmail":"wade11@fbsdata.com"}]}}') { [201, {}, '{"D": {
           "Success": true,
-          "Results": [{"ResourceURI": "1000"}]}}'] 
+          "Results": [{"ResourceUri": "1000"}]}}'] 
         }
         stub.put('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"WLMCEWENS Contact","PrimaryEmail":"wlmcewen789@fbsdata.com"}]}}') { [200, {}, '{"D": {
           "Success": true}}'] 
@@ -121,7 +121,7 @@ describe FlexmlsApi do
       end
       it "should post to a service" do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
-        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+        subject.post('/contacts', data)[0]["ResourceUri"].should == "1000"
       end
       it "should put to a service" do
         # This is a hypothetical unsupported service action at this time
@@ -160,7 +160,7 @@ describe FlexmlsApi do
       end
       it "should authenticate and then post to a service" do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
-        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+        subject.post('/contacts', data)[0]["ResourceUri"].should == "1000"
       end
     end
 
@@ -197,7 +197,7 @@ describe FlexmlsApi do
       end
       it "should reauthenticate and then post to a service" do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
-        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+        subject.post('/contacts', data)[0]["ResourceUri"].should == "1000"
         subject.reauthenticated?.should == true
       end
     end
@@ -215,7 +215,7 @@ describe FlexmlsApi do
       end
       it "should reauthenticate and then post to a service" do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
-        subject.post('/contacts', data)[0]["ResourceURI"].should == "1000"
+        subject.post('/contacts', data)[0]["ResourceUri"].should == "1000"
         subject.reauthenticated?.should == true
       end
     end

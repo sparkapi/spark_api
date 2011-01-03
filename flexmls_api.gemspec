@@ -68,6 +68,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/faraday_spec.rb",
     "spec/unit/flexmls_api/models/base_spec.rb",
     "spec/unit/flexmls_api/models/connect_prefs_spec.rb",
+    "spec/unit/flexmls_api/models/contact_spec.rb",
     "spec/unit/flexmls_api/models/listing_spec.rb",
     "spec/unit/flexmls_api/models/photo_spec.rb",
     "spec/unit/flexmls_api/models/property_types_spec.rb",
