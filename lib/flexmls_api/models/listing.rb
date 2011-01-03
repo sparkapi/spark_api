@@ -1,17 +1,33 @@
 module FlexmlsApi
   module Models
     class Listing < Base 
-      attr_accessor :photos
+      attr_accessor :photos, :videos
       self.element_name="listings"
 
       def initialize(attributes={})
         @photos = []
-        if (attributes.has_key?('StandardFields') and attributes['StandardFields'].has_key?('Photos'))
-          attributes['StandardFields']['Photos'].collect do |photo|
-            @photos.push(Photo.new(photo))
-          end
-          attributes['StandardFields'].delete('Photos')
+        @videos = []
+
+        if attributes.has_key?('StandardFields')
+          photos, videos = attributes['StandardFields'].values_at('Photos','Videos')
+          FlexmlsApi.logger.info("Photos: #{photos.inspect}")
+          FlexmlsApi.logger.info("Videos: #{videos.inspect}")
         end
+        
+        photos ||= []
+        videos ||= []
+
+        # TODO: clean this up
+        photos.collect do |photo|
+          @photos.push(Photo.new(photo))
+        end
+        attributes['StandardFields'].delete('Photos')
+
+        videos.collect do |video|
+          @videos.push(Video.new(video))
+        end
+        attributes['StandardFields'].delete('Videos')
+        
       
         super(attributes)
       end
