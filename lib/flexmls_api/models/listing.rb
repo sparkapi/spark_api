@@ -10,22 +10,12 @@ module FlexmlsApi
 
         if attributes.has_key?('StandardFields')
           photos, videos = attributes['StandardFields'].values_at('Photos','Videos')
-          FlexmlsApi.logger.info("Photos: #{photos.inspect}")
-          FlexmlsApi.logger.info("Videos: #{videos.inspect}")
         end
         
-        photos ||= []
-        videos ||= []
-
-        # TODO: clean this up
-        photos.collect do |photo|
-          @photos.push(Photo.new(photo))
-        end
+        photos.collect { |photo| @photos.push(Photo.new(photo)) } if photos != nil
         attributes['StandardFields'].delete('Photos')
 
-        videos.collect do |video|
-          @videos.push(Video.new(video))
-        end
+        videos.collect { |video| @videos.push(Video.new(video)) } if videos != nil
         attributes['StandardFields'].delete('Videos')
         
       
