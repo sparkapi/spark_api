@@ -9,14 +9,18 @@ module FlexmlsApi
         @videos = []
 
         if attributes.has_key?('StandardFields')
-          photos, videos = attributes['StandardFields'].values_at('Photos','Videos')
+          pics, vids = attributes['StandardFields'].values_at('Photos','Videos')
         end
         
-        photos.collect { |photo| @photos.push(Photo.new(photo)) } if photos != nil
-        attributes['StandardFields'].delete('Photos')
-
-        videos.collect { |video| @videos.push(Video.new(video)) } if videos != nil
-        attributes['StandardFields'].delete('Videos')
+        if pics != nil
+          pics.collect { |pic| @photos.push(Photo.new(pic)) } 
+          attributes['StandardFields'].delete('Photos')
+        end
+         
+        if vids != nil
+          vids.collect { |vid| @videos.push(Video.new(vid)) } 
+          attributes['StandardFields'].delete('Videos')
+        end
         
       
         super(attributes)
@@ -63,7 +67,6 @@ module FlexmlsApi
         listings = []
         resp = connection.get('/listings', options)
         resp.collect { |listing| listings.push(new(listing)) }
-        FlexmlsApi.logger.info("Cart size: #{listings.length}")
         listings
       end
 
