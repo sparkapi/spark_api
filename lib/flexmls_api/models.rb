@@ -9,6 +9,7 @@ require File.expand_path('../models/contact', __FILE__)
 require File.expand_path('../models/idx_link', __FILE__)
 require File.expand_path('../models/market_statistics', __FILE__)
 require File.expand_path('../models/video', __FILE__)
+require File.expand_path('../models/virtual_tour', __FILE__)
 
 module FlexmlsApi
   module Models
