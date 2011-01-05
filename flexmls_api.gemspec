@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/photo.rb",
     "lib/flexmls_api/models/property_types.rb",
     "lib/flexmls_api/models/standard_fields.rb",
+    "lib/flexmls_api/models/subresource.rb",
     "lib/flexmls_api/models/system_info.rb",
     "lib/flexmls_api/models/video.rb",
     "lib/flexmls_api/models/virtual_tour.rb",
