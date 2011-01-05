@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
-  s.date = %q{2011-01-04}
+  s.date = %q{2011-01-05}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{bhornseth@fbsdata.com}
   s.extra_rdoc_files = [
@@ -79,6 +79,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",
     "spec/unit/flexmls_api/models/system_info_spec.rb",
     "spec/unit/flexmls_api/models/video_spec.rb",
+    "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]

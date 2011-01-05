@@ -5,7 +5,7 @@ module FlexmlsApi
       begin
         def self.register_on_complete(env)
           env[:response].on_complete do |finished_env|
-            FlexmlsApi.logger.debug("hashed response: #{finished_env[:body]}")
+            FlexmlsApi.logger.debug("hashed response: #{finished_env[:body].inspect}")
             validate_and_build_response(finished_env)
           end
         end
@@ -15,6 +15,7 @@ module FlexmlsApi
       
       def self.validate_and_build_response(finished_env)
         body = finished_env[:body]
+        FlexmlsApi.logger.debug("Response Body: #{body.inspect}")
         unless body.is_a?(Hash) && body.key?("D")
           raise InvalidResponse, "The server response could not be understood"
         end
