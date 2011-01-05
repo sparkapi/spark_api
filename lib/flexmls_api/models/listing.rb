@@ -1,15 +1,18 @@
 module FlexmlsApi
   module Models
     class Listing < Base 
-      attr_accessor :photos, :videos
+      attr_accessor :photos, :videos, :virtual_tours, :documents
       self.element_name="listings"
 
       def initialize(attributes={})
         @photos = []
         @videos = []
+        @virtual_tours = []
+        @documents = []
+
 
         if attributes.has_key?('StandardFields')
-          pics, vids = attributes['StandardFields'].values_at('Photos','Videos')
+          pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
         end
         
         if pics != nil
@@ -20,6 +23,16 @@ module FlexmlsApi
         if vids != nil
           vids.collect { |vid| @videos.push(Video.new(vid)) } 
           attributes['StandardFields'].delete('Videos')
+        end
+
+        if tours != nil
+          tours.collect { |tour| @virtual_tours.push(VirtualTour.new(tour)) }
+          attributes['StandardFields'].delete('VirtualTours')
+        end
+
+        if docs != nil
+          docs.collect { |doc| @documents.push(Document.new(doc)) }
+          attributes['StandardFields'].delete('Documents')
         end
         
       

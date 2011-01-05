@@ -1,0 +1,39 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/listings/20060725224713296297000000",
+                "StandardFields": {
+                    "StreetNumber": "7298",
+                    "Longitude": "-116.3237",
+                    "City": "Bonners Ferry",
+                    "ListingId": "06-9395",
+                    "PublicRemarks": "Afforadable home in town close to hospital,yet quiet country like setting. Good views. Must see",
+                    "BuildingAreaTotal": "924.0",
+                    "YearBuilt": 1977,
+                    "StreetName": "BIRCH",
+                    "Supplement": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque auctor, nisi in fringilla accumsan, odio felis sodales massa, in aliquam nulla diam non diam. Donec sit amet sollicitudin ipsum. Pellentesque et arcu ligula, id venenatis urna. Nullam varius elementum nisl, in tempus nibh molestie eget. Donec egestas lacinia ante id accumsan. Vivamus ut mauris ante. Nam mattis porttitor nisi, consectetur venenatis enim adipiscing sed. Integer eu quam risus, non ornare magna. Nam sodales arcu non diam accumsan feugiat. Nulla vitae sem quam. Vestibulum a sem risus. Vivamus tristique malesuada quam placerat tempor. Integer ornare faucibus vestibulum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus arcu lorem, blandit eu porttitor et, tempus a enim. Mauris at varius justo. Proin ut tincidunt est. ",
+                    "ListPrice": "50000.0",
+                    "PostalCode": "83805",
+                    "Latitude": "48.7001",
+                    "BathsThreeQuarter": null,
+                    "BathsFull": null,
+                    "BathsTotal": "1.0",
+                    "StateOrProvince": "ID",
+                    "PropertyType": "A",
+                    "StreetAdditionalInfo": null,
+                    "StreetDirPrefix": null,
+                    "BedsTotal": 3,
+                    "StreetDirSuffix": null,
+                    "ListingKey": "20060725224713296297000000",
+                    "ListOfficeName": "Century 21 On The Lake",
+                    "BathsHalf": null,
+                    "ModificationTimestamp": "2011-01-05T14:39:55Z",
+                    "CountyOrParish": "Boundary"
+                },
+                "Id": "20060725224713296297000000"
+            }
+        ],
+        "Success": true
+    }
+}

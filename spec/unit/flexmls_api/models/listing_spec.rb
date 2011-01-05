@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::Listing, "Listing model" do
+describe FlexmlsApi::Models::Listing do
   before(:each) do
     @listing = FlexmlsApi::Models::Listing.new({
       "ResourceUri"=>"/v1/listings/20080619000032866372000000", 
@@ -57,8 +57,11 @@ describe FlexmlsApi::Models::Listing, "Listing model" do
       @listing.photos.should be_a Array
     end
 
-    it "should not respond to Photos" do
+    it "should not respond to removed attributes" do
       @listing.should_not respond_to(:Photos)
+      @listing.should_not respond_to(:Documents)
+      @listing.should_not respond_to(:VirtualTours)
+      @listing.should_not respond_to(:Videos)
     end
 
   end
@@ -83,6 +86,84 @@ describe FlexmlsApi::Models::Listing, "Listing model" do
     it "should respond to find_by_cart_id" do
       FlexmlsApi::Models::Listing.should respond_to(:find_by_cart_id)
     end
+  end
+
+  describe "subresources" do
+    before do
+      stub_auth_request
+    end
+
+
+    it "should return an array of photos" do
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
+          with(:query => {
+            :ApiSig => "3c942a2d6746299c476dd2e30d10966b",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+            :ApiUser => "foobar",
+            :_expand => "Photos"
+          }).
+          to_return(:body => fixture('listing_with_photos.json'))
+      
+      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "Photos")
+      l.photos.length.should == 5
+      l.documents.length.should == 0
+      l.videos.length.should == 0
+      l.virtual_tours.length.should == 0
+    end
+
+    it "should return an array of documents" do
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
+          with(:query => {
+            :ApiSig => "554b6e2a3efec8719b782647c19d238d",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+            :ApiUser => "foobar",
+            :_expand => "Documents"
+          }).
+          to_return(:body => fixture('listing_with_documents.json'))
+      
+      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "Documents")
+      l.photos.length.should == 0
+      l.documents.length.should == 2
+      l.videos.length.should == 0
+      l.virtual_tours.length.should == 0
+    end
+
+    it "should return an array of virtual tours" do
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
+          with(:query => {
+            :ApiSig => "cc966b538640dd6b37dce0067cea2e5a",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+            :ApiUser => "foobar",
+            :_expand => "VirtualTours"
+          }).
+          to_return(:body => fixture('listing_with_vtour.json'))
+      
+      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "VirtualTours")
+      l.virtual_tours.length.should == 1
+      l.photos.length.should == 0
+      l.documents.length.should == 0
+      l.videos.length.should == 0
+    end
+
+
+    it "should return an array of videos" do
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
+          with(:query => {
+            :ApiSig => "12afd7ef1d98ca35c613040f5ddb92b2",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+            :ApiUser => "foobar",
+            :_expand => "Videos"
+          }).
+          to_return(:body => fixture('listing_with_videos.json'))
+      
+      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "Videos")
+      l.videos.length.should == 2
+      l.virtual_tours.length.should == 0
+      l.photos.length.should == 0
+      l.documents.length.should == 0
+    end 
+
+
   end
 
   after(:each) do  

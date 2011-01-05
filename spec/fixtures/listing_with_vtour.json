@@ -1,0 +1,48 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/listings/20060725224713296297000000",
+                "StandardFields": {
+                    "StreetNumber": "7298",
+                    "Longitude": "-116.3237",
+                    "City": "Bonners Ferry",
+                    "ListingId": "06-9395",
+                    "PublicRemarks": "Afforadable home in town close to hospital,yet quiet country like setting. Good views. Must see",
+                    "BuildingAreaTotal": "924.0",
+                    "YearBuilt": 1977,
+                    "StreetName": "BIRCH",
+                    "ListPrice": "50000.0",
+                    "PostalCode": "83805",
+                    "VirtualTourURLBranded": "http://www.youtube.com/watch?v=T9uuPza41Uw#t=2s",
+                    "Latitude": "48.7001",
+                    "BathsThreeQuarter": null,
+                    "BathsFull": null,
+                    "BathsTotal": "1.0",
+                    "StateOrProvince": "ID",
+                    "PropertyType": "A",
+                    "StreetAdditionalInfo": null,
+                    "StreetDirPrefix": null,
+                    "BedsTotal": 3,
+                    "StreetDirSuffix": null,
+                    "ListingKey": "20060725224713296297000000",
+                    "ListOfficeName": "Century 21 On The Lake",
+                    "BathsHalf": null,
+                    "ModificationTimestamp": "2011-01-05T14:54:42Z",
+                    "VirtualTours": [
+                        {
+                            "Uri": "http://www.youtube.com/watch?v=T9uuPza41Uw#t=2s",
+                            "ResourceUri": "/v1/listings/20060725224713296297000000/virtualtours/20110105205442147801000000",
+                            "Name": "Samuel L",
+                            "Id": "20110105205442147801000000",
+                            "Type": "branded"
+                        }
+                    ],
+                    "CountyOrParish": "Boundary"
+                },
+                "Id": "20060725224713296297000000"
+            }
+        ],
+        "Success": true
+    }
+}
