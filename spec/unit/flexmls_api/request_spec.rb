@@ -80,6 +80,18 @@ describe FlexmlsApi do
           "Code": 1020
           }}'] 
         }
+        # Test for really long float numbers
+        stub.get('/v1/listings/1000?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
+          "Success": true, 
+          "Results": [{
+            "ResourceUri":"/v1/listings/20101103161209156282000000",
+            "StandardFields":{
+              "BuildingAreaTotal":0.000000000000000000000000001,
+              "ListPrice":9999999999999999999999999.99
+            }
+          }]}
+          }'] 
+        }
       end
       @connection = test_connection(stubs)
     end  
@@ -134,6 +146,20 @@ describe FlexmlsApi do
         subject.delete('/contacts/1000').should be nil
         # No validation here, if no error is raised, everything is hunky dory
       end
+
+      it "should give me BigDecimal results for large floating point numbers" do
+        MultiJson.default_engine.should eq :yajl
+        result = subject.get('/listings/1000')[0]
+        result["StandardFields"]["BuildingAreaTotal"].class.should eq Float
+        pending("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
+          result["StandardFields"]["BuildingAreaTotal"].class.should eq BigDecimal
+          number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
+          number.to_s.should eq BigDecimal.new("0.000000000000000000000000001").to_s
+          number = BigDecimal.new(result["StandardFields"]["ListPrice"].to_s)
+          number.to_s.should eq BigDecimal.new("9999999999999999999999999.99").to_s
+        end
+      end
+      
     end
     
     context "when unauthenticated" do
