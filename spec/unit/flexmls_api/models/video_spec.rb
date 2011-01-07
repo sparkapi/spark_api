@@ -5,6 +5,15 @@ describe FlexmlsApi::Models::Video do
 
   it "responds to" do
     FlexmlsApi::Models::Video.should respond_to(:find_by_listing_key)
+    FlexmlsApi::Models::Video.new.should respond_to(:branded?)
+    FlexmlsApi::Models::Video.new.should respond_to(:unbranded?)
+  end
+
+  it "has a type" do
+    FlexmlsApi::Models::Video.new(:Type => "branded").branded?.should == true
+    FlexmlsApi::Models::Video.new(:Type => "unbranded").branded?.should == false
+    FlexmlsApi::Models::Video.new(:Type => "unbranded").unbranded?.should == true
+    FlexmlsApi::Models::Video.new(:Type => "branded").unbranded?.should == false
   end
 
 
