@@ -1,14 +1,14 @@
 require './spec/spec_helper'
 
 
-class FlexmlsApi::Models::Contact
+class Contact
   class << self
     # Neato trick, using the accessor function nested here acts on the class methods!
     attr_accessor :connection
   end
 end
 
-describe FlexmlsApi::Models::Contact do
+describe Contact do
   before(:all) do
     stubs = Faraday::Adapter::Test::Stubs.new do |stub|
       stub.get('/v1/contacts?ApiSig=735774295be070a27f7cf859fde90740&AuthToken=1234') { [200, {}, '{"D": {
@@ -47,18 +47,18 @@ describe FlexmlsApi::Models::Contact do
         }'] 
       }
     end
-    FlexmlsApi::Models::Contact.connection = mock_client(stubs)
+    Contact.connection = mock_client(stubs)
   end
   
   it "should get all my contacts" do
-    contacts = FlexmlsApi::Models::Contact.get
+    contacts = Contact.get
     contacts.should be_an Array
     contacts.length.should eq 3
     contacts.first.Id.should eq "20101230223226074201000000"
   end
 
   it "should save a new contact" do
-    c=FlexmlsApi::Models::Contact.new
+    c=Contact.new
     c.attributes["DisplayName"] = "Contact Four"
     c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
     c.save.should be true
@@ -66,12 +66,12 @@ describe FlexmlsApi::Models::Contact do
   end
 
   it "should fail saving" do
-    c=FlexmlsApi::Models::Contact.new
+    c=Contact.new
     c.save.should be false
   end
 
   it "should fail saving and asplode" do
-    c=FlexmlsApi::Models::Contact.new()
+    c=Contact.new()
     expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 500 }
   end
 

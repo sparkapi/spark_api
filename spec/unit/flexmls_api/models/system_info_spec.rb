@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::SystemInfo do
+describe SystemInfo do
   before(:each) do 
-    @sysinfo = FlexmlsApi::Models::SystemInfo.new({
+    @sysinfo = SystemInfo.new({
       "Name"=>"beh  apiuser", 
       "OfficeId"=>"20071029204441159539000000", 
       "Configuration"=>[{
@@ -16,7 +16,7 @@ describe FlexmlsApi::Models::SystemInfo do
   end
 
   it "should respond to get" do
-    FlexmlsApi::Models::SystemInfo.should respond_to(:get)
+    SystemInfo.should respond_to(:get)
   end
   
   it "should respond to attributes" do

@@ -1,15 +1,15 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::PropertyTypes do
+describe PropertyTypes do
   before(:each) do 
-    @proptypes = FlexmlsApi::Models::PropertyTypes.new({
+    @proptypes = PropertyTypes.new({
       "MlsName"=>"Residential", 
       "MlsCode"=>"A"
     })
   end
 
   it "should respond to get" do
-    FlexmlsApi::Models::PropertyTypes.should respond_to(:get)
+    PropertyTypes.should respond_to(:get)
   end
   
 

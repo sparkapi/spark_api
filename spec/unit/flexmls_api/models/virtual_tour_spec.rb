@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::VirtualTour do
+describe VirtualTour do
   before(:each) do
-    @virtualtour = FlexmlsApi::Models::VirtualTour.new({
+    @virtualtour = VirtualTour.new({
       :Uri => "http://www.flexmls.com/",
       :ResourceUri => "/v1/listings/20060712220814669202000000/virtualtours/20110105165843978012000000",
       :Name => "My Branded Tour",
@@ -12,7 +12,7 @@ describe FlexmlsApi::Models::VirtualTour do
   end
 
   it "should respond to a few methods" do
-    FlexmlsApi::Models::VirtualTour.should respond_to(:find_by_listing_key)
+    VirtualTour.should respond_to(:find_by_listing_key)
     @virtualtour.should respond_to(:branded?)
     @virtualtour.should respond_to(:unbranded?)
   end
@@ -32,7 +32,7 @@ describe FlexmlsApi::Models::VirtualTour do
           }).
           to_return(:body => fixture('listing_virtual_tours_index.json'))
 
-    v = FlexmlsApi::Models::VirtualTour.find_by_listing_key('1234', "foobar")
+    v = VirtualTour.find_by_listing_key('1234', "foobar")
     v.should be_an Array
     v.length.should == 5
   end

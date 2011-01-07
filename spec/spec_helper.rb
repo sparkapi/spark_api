@@ -73,4 +73,4 @@ def fixture(file)
 end
 
 
-
+include FlexmlsApi::Models

@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::Document do
+describe Document do
   before(:each) do
-    @document = FlexmlsApi::Models::Document.new({
+    @document = Document.new({
       :Uri => "http://images.dev.fbsdata.com/documents/cda/20060725224801143085000000.pdf",
       :ResourceUri => "/v1/listings/20060725224713296297000000/documents/20060725224801143085000000",
       :Name => "Disclosure",
@@ -11,7 +11,7 @@ describe FlexmlsApi::Models::Document do
   end
 
   it "should respond to a few methods" do
-    FlexmlsApi::Models::Document.should respond_to(:find_by_listing_key)
+    Document.should respond_to(:find_by_listing_key)
   end
 
 
@@ -25,7 +25,7 @@ describe FlexmlsApi::Models::Document do
           }).
           to_return(:body => fixture('listing_document_index.json'))
 
-    v = FlexmlsApi::Models::Document.find_by_listing_key('1234', "foobar")
+    v = Document.find_by_listing_key('1234', "foobar")
     v.should be_an Array
     v.length.should == 2
   end
