@@ -37,6 +37,7 @@ GEM
     webmock (1.4.0)
       addressable (>= 2.2.2)
       crack (>= 0.1.7)
+    will_paginate (3.0.pre2)
     yajl-ruby (0.7.8)
 
 PLATFORMS
@@ -55,4 +56,5 @@ DEPENDENCIES
   rspec
   typhoeus
   webmock
+  will_paginate (~> 3.0.pre2)
   yajl-ruby

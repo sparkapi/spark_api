@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
-  s.date = %q{2011-01-06}
+  s.date = %q{2011-01-09}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{bhornseth@fbsdata.com}
   s.extra_rdoc_files = [
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/system_info.rb",
     "lib/flexmls_api/models/video.rb",
     "lib/flexmls_api/models/virtual_tour.rb",
+    "lib/flexmls_api/paginate.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
     "script/example.rb",
@@ -58,6 +59,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/listing_with_videos.json",
     "spec/fixtures/listing_with_vtour.json",
     "spec/fixtures/session.json",
+    "spec/json_helper.rb",
     "spec/spec_helper.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
     "spec/unit/flexmls_api/faraday_spec.rb",
@@ -72,6 +74,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/system_info_spec.rb",
     "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
+    "spec/unit/flexmls_api/paginate_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
@@ -80,6 +83,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A library for interacting with the flexmls web services.}
   s.test_files = [
+    "spec/json_helper.rb",
     "spec/spec_helper.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
     "spec/unit/flexmls_api/faraday_spec.rb",
@@ -94,6 +98,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/system_info_spec.rb",
     "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
+    "spec/unit/flexmls_api/paginate_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
@@ -110,6 +115,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<yajl-ruby>, [">= 0"])
       s.add_runtime_dependency(%q<builder>, ["= 2.1.2"])
+      s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<curb>, [">= 0"])
@@ -122,6 +128,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<yajl-ruby>, [">= 0"])
       s.add_dependency(%q<builder>, ["= 2.1.2"])
+      s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<curb>, [">= 0"])
@@ -135,6 +142,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<yajl-ruby>, [">= 0"])
     s.add_dependency(%q<builder>, ["= 2.1.2"])
+    s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<curb>, [">= 0"])

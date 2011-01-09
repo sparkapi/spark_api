@@ -14,6 +14,8 @@ $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require path + '/flexmls_api'
 
 require 'flexmls_api'
+require File.expand_path('../json_helper', __FILE__)
+
 
 FileUtils.mkdir 'log' unless File.exists? 'log'
 

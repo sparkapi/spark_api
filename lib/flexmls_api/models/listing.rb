@@ -67,20 +67,14 @@ module FlexmlsApi
       end
 
       def self.my(arguments={})
-        my_listings = []
-        response = connection.get("/my/listings", arguments)
-        response.collect { |listing| my_listings.push(new(listing)) }
-        my_listings
+        collect(connection.get("/my/listings", arguments))
       end
 
 
       private
 
       def self.find_every(options)
-        listings = []
-        resp = connection.get('/listings', options)
-        resp.collect { |listing| listings.push(new(listing)) }
-        listings
+        collect(connection.get('/listings', options))
       end
 
       def self.find_one(options)

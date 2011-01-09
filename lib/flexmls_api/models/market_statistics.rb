@@ -24,7 +24,6 @@ module FlexmlsApi
 
       private 
       def self.stat(stat_name, parameters={})
-        instances = []
         resp = connection.get("#{path}/#{stat_name}", parameters)
         new(resp[0])
       end

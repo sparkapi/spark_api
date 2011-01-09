@@ -1,6 +1,7 @@
 module FlexmlsApi
   module Models
     class Base
+      extend Paginate
 
       attr_accessor :attributes
       
@@ -44,12 +45,7 @@ module FlexmlsApi
       end
       
       def self.get(options={})
-        instances = []
-        resp = connection.get(path, options)
-        resp.each do |p|
-          instances.push(new(p))
-        end
-        instances
+        collect(connection.get(path, options))
       end
 
       def self.first(options={})

@@ -2,6 +2,7 @@
 module FlexmlsApi
   # HTTP request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
   module Request
+    include PaginateResponse
     # Perform an HTTP GET request
     def get(path, options={})
       request(:get, path, options)
@@ -21,7 +22,7 @@ module FlexmlsApi
     def delete(path, options={})
       request(:delete, path, options)
     end
-
+    
     private
 
     # Perform an HTTP request
@@ -37,6 +38,7 @@ module FlexmlsApi
         request_opts.merge!(options)
         sig = sign_token(path, request_opts)
         request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+        FlexmlsApi.logger.debug("Request: #{request_path}")
         response = connection.send(method, request_path)
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
@@ -50,7 +52,12 @@ module FlexmlsApi
         FlexmlsApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
         raise
       end
-      response.body.results
+      results = response.body.results
+      paging = response.body.pagination
+      unless paging.nil?
+        results = paginate_response(results, paging)
+      end
+      results
     end
   
     def body_request(method, path, body, options)
@@ -66,6 +73,8 @@ module FlexmlsApi
         post_data = {"D" => body }.to_json
         sig = sign_token(path, request_opts, post_data)
         request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
+        FlexmlsApi.logger.debug("Request: #{request_path}")
+        FlexmlsApi.logger.debug("Data: #{post_data}")
         response = connection.send(method, request_path, post_data)
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
@@ -126,7 +135,7 @@ module FlexmlsApi
   
   # Nice and handy class wrapper for the api response json
   class ApiResponse
-    attr_accessor :code, :message, :count, :offset, :results, :success
+    attr_accessor :code, :message, :results, :success, :pagination
     def initialize(d)
       begin
         hash = d["D"]
@@ -135,10 +144,9 @@ module FlexmlsApi
         end
         self.message  = hash["Message"]
         self.code     = hash["Code"]
-        self.count    = hash["Count"]
-        self.offset   = hash["Offset"]
         self.results  = hash["Results"]
         self.success  = hash["Success"]
+        self.pagination = hash["Pagination"]
       rescue Exception => e
         FlexmlsApi.logger.error "Unable to understand the response! #{d}"
         raise
