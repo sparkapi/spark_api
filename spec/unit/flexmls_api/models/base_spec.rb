@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 # Sample resource models for testing the base class
-class MyExampleModel < FlexmlsApi::Models::Base
+class MyExampleModel < Base
   self.element_name = "example"
   self.prefix = "/test/"
   def self.connection=(con)
@@ -9,11 +9,11 @@ class MyExampleModel < FlexmlsApi::Models::Base
   end
 end
 
-class MyDefaultModel < FlexmlsApi::Models::Base
+class MyDefaultModel < Base
 end
 
 
-describe FlexmlsApi::Models::Base, "Base model" do
+describe Base, "Base model" do
   describe "class methods" do
     it "should set the element name" do
       MyExampleModel.element_name.should eq("example")

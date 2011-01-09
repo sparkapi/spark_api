@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe FlexmlsApi::Models::Listing do
+describe Listing do
   before(:each) do
-    @listing = FlexmlsApi::Models::Listing.new({
+    @listing = Listing.new({
       "ResourceUri"=>"/v1/listings/20080619000032866372000000", 
       "StandardFields"=>{
         "StreetNumber"=>"********", 
@@ -68,23 +68,23 @@ describe FlexmlsApi::Models::Listing do
 
   describe "class methods" do
     it "should respond to find" do
-      FlexmlsApi::Models::Listing.should respond_to(:find)
+      Listing.should respond_to(:find)
     end
 
     it "should respond to first" do
-      FlexmlsApi::Models::Listing.should respond_to(:first)
+      Listing.should respond_to(:first)
     end
 
     it "should respond to last" do
-      FlexmlsApi::Models::Listing.should respond_to(:last)
+      Listing.should respond_to(:last)
     end
 
     it "should respond to my" do
-      FlexmlsApi::Models::Listing.should respond_to(:my)
+      Listing.should respond_to(:my)
     end
     
     it "should respond to find_by_cart_id" do
-      FlexmlsApi::Models::Listing.should respond_to(:find_by_cart_id)
+      Listing.should respond_to(:find_by_cart_id)
     end
   end
 
@@ -104,7 +104,7 @@ describe FlexmlsApi::Models::Listing do
           }).
           to_return(:body => fixture('listing_with_photos.json'))
       
-      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "Photos")
+      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "Photos")
       l.photos.length.should == 5
       l.documents.length.should == 0
       l.videos.length.should == 0
@@ -121,7 +121,7 @@ describe FlexmlsApi::Models::Listing do
           }).
           to_return(:body => fixture('listing_with_documents.json'))
       
-      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "Documents")
+      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "Documents")
       l.photos.length.should == 0
       l.documents.length.should == 2
       l.videos.length.should == 0
@@ -138,7 +138,7 @@ describe FlexmlsApi::Models::Listing do
           }).
           to_return(:body => fixture('listing_with_vtour.json'))
       
-      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "VirtualTours")
+      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "VirtualTours")
       l.virtual_tours.length.should == 1
       l.photos.length.should == 0
       l.documents.length.should == 0
@@ -156,7 +156,7 @@ describe FlexmlsApi::Models::Listing do
           }).
           to_return(:body => fixture('listing_with_videos.json'))
       
-      l = FlexmlsApi::Models::Listing.find('1234', :ApiUser => "foobar", :_expand => "Videos")
+      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "Videos")
       l.videos.length.should == 2
       l.virtual_tours.length.should == 0
       l.photos.length.should == 0
