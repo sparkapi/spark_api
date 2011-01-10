@@ -48,6 +48,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
     "script/example.rb",
+    "script/setup.rb",
     "spec/fixtures/listing_document_index.json",
     "spec/fixtures/listing_no_subresources.json",
     "spec/fixtures/listing_photos_index.json",
