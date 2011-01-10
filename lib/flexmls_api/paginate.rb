@@ -11,16 +11,16 @@ module FlexmlsApi
     #
     # == Special parameters for paginating finders
     # * <tt>:page</tt> -- REQUIRED, but defaults to 1 if false or nil
-    # * <tt>:per_page</tt> -- defaults to <tt>CurrentModel.per_page</tt> (which is 30 if not overridden)
+    # * <tt>:per_page</tt> -- defaults to <tt>CurrentModel.per_page</tt> (which is 25 if not overridden)
     # * <tt>:finder</tt> -- name of the finder used (default: "get").  This needs to be a class finder method on the class
     def paginate(*args)
       options = args.last.is_a?(::Hash) ? args.pop : {}
       page = options.delete(:page) || 1
-      per_page = options.delete(:per_page) || 25
+      items_per_page = options.delete(:per_page) || self.per_page
       finder = (options.delete(:finder) || 'get').to_s
       page_options = {
         "_pagination" => 1,
-        "_limit" => per_page,
+        "_limit" => items_per_page,
         "_page" => page
       }
       options.merge!(page_options)
@@ -40,6 +40,12 @@ module FlexmlsApi
       collection = result_array.collect { |item| new(item)}
       result_array.replace(collection)
       result_array
+    end
+    
+    # Default per_page limit set on all models.  Override this method in the model such ala the 
+    # will_paginate gem to change
+    def per_page
+      25
     end
   end
 

@@ -22,6 +22,13 @@ class PaginateModelTester < FlexmlsApi::Models::Base
   end
 end
 
+class PaginateModelTester50 < PaginateModelTester
+  @tester = PaginateResponseTester.new
+  def self.per_page
+      50
+  end
+end
+
 
 describe FlexmlsApi::PaginateResponse do
 
@@ -108,6 +115,14 @@ describe FlexmlsApi::Paginate do
       opts["_limit"].should eq 25
       opts["_page"].should eq 1
       opts.has_key?(:page).should eq false
+    end
+  end
+
+  describe "per_page" do
+    it "should set the default model max results per page" do
+      results = PaginateModelTester50.paginate(:page => 1)
+      opts = PaginateModelTester50.options
+      opts["_limit"].should eq 50
     end
   end
   
