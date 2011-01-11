@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
@@ -48,6 +48,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
     "script/example.rb",
+    "script/setup.rb",
     "spec/fixtures/listing_document_index.json",
     "spec/fixtures/listing_no_subresources.json",
     "spec/fixtures/listing_photos_index.json",

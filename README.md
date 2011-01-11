@@ -1,5 +1,7 @@
 flexmls API
 =====================
+Ruby client gem for the flexmls API.  Loosely based on ActiveResource to provide models to interact with remote services.
+
 
 TODO
 ----
