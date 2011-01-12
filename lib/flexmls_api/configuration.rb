@@ -15,7 +15,7 @@ module FlexmlsApi
     end
 
     def self.extended(base)
-      base.reset
+      base.reset_configuration
     end
 
 
@@ -26,7 +26,7 @@ module FlexmlsApi
     end
 
 
-    def reset
+    def reset_configuration
       self.api_key     = DEFAULT_API_KEY
       self.api_secret  = DEFAULT_API_SECRET
       self.endpoint    = DEFAULT_ENDPOINT

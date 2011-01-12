@@ -30,7 +30,7 @@ module FlexmlsApi
       end
       
       def self.connection
-        @connection ||= FlexmlsApi.client
+        FlexmlsApi.client
       end
       def connection
         self.class.connection
