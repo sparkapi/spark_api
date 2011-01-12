@@ -18,7 +18,7 @@ module FlexmlsApi
     def authenticate
       sig = sign("#{@api_secret}ApiKey#{@api_key}")
       FlexmlsApi.logger.debug("Authenticating to #{@endpoint}")
-      resp = connection.post "/#{version}/session?ApiKey=#{api_key}&ApiSig=#{sig}", ""
+      resp = connection(true).post "/#{version}/session?ApiKey=#{api_key}&ApiSig=#{sig}", ""
       @session = Session.new(resp.body.results[0])
       FlexmlsApi.logger.debug("New session created: #{@session.inspect}")
       @session
@@ -56,10 +56,18 @@ module FlexmlsApi
     
     # Main connection object for running requests.  Bootstraps the Faraday abstraction layer with 
     # our client configuration.
-    def connection
-      conn = Faraday::Connection.new(:url => @endpoint, 
-        :ssl => {:verify => false}, 
-        :headers => headers) do |builder|
+    def connection(force_ssl = false)
+      opts = {
+        :headers => headers
+      }
+      domain = @endpoint 
+      if(force_ssl || self.ssl)
+        opts[:ssl] = {:verify => false }
+        opts[:url] = @endpoint.sub /^http:/, "https:"
+      else 
+        opts[:url] = @endpoint.sub /^https:/, "http:"
+      end
+      conn = Faraday::Connection.new(opts) do |builder|
         builder.adapter Faraday.default_adapter
         builder.use Faraday::Response::ParseJson
         builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware

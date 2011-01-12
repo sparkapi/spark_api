@@ -62,7 +62,7 @@ end
 
 
 def stub_auth_request()
-  stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/session").
+  stub_request(:post, "https://api.flexmls.com/#{FlexmlsApi.version}/session").
               with(:query => {:ApiKey => "", :ApiSig => "806737984ab19be2fd08ba36030549ac"}).
               to_return(:body => fixture("session.json"))
 end

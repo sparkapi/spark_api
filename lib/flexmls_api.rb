@@ -24,8 +24,6 @@ module FlexmlsApi
     @logger
   end
 
-  # Return the active client instance.  Note that this implementation is not currently threadsafe, so all threads 
-  # better want the same client instance!
   def self.client(opts={})
     Thread.current[:flexmls_api_client] ||= FlexmlsApi::Client.new(opts)
   end
