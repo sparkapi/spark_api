@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.2.2"
+  s.version = "0.2.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
-  s.date = %q{2011-01-10}
+  s.date = %q{2011-01-12}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{bhornseth@fbsdata.com}
   s.extra_rdoc_files = [

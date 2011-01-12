@@ -11,8 +11,6 @@ require File.expand_path('../flexmls_api/paginate', __FILE__)
 require File.expand_path('../flexmls_api/request', __FILE__)
 require File.expand_path('../flexmls_api/client', __FILE__)
 require File.expand_path('../flexmls_api/faraday', __FILE__)
-
-# load model classes
 require File.expand_path('../flexmls_api/models', __FILE__)
 
 module FlexmlsApi
@@ -27,7 +25,7 @@ module FlexmlsApi
   end
 
   # Return the active client instance.  Note that this implementation is not currently threadsafe, so all threads 
-  # better want the same client instance.
+  # better want the same client instance!
   def self.client(opts={})
     @client ||= FlexmlsApi::Client.new(opts)
   end

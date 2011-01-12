@@ -1,5 +1,6 @@
 module FlexmlsApi
   module FaradayExt
+    #=Flexmls API Faraday middle way
     # HTTP Response after filter to package api responses and bubble up basic api errors.
     class FlexmlsMiddleware < Faraday::Response::Middleware
       begin
@@ -13,6 +14,8 @@ module FlexmlsApi
         self.load_error = e
       end
       
+      # Handles pretty much all the api response parsing and error handling.  All responses that
+      # indicate a failure will raise a FlexmlsApi::ClientError exception
       def self.validate_and_build_response(finished_env)
         body = finished_env[:body]
         FlexmlsApi.logger.debug("Response Body: #{body.inspect}")

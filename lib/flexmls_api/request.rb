@@ -4,28 +4,58 @@ module FlexmlsApi
   module Request
     include PaginateResponse
     # Perform an HTTP GET request
+    # 
+    # * path - Path of an api resource, excluding version and endpoint (domain) information
+    # * options - Resource request options as specified being supported via and api resource
+    # :returns:
+    #   Hash of the json results as documented in the api.
+    # :raises:
+    #   FlexmlsApi::ClientError or subclass if the request failed.
     def get(path, options={})
       request(:get, path, options)
     end
 
     # Perform an HTTP POST request
+    # 
+    # * path - Path of an api resource, excluding version and endpoint (domain) information
+    # * body - Hash for post body data
+    # * options - Resource request options as specified being supported via and api resource
+    # :returns:
+    #   Hash of the json results as documented in the api.
+    # :raises:
+    #   FlexmlsApi::ClientError or subclass if the request failed.
     def post(path, body={}, options={})
       body_request(:post, path, body, options)
     end
 
     # Perform an HTTP PUT request
+    # 
+    # * path - Path of an api resource, excluding version and endpoint (domain) information
+    # * body - Hash for post body data
+    # * options - Resource request options as specified being supported via and api resource
+    # :returns:
+    #   Hash of the json results as documented in the api.
+    # :raises:
+    #   FlexmlsApi::ClientError or subclass if the request failed.
     def put(path, body={}, options={})
       body_request(:put, path, body, options)
     end
 
     # Perform an HTTP DELETE request
+    # 
+    # * path - Path of an api resource, excluding version and endpoint (domain) information
+    # * options - Resource request options as specified being supported via and api resource
+    # :returns:
+    #   Hash of the json results as documented in the api.
+    # :raises:
+    #   FlexmlsApi::ClientError or subclass if the request failed.
     def delete(path, options={})
       request(:delete, path, options)
     end
     
     private
 
-    # Perform an HTTP request
+    # Perform an HTTP request (no data)
     def request(method, path, options)
       if @session.nil? || @session.expired?
         authenticate
@@ -60,6 +90,7 @@ module FlexmlsApi
       results
     end
   
+    # Perform an HTTP request (with body data)
     def body_request(method, path, body, options)
       if @session.nil? || @session.expired?
         authenticate
@@ -91,18 +122,20 @@ module FlexmlsApi
       response.body.results
     end
     
-    def build_url_parameters( parameters={} )
-      str = []
+    # Format a hash as request parameters
+    # 
+    # :returns:
+    #   Stringized form of the parameters as needed for the http request
+    def build_url_parameters(parameters={})
+      str = ""
       parameters.map do |key,value|
-        str << "#{key}=#{value}"
+        str << "&#{key}=#{value}"
       end
-      if str.size > 0
-        return "&" + str.join("&")
-      end
-      "" 
+      str
     end    
   end
   
+  # All known response codes listed in the API
   module ResponseCodes
     NOT_FOUND = 404
     METHOD_NOT_ALLOWED = 405
@@ -133,7 +166,7 @@ module FlexmlsApi
   class PermissionDenied < ClientError; end
   class NotAllowed < ClientError; end
   
-  # Nice and handy class wrapper for the api response json
+  # Nice and handy class wrapper for the api response hash
   class ApiResponse
     attr_accessor :code, :message, :results, :success, :pagination
     def initialize(d)
