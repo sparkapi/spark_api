@@ -63,5 +63,35 @@ describe FlexmlsApi::Client, "Client config"  do
     
     end
   end
+
+  describe "connections" do
+    it "should use http by default" do
+      stub_auth_request
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/connections").
+          with(:query => {
+            :ApiSig => "951e5ba0496b0758356d3cc7676f8b21",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573"
+          }).
+          to_return(:body => '{"D":{"Success": true,"Results": [{"SSL":false}]}}')
+          
+      FlexmlsApi.client.get('/connections')[0]["SSL"].should eq false
+
+    end
+
+    it "should use https when ssl is enabled" do
+      stub_auth_request
+      stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/connections").
+          with(:query => {
+            :ApiSig => "951e5ba0496b0758356d3cc7676f8b21",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573"
+          }).
+          to_return(:body => '{"D":{"Success": true,"Results": [{"SSL":true}]}}')
+      c = FlexmlsApi::Client.new(:endpoint => "https://api.flexmls.com",
+                                :ssl => true)
+      c.get('/connections')[0]["SSL"].should eq true
+    end
+    
+  end
+
 end
 

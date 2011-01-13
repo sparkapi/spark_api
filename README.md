@@ -8,8 +8,6 @@ TODO
 # Rename model classes/files so the plurality is consistent
 
 
-
-
 Off the cuff example
 ----------------------
 require 'flexmls_api'  # put this in your Gemfile if you're using builder
@@ -20,4 +18,4 @@ FlexmlsApi.configure do |config|
   config.endpoint = "https://api.flexmls.com"  
 end
 
-l = FlexmlsApi::Listing.find(1234)  # returns an instance of FlexmlsApi::Listing
+l = FlexmlsApi::Models::Listing.find(1234)  # returns an instance of the Listing resource

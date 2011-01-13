@@ -4,6 +4,9 @@ require './spec/spec_helper'
 class MyExampleModel < Base
   self.element_name = "example"
   self.prefix = "/test/"
+  def self.connection
+    @connection ||= Base.connection
+  end
   def self.connection=(con)
     @connection = con
   end

@@ -1,5 +1,8 @@
 module FlexmlsApi
   module Models
+    # =API Model Base class
+    # Intended to be a lot like working with ActiveResource, this class adds most of the basic 
+    # active model type niceties.
     class Base
       extend Paginate
 
@@ -27,7 +30,7 @@ module FlexmlsApi
       end
       
       def self.connection
-        @connection ||= FlexmlsApi.client
+        FlexmlsApi.client
       end
       def connection
         self.class.connection
