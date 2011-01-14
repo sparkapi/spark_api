@@ -43,7 +43,7 @@ module FlexmlsApi
     # roles, tokens and expiration
     class Session
       attr_accessor :auth_token, :expires, :roles 
-      def initialize(options)
+      def initialize(options={})
         @auth_token = options["AuthToken"]
         @expires = DateTime.parse options["Expires"]
         @roles = options["Roles"]
@@ -82,7 +82,7 @@ module FlexmlsApi
         :accept => 'application/json',
         :content_type => 'application/json',
         :user_agent => user_agent,
-        'flexmlsAPI-User-Agent' => user_agent
+        'X-flexmlsApi-User-Agent' => user_agent
       }
     end
     

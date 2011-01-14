@@ -1,0 +1,25 @@
+{
+  "D": {
+    "Success": true, 
+    "Results": [
+      {
+        "ResourceUri":"/v1/contacts/20101230223226074201000000",
+        "DisplayName":"Contact One",
+        "Id":"20101230223226074201000000",
+        "PrimaryEmail":"contact1@fbsdata.com"
+      },
+      {
+        "ResourceUri":"/v1/contacts/20101230223226074202000000",
+        "DisplayName":"Contact Two",
+        "Id":"20101230223226074202000000",
+        "PrimaryEmail":"contact2fbsdata.com"
+      },
+      {
+        "ResourceUri":"/v1/contacts/20101230223226074203000000",
+        "DisplayName":"Contact Three",
+        "Id":"20101230223226074203000000",
+        "PrimaryEmail":"contact3@fbsdata.com"
+      }
+    ]
+  }
+}

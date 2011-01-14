@@ -6,7 +6,8 @@ module FlexmlsApi
       def save
         begin
           return save!
-        rescue ClientError => e
+        rescue BadResourceRequest => e
+        rescue NotFound => e
           # log and leave
           FlexmlsApi.logger.error("Failed to save contact #{self}: #{e.message}")
         end

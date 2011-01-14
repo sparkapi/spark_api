@@ -139,6 +139,8 @@ module FlexmlsApi
   class NotFound < ClientError; end
   class PermissionDenied < ClientError; end
   class NotAllowed < ClientError; end
+  class BadResourceRequest < ClientError; end
+  
   
   # Nice and handy class wrapper for the api response hash
   class ApiResponse

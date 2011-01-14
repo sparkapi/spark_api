@@ -24,8 +24,12 @@ module FlexmlsApi
         end
         response = ApiResponse.new body
         case finished_env[:status]
+        when 400, 409
+          raise BadResourceRequest.new(response.code, finished_env[:status]), response.message
         when 401
           raise PermissionDenied.new(response.code, finished_env[:status]), response.message
+        when 404
+          raise NotFound.new(response.code, finished_env[:status]), response.message
         when 405
           raise NotAllowed.new(response.code, finished_env[:status]), response.message
         when 500

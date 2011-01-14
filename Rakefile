@@ -1,5 +1,6 @@
 require "rubygems"
 require 'rake/gempackagetask'
+require 'rake/rdoctask'
 require 'ci/reporter/rake/rspec'
 require "rspec"
 require 'rspec/core/rake_task'
@@ -49,6 +50,15 @@ end
 def remove_task(task_name)
   Rake.application.remove_task(task_name)
 end 
+
+Rake::RDocTask.new do |rdoc|
+  files =['README.md', 'lib/**/*.rb']
+  rdoc.rdoc_files.add(files)
+  rdoc.main = "README.md" # page to start on
+  rdoc.title = "flexmls_api Docs"
+  rdoc.rdoc_dir = 'doc/rdoc' # rdoc output folder
+  rdoc.options << '--line-numbers'
+end
 
 remove_task 'release'
 remove_task 'rubygems:release'

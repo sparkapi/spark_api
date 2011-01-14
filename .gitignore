@@ -7,4 +7,4 @@ coverage
 bundle
 vendor/cache/
 pkg/
-
+doc/

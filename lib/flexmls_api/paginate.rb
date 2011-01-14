@@ -5,6 +5,9 @@ require 'will_paginate/collection'
 # same WillPaginate::Collection for finder results.
 module FlexmlsApi
   module Paginate
+    
+    DEFAULT_PAGE_SIZE = 25
+    
     # == Replacement hook for will_paginate's class method
     # Does a best effort to mimic the will_paginate method of same name.  All arguments are
     # passed on to the finder method except the special keys for the options hash listed below.
@@ -45,7 +48,7 @@ module FlexmlsApi
     # Default per_page limit set on all models.  Override this method in the model such ala the 
     # will_paginate gem to change
     def per_page
-      25
+      DEFAULT_PAGE_SIZE
     end
   end
 
