@@ -52,7 +52,7 @@ def remove_task(task_name)
 end 
 
 Rake::RDocTask.new do |rdoc|
-  files =['README.md', 'lib/**/*.rb']
+  files =['lib/**/*.rb']
   rdoc.rdoc_files.add(files)
   rdoc.main = "README.md" # page to start on
   rdoc.title = "flexmls_api Docs"
