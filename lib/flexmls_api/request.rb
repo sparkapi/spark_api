@@ -12,7 +12,7 @@ module FlexmlsApi
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
     def get(path, options={})
-      request(:get, path, options)
+      request(:get, path, nil, options)
     end
 
     # Perform an HTTP POST request
@@ -25,7 +25,7 @@ module FlexmlsApi
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
     def post(path, body={}, options={})
-      body_request(:post, path, body, options)
+      request(:post, path, body, options)
     end
 
     # Perform an HTTP PUT request
@@ -38,7 +38,7 @@ module FlexmlsApi
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
     def put(path, body={}, options={})
-      body_request(:put, path, body, options)
+      request(:put, path, body, options)
     end
 
     # Perform an HTTP DELETE request
@@ -50,13 +50,13 @@ module FlexmlsApi
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
     def delete(path, options={})
-      request(:delete, path, options)
+      request(:delete, path, nil, options)
     end
     
     private
 
     # Perform an HTTP request (no data)
-    def request(method, path, options)
+    def request(method, path, body, options)
       if @session.nil? || @session.expired?
         authenticate
       end
@@ -66,10 +66,16 @@ module FlexmlsApi
           "AuthToken" => @session.auth_token
         }
         request_opts.merge!(options)
-        sig = sign_token(path, request_opts)
+        post_data = body.nil? ? nil : {"D" => body }.to_json
+        sig = sign_token(path, request_opts, post_data)
         request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
-        response = connection.send(method, request_path)
+        if post_data.nil?
+          response = connection.send(method, request_path)
+        else
+          FlexmlsApi.logger.debug("Data: #{post_data}")
+          response = connection.send(method, request_path, post_data)
+        end
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1
@@ -88,38 +94,6 @@ module FlexmlsApi
         results = paginate_response(results, paging)
       end
       results
-    end
-  
-    # Perform an HTTP request (with body data)
-    def body_request(method, path, body, options)
-      if @session.nil? || @session.expired?
-        authenticate
-      end
-      attempts = 0
-      begin
-        request_opts = {
-          "AuthToken" => @session.auth_token
-        }
-        request_opts.merge!(options)
-        post_data = {"D" => body }.to_json
-        sig = sign_token(path, request_opts, post_data)
-        request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
-        FlexmlsApi.logger.debug("Request: #{request_path}")
-        FlexmlsApi.logger.debug("Data: #{post_data}")
-        response = connection.send(method, request_path, post_data)
-      rescue PermissionDenied => e
-        if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
-          unless (attempts +=1) > 1
-            FlexmlsApi.logger.debug("Retrying authentication")
-            authenticate
-            retry
-          end
-        end
-        # No luck authenticating... KABOOM!
-        FlexmlsApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
-        raise
-      end
-      response.body.results
     end
     
     # Format a hash as request parameters
