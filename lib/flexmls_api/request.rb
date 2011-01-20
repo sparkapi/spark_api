@@ -70,12 +70,15 @@ module FlexmlsApi
         sig = sign_token(path, request_opts, post_data)
         request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
+        start_time = Time.now
         if post_data.nil?
           response = connection.send(method, request_path)
         else
           FlexmlsApi.logger.debug("Data: #{post_data}")
           response = connection.send(method, request_path, post_data)
         end
+        request_time = Time.now - start_time
+        FlexmlsApi.logger.info("[#{request_time}s] Api: #{method.to_s.upcase} #{request_path}")
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1

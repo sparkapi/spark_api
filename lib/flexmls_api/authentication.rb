@@ -18,9 +18,13 @@ module FlexmlsApi
     def authenticate
       sig = sign("#{@api_secret}ApiKey#{@api_key}")
       FlexmlsApi.logger.debug("Authenticating to #{@endpoint}")
-      resp = connection(true).post "/#{version}/session?ApiKey=#{api_key}&ApiSig=#{sig}", ""
+      start_time = Time.now
+      request_path = "/#{version}/session?ApiKey=#{api_key}&ApiSig=#{sig}"
+      resp = connection(true).post request_path, ""
+      request_time = Time.now - start_time
+      FlexmlsApi.logger.info("[#{request_time}s] Api: POST #{request_path}")
       @session = Session.new(resp.body.results[0])
-      FlexmlsApi.logger.debug("New session created: #{@session.inspect}")
+      FlexmlsApi.logger.debug("Authentication: #{@session.inspect}")
       @session
     end
     
