@@ -10,10 +10,10 @@ require path + '/flexmls_api'
 FlexmlsApi.logger.info("Hello!")
 
 FlexmlsApi.configure do |config|
-  config.api_key = "fvt_agent_key"
-  config.api_secret = "TopSecret"
+  config.api_key = "agent_key"
+  config.api_secret = "agent_secret"
   config.version = "v1"
-  config.endpoint = "https://api.wade.dev.fbsdata.com"
+  config.endpoint = "https://api.flexmls.com"
 end
 
 client = FlexmlsApi.client
