@@ -11,21 +11,18 @@ Gem::Specification.new do |s|
   s.authors = ["Brandon Hornseth"]
   s.date = %q{2011-01-28}
   s.description = %q{A library for interacting with the flexmls web services.}
-  s.email = %q{bhornseth@fbsdata.com}
+  s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md"
   ]
   s.files = [
-    ".bundle/config",
-    ".rvmrc",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",
-    "flexmls_api.gemspec",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
     "lib/flexmls_api/client.rb",
@@ -50,8 +47,6 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/paginate.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
-    "script/example.rb",
-    "script/setup.rb",
     "spec/fixtures/contacts.json",
     "spec/fixtures/listing_document_index.json",
     "spec/fixtures/listing_no_subresources.json",
@@ -83,7 +78,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
-  s.homepage = %q{http://www.flexmls.com}
+  s.homepage = %q{https://github.com/flexmls/flexmls_api}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A library for interacting with the flexmls web services.}

@@ -11,9 +11,10 @@ begin
     gemspec.name = "flexmls_api"
     gemspec.summary = "A library for interacting with the flexmls web services."
     gemspec.description = "A library for interacting with the flexmls web services."
-    gemspec.email = "bhornseth@fbsdata.com"
-    gemspec.homepage = "http://www.flexmls.com"
+    gemspec.email = "api-support@flexmls.com"
+    gemspec.homepage = "https://github.com/flexmls/flexmls_api"
     gemspec.authors = ["Brandon Hornseth"]
+    gemspec.files =  FileList["[A-Z]*", "{lib,spec}/**/*"]
     gemspec.add_development_dependency "rspec"
     gemspec.add_development_dependency "jeweler"
     gemspec.add_development_dependency "curb"
@@ -59,9 +60,6 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'doc/rdoc' # rdoc output folder
   rdoc.options << '--line-numbers'
 end
-
-remove_task 'release'
-remove_task 'rubygems:release'
 
 spec = Gem::Specification::load("flexmls_api.gemspec")
 Rake::GemPackageTask.new(spec) do |p|
