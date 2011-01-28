@@ -5,12 +5,12 @@ A Ruby wrapper for the flexmls REST API. Loosely based on ActiveResource to prov
 
 Documentation
 -------------
-For full information on the API, see http://documentation-url-goes-here.com 
+For full information on the API, see [http://www.flexmls.com/developers/](http://www.flexmls.com/developers/)
 
 
 Installation
 ---------
-    gem install flexmls_api4r
+    gem install flexmls_api
 
 Usage Examples
 ------------------------
