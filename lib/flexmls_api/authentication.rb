@@ -11,9 +11,9 @@ module FlexmlsApi
     # Main authentication step.  Run before any api request unless the user session exists and is 
     # still valid.
     #
-    # :returns:
+    # *returns*
     #   The user session object when authentication succeeds
-    # :raises:
+    # *raises*
     #   FlexmlsApi::ClientError when authentication fails
     def authenticate
       sig = sign("#{@api_secret}ApiKey#{@api_key}")
@@ -25,6 +25,18 @@ module FlexmlsApi
       FlexmlsApi.logger.info("[#{request_time}s] Api: POST #{request_path}")
       @session = Session.new(resp.body.results[0])
       FlexmlsApi.logger.debug("Authentication: #{@session.inspect}")
+      @session
+    end
+    
+    # Delete the current session
+    def logout
+      FlexmlsApi.logger.info("Logging out.")
+      delete("/session/#{@session.auth_token}") unless @session.nil?
+      @session = nil
+    end
+
+    # Active session object
+    def session
       @session
     end
     
