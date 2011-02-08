@@ -6,7 +6,6 @@ module FlexmlsApi
       begin
         def self.register_on_complete(env)
           env[:response].on_complete do |finished_env|
-            FlexmlsApi.logger.debug("hashed response: #{finished_env[:body].inspect}")
             validate_and_build_response(finished_env)
           end
         end
