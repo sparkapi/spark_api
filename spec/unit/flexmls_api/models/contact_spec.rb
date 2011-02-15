@@ -31,22 +31,22 @@ describe Contact do
   
   it "should get all my contacts" do
     contacts = Contact.get
-    contacts.should be_an Array
-    contacts.length.should eq 3
-    contacts.first.Id.should eq "20101230223226074201000000"
+    contacts.should be_an(Array)
+    contacts.length.should eq(3)
+    contacts.first.Id.should eq("20101230223226074201000000")
   end
 
   it "should save a new contact" do
     c=Contact.new
     c.attributes["DisplayName"] = "Contact Four"
     c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
-    c.save.should be true
-    c.Id.should eq '20101230223226074204000000'
+    c.save.should be(true)
+    c.Id.should eq('20101230223226074204000000')
   end
 
   it "should fail saving" do
     c=Contact.new
-    c.save.should be false
+    c.save.should be(false)
     expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
   end
   

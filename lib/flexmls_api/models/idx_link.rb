@@ -2,6 +2,8 @@ module FlexmlsApi
   module Models
     class IdxLink < Base
       self.element_name="idxlinks"
+      
+      LINK_TYPES = ["QuickSearch", "SavedSearch", "MyListings", "Roster"]
 
       #TODO Work all below into common base class
       def self.find(*arguments)
