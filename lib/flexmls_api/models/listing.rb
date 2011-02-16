@@ -70,6 +70,13 @@ module FlexmlsApi
         collect(connection.get("/my/listings", arguments))
       end
 
+      def self.office(arguments={})
+        collect(connection.get("/office/listings", arguments))
+      end
+
+      def self.company(arguments={})
+        collect(connection.get("/company/listings", arguments))
+      end
 
       private
 
