@@ -1,3 +1,4 @@
+require 'cgi'
 
 module FlexmlsApi
   # HTTP request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
@@ -106,7 +107,8 @@ module FlexmlsApi
     def build_url_parameters(parameters={})
       str = ""
       parameters.map do |key,value|
-        str << "&#{key}=#{value}"
+        escaped_value = CGI.escape("#{value}")
+        str << "&#{key}=#{escaped_value}"
       end
       str
     end    
