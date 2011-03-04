@@ -1,6 +1,7 @@
 module FlexmlsApi
   module Models
     class Listing < Base 
+      extend Finders
       attr_accessor :photos, :videos, :virtual_tours, :documents
       self.element_name="listings"
 
@@ -39,33 +40,11 @@ module FlexmlsApi
         super(attributes)
       end
 
-
-      def self.find(*arguments)
-        scope = arguments.slice!(0)
-        options = arguments.slice!(0) || {}
-        
-        case scope
-          when :all   then find_every(options)
-          when :first then find_every(options).first
-          when :last  then find_every(options).last
-          when :one   then find_one(options)
-          else             find_single(scope, options)
-        end
-      end
-
       def self.find_by_cart_id(cart_id, owner, options={}) 
         options.merge!({ :ApiUser => owner, :_filter => "ListingCart Eq '#{cart_id}'" })
         find(:all, options) 
       end
       
-      def self.first(*arguments)
-        find(:first, *arguments)
-      end
-
-      def self.last(*arguments)
-        find(:last, *arguments)
-      end
-
       def self.my(arguments={})
         collect(connection.get("/my/listings", arguments))
       end
@@ -79,20 +58,6 @@ module FlexmlsApi
       end
 
       private
-
-      def self.find_every(options)
-        collect(connection.get('/listings', options))
-      end
-
-      def self.find_one(options)
-        raise NotImplementedError # TODO
-      end
-
-      def self.find_single(scope, options)
-        resp = FlexmlsApi.client.get("/listings/#{scope}", options)
-        new(resp[0])
-      end
-
 
       # TODO trim this down so we're only overriding the StandardFields access
       def method_missing(method_symbol, *arguments)

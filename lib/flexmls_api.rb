@@ -11,6 +11,7 @@ require File.expand_path('../flexmls_api/paginate', __FILE__)
 require File.expand_path('../flexmls_api/request', __FILE__)
 require File.expand_path('../flexmls_api/client', __FILE__)
 require File.expand_path('../flexmls_api/faraday', __FILE__)
+require File.expand_path('../flexmls_api/primary_array', __FILE__)
 require File.expand_path('../flexmls_api/models', __FILE__)
 
 module FlexmlsApi

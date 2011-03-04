@@ -54,7 +54,7 @@ module FlexmlsApi
       def self.first(options={})
         get(options)[0]
       end
-
+      
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
 

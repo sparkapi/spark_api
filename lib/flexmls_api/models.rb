@@ -1,4 +1,6 @@
 require File.expand_path('../models/base', __FILE__)
+require File.expand_path('../models/finders', __FILE__)
+require File.expand_path('../models/account', __FILE__)
 require File.expand_path('../models/listing', __FILE__)
 require File.expand_path('../models/subresource', __FILE__)
 require File.expand_path('../models/photo', __FILE__)
