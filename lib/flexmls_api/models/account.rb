@@ -16,7 +16,7 @@ module FlexmlsApi
       end
 
       def self.my(arguments={})
-        collect(connection.get("/my/account", arguments))
+        collect(connection.get("/my/account", arguments)).first
       end
 
       private

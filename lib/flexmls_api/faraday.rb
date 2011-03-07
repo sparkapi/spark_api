@@ -17,7 +17,7 @@ module FlexmlsApi
       # indicate a failure will raise a FlexmlsApi::ClientError exception
       def self.validate_and_build_response(finished_env)
         body = finished_env[:body]
-        FlexmlsApi.logger.debug("Response Body: #{body.inspect}")
+        FlexmlsApi.logger.debug("Response Body: #{body}")
         unless body.is_a?(Hash) && body.key?("D")
           raise InvalidResponse, "The server response could not be understood"
         end
@@ -47,5 +47,6 @@ module FlexmlsApi
       end
       
     end
+
   end
 end
