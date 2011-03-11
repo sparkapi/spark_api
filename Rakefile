@@ -13,7 +13,7 @@ begin
     gemspec.description = "A library for interacting with the flexmls web services."
     gemspec.email = "api-support@flexmls.com"
     gemspec.homepage = "https://github.com/flexmls/flexmls_api"
-    gemspec.authors = ["Brandon Hornseth"]
+    gemspec.authors = ["Brandon Hornseth", "Wade McEwen"]
     gemspec.files =  FileList["[A-Z]*", "{lib,spec}/**/*"]
     gemspec.add_development_dependency "rspec"
     gemspec.add_development_dependency "jeweler"

@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version = "0.3.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Brandon Hornseth"]
+  s.authors = ["Brandon Hornseth", "Wade McEwen"]
   s.date = %q{2011-03-11}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
