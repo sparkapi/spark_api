@@ -45,7 +45,7 @@ describe Photo do
 
     it "should get an array of photos" do
       p = Photo.find_by_listing_key('1234', 'foobar')
-      p.should be_an Array
+      p.should be_an(Array)
     end
 
   end

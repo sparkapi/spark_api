@@ -26,7 +26,7 @@ describe Document do
           to_return(:body => fixture('listing_document_index.json'))
 
     v = Document.find_by_listing_key('1234', "foobar")
-    v.should be_an Array
+    v.should be_an(Array)
     v.length.should == 2
   end
 

@@ -51,10 +51,10 @@ describe Listing do
 
   describe "attributes" do
     it "should allow access to fields" do
-      @listing.StandardFields.should be_a Hash
-      @listing.StandardFields['ListingId'].should be_a String
-      @listing.StandardFields['ListPrice'].should match @listing.ListPrice
-      @listing.photos.should be_a Array
+      @listing.StandardFields.should be_a(Hash)
+      @listing.StandardFields['ListingId'].should be_a(String)
+      @listing.StandardFields['ListPrice'].should match(@listing.ListPrice)
+      @listing.photos.should be_a(Array)
     end
 
     it "should not respond to removed attributes" do

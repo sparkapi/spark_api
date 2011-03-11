@@ -151,9 +151,9 @@ describe FlexmlsApi do
       it "should give me BigDecimal results for large floating point numbers" do
         MultiJson.default_engine.should eq(:yajl)
         result = subject.get('/listings/1000')[0]
-        result["StandardFields"]["BuildingAreaTotal"].class.should eq(Float)
+        result["StandardFields"]["BuildingAreaTotal"].should be_a(Float)
         pending("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
-          result["StandardFields"]["BuildingAreaTotal"].class.should eq(BigDecimal)
+          result["StandardFields"]["BuildingAreaTotal"].should be_a(BigDecimal)
           number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
           number.to_s.should eq(BigDecimal.new("0.000000000000000000000000001").to_s)
           number = BigDecimal.new(result["StandardFields"]["ListPrice"].to_s)

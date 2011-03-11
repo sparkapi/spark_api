@@ -33,7 +33,7 @@ describe VirtualTour do
           to_return(:body => fixture('listing_virtual_tours_index.json'))
 
     v = VirtualTour.find_by_listing_key('1234', "foobar")
-    v.should be_an Array
+    v.should be_an(Array)
     v.length.should == 5
   end
 

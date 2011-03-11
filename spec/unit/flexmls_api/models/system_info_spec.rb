@@ -21,13 +21,13 @@ describe SystemInfo do
   
   it "should respond to attributes" do
     ['Name','OfficeId','Id','MlsId','Office','Mls'].each do |k|
-      (@sysinfo.send k.to_sym).should be_a String
+      (@sysinfo.send k.to_sym).should be_a(String)
     end
-    @sysinfo.Configuration.should be_a Array
+    @sysinfo.Configuration.should be_a(Array)
   end
 
   it "should have an array of config items" do
-    @sysinfo.Configuration.should be_a Array
+    @sysinfo.Configuration.should be_a(Array)
   end
 
   after(:each) do 

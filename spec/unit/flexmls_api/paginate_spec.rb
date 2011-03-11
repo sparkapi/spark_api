@@ -94,7 +94,7 @@ describe FlexmlsApi::Paginate do
   describe "paginate" do
     it "should give me a will paginate collection" do
       results = PaginateModelTester.paginate(:page => 1)
-      results.class.should eq(WillPaginate::Collection)
+      results.should be_a(WillPaginate::Collection)
       results.offset.should eq(0)
       results.next_page.should eq(2)
       results.previous_page.should eq(nil)
@@ -103,7 +103,7 @@ describe FlexmlsApi::Paginate do
       results.total_pages.should eq(4)
       results.total_entries.should eq(38)
       
-      results[0].class.should eq(PaginateModelTester)
+      results[0].should be_a(PaginateModelTester)
       results[0].val.should eq(1)
       
     end
@@ -151,7 +151,7 @@ describe FlexmlsApi::Paginate do
         }).
         to_return(:body => json)
       results = subject.paginate(:page=>1, :per_page=>10)
-      results.class.should eq(WillPaginate::Collection)
+      results.should be_a(WillPaginate::Collection)
       results.offset.should eq(0)
       results.next_page.should eq(2)
       results.previous_page.should eq(nil)
@@ -161,7 +161,7 @@ describe FlexmlsApi::Paginate do
       results.total_entries.should eq(38)
       results.length.should eq(10)
       
-      results[0].class.should eq(subject)
+      results[0].should be_a(subject)
       results[0].ListPrice.should eq(50000.0)
       
     end
@@ -213,7 +213,7 @@ describe FlexmlsApi::Paginate do
       results.total_entries.should eq(38)
       
       results.length.should eq(8)
-      results[0].class.should eq(subject)
+      results[0].should be_a(subject)
       results[0].ListPrice.should eq(50000.0)
     end
     

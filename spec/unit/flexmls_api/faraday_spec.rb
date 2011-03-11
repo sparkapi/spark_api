@@ -65,8 +65,8 @@ describe FlexmlsApi do
 
     it "should raised exception on error" do
       expect { @connection.get('/methodnotallowed')}.to raise_error(FlexmlsApi::NotAllowed){ |e| e.message.should == "Method Not Allowed" }
-      expect { @connection.get('/epicfail')}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should be 500 }
-      expect { @connection.get('/unknownerror')}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should be 499 }
+      expect { @connection.get('/epicfail')}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should be(500) }
+      expect { @connection.get('/unknownerror')}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should be(499) }
     end
 
     it "should raised exception on invalid responses" do

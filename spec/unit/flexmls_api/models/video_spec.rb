@@ -31,7 +31,7 @@ describe Video do
 
     it "should get an array of videos" do
       p = Video.find_by_listing_key('1234', 'foobar')
-      p.should be_an Array
+      p.should be_an(Array)
       p.length.should == 2
     end
 
