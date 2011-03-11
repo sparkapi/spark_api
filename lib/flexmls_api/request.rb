@@ -66,6 +66,9 @@ module FlexmlsApi
         request_opts = {
           "AuthToken" => @session.auth_token
         }
+        unless self.api_user.nil?
+          request_opts.merge!(:ApiUser => "#{api_user}")
+        end
         request_opts.merge!(options)
         post_data = body.nil? ? nil : {"D" => body }.to_json
         sig = sign_token(path, request_opts, post_data)

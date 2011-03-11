@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth"]
-  s.date = %q{2011-02-17}
+  s.date = %q{2011-03-11}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -29,11 +29,13 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/configuration.rb",
     "lib/flexmls_api/faraday.rb",
     "lib/flexmls_api/models.rb",
+    "lib/flexmls_api/models/account.rb",
     "lib/flexmls_api/models/base.rb",
     "lib/flexmls_api/models/connect_prefs.rb",
     "lib/flexmls_api/models/contact.rb",
     "lib/flexmls_api/models/custom_fields.rb",
     "lib/flexmls_api/models/document.rb",
+    "lib/flexmls_api/models/finders.rb",
     "lib/flexmls_api/models/idx_link.rb",
     "lib/flexmls_api/models/listing.rb",
     "lib/flexmls_api/models/market_statistics.rb",
@@ -45,6 +47,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/video.rb",
     "lib/flexmls_api/models/virtual_tour.rb",
     "lib/flexmls_api/paginate.rb",
+    "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
     "spec/fixtures/contacts.json",
@@ -65,6 +68,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/authentication_spec.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
     "spec/unit/flexmls_api/faraday_spec.rb",
+    "spec/unit/flexmls_api/models/account_spec.rb",
     "spec/unit/flexmls_api/models/base_spec.rb",
     "spec/unit/flexmls_api/models/connect_prefs_spec.rb",
     "spec/unit/flexmls_api/models/contact_spec.rb",
@@ -77,6 +81,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/paginate_spec.rb",
+    "spec/unit/flexmls_api/primary_array_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
@@ -90,6 +95,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/authentication_spec.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
     "spec/unit/flexmls_api/faraday_spec.rb",
+    "spec/unit/flexmls_api/models/account_spec.rb",
     "spec/unit/flexmls_api/models/base_spec.rb",
     "spec/unit/flexmls_api/models/connect_prefs_spec.rb",
     "spec/unit/flexmls_api/models/contact_spec.rb",
@@ -102,6 +108,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/paginate_spec.rb",
+    "spec/unit/flexmls_api/primary_array_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]

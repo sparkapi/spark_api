@@ -21,12 +21,12 @@ describe FlexmlsApi do
     end
     it "should have results when successful" do
       r = FlexmlsApi::ApiResponse.new({"D"=>{"Success" => true, "Results" => []}})
-      r.success?.should be true
-      r.results.empty?.should be true
+      r.success?.should be(true)
+      r.results.empty?.should be(true)
     end
     it "should have a message on error" do
       r = FlexmlsApi::ApiResponse.new({"D"=>{"Success" => false, "Message" => "I am a failure."}})
-      r.success?.should be false
+      r.success?.should be(false)
       r.message.should be == "I am a failure."
     end
   end
@@ -100,6 +100,7 @@ describe FlexmlsApi do
       subject do 
         class RequestTest
           include FlexmlsApi::Request
+          attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
           def initialize(session)
             @session = session
           end
@@ -138,25 +139,25 @@ describe FlexmlsApi do
       it "should put to a service" do
         # This is a hypothetical unsupported service action at this time
         data = {"Contacts" => [{"DisplayName"=>"WLMCEWENS Contact","PrimaryEmail"=>"wlmcewen789@fbsdata.com"}]}
-        subject.put('/contacts/1000', data).should be nil
+        subject.put('/contacts/1000', data).should be(nil)
         # No validation here, if no error is raised, everything is hunky dory
       end
       it "should delete from a service" do
         # This is a hypothetical unsupported service action at this time
-        subject.delete('/contacts/1000').should be nil
+        subject.delete('/contacts/1000').should be(nil)
         # No validation here, if no error is raised, everything is hunky dory
       end
 
       it "should give me BigDecimal results for large floating point numbers" do
-        MultiJson.default_engine.should eq :yajl
+        MultiJson.default_engine.should eq(:yajl)
         result = subject.get('/listings/1000')[0]
-        result["StandardFields"]["BuildingAreaTotal"].class.should eq Float
+        result["StandardFields"]["BuildingAreaTotal"].class.should eq(Float)
         pending("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
-          result["StandardFields"]["BuildingAreaTotal"].class.should eq BigDecimal
+          result["StandardFields"]["BuildingAreaTotal"].class.should eq(BigDecimal)
           number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
-          number.to_s.should eq BigDecimal.new("0.000000000000000000000000001").to_s
+          number.to_s.should eq(BigDecimal.new("0.000000000000000000000000001").to_s)
           number = BigDecimal.new(result["StandardFields"]["ListPrice"].to_s)
-          number.to_s.should eq BigDecimal.new("9999999999999999999999999.99").to_s
+          number.to_s.should eq(BigDecimal.new("9999999999999999999999999.99").to_s)
         end
       end
       
@@ -166,6 +167,7 @@ describe FlexmlsApi do
       subject do 
         class RequestAuthTest
           include FlexmlsApi::Request
+          attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
           def authenticate()
             @session ||= mock_session()
           end
@@ -194,6 +196,7 @@ describe FlexmlsApi do
       subject do 
         class RequestExpiredTest
           include FlexmlsApi::Request
+          attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
           def initialize(session)
             @session = session
             @reauthenticated = false
@@ -250,6 +253,7 @@ describe FlexmlsApi do
       subject do 
         class RequestAlwaysExpiredJerkTest
           include FlexmlsApi::Request
+          attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
           def initialize()
             @reauthenticated = 0
           end
