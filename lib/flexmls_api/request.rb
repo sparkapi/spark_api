@@ -82,7 +82,7 @@ module FlexmlsApi
           response = connection.send(method, request_path, post_data)
         end
         request_time = Time.now - start_time
-        FlexmlsApi.logger.info("[#{request_time}s] Api: #{method.to_s.upcase} #{request_path}")
+        FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}")
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1
