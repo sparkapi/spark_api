@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-03-11}
+  s.date = %q{2011-03-18}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/standard_fields.rb",
     "lib/flexmls_api/models/subresource.rb",
     "lib/flexmls_api/models/system_info.rb",
+    "lib/flexmls_api/models/tour_of_home.rb",
     "lib/flexmls_api/models/video.rb",
     "lib/flexmls_api/models/virtual_tour.rb",
     "lib/flexmls_api/paginate.rb",
@@ -63,6 +64,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/listing_with_vtour.json",
     "spec/fixtures/session.json",
     "spec/fixtures/success.json",
+    "spec/fixtures/tour_of_homes.json",
     "spec/json_helper.rb",
     "spec/spec_helper.rb",
     "spec/unit/flexmls_api/authentication_spec.rb",
@@ -78,6 +80,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",
     "spec/unit/flexmls_api/models/system_info_spec.rb",
+    "spec/unit/flexmls_api/models/tour_of_home_spec.rb",
     "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/paginate_spec.rb",
@@ -105,6 +108,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",
     "spec/unit/flexmls_api/models/system_info_spec.rb",
+    "spec/unit/flexmls_api/models/tour_of_home_spec.rb",
     "spec/unit/flexmls_api/models/video_spec.rb",
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/paginate_spec.rb",

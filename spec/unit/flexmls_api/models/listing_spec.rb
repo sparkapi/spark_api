@@ -163,6 +163,29 @@ describe Listing do
       l.documents.length.should == 0
     end 
 
+    it "should return tour of homes" do
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/20060725224713296297000000").
+        with(:query => {
+          :ApiSig => "b3ae2bec3500ba4620bf8224dee28d20",
+          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+          :ApiUser => "foobar"
+        }).
+        to_return(:body => fixture('listing_no_subresources.json'))
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/20060725224713296297000000/tourofhomes").
+        with( :query => {
+          :ApiSig => "153446de6d1db765d541587d34ed0fcf",
+          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+          :ApiUser => "foobar"
+        }).
+        to_return(:body => fixture('tour_of_homes.json'))
+          
+      l = Listing.find('20060725224713296297000000', :ApiUser => "foobar")
+      l.tour_of_homes("foobar").length.should == 2
+      l.videos.length.should == 0
+      l.photos.length.should == 0
+      l.documents.length.should == 0
+    end 
+    
 
   end
 

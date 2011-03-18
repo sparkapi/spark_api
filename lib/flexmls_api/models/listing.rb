@@ -11,7 +11,6 @@ module FlexmlsApi
         @virtual_tours = []
         @documents = []
 
-
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
         end
@@ -55,6 +54,11 @@ module FlexmlsApi
 
       def self.company(arguments={})
         collect(connection.get("/company/listings", arguments))
+      end
+      
+      def tour_of_homes(api_user)
+        return @tour_of_homes unless @tour_of_homes.nil?
+        TourOfHome.find_by_listing_key(self.Id, api_user)
       end
 
       private
