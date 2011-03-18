@@ -58,7 +58,7 @@ module FlexmlsApi
       
       def tour_of_homes(api_user)
         return @tour_of_homes unless @tour_of_homes.nil?
-        TourOfHome.find_by_listing_key(self.Id, api_user)
+        @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, api_user)
       end
 
       private
