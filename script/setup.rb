@@ -17,7 +17,8 @@ FlexmlsApi.logger.info("Client configured!")
 FlexmlsApi.configure do |config|
   config.api_key = ENV["API_KEY"] 
   config.api_secret = ENV["API_SECRET"]
-  config.endpoint = "http://api.flexmls.com"
+  config.api_user = ENV["API_USER"] if ENV["API_USER"]
+  config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
 end
 
 include FlexmlsApi::Models
