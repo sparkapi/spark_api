@@ -1,21 +1,29 @@
 require './spec/spec_helper'
 
+require 'time'
+
 describe TourOfHome do
   subject do
     TourOfHome.new(
-      :ResourceUri=>"/listings/20060725224713296297000000/tourofhomes/20101127153422574618000000",
-      :Id=>"20101127153422574618000000",
-      :Date=>"10/01/2010",
-      :StartTime=>"09:00 AM",
-      :EndTime=>"12:00 PM",
-      :Comments=>"Wonderful home; must see!",
-      :AdditionalInfo  => [{"Hosted By"=>"Joe Smith"}, {"Host Phone"=>"123-456-7890"}, {"Tour Area"=>"North-Central"}]
+      'ResourceUri'=>"/listings/20060725224713296297000000/tourofhomes/20101127153422574618000000",
+      'Id'=>"20101127153422574618000000",
+      'Date'=>"10/01/2010",
+      'StartTime'=>"09:00:00-07:00",
+      'EndTime'=>"23:00:00-07:00",
+      'Comments'=>"Wonderful home; must see!",
+      'AdditionalInfo'=> [{"Hosted By"=>"Joe Smith"}, {"Host Phone"=>"123-456-7890"}, {"Tour Area"=>"North-Central"}]
     )
   end
 
   it "should respond to a few methods" do
     subject.class.should respond_to(:find_by_listing_key)
-    subject.Comments.should eq("Wonderful home; must see!")
+  end
+  it "should return tour date and times" do
+    start_time = DateTime.new(2010,10,1,9,0,0, "-0700")
+    end_time = DateTime.new(2010,10,1,23,0,0, "-0700")
+    subject.Date.should eq(Date.new(2010,10,1))
+    subject.StartTime.should eq(Time.parse(start_time.to_s))
+    subject.EndTime.should eq(Time.parse(end_time.to_s))
   end
 
   it "should get home tours for a listing" do
