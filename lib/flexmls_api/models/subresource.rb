@@ -2,11 +2,9 @@ module FlexmlsApi
   module Models
     module Subresource 
     
-      def find_by_listing_key(key, user)
-        collect(connection.get("/listings/#{key}#{self.path}", :ApiUser => user))
+      def find_by_listing_key(key, arguments={})
+        collect(connection.get("/listings/#{key}#{self.path}", arguments))
       end
-
-
 
     end
   end

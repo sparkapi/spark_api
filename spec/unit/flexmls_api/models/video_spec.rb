@@ -30,7 +30,7 @@ describe Video do
     end
 
     it "should get an array of videos" do
-      p = Video.find_by_listing_key('1234', 'foobar')
+      p = Video.find_by_listing_key('1234', :ApiUser => "foobar")
       p.should be_an(Array)
       p.length.should == 2
     end

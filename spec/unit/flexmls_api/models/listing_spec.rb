@@ -194,7 +194,7 @@ describe Listing do
         to_return(:body => fixture('tour_of_homes.json'))
           
       l = Listing.find('20060725224713296297000000', :ApiUser => "foobar")
-      l.tour_of_homes("foobar").length.should == 2
+      l.tour_of_homes(:ApiUser => "foobar").length.should == 2
       l.videos.length.should == 0
       l.photos.length.should == 0
       l.documents.length.should == 0

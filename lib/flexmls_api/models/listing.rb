@@ -35,13 +35,12 @@ module FlexmlsApi
           attributes['StandardFields'].delete('Documents')
         end
         
-      
         super(attributes)
       end
 
-      def self.find_by_cart_id(cart_id, owner, options={}) 
-        options.merge!({ :ApiUser => owner, :_filter => "ListingCart Eq '#{cart_id}'" })
-        find(:all, options) 
+      def self.find_by_cart_id(cart_id, options={}) 
+        query = {:_filter => "ListingCart Eq '#{cart_id}'"}
+        find(:all, options.merge(query)) 
       end
       
       def self.my(arguments={})
@@ -56,9 +55,9 @@ module FlexmlsApi
         collect(connection.get("/company/listings", arguments))
       end
       
-      def tour_of_homes(api_user)
+      def tour_of_homes(arguments={})
         return @tour_of_homes unless @tour_of_homes.nil?
-        @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, api_user)
+        @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, arguments)
       end
 
       private
