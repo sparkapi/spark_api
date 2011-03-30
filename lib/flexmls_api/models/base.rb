@@ -54,6 +54,10 @@ module FlexmlsApi
       def self.first(options={})
         get(options)[0]
       end
+
+      def self.count(options={})
+        connection.get(path, options.merge({:_pagination=>"count"}))
+      end
       
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s

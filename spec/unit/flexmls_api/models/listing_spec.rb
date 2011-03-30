@@ -86,6 +86,20 @@ describe Listing do
     it "should respond to find_by_cart_id" do
       Listing.should respond_to(:find_by_cart_id)
     end
+    
+    it "should return the count" do
+      stub_auth_request
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings").
+        with(:query => {
+          :_pagination => "count",
+          :ApiSig => "9028191e427eee6774527e7d19f489cb",
+          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+          :ApiUser => "foobar"
+        }).
+        to_return(:body => fixture('count.json'))
+      count = Listing.count(:ApiUser => "foobar")
+      count.should == 2001
+    end 
   end
 
   describe "subresources" do
@@ -186,7 +200,6 @@ describe Listing do
       l.documents.length.should == 0
     end 
     
-
   end
 
   after(:each) do  

@@ -98,7 +98,11 @@ module FlexmlsApi
       results = response.body.results
       paging = response.body.pagination
       unless paging.nil?
-        results = paginate_response(results, paging)
+        if request_opts[:_pagination] == "count"
+          results = paging['TotalRows']
+        else
+          results = paginate_response(results, paging)
+        end
       end
       results
     end
