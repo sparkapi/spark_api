@@ -35,7 +35,7 @@ describe TourOfHome do
       :ApiUser => "foobar"
     }).
     to_return(:body => fixture('tour_of_homes.json'))
-    v = subject.class.find_by_listing_key('20060725224713296297000000', :ApiUser => "foobar")
+    v = subject.class.find_by_listing_key('20060725224713296297000000')
     v.should be_an(Array)
     v.length.should == 2
   end

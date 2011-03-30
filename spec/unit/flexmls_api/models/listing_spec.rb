@@ -2,6 +2,7 @@ require './spec/spec_helper'
 
 describe Listing do
   before(:each) do
+
     @listing = Listing.new({
       "ResourceUri"=>"/v1/listings/20080619000032866372000000", 
       "StandardFields"=>{
@@ -97,7 +98,7 @@ describe Listing do
           :ApiUser => "foobar"
         }).
         to_return(:body => fixture('count.json'))
-      count = Listing.count(:ApiUser => "foobar")
+      count = Listing.count()
       count.should == 2001
     end 
   end
@@ -118,7 +119,7 @@ describe Listing do
           }).
           to_return(:body => fixture('listing_with_photos.json'))
       
-      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "Photos")
+      l = Listing.find('1234', :_expand => "Photos")
       l.photos.length.should == 5
       l.documents.length.should == 0
       l.videos.length.should == 0
@@ -135,7 +136,7 @@ describe Listing do
           }).
           to_return(:body => fixture('listing_with_documents.json'))
       
-      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "Documents")
+      l = Listing.find('1234', :_expand => "Documents")
       l.photos.length.should == 0
       l.documents.length.should == 2
       l.videos.length.should == 0
@@ -152,7 +153,7 @@ describe Listing do
           }).
           to_return(:body => fixture('listing_with_vtour.json'))
       
-      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "VirtualTours")
+      l = Listing.find('1234', :_expand => "VirtualTours")
       l.virtual_tours.length.should == 1
       l.photos.length.should == 0
       l.documents.length.should == 0
@@ -170,7 +171,7 @@ describe Listing do
           }).
           to_return(:body => fixture('listing_with_videos.json'))
       
-      l = Listing.find('1234', :ApiUser => "foobar", :_expand => "Videos")
+      l = Listing.find('1234', :_expand => "Videos")
       l.videos.length.should == 2
       l.virtual_tours.length.should == 0
       l.photos.length.should == 0
@@ -193,8 +194,8 @@ describe Listing do
         }).
         to_return(:body => fixture('tour_of_homes.json'))
           
-      l = Listing.find('20060725224713296297000000', :ApiUser => "foobar")
-      l.tour_of_homes(:ApiUser => "foobar").length.should == 2
+      l = Listing.find('20060725224713296297000000')
+      l.tour_of_homes().length.should == 2
       l.videos.length.should == 0
       l.photos.length.should == 0
       l.documents.length.should == 0

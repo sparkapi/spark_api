@@ -11,9 +11,9 @@ end
 describe Contact do
   before(:all) do
     stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-      stub.get('/v1/contacts?ApiSig=735774295be070a27f7cf859fde90740&AuthToken=1234') { [200, {}, fixture('contacts.json')] 
+      stub.get('/v1/contacts?ApiSig=33e3b6d6436c85c3f9944d21f6f0cf9a&ApiUser=foobar&AuthToken=1234') { [200, {}, fixture('contacts.json')] 
       }
-      stub.post('/v1/contacts?ApiSig=7f0a7b0f648f87aabd4d4393913a10ba&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"Contact Four","PrimaryEmail":"contact4@fbsdata.com"}]}}') { [201, {}, '{"D": {
+      stub.post('/v1/contacts?ApiSig=1c78fb9f798fbb739a0b8152528cd453&ApiUser=foobar&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"Contact Four","PrimaryEmail":"contact4@fbsdata.com"}]}}') { [201, {}, '{"D": {
         "Success": true, 
         "Results": [
           {
@@ -21,7 +21,7 @@ describe Contact do
           }]}
         }'] 
       }
-      stub.post('/v1/contacts?ApiSig=76f6ee7032f7038d737f9b73457f06e2&AuthToken=1234', '{"D":{"Contacts":[{}]}}') { [400, {}, '{"D": {
+      stub.post('/v1/contacts?ApiSig=ea132fe27a8deb7d6c096b102972ce3e&ApiUser=foobar&AuthToken=1234', '{"D":{"Contacts":[{}]}}') { [400, {}, '{"D": {
         "Success": false}
         }'] 
       }
@@ -53,7 +53,7 @@ describe Contact do
   context "on an epic fail" do
     before(:all) do
       stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.post('/v1/contacts?ApiSig=76f6ee7032f7038d737f9b73457f06e2&AuthToken=1234', '{"D":{"Contacts":[{}]}}') { [500, {}, '{"D": {
+        stub.post('/v1/contacts?ApiSig=ea132fe27a8deb7d6c096b102972ce3e&ApiUser=foobar&AuthToken=1234', '{"D":{"Contacts":[{}]}}') { [500, {}, '{"D": {
           "Success": false}
           }'] 
         }

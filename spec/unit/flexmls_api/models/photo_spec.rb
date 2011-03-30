@@ -44,7 +44,7 @@ describe Photo do
     end
 
     it "should get an array of photos" do
-      p = Photo.find_by_listing_key('1234', :ApiUser => "foobar")
+      p = Photo.find_by_listing_key('1234')
       p.should be_an(Array)
     end
 

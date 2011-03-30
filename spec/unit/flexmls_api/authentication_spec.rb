@@ -1,6 +1,14 @@
 require './spec/spec_helper'
 
 describe FlexmlsApi::Authentication do
+  before(:all) do
+    FlexmlsApi.reset
+  end
+  
+  after(:all) do
+    reset_config
+  end
+
   it "should give me a session object" do
     stub_auth_request
     stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/session/c401736bf3d3f754f07c04e460e09573").

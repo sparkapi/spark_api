@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
 describe FlexmlsApi::Client, "Client config"  do
-  after(:each) do
-    FlexmlsApi.reset
+  after(:all) do
+    reset_config
   end
 
   describe "default settings" do

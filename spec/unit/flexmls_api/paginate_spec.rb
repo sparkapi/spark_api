@@ -143,7 +143,8 @@ describe FlexmlsApi::Paginate do
       JSON
       stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings").
         with(:query => {
-          :ApiSig => "538a4c5ff5d24b0bbf3ad1ef27bdd4cd",
+          :ApiSig => "4a00ca0e657c824d85a5fe1007d9c52d",
+          :ApiUser => "foobar",
           :AuthToken => "c401736bf3d3f754f07c04e460e09573",
           :_limit => '10',
           :_page => '1',
@@ -175,7 +176,8 @@ describe FlexmlsApi::Paginate do
       JSON
       stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings").
         with(:query => {
-          :ApiSig => "1f156d976097026315573af0ce112174",
+          :ApiSig => "094d3851a0c4c4563baf70ca45087e30",
+          :ApiUser => "foobar",
           :AuthToken => "c401736bf3d3f754f07c04e460e09573",
           :_limit => '10',
           :_page => '2',
@@ -197,7 +199,8 @@ describe FlexmlsApi::Paginate do
       JSON
       stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings").
         with(:query => {
-          :ApiSig => "a1961de57c3129a8b68cb1aae97b168d",
+          :ApiSig => "dcfce1fe9289c905f8d2d01cbb850edc",
+          :ApiUser => "foobar",
           :AuthToken => "c401736bf3d3f754f07c04e460e09573",
           :_limit => '10',
           :_page => '4',

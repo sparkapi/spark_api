@@ -36,7 +36,6 @@ def mock_session()
   FlexmlsApi::Authentication::Session.new("AuthToken" => "1234", "Expires" => (Time.now + 3600).to_s, "Roles" => "['idx']")
 end
 
-
 class MockClient < FlexmlsApi::Client
   attr_accessor :connection, :session
 end
@@ -60,19 +59,22 @@ def test_connection(stubs)
   end
 end
 
-
 def stub_auth_request()
   stub_request(:post, "https://api.flexmls.com/#{FlexmlsApi.version}/session").
               with(:query => {:ApiKey => "", :ApiSig => "806737984ab19be2fd08ba36030549ac"}).
               to_return(:body => fixture("session.json"))
 end
 
-
-
-
 def fixture(file)
   File.new(File.expand_path("../fixtures", __FILE__) + '/' + file)
 end
 
+def reset_config()
+  FlexmlsApi.reset
+  FlexmlsApi.configure do |config|
+    config.api_user = "foobar"
+  end
+end
+reset_config
 
 include FlexmlsApi::Models

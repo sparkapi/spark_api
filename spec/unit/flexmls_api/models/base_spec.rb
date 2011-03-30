@@ -33,7 +33,7 @@ describe Base, "Base model" do
     describe "finders" do
       before(:all) do
         stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-          stub.get('/v1/test/example?ApiSig=0637dccf93be3774c9c7c554bb0b1d9a&AuthToken=1234') { [200, {}, '{"D": {
+          stub.get('/v1/test/example?ApiSig=9fd7299fc210d0c3dcc24782d9cb7894&ApiUser=foobar&AuthToken=1234') { [200, {}, '{"D": {
             "Success": true, 
             "Results": [{
               "Id": 1,

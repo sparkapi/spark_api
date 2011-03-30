@@ -1,6 +1,10 @@
 require './spec/spec_helper'
 
 describe FlexmlsApi do
+  after(:each) do
+    reset_config
+  end
+
   it "should load the version" do
     subject::VERSION.should match(/\d+\.\d+\.\d+/)
   end

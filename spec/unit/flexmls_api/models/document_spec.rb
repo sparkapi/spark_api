@@ -14,7 +14,6 @@ describe Document do
     Document.should respond_to(:find_by_listing_key)
   end
 
-
   it "should get documents for a listing" do
     stub_auth_request
     stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234/documents").
@@ -25,12 +24,10 @@ describe Document do
           }).
           to_return(:body => fixture('listing_document_index.json'))
 
-    v = Document.find_by_listing_key('1234', :ApiUser => "foobar")
+    v = Document.find_by_listing_key('1234')
     v.should be_an(Array)
     v.length.should == 2
   end
-
-
 
   after(:each) do
     @document = nil

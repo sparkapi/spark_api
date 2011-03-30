@@ -2,7 +2,6 @@ require './spec/spec_helper'
 
 describe Video do
 
-
   it "responds to" do
     Video.should respond_to(:find_by_listing_key)
     Video.new.should respond_to(:branded?)
@@ -15,7 +14,6 @@ describe Video do
     Video.new(:Type => "unbranded").unbranded?.should == true
     Video.new(:Type => "branded").unbranded?.should == false
   end
-
 
   describe "find videos by listing id"  do
     before do
@@ -30,7 +28,7 @@ describe Video do
     end
 
     it "should get an array of videos" do
-      p = Video.find_by_listing_key('1234', :ApiUser => "foobar")
+      p = Video.find_by_listing_key('1234')
       p.should be_an(Array)
       p.length.should == 2
     end
