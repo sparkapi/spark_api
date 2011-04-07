@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.3.7"
+  s.version = "0.3.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-03-30}
+  s.date = %q{2011-04-07}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -23,6 +23,12 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "lib/alpha_cart.rb",
+    "lib/character_mangling.rb",
+    "lib/crappy_cart.log",
+    "lib/crappycart.rb",
+    "lib/dev_character_encode.rb",
+    "lib/dev_content_type.rb",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
     "lib/flexmls_api/client.rb",
@@ -39,6 +45,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/idx_link.rb",
     "lib/flexmls_api/models/listing.rb",
     "lib/flexmls_api/models/market_statistics.rb",
+    "lib/flexmls_api/models/note.rb",
     "lib/flexmls_api/models/photo.rb",
     "lib/flexmls_api/models/property_types.rb",
     "lib/flexmls_api/models/standard_fields.rb",
@@ -51,8 +58,14 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
+    "lib/invalid_bytes.rb",
+    "lib/metadata.rb",
+    "lib/mutest.rb",
+    "lib/test.rb",
+    "lib/toh.rb",
     "spec/fixtures/contacts.json",
     "spec/fixtures/count.json",
+    "spec/fixtures/custom_fields.json",
     "spec/fixtures/listing_document_index.json",
     "spec/fixtures/listing_no_subresources.json",
     "spec/fixtures/listing_photos_index.json",
