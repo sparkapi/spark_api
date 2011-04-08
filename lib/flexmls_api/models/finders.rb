@@ -36,7 +36,7 @@ module FlexmlsApi
 
       def find_single(scope, options)
         resp = connection.get("/#{element_name}/#{scope}", options)
-        new(resp[0])
+        new(resp.first)
       end
             
     end

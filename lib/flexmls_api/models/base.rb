@@ -52,7 +52,7 @@ module FlexmlsApi
       end
 
       def self.first(options={})
-        get(options)[0]
+        get(options).first
       end
 
       def self.count(options={})

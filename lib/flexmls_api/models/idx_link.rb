@@ -39,7 +39,7 @@ module FlexmlsApi
 
       def self.find_single(scope, options)
         resp = FlexmlsApi.client.get("/idxlinks/#{scope}", options)
-        new(resp[0])
+        new(resp.first)
       end
 
     end

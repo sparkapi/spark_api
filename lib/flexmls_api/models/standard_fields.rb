@@ -14,10 +14,10 @@ module FlexmlsApi
         standard_fields = find(:all, arguments) 
       
         # filter through the list and return only the location fields found
-        fields.each { |field|
+        fields.each do |field|
           # search for field in the payload
-          if standard_fields[0].attributes.has_key?(field)
-            returns[field] = standard_fields[0].attributes[field]
+          if standard_fields.first.attributes.has_key?(field)
+            returns[field] = standard_fields.first.attributes[field]
               
             # lookup fully _expand fileld, if the field has a list
             if returns[field]['HasList']
@@ -25,9 +25,8 @@ module FlexmlsApi
             end
               
           end
-        }
+        end
         
-        # return
         returns
       end
       

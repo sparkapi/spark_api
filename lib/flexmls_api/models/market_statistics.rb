@@ -25,7 +25,7 @@ module FlexmlsApi
       private 
       def self.stat(stat_name, parameters={})
         resp = connection.get("#{path}/#{stat_name}", parameters)
-        new(resp[0])
+        new(resp.first)
       end
       
     end
