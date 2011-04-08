@@ -16,6 +16,7 @@ require File.expand_path('../models/video', __FILE__)
 require File.expand_path('../models/tour_of_home', __FILE__)
 require File.expand_path('../models/virtual_tour', __FILE__)
 require File.expand_path('../models/document', __FILE__)
+require File.expand_path('../models/note', __FILE__)
 
 module FlexmlsApi
   module Models

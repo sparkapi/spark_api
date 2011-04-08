@@ -1,0 +1,11 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/listings/20100909200152674436000000/shared/notes/contacts/20110407212043616271000000/",
+                "Note": "lorem ipsum dolor sit amet" 
+            } 
+        ],
+        "Success": true 
+    }
+}

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-04-07}
+  s.date = %q{2011-04-08}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -23,12 +23,6 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "lib/alpha_cart.rb",
-    "lib/character_mangling.rb",
-    "lib/crappy_cart.log",
-    "lib/crappycart.rb",
-    "lib/dev_character_encode.rb",
-    "lib/dev_content_type.rb",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
     "lib/flexmls_api/client.rb",
@@ -58,14 +52,13 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
-    "lib/invalid_bytes.rb",
-    "lib/metadata.rb",
-    "lib/mutest.rb",
-    "lib/test.rb",
-    "lib/toh.rb",
+    "spec/fixtures/add_note.json",
+    "spec/fixtures/agent_shared_note.json",
+    "spec/fixtures/agent_shared_note_empty.json",
     "spec/fixtures/contacts.json",
     "spec/fixtures/count.json",
-    "spec/fixtures/custom_fields.json",
+    "spec/fixtures/generic_delete.json",
+    "spec/fixtures/generic_failure.json",
     "spec/fixtures/listing_document_index.json",
     "spec/fixtures/listing_no_subresources.json",
     "spec/fixtures/listing_photos_index.json",
@@ -90,6 +83,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/contact_spec.rb",
     "spec/unit/flexmls_api/models/document_spec.rb",
     "spec/unit/flexmls_api/models/listing_spec.rb",
+    "spec/unit/flexmls_api/models/note_spec.rb",
     "spec/unit/flexmls_api/models/photo_spec.rb",
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",
@@ -118,6 +112,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/contact_spec.rb",
     "spec/unit/flexmls_api/models/document_spec.rb",
     "spec/unit/flexmls_api/models/listing_spec.rb",
+    "spec/unit/flexmls_api/models/note_spec.rb",
     "spec/unit/flexmls_api/models/photo_spec.rb",
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/standard_fields_spec.rb",

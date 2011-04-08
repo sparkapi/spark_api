@@ -60,6 +60,29 @@ module FlexmlsApi
         @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, arguments)
       end
 
+      def my_notes
+        Note.build_subclass.tap do |note|
+          note.prefix = "/listings/#{self.ListingKey}"
+          note.element_name = "/my/notes"
+          FlexmlsApi.logger.info("Note.path: #{note.path}")
+        end
+      end
+
+      # 'fore' is required when accessing an agent's shared
+      # notes for a specific contact. If the ApiUser /is/ the
+      # contact, then it can be inferred by the api, so it's
+      # unecessary
+      def shared_notes(fore=nil)
+        Note.build_subclass.tap do |note|
+          note.prefix = "/listings/#{self.ListingKey}"
+          if fore.nil?
+            note.element_name = "/shared/notes"
+          else
+            note.element_name = "/shared/notes/contacts/#{fore}"
+          end
+        end
+      end
+
       private
 
       # TODO trim this down so we're only overriding the StandardFields access
