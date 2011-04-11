@@ -5,11 +5,9 @@ module FlexmlsApi
 
       def primary_logo
         logo = nil
-	mls_logos = attributes['Configuration'].first['MlsLogos']
-	if !mls_logos.nil? and !mls_logos.empty?
-	  logo = mls_logos.first
-	end
-	logo
+        mls_logos = attributes['Configuration'].first['MlsLogos']
+        logo = mls_logos.first if !mls_logos.nil? and !mls_logos.empty?
+        logo
       end
     end
   end
