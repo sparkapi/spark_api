@@ -1,11 +1,11 @@
 source :rubygems
 
-gem 'faraday'
-gem 'curb'
-gem 'faraday_middleware'
-gem 'multi_json'
-gem 'json'
-gem 'yajl-ruby'
+gem 'curb', '0.7.8'
+gem 'faraday', '0.5.3'
+gem 'faraday_middleware', '0.3.1'
+gem 'multi_json', '0.0.5'
+gem 'json', '1.4.6'
+gem 'yajl-ruby', '0.7.8'
 gem 'builder', '2.1.2'
 
 gem 'will_paginate', '~> 3.0.pre2'

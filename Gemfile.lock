@@ -46,15 +46,15 @@ PLATFORMS
 DEPENDENCIES
   builder (= 2.1.2)
   ci_reporter (>= 1.6.3)
-  curb
-  faraday
-  faraday_middleware
+  curb (= 0.7.8)
+  faraday (= 0.5.3)
+  faraday_middleware (= 0.3.1)
   jeweler
-  json
-  multi_json
+  json (= 1.4.6)
+  multi_json (= 0.0.5)
   rcov
   rspec
   typhoeus
   webmock
   will_paginate (~> 3.0.pre2)
-  yajl-ruby
+  yajl-ruby (= 0.7.8)
