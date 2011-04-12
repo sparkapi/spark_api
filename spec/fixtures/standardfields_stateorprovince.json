@@ -1,0 +1,36 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [{
+            "StateOrProvince": {
+                "ResourceUri": "/v1/standardfields/StateOrProvince",
+                "FieldList": [{
+                    "Name": "IA",
+                    "Applies To": ["A", "B", "G", "I", "J", "K", "M"],
+                    "Value": "IA"
+                },
+                {
+                    "Name": "MN",
+                    "Value": "MN"
+                },
+                {
+                    "Name": "ND",
+                    "Value": "ND"
+                },
+                {
+                    "Name": "SD",
+                    "Applies To": ["A", "B", "G", "I", "J", "K", "M"],
+                    "Value": "SD"
+                },
+                {
+                    "Name": "WI",
+                    "Applies To": ["A", "B", "G", "I", "J", "K", "M"],
+                    "Value": "WI"
+                }],
+                "HasList": true,
+                "Searchable": true,
+                "Type": "Character"
+            }
+        }]
+    }
+}
