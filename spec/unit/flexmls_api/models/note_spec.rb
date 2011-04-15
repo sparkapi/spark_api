@@ -4,10 +4,10 @@ describe Note do
 
 
   it "responds to instance and class methods" do
-    Note.should respond_to :get
-    Note.new.should respond_to :save
-    Note.new.should respond_to :save!
-    Note.new.should respond_to :delete
+    Note.should respond_to(:get)
+    Note.new.should respond_to(:save)
+    Note.new.should respond_to(:save!)
+    Note.new.should respond_to(:delete)
   end
 
   context "when shared with a contact" do

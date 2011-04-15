@@ -60,7 +60,7 @@ describe SystemInfo do
     end
 
     it "should return the first logo when several are present" do
-      @sysinfo_with_logos.primary_logo.should be_a Hash
+      @sysinfo_with_logos.primary_logo.should be_a(Hash)
     end 
   end
 
