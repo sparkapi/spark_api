@@ -29,6 +29,10 @@ describe Contact do
     Contact.connection = mock_client(stubs)
   end
   
+  it "should include the finders module" do
+    Contact.should respond_to(:find)
+  end
+
   it "should get all my contacts" do
     contacts = Contact.get
     contacts.should be_an(Array)
