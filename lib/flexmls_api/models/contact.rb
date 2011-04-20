@@ -1,6 +1,7 @@
 module FlexmlsApi
   module Models
     class Contact < Base
+      extend Finders
       self.element_name="contacts"
       
       def save
