@@ -1,0 +1,7 @@
+{ 
+  "D": {
+    "Success": false,
+    "Message": "Invalid API key and/or request signed improperly",
+    "Code": 1000       
+  }
+} 

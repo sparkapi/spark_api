@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-04-20}
+  s.date = %q{2011-04-29}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
+    "AUTH_UPDATE",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -25,6 +26,9 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
+    "lib/flexmls_api/authentication/api_auth.rb",
+    "lib/flexmls_api/authentication/base_auth.rb",
+    "lib/flexmls_api/authentication/oauth2.rb",
     "lib/flexmls_api/client.rb",
     "lib/flexmls_api/configuration.rb",
     "lib/flexmls_api/faraday.rb",
@@ -55,13 +59,13 @@ Gem::Specification.new do |s|
     "spec/fixtures/add_note.json",
     "spec/fixtures/agent_shared_note.json",
     "spec/fixtures/agent_shared_note_empty.json",
+    "spec/fixtures/authentication_failure.json",
     "spec/fixtures/contacts.json",
     "spec/fixtures/count.json",
     "spec/fixtures/generic_delete.json",
     "spec/fixtures/generic_failure.json",
     "spec/fixtures/listing_document_index.json",
     "spec/fixtures/listing_no_subresources.json",
-    "spec/fixtures/listing_open_houses_index.json",
     "spec/fixtures/listing_photos_index.json",
     "spec/fixtures/listing_videos_index.json",
     "spec/fixtures/listing_virtual_tours_index.json",
@@ -70,6 +74,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/listing_with_supplement.json",
     "spec/fixtures/listing_with_videos.json",
     "spec/fixtures/listing_with_vtour.json",
+    "spec/fixtures/oauth2_access.json",
     "spec/fixtures/session.json",
     "spec/fixtures/standardfields.json",
     "spec/fixtures/standardfields_city.json",
@@ -79,6 +84,8 @@ Gem::Specification.new do |s|
     "spec/fixtures/tour_of_homes.json",
     "spec/json_helper.rb",
     "spec/spec_helper.rb",
+    "spec/unit/flexmls_api/authentication/api_auth_spec.rb",
+    "spec/unit/flexmls_api/authentication/oauth2_spec.rb",
     "spec/unit/flexmls_api/authentication_spec.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
     "spec/unit/flexmls_api/faraday_spec.rb",
@@ -109,6 +116,8 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/json_helper.rb",
     "spec/spec_helper.rb",
+    "spec/unit/flexmls_api/authentication/api_auth_spec.rb",
+    "spec/unit/flexmls_api/authentication/oauth2_spec.rb",
     "spec/unit/flexmls_api/authentication_spec.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
     "spec/unit/flexmls_api/faraday_spec.rb",

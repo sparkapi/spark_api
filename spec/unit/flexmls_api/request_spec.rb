@@ -100,21 +100,21 @@ describe FlexmlsApi do
       subject do 
         class RequestTest
           include FlexmlsApi::Request
+          
           attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
+          attr_accessor :authenticator
           def initialize(session)
-            @session = session
+            @authenticator=MockApiAuthenticator.new(self)
+            @authenticator.session=session
           end
           def authenticate()
             raise "Should not be invoked #{@session.inspect}"
           end
-          def sign_token(path, params = {}, post_data="")
-            "SignedToken"
+          def authenticated?
+            true
           end
           def version()
             "v1"
-          end
-          def empty_parameters()
-            build_url_parameters()
           end
           attr_accessor :connection
         end
@@ -122,9 +122,6 @@ describe FlexmlsApi do
         r = RequestTest.new(my_s)
         r.connection = @connection
         r
-      end
-      it "should give me empty string when no parameters" do
-        subject.empty_parameters().should == ""
       end
       it "should get a service" do
         subject.get('/system')[0]["Name"].should == "My User"
@@ -168,8 +165,15 @@ describe FlexmlsApi do
         class RequestAuthTest
           include FlexmlsApi::Request
           attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
+          attr_accessor :authenticator
+          def initialize()
+            @authenticator=MockApiAuthenticator.new(self)
+          end
           def authenticate()
-            @session ||= mock_session()
+            @authenticator.session ||= mock_session()
+          end
+          def authenticated?
+            @authenticator.authenticated?
           end
           def sign_token(path, params = {}, post_data="")
             "SignedToken"
@@ -197,14 +201,20 @@ describe FlexmlsApi do
         class RequestExpiredTest
           include FlexmlsApi::Request
           attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
+          attr_accessor :authenticator
           def initialize(session)
-            @session = session
+            @authenticator=MockApiAuthenticator.new(self)
+            @authenticator.session=session
             @reauthenticated = false
           end
           def authenticate()
             @reauthenticated = true
-            @session = mock_session()
+            @authenticator.session = mock_session()
           end
+          def authenticated?
+            @authenticator.authenticated?
+          end
+          
           def sign_token(path, params = {}, post_data="")
             "SignedToken"
           end
@@ -254,12 +264,17 @@ describe FlexmlsApi do
         class RequestAlwaysExpiredJerkTest
           include FlexmlsApi::Request
           attr_accessor *FlexmlsApi::Configuration::VALID_OPTION_KEYS
+          attr_accessor :authenticator
           def initialize()
+            @authenticator=MockApiAuthenticator.new(self)
             @reauthenticated = 0
           end
           def authenticate()
             @reauthenticated += 1
-            @session = session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now + 60).to_s, "Roles" => "['idx']")
+            @authenticator.session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now + 60).to_s, "Roles" => "['idx']")
+          end
+          def authenticated?
+            @authenticator.authenticated?
           end
           def sign_token(path, params = {}, post_data="")
             "SignedToken"

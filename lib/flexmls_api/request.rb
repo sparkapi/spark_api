@@ -58,28 +58,22 @@ module FlexmlsApi
 
     # Perform an HTTP request (no data)
     def request(method, path, body, options)
-      if @session.nil? || @session.expired?
+      unless authenticated?
         authenticate
       end
       attempts = 0
       begin
-        request_opts = {
-          "AuthToken" => @session.auth_token
-        }
-        unless self.api_user.nil?
-          request_opts.merge!(:ApiUser => "#{api_user}")
-        end
+        request_opts = {}
         request_opts.merge!(options)
         post_data = body.nil? ? nil : {"D" => body }.to_json
-        sig = sign_token(path, request_opts, post_data)
-        request_path = "/#{version}#{path}?ApiSig=#{sig}#{build_url_parameters(request_opts)}"
-        FlexmlsApi.logger.debug("Request: #{request_path}")
+        request_path = "/#{version}#{path}"
         start_time = Time.now
+        FlexmlsApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
         if post_data.nil?
-          response = connection.send(method, request_path)
+          response = authenticator.request(method, request_path, nil, request_opts)
         else
-          FlexmlsApi.logger.debug("Data: #{post_data}")
-          response = connection.send(method, request_path, post_data)
+          FlexmlsApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
+          response = authenticator.request(method, request_path, post_data, request_opts)
         end
         request_time = Time.now - start_time
         FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}")
@@ -107,20 +101,8 @@ module FlexmlsApi
       results
     end
     
-    # Format a hash as request parameters
-    # 
-    # :returns:
-    #   Stringized form of the parameters as needed for the http request
-    def build_url_parameters(parameters={})
-      str = ""
-      parameters.map do |key,value|
-        escaped_value = CGI.escape("#{value}")
-        str << "&#{key}=#{escaped_value}"
-      end
-      str
-    end    
   end
-  
+ 
   # All known response codes listed in the API
   module ResponseCodes
     NOT_FOUND = 404
@@ -152,7 +134,6 @@ module FlexmlsApi
   class PermissionDenied < ClientError; end
   class NotAllowed < ClientError; end
   class BadResourceRequest < ClientError; end
-  
   
   # Nice and handy class wrapper for the api response hash
   class ApiResponse

@@ -1,8 +1,8 @@
 module FlexmlsApi
   module Configuration
     # valid configuration options
-    VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, :user_agent, :version, :ssl].freeze
-
+    VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, :user_agent, :version, :ssl, :oauth2_provider, :authentication_mode].freeze
+      
     DEFAULT_API_KEY = nil
     DEFAULT_API_SECRET = nil
     DEFAULT_API_USER = nil
@@ -10,6 +10,7 @@ module FlexmlsApi
     DEFAULT_VERSION = 'v1'
     DEFAULT_USER_AGENT = "flexmls API Ruby Gem #{VERSION}"
     DEFAULT_SSL = false
+    DEFAULT_OAUTH2 = nil
 
     attr_accessor *VALID_OPTION_KEYS
     def configure
@@ -36,6 +37,8 @@ module FlexmlsApi
       self.version     = DEFAULT_VERSION
       self.user_agent  = DEFAULT_USER_AGENT
       self.ssl         = DEFAULT_SSL
+      self.oauth2_provider = DEFAULT_OAUTH2
+      self.authentication_mode = FlexmlsApi::Authentication::ApiAuth
       self
     end
   end

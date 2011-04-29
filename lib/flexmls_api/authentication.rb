@@ -1,8 +1,14 @@
+
 require 'openssl'
 require 'faraday'
 require 'faraday_middleware'
 require 'yajl'
 require 'date'
+
+require File.expand_path('../authentication/base_auth', __FILE__)
+require File.expand_path('../authentication/api_auth', __FILE__)
+require File.expand_path('../authentication/oauth2', __FILE__)
+
 module FlexmlsApi
   # =API Authentication
   # Handles authentication and reauthentication to the flexmls api.
@@ -16,42 +22,31 @@ module FlexmlsApi
     # *raises*
     #   FlexmlsApi::ClientError when authentication fails
     def authenticate
-      sig = sign("#{@api_secret}ApiKey#{@api_key}")
-      FlexmlsApi.logger.debug("Authenticating to #{@endpoint}")
       start_time = Time.now
-      request_path = "/#{version}/session?ApiKey=#{api_key}&ApiSig=#{sig}"
-      resp = connection(true).post request_path, ""
       request_time = Time.now - start_time
-      FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: POST #{request_path}")
-      @session = Session.new(resp.body.results.first)
-      FlexmlsApi.logger.debug("Authentication: #{@session.inspect}")
-      @session
+      newsession = @authenticator.authenticate
+      FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms]")
+      FlexmlsApi.logger.debug("Session: #{session.inspect}")
+      newsession
+    end
+
+    def authenticated?
+      @authenticator.authenticated?
     end
     
     # Delete the current session
     def logout
       FlexmlsApi.logger.info("Logging out.")
-      delete("/session/#{@session.auth_token}") unless @session.nil?
-      @session = nil
+      @authenticator.logout
     end
 
     # Active session object
     def session
-      @session
+      @authenticator.session
     end
     
-    # Builds an ordered list of key value pairs and concatenates it all as one big string.  Used 
-    # specifically for signing a request.
-    def build_param_string(param_hash)
-      return "" if param_hash.nil?
-        sorted = param_hash.sort do |a,b|
-          a.to_s <=> b.to_s
-        end
-        params = ""
-        sorted.each do |key,val|
-          params += key.to_s + val.to_s
-        end
-        params
+    def session=(s)
+      @authenticator.session=s
     end
     
     # ==Session class
@@ -100,16 +95,6 @@ module FlexmlsApi
         :user_agent => user_agent,
         'X-flexmlsApi-User-Agent' => user_agent
       }
-    end
-    
-    # Sign a request
-    def sign(sig)
-      Digest::MD5.hexdigest(sig)
-    end
-
-    # Sign a request with request data.
-    def sign_token(path, params = {}, post_data="")
-      sign("#{@api_secret}ApiKey#{@api_key}ServicePath/#{version}#{path}#{build_param_string(params)}#{post_data}")
     end
     
   end

@@ -36,8 +36,23 @@ def mock_session()
   FlexmlsApi::Authentication::Session.new("AuthToken" => "1234", "Expires" => (Time.now + 3600).to_s, "Roles" => "['idx']")
 end
 
+def mock_oauth_session()
+  FlexmlsApi::Authentication::OAuthSession.new("access_token" => "1234", "expires_in" => 3600, "scope" => nil, "refresh_token"=> "1000refresh")
+end
+
 class MockClient < FlexmlsApi::Client
-  attr_accessor :connection, :session
+  attr_accessor :connection
+  
+  def connection(ssl = false)
+    @connection
+  end
+end
+
+class MockApiAuthenticator < FlexmlsApi::Authentication::ApiAuth
+  # Sign a request
+  def sign(sig)
+    "SignedToken"
+  end
 end
 
 def mock_client(stubs)
