@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
+    "AUTH_UPDATE",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -55,7 +56,6 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
-    "lib/get_note.rb",
     "spec/fixtures/add_note.json",
     "spec/fixtures/agent_shared_note.json",
     "spec/fixtures/agent_shared_note_empty.json",
@@ -75,6 +75,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/listing_with_videos.json",
     "spec/fixtures/listing_with_vtour.json",
     "spec/fixtures/oauth2_access.json",
+    "spec/fixtures/oauth2_error.json",
     "spec/fixtures/session.json",
     "spec/fixtures/standardfields.json",
     "spec/fixtures/standardfields_city.json",

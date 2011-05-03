@@ -3,7 +3,6 @@ require './spec/spec_helper'
 # Lightweight example of an oauth2 provider used by the ruby client.
 class TestOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
   
-  
   def initialize
     @authorization_uri = "https://test.fbsdata.com/r/oauth2"
     @access_uri = "https://api.test.fbsdata.com/v1/oauth2/grant"
@@ -26,6 +25,7 @@ class TestOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
     @session_cache["test_user_session"] = session
     nil
   end
+  
 end
 
 describe FlexmlsApi::Authentication::OAuth2  do
@@ -58,9 +58,8 @@ describe FlexmlsApi::Authentication::OAuth2  do
     end
     
     it "should raise an error when api credentials are invalid" do
-      pending("Need to handle and raise api error responses from the oauth2/grant service") do
       subject.authenticate.should eq(nil)
-      stub_request(:get, provider.access_uri).
+      stub_request(:post, provider.access_uri).
         with(:query => {
             :client_id => provider.client_id,
             :client_secret => provider.client_secret,
@@ -69,9 +68,8 @@ describe FlexmlsApi::Authentication::OAuth2  do
             :code => provider.code
           }
         ).
-        to_return(:body => fixture("authentication_failure.json"), :status=>401)
-      expect {subject.authenticate()}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 401 }
-      end
+        to_return(:body => fixture("oauth2_error.json"), :status=>400)
+      expect {subject.authenticate()}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
     end
   end
 

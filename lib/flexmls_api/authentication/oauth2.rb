@@ -50,12 +50,9 @@ module FlexmlsApi
           uri = URI.parse(@provider.access_uri)
           request_path = "#{uri.path}#{token_params}"
           # TODO need to revisit the faraday stack and conditionally parser an api error when status does not return 200
-          response = access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "")
-          puts "Response= #{response.inspect}"
-          s = OAuthSession.new(response.body)
-          FlexmlsApi.logger.info("Authentication: #{s.inspect}")
-          self.session=s
-          s
+          response = access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "").body
+          self.session=response
+          response
         end
       end
       
@@ -99,10 +96,9 @@ module FlexmlsApi
         conn = Faraday::Connection.new(opts) do |builder|
           builder.adapter Faraday.default_adapter
           builder.use Faraday::Response::ParseJson
+          builder.use FlexmlsApi::Authentication::FlexmlsOAuth2Middleware
         end
       end
-      
-        
     end
     
     class OAuthSession
@@ -140,6 +136,45 @@ module FlexmlsApi
       end
       
     end
+
+    #=OAuth2 response Faraday middleware
+    # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
+    class FlexmlsOAuth2Middleware < Faraday::Response::Middleware
+      begin
+        def self.register_on_complete(env)
+          env[:response].on_complete do |finished_env|
+            validate_and_build_response(finished_env)
+          end
+        end
+      rescue LoadError, NameError => e
+        self.load_error = e
+      end
       
+      def self.validate_and_build_response(finished_env)
+        body = finished_env[:body]
+        FlexmlsApi.logger.debug("Response Body: #{body.inspect}")
+        unless body.is_a?(Hash)
+          raise InvalidResponse, "The server response could not be understood"
+        end
+        case finished_env[:status]
+        when 200..299
+          FlexmlsApi.logger.debug("Success!")
+          session = OAuthSession.new(body)
+        else 
+          raise ClientError.new(0, finished_env[:status]), body["error"]
+        end
+        FlexmlsApi.logger.debug("Session= #{session.inspect}")
+        finished_env[:body] = session
+      end
+  
+      def initialize(app)
+        super
+        @parser = nil
+      end
+      
+    end
+    
+          
   end
+ 
 end

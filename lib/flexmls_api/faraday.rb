@@ -1,6 +1,6 @@
 module FlexmlsApi
   module FaradayExt
-    #=Flexmls API Faraday middle way
+    #=Flexmls API Faraday middleware
     # HTTP Response after filter to package api responses and bubble up basic api errors.
     class FlexmlsMiddleware < Faraday::Response::Middleware
       begin
