@@ -10,7 +10,6 @@ module FlexmlsApi
       end
       
       def authenticate
-        return @session if authenticated?
         sig = sign("#{@client.api_secret}ApiKey#{@client.api_key}")
         FlexmlsApi.logger.debug("Authenticating to #{@client.endpoint}")
         start_time = Time.now

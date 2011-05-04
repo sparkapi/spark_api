@@ -129,4 +129,31 @@ describe FlexmlsApi::Authentication::ApiAuth  do
     end
   end
   
+  context "when the server says the session is expired (even if we disagree)" do
+    it "should reset the session and reauthenticate" do
+      count = 0
+      # Make sure the auth request goes out twice.
+      stub_request(:post, "https://api.flexmls.com/#{FlexmlsApi.version}/session").
+                  with(:query => {:ApiKey => "", :ApiSig => "806737984ab19be2fd08ba36030549ac"}).
+                  to_return do |r|
+                    count += 1
+                    {:body => fixture("session.json")}
+                  end
+      # Fail the first time, but then return the correct value after reauthentication
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
+          with(:query => {
+            :ApiSig => "554b6e2a3efec8719b782647c19d238d",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+            :ApiUser => "foobar",
+            :_expand => "Documents"
+          }).
+          to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
+          to_return(:body => fixture('listing_with_documents.json'))
+      l = Listing.find('1234', :_expand => "Documents")
+      
+      count.should eq(2)
+      FlexmlsApi.client.session.expired?.should eq(false)
+    end
+  end
+  
 end

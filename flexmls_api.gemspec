@@ -62,6 +62,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/authentication_failure.json",
     "spec/fixtures/contacts.json",
     "spec/fixtures/count.json",
+    "spec/fixtures/errors/expired.json",
     "spec/fixtures/generic_delete.json",
     "spec/fixtures/generic_failure.json",
     "spec/fixtures/listing_document_index.json",

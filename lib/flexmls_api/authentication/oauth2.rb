@@ -14,7 +14,6 @@ module FlexmlsApi
       end
       
       def initialize(client)
-        # TODO
         @client = client
         @provider = client.oauth2_provider
       end
@@ -40,20 +39,16 @@ module FlexmlsApi
       end
       
       def authenticate
-        s = session
-        return s if authenticated?
         if(@provider.code.nil?)
+          FlexmlsApi.logger.debug("Redirecting to provider to get the authorization code")
           @provider.redirect(authorization_url)
-          return
-        else
-          FlexmlsApi.logger.debug("Authenticating to #{@provider.access_uri}")
-          uri = URI.parse(@provider.access_uri)
-          request_path = "#{uri.path}#{token_params}"
-          # TODO need to revisit the faraday stack and conditionally parser an api error when status does not return 200
-          response = access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "").body
-          self.session=response
-          response
         end
+        FlexmlsApi.logger.debug("Authenticating to #{@provider.access_uri}")
+        uri = URI.parse(@provider.access_uri)
+        request_path = "#{uri.path}#{token_params}"
+        response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "").body
+        self.session=response
+        response
       end
       
       # Perform an HTTP request (no data)
@@ -76,7 +71,6 @@ module FlexmlsApi
       end
       
       def logout
-        @client.delete("/session/#{session.access_token}") unless session.nil?
         @provider.save_session(nil)
       end
 
@@ -87,7 +81,8 @@ module FlexmlsApi
         {"Authorization"=> "OAuth #{session.access_token}"}
       end
       
-      def access_connection(endpoint)
+      # Setup a faraday connection for dealing with an OAuth2 endpoint
+      def oauth_access_connection(endpoint)
         opts = {
           :headers => @client.headers
         }
@@ -101,10 +96,12 @@ module FlexmlsApi
       end
     end
     
+    # Representation of a session with the api using oauth2
     class OAuthSession
       attr_accessor :access_token, :expires_in, :scope, :refresh_token
       def initialize(options={})
         @access_token = options["access_token"]
+        # TODO The current oauth2 implementation does not send an expiration time.  I'm setting it to default to 1 hour.
         @expires_in = options["expires_in"].nil? ? 3600 : options["expires_in"]
         @scope = options["scope"]
         @refresh_token = options["refresh_token"]
@@ -116,17 +113,26 @@ module FlexmlsApi
       end
     end
     
+    #=OAuth2 configuration provider for applications
+    # Applications planning to use OAuth2 authentication with the API must extend this class as 
+    # part of the client configuration, providing values for the following attributes:
+    #  @authorization_uri - User oauth2 login page for flexmls
+    #  @access_uri - Location of the OAuth2 access token resource for the api.  OAuth2 code and 
+    #    credentials will be sent to this uri to generate an access token.
+    #  @redirect_uri - Application uri to redirect to 
+    #  @client_id - OAuth2 provided application identifier
+    #  @client_secret - OAuth2 provided password for the client id
     class BaseOAuth2Provider
       
       attr_accessor :authorization_uri, :code, :access_uri, :redirect_uri, :client_id, :client_secret
 
-      # Client defers to external application for handling redirects for user authentication
+      # Application using the client must handle user redirect for user authentication
       def redirect(url)
         raise "Must be implemented by client consumer"
       end
       
       # For any persistence to be supported outside application process, the application shall 
-      # implement the following methods for storing and retrieving the user oauth session 
+      # implement the following methods for storing and retrieving the user OAuth2 session 
       # (e.g. to and from memcached). 
       def load_session
         # returns OAuthSession
@@ -174,7 +180,6 @@ module FlexmlsApi
       
     end
     
-          
   end
  
 end

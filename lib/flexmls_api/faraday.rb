@@ -26,8 +26,8 @@ module FlexmlsApi
         when 400, 409
           raise BadResourceRequest.new(response.code, finished_env[:status]), response.message
         when 401
-          # TODO Handle the WWW-Authenticate Response Header Field in the exception as well?
-          # e.g. WWW-Authenticate: OAuth realm='Example Service', error='expired-token' (from API-96)
+          # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
+          # OAuth2 implementations and wouldn't hurt to log.
           auth_header_error = finished_env[:request_headers]["WWW-Authenticate"]
           FlexmlsApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
           raise PermissionDenied.new(response.code, finished_env[:status]), response.message

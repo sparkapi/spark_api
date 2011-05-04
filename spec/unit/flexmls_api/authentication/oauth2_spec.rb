@@ -40,37 +40,34 @@ describe FlexmlsApi::Authentication::OAuth2  do
   end
   describe "authenticate" do
     it "should authenticate the api credentials" do
-      subject.authenticate.should eq(nil)
-      
       stub_request(:post, provider.access_uri).
         with(:query => {
             :client_id => provider.client_id,
             :client_secret => provider.client_secret,
             :grant_type => "authorization_code",
             :redirect_uri => provider.redirect_uri,
-            :code => provider.code
+            :code => "my_code"
           }
         ).
         to_return(:body => fixture("oauth2_access.json"), :status=>200)
-      
       subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
       
     end
     
     it "should raise an error when api credentials are invalid" do
-      subject.authenticate.should eq(nil)
       stub_request(:post, provider.access_uri).
         with(:query => {
             :client_id => provider.client_id,
             :client_secret => provider.client_secret,
             :grant_type => "authorization_code",
             :redirect_uri => provider.redirect_uri,
-            :code => provider.code
+            :code => "my_code"
           }
         ).
         to_return(:body => fixture("oauth2_error.json"), :status=>400)
       expect {subject.authenticate()}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
     end
+    
   end
 
   describe "authenticated?" do
@@ -93,12 +90,9 @@ describe FlexmlsApi::Authentication::OAuth2  do
   describe "logout" do
     let(:session) { mock_oauth_session }
     it "should logout when there is an active session" do
-      logged_out = false
       subject.session = session
-      client.stub(:delete).with("/session/1234") { logged_out = true }
       subject.logout
       subject.session.should eq(nil)
-      logged_out.should eq(true)
     end
     it "should skip logging out when there is no active session information" do 
       client.stub(:delete) { raise "Should not be called" }
@@ -140,4 +134,34 @@ describe FlexmlsApi::Authentication::OAuth2  do
       subject.request(:post, "/#{FlexmlsApi.version}/contacts", contact, args).status.should eq(201)
     end
   end
+
+  context "when the server says the session is expired (even if we disagree)" do
+    it "should reset the session and reauthenticate" do
+      count = 0
+      stub_request(:post, provider.access_uri).
+        with(:query => {
+            :client_id => provider.client_id,
+            :client_secret => provider.client_secret,
+            :grant_type => "authorization_code",
+            :redirect_uri => provider.redirect_uri,
+            :code => "my_code"
+          }
+        ).
+        to_return do
+          count += 1
+          {:body => fixture("oauth2_access.json"), :status=>200}
+        end
+      # Make sure the auth request goes out twice.
+      # Fail the first time, but then return the correct value after reauthentication
+      stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
+        with(:query => {:access_token => "04u7h-4cc355-70k3n"}).
+          to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
+          to_return(:body => fixture('listing_with_documents.json'))
+            
+      client.get("/listings/1234")
+      count.should eq(2)
+      client.session.expired?.should eq(false)
+    end
+  end
+
 end

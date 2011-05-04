@@ -243,7 +243,7 @@ describe FlexmlsApi do
 
     context "when expire response" do
       subject do 
-        session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now + 60).to_s, "Roles" => "['idx']")
+        session = FlexmlsApi::Authentication::Session.new("AuthToken" => "EXPIRED", "Expires" => (Time.now - 3600).to_s, "Roles" => "['idx']")
         r = RequestExpiredTest.new(session)
         r.connection = @connection
         r
