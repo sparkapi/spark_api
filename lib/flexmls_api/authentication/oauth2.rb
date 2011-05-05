@@ -124,7 +124,7 @@ module FlexmlsApi
       end
       #  Is the user session token expired?
       def expired?
-        DateTime.now - @start_time > @expires_in
+        @start_time + Rational(@expires_in, 24*60*60) < DateTime.now
       end
     end
     
