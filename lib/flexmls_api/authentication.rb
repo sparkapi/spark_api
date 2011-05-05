@@ -10,8 +10,9 @@ require File.expand_path('../authentication/api_auth', __FILE__)
 require File.expand_path('../authentication/oauth2', __FILE__)
 
 module FlexmlsApi
-  # =API Authentication
-  # Handles authentication and reauthentication to the flexmls api.
+  # =Authentication
+  # Mixin module for handling client authentication and reauthentication to the flexmls api.  Makes 
+  # use of the configured authentication mode (API Auth by default).
   module Authentication
 
     # Main authentication step.  Run before any api request unless the user session exists and is 
@@ -24,12 +25,13 @@ module FlexmlsApi
     def authenticate
       start_time = Time.now
       request_time = Time.now - start_time
-      newsession = @authenticator.authenticate
+      new_session = @authenticator.authenticate
       FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms]")
-      FlexmlsApi.logger.debug("Session: #{session.inspect}")
-      newsession
+      FlexmlsApi.logger.debug("Session: #{new_session.inspect}")
+      new_session
     end
 
+    # Test to see if there is an active session
     def authenticated?
       @authenticator.authenticated?
     end
@@ -40,29 +42,13 @@ module FlexmlsApi
       @authenticator.logout
     end
 
-    # Active session object
+    # Fetch the active session object
     def session
       @authenticator.session
     end
-    
-    def session=(s)
-      @authenticator.session=s
-    end
-    
-    # ==Session class
-    # Handle on the api user session information as return by the api session service, including 
-    # roles, tokens and expiration
-    class Session
-      attr_accessor :auth_token, :expires, :roles 
-      def initialize(options={})
-        @auth_token = options["AuthToken"]
-        @expires = DateTime.parse options["Expires"]
-        @roles = options["Roles"]
-      end
-      #  Is the user session token expired?
-      def expired?
-        DateTime.now > @expires
-      end
+    # Save the active session object
+    def session=(active_session)
+      @authenticator.session=active_session
     end
     
     # Main connection object for running requests.  Bootstraps the Faraday abstraction layer with 
@@ -87,7 +73,7 @@ module FlexmlsApi
       conn
     end
     
-    # HTTP request headers
+    # HTTP request headers for client requests
     def headers
       {
         :accept => 'application/json',

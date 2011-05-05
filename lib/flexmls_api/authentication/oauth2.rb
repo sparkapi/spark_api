@@ -3,7 +3,20 @@ require 'uri'
 module FlexmlsApi
 
   module Authentication
+    #=OAuth2 Authentication
+    # Auth implementation to the API using the OAuth2 service endpoint.  Current adheres to the 10 
+    # draft of the OAuth2 specification.  With OAuth2, the application supplies credentials for the 
+    # application, and a separate a user authentication flow dictactes the active user for 
+    # requests.
+    #
+    #===Setup
+    # When using this authentication method, there is a bit more setup involved to make the client
+    # work.  All applications need to extend the BaseOAuth2Provider class to supply the application
+    # specific configuration.  Also depending on the application type (command line, native, or web 
+    # based), the user authentication step will be handled differently.
     
+    #==OAuth2
+    # Implementation the BaseAuth interface for API style authentication  
     class OAuth2 < BaseAuth
       
       def session
@@ -18,6 +31,7 @@ module FlexmlsApi
         @provider = client.oauth2_provider
       end
       
+      # Generate the appropriate request uri for authorizing this application for current user.
       def authorization_url
         params = {
           "client_id" => @provider.client_id,
@@ -101,7 +115,7 @@ module FlexmlsApi
       attr_accessor :access_token, :expires_in, :scope, :refresh_token
       def initialize(options={})
         @access_token = options["access_token"]
-        # TODO The current oauth2 implementation does not send an expiration time.  I'm setting it to default to 1 hour.
+        # TODO The current oauth2 service does not send an expiration time.  I'm setting it to default to 1 hour.
         @expires_in = options["expires_in"].nil? ? 3600 : options["expires_in"]
         @scope = options["scope"]
         @refresh_token = options["refresh_token"]
@@ -126,24 +140,35 @@ module FlexmlsApi
       
       attr_accessor :authorization_uri, :code, :access_uri, :redirect_uri, :client_id, :client_secret
 
-      # Application using the client must handle user redirect for user authentication
+      # Application using the client must handle user redirect for user authentication.  For 
+      # command line applications, this method is called prior to initial client requests so that  
+      # the process can notify the user to go to the url and retrieve the access_code for the app.  
+      # In a web based web application, this method can be mostly ignored.  However, the web based 
+      # application is then responsible for ensuring the code is saved to the the provider instance  
+      # prior to any client requests are performed (or the error below will be thrown). 
       def redirect(url)
-        raise "Must be implemented by client consumer"
+        raise "To be implemented by client application"
       end
       
-      # For any persistence to be supported outside application process, the application shall 
+      #==For any persistence to be supported outside application process, the application shall 
       # implement the following methods for storing and retrieving the user OAuth2 session 
-      # (e.g. to and from memcached). 
+      # (e.g. to and from memcached).
+      
+      # Load the current OAuth session
+      # returns - active OAuthSession or nil
       def load_session
-        # returns OAuthSession
+        nil
       end
+      
+      # Save current session
+      # session - active OAuthSession
       def save_session(session)
         
       end
       
     end
 
-    #=OAuth2 response Faraday middleware
+    #==OAuth2 Faraday response middleware
     # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
     class FlexmlsOAuth2Middleware < Faraday::Response::Middleware
       begin

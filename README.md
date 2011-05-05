@@ -34,9 +34,13 @@ Usage Examples
 
 Authentication
 --------------
-Authentication is handled transparently by the request framework in the gem, so you should never need to manually make an authentication request.
+Authentication is handled transparently by the request framework in the gem, so you should never need to manually make an authentication request.  More than one mode of authentication is supported, so the client needs to be configured accordingly.
 
+#### API Authentication (Default)
+Usually supplied for a single user, this authentication mode is the simplest, and is setup as the default.  The example usage above demonstrates how to get started using this authentication mode.
 
+#### OAuth2 Authentication
+Authentication mode the separates application and user authentication.  This mode requires further setup which is described in lib/flexmls_api/authentication/oauth2.rb
 
 Error Codes
 ---------------------
@@ -123,6 +127,4 @@ Error Codes
       <td>Over rate limit</td>
   </tbody>
 </table>
-
-
 

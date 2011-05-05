@@ -2,7 +2,13 @@ module FlexmlsApi
 
   module Authentication
 
-    # The API's original hash based authentication implementation.
+    #=API Authentication
+    # Auth implementation for the API's original hash based authentication design.  This is the 
+    # default authentication strategy used by the client.  API Auth rely's on the user's API key
+    # and secret and the active user is tied to the key owner.  
+    
+    #==ApiAuth
+    # Implementation the BaseAuth interface for API style authentication  
     class ApiAuth < BaseAuth
       
       def initialize(client)
@@ -72,6 +78,22 @@ module FlexmlsApi
         response
       end
       
+    end
+    
+    # ==Session class
+    # Handle on the api user session information as return by the api session service, including 
+    # roles, tokens and expiration
+    class Session
+      attr_accessor :auth_token, :expires, :roles 
+      def initialize(options={})
+        @auth_token = options["AuthToken"]
+        @expires = DateTime.parse options["Expires"]
+        @roles = options["Roles"]
+      end
+      #  Is the user session token expired?
+      def expired?
+        DateTime.now > @expires
+      end
     end
 
   end
