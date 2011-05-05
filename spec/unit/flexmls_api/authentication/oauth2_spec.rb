@@ -26,6 +26,8 @@ class TestOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
     nil
   end
   
+  def session_timeout; 7200; end
+  
 end
 
 describe FlexmlsApi::Authentication::OAuth2  do
@@ -51,7 +53,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
         ).
         to_return(:body => fixture("oauth2_access.json"), :status=>200)
       subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
-      
+      subject.authenticate.expires_in.should eq(7200)
     end
     
     it "should raise an error when api credentials are invalid" do
@@ -164,4 +166,18 @@ describe FlexmlsApi::Authentication::OAuth2  do
     end
   end
 
+end
+
+describe FlexmlsApi::Authentication::BaseOAuth2Provider  do
+  context "session_timeout" do
+    it "should provide a default" do
+      subject.session_timeout.should eq(3600)
+    end
+    describe TestOAuth2Provider do
+      subject { TestOAuth2Provider.new }
+      it "should be able to override the session timeout" do
+        subject.session_timeout.should eq(7200)
+      end
+    end
+  end
 end

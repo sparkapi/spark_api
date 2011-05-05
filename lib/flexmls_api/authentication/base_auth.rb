@@ -13,7 +13,7 @@ module FlexmlsApi
       
       # Perform requests to authenticate the client with the API
       def authenticate
-        # implement me
+        raise "Implement me!"
       end
 
       # Called prior to running authenticate (except in case of api authentication errors)
@@ -23,12 +23,12 @@ module FlexmlsApi
       
       # Terminate the active session
       def logout
-        # implement me
+        raise "Implement me!"
       end
         
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
-        # implement me
+        raise "Implement me!"
       end
       
       # Format a hash as request parameters

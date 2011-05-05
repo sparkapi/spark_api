@@ -61,6 +61,7 @@ module FlexmlsApi
         uri = URI.parse(@provider.access_uri)
         request_path = "#{uri.path}#{token_params}"
         response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "").body
+        response.expires_in = @provider.session_timeout if response.expires_in.nil?
         self.session=response
         response
       end
@@ -116,7 +117,7 @@ module FlexmlsApi
       def initialize(options={})
         @access_token = options["access_token"]
         # TODO The current oauth2 service does not send an expiration time.  I'm setting it to default to 1 hour.
-        @expires_in = options["expires_in"].nil? ? 3600 : options["expires_in"]
+        @expires_in = options["expires_in"]
         @scope = options["scope"]
         @refresh_token = options["refresh_token"]
         @start_time = DateTime.now
@@ -164,6 +165,11 @@ module FlexmlsApi
       # session - active OAuthSession
       def save_session(session)
         
+      end
+      
+      # Provides a default session time out
+      def session_timeout
+        3600
       end
       
     end
