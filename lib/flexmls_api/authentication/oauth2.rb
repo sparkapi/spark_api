@@ -70,9 +70,7 @@ module FlexmlsApi
       def request(method, path, body, options)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
-        request_opts = {
-          :access_token => session.access_token
-        }
+        request_opts = {}
         request_opts.merge!(options)
         request_path = "#{path}?#{build_url_parameters({:access_token => session.access_token}.merge(options))}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
@@ -198,6 +196,10 @@ module FlexmlsApi
           FlexmlsApi.logger.debug("Success!")
           session = OAuthSession.new(body)
         else 
+          # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
+          # OAuth2 implementations and wouldn't hurt to log.
+          auth_header_error = finished_env[:request_headers]["WWW-Authenticate"]
+          FlexmlsApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
           raise ClientError.new(0, finished_env[:status]), body["error"]
         end
         FlexmlsApi.logger.debug("Session= #{session.inspect}")
