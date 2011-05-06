@@ -14,7 +14,8 @@ begin
     gemspec.email = "api-support@flexmls.com"
     gemspec.homepage = "https://github.com/flexmls/flexmls_api"
     gemspec.authors = ["Brandon Hornseth", "Wade McEwen"]
-    gemspec.files =  FileList["[A-Z]*", "{lib,spec}/**/*"]
+    # Need to skip spec/reports for CI builds
+    gemspec.files =  FileList["[A-Z]*", "{lib,spec/fixtures,spec/unit}/**/*", "spec/*.rb"]
     gemspec.add_development_dependency "rspec"
     gemspec.add_development_dependency "jeweler"
     gemspec.add_development_dependency "curb"
