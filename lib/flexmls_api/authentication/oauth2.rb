@@ -166,6 +166,7 @@ module FlexmlsApi
       end
       
       # Provides a default session time out
+      # returns - the session timeout length (in seconds)
       def session_timeout
         3600
       end
