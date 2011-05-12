@@ -90,14 +90,7 @@ describe Listing do
     
     it "should return the count" do
       stub_auth_request
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings").
-        with(:query => {
-          :_pagination => "count",
-          :ApiSig => "9028191e427eee6774527e7d19f489cb",
-          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-          :ApiUser => "foobar"
-        }).
-        to_return(:body => fixture('count.json'))
+      stub_api_get("/listings", 'count.json', { :_pagination => "count"})
       count = Listing.count()
       count.should == 2001
     end 
@@ -108,16 +101,8 @@ describe Listing do
       stub_auth_request
     end
 
-
     it "should return an array of photos" do
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
-          with(:query => {
-            :ApiSig => "3c942a2d6746299c476dd2e30d10966b",
-            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-            :ApiUser => "foobar",
-            :_expand => "Photos"
-          }).
-          to_return(:body => fixture('listing_with_photos.json'))
+      stub_api_get("/listings/1234", 'listing_with_photos.json', { :_expand => "Photos" })
       
       l = Listing.find('1234', :_expand => "Photos")
       l.photos.length.should == 5
@@ -127,14 +112,7 @@ describe Listing do
     end
 
     it "should return an array of documents" do
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
-          with(:query => {
-            :ApiSig => "554b6e2a3efec8719b782647c19d238d",
-            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-            :ApiUser => "foobar",
-            :_expand => "Documents"
-          }).
-          to_return(:body => fixture('listing_with_documents.json'))
+      stub_api_get("/listings/1234", 'listing_with_documents.json', { :_expand => "Documents" })
       
       l = Listing.find('1234', :_expand => "Documents")
       l.photos.length.should == 0
@@ -144,14 +122,7 @@ describe Listing do
     end
 
     it "should return an array of virtual tours" do
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
-          with(:query => {
-            :ApiSig => "cc966b538640dd6b37dce0067cea2e5a",
-            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-            :ApiUser => "foobar",
-            :_expand => "VirtualTours"
-          }).
-          to_return(:body => fixture('listing_with_vtour.json'))
+      stub_api_get("/listings/1234", 'listing_with_vtour.json', { :_expand => "VirtualTours" })
       
       l = Listing.find('1234', :_expand => "VirtualTours")
       l.virtual_tours.length.should == 1
@@ -162,14 +133,7 @@ describe Listing do
 
 
     it "should return an array of videos" do
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234").
-          with(:query => {
-            :ApiSig => "12afd7ef1d98ca35c613040f5ddb92b2",
-            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-            :ApiUser => "foobar",
-            :_expand => "Videos"
-          }).
-          to_return(:body => fixture('listing_with_videos.json'))
+      stub_api_get("/listings/1234", 'listing_with_videos.json', { :_expand => "Videos" })
       
       l = Listing.find('1234', :_expand => "Videos")
       l.videos.length.should == 2
@@ -179,21 +143,9 @@ describe Listing do
     end 
 
     it "should return tour of homes" do
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/20060725224713296297000000").
-        with(:query => {
-          :ApiSig => "b3ae2bec3500ba4620bf8224dee28d20",
-          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-          :ApiUser => "foobar"
-        }).
-        to_return(:body => fixture('listing_no_subresources.json'))
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/20060725224713296297000000/tourofhomes").
-        with( :query => {
-          :ApiSig => "153446de6d1db765d541587d34ed0fcf",
-          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-          :ApiUser => "foobar"
-        }).
-        to_return(:body => fixture('tour_of_homes.json'))
-          
+      stub_api_get("/listings/20060725224713296297000000", 'listing_no_subresources.json')
+      stub_api_get("/listings/20060725224713296297000000/tourofhomes", 'tour_of_homes.json')
+
       l = Listing.find('20060725224713296297000000')
       l.tour_of_homes().length.should == 2
       l.videos.length.should == 0

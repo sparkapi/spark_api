@@ -1,32 +1,9 @@
 require './spec/spec_helper'
 
 
-class Contact
-  class << self
-    # Neato trick, using the accessor function nested here acts on the class methods!
-    attr_accessor :connection
-  end
-end
-
 describe Contact do
-  before(:all) do
-    stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-      stub.get('/v1/contacts?ApiSig=33e3b6d6436c85c3f9944d21f6f0cf9a&ApiUser=foobar&AuthToken=1234') { [200, {}, fixture('contacts.json')] 
-      }
-      stub.post('/v1/contacts?ApiSig=1c78fb9f798fbb739a0b8152528cd453&ApiUser=foobar&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"Contact Four","PrimaryEmail":"contact4@fbsdata.com"}]}}') { [201, {}, '{"D": {
-        "Success": true, 
-        "Results": [
-          {
-            "ResourceUri":"/v1/contacts/20101230223226074204000000"
-          }]}
-        }'] 
-      }
-      stub.post('/v1/contacts?ApiSig=ea132fe27a8deb7d6c096b102972ce3e&ApiUser=foobar&AuthToken=1234', '{"D":{"Contacts":[{}]}}') { [400, {}, '{"D": {
-        "Success": false}
-        }'] 
-      }
-    end
-    Contact.connection = mock_client(stubs)
+  before(:each) do
+    stub_auth_request
   end
   
   it "should include the finders module" do
@@ -34,6 +11,8 @@ describe Contact do
   end
 
   it "should get all my contacts" do
+    stub_api_get("/contacts", 'contacts.json')
+    
     contacts = Contact.get
     contacts.should be_an(Array)
     contacts.length.should eq(3)
@@ -41,6 +20,7 @@ describe Contact do
   end
 
   it "should save a new contact" do
+    stub_api_post("/contacts", 'contact_new.json', 'contacts_post.json')
     c=Contact.new
     c.attributes["DisplayName"] = "Contact Four"
     c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
@@ -49,22 +29,31 @@ describe Contact do
   end
 
   it "should fail saving" do
+    stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/contacts").
+      with(:query => {
+        :ApiSig => "479d7afe0c36fc0925e7a5e84f3e1a2f",
+        :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+        :ApiUser => "foobar",
+      },
+      :body => '{"D":{"Contacts":[{}]}}'
+      ).
+      to_return(:status => 400, :body => fixture('errors/failure.json'))
     c=Contact.new
     c.save.should be(false)
     expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
   end
   
   context "on an epic fail" do
-    before(:all) do
-      stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-        stub.post('/v1/contacts?ApiSig=ea132fe27a8deb7d6c096b102972ce3e&ApiUser=foobar&AuthToken=1234', '{"D":{"Contacts":[{}]}}') { [500, {}, '{"D": {
-          "Success": false}
-          }'] 
-        }
-      end
-      Contact.connection = mock_client(stubs)
-    end
     it "should fail saving and asplode" do
+      stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/contacts").
+        with(:query => {
+          :ApiSig => "479d7afe0c36fc0925e7a5e84f3e1a2f",
+          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+          :ApiUser => "foobar",
+        },
+        :body => '{"D":{"Contacts":[{}]}}'
+        ).
+        to_return(:status => 500, :body => fixture('errors/failure.json'))
       c=Contact.new()
       expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 500 }
       expect{ c.save }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 500 }

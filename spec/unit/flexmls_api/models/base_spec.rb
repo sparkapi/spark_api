@@ -4,12 +4,6 @@ require './spec/spec_helper'
 class MyExampleModel < Base
   self.element_name = "example"
   self.prefix = "/test/"
-  def self.connection
-    @connection ||= Base.connection
-  end
-  def self.connection=(con)
-    @connection = con
-  end
 end
 
 class MyDefaultModel < Base
@@ -31,24 +25,9 @@ describe Base, "Base model" do
       MyDefaultModel.path.should eq("/resource")
     end
     describe "finders" do
-      before(:all) do
-        stubs = Faraday::Adapter::Test::Stubs.new do |stub|
-          stub.get('/v1/test/example?ApiSig=9fd7299fc210d0c3dcc24782d9cb7894&ApiUser=foobar&AuthToken=1234') { [200, {}, '{"D": {
-            "Success": true, 
-            "Results": [{
-              "Id": 1,
-              "Name": "My Example", 
-              "Test": true
-            },
-            {
-              "Id": 2, 
-              "Name": "My Example2", 
-              "Test": false
-            }]}
-            }'] 
-          }
-        end
-        MyExampleModel.connection = mock_client(stubs)
+      before(:each) do
+        stub_auth_request
+        stub_api_get("/test/example", 'base.json')
       end
       it "should get all results" do
         MyExampleModel.get.length.should == 2
