@@ -5,13 +5,13 @@ module FlexmlsApi
       self.element_name="standardfields"
       
       # expand all fields passed in
-      def self.find_and_expand_all(fields, arguments={})
+      def self.find_and_expand_all(fields, arguments={}, max_list_size=1000)
         returns = {}
         
         # find all standard fields, but expand only the location fields
         # TODO: when _expand support is added to StandardFields API, use the following
         # standard_fields = find(:all, {:ApiUser => owner, :_expand => fields.join(",")}) 
-        standard_fields = find(:all, arguments) 
+        standard_fields = find(:all, arguments)
       
         # filter through the list and return only the location fields found
         fields.each do |field|
@@ -20,7 +20,7 @@ module FlexmlsApi
             returns[field] = standard_fields.first.attributes[field]
               
             # lookup fully _expand field, if the field has a list
-            if returns[field]['HasList']
+            if returns[field]['HasList'] && returns[field]['MaxListSize'].to_i <= max_list_size
               returns[field] = connection.get("/standardfields/#{field}", arguments).first[field]
             end
               
