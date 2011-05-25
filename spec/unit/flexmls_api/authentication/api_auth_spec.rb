@@ -131,6 +131,7 @@ describe FlexmlsApi::Authentication::ApiAuth  do
   
   context "when the server says the session is expired (even if we disagree)" do
     it "should reset the session and reauthenticate" do
+      reset_config
       count = 0
       # Make sure the auth request goes out twice.
       stub_request(:post, "https://api.flexmls.com/#{FlexmlsApi.version}/session").

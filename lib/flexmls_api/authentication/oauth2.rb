@@ -49,7 +49,7 @@ module FlexmlsApi
           "code" => @provider.code,
           "redirect_uri" => @provider.redirect_uri
         }
-        "?#{build_url_parameters(params)}"
+        "#{build_url_parameters(params)}"
       end
       
       def authenticate
@@ -59,8 +59,8 @@ module FlexmlsApi
         end
         FlexmlsApi.logger.debug("Authenticating to #{@provider.access_uri}")
         uri = URI.parse(@provider.access_uri)
-        request_path = "#{uri.path}#{token_params}"
-        response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "").body
+        request_path = "#{uri.path}"
+        response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "#{token_params}").body
         response.expires_in = @provider.session_timeout if response.expires_in.nil?
         self.session=response
         response
