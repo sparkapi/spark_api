@@ -23,7 +23,7 @@ def stub_api_delete(service_path, stub_fixture="success.json", opts={})
       to_return(:body => fixture(stub_fixture))
 end
 def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
-  body_str = fixture(body).read
+  body_str = JSON.parse(fixture(body).read).to_json
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{FlexmlsApi.version}#{service_path}", params, body_str)
   s=stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}#{service_path}").
@@ -33,9 +33,10 @@ def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
         :body => body_str
       ).
       to_return(:body => fixture(stub_fixture))
+  log_stub(s)
 end
 def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
-  body_str = fixture(body).read
+  body_str = JSON.parse(fixture(body).read).to_json
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{FlexmlsApi.version}#{service_path}", params, body_str)
   s=stub_request(:put, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}#{service_path}").
@@ -47,6 +48,9 @@ def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
       to_return(:body => fixture(stub_fixture))
 end
 
+def log_stub(s)
+  FlexmlsApi.logger.debug("Stubbed Request: #{s.inspect}")
+end
 
 def mock_session()
   FlexmlsApi::Authentication::Session.new("AuthToken" => "1234", "Expires" => (Time.now + 3600).to_s, "Roles" => "['idx']")

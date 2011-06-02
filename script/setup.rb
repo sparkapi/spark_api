@@ -11,8 +11,17 @@ path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require path + '/flexmls_api'
 
-FlexmlsApi.logger.info("Client configured!")
+module FlexmlsApi
+  def self.logger
+    if @logger.nil?
+      @logger = Logger.new(STDOUT)
+      @logger.level = Logger::DEBUG
+    end
+    @logger
+  end
+end
 
+FlexmlsApi.logger.info("Client configured!")
 
 FlexmlsApi.configure do |config|
   config.api_key = ENV["API_KEY"] 

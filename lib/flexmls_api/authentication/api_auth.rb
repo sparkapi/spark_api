@@ -23,6 +23,7 @@ module FlexmlsApi
         resp = @client.connection(true).post request_path, ""
         request_time = Time.now - start_time
         FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: POST #{request_path}")
+        FlexmlsApi.logger.debug("Authentication Response: #{resp.inspect}")
         @session = Session.new(resp.body.results.first)
         FlexmlsApi.logger.debug("Authentication: #{@session.inspect}")
         @session
