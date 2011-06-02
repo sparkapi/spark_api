@@ -58,6 +58,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
+    "lib/get_note.rb",
     "spec/fixtures/add_note.json",
     "spec/fixtures/agent_shared_note.json",
     "spec/fixtures/agent_shared_note_empty.json",

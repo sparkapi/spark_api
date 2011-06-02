@@ -44,7 +44,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
     it "should authenticate the api credentials" do
       stub_request(:post, provider.access_uri).
         with(:body => 
-          "code=my_code&client_secret=example-password&client_id=example-id&redirect_uri=https%3A%2F%2Fexampleapp.fbsdata.com%2Foauth-callback&grant_type=authorization_code"
+            '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}' 
         ).
         to_return(:body => fixture("oauth2_access.json"), :status=>200)
       subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
@@ -54,7 +54,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
     it "should raise an error when api credentials are invalid" do
       s=stub_request(:post, provider.access_uri).
         with(:body => 
-          "code=my_code&client_secret=example-password&client_id=example-id&redirect_uri=https%3A%2F%2Fexampleapp.fbsdata.com%2Foauth-callback&grant_type=authorization_code"
+             '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'
         ).
         to_return(:body => fixture("oauth2_error.json"), :status=>400)
       expect {subject.authenticate()}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
@@ -131,7 +131,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
     it "should reset the session and reauthenticate" do
       count = 0
       stub_request(:post, provider.access_uri).
-        with(:body => "code=my_code&client_secret=example-password&client_id=example-id&redirect_uri=https%3A%2F%2Fexampleapp.fbsdata.com%2Foauth-callback&grant_type=authorization_code").
+        with(:body => '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'). 
         to_return do
           count += 1
           {:body => fixture("oauth2_access.json"), :status=>200}

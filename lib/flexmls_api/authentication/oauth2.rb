@@ -49,7 +49,7 @@ module FlexmlsApi
           "code" => @provider.code,
           "redirect_uri" => @provider.redirect_uri
         }
-        "#{build_url_parameters(params)}"
+       params.to_json 
       end
       
       def authenticate
