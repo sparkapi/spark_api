@@ -1,0 +1,56 @@
+require './spec/spec_helper'
+
+describe ListingCart do
+
+  it "should get all listing carts" do
+    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    resources = subject.class.get
+    resources.should be_an(Array)
+    resources.length.should eq(2)
+    resources.first.Id.should eq("20100912153422758914000000")
+  end
+
+  it "should get a listing cart" do
+    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    resource = subject.class.get.first
+    resource.Id.should eq("20100912153422758914000000")
+    resource.Name.should eq("My Listing Cart")
+    resource.ListingCount.should eq(10)
+  end
+
+  let(:listing){ Listing.new(:Id => "20110112234857732941000000") }
+  it "should get all carts for a listing" do
+    stub_api_get("/#{subject.class.element_name}/for/#{listing.Id}", 'listing_cart.json')
+    resources = subject.class.for(listing)
+    resources.should be_an(Array)
+    resources.length.should eq(2)
+    resources.first.Id.should eq("20100912153422758914000000")
+  end
+  
+  it "should save a listing cart" do
+    stub_api_post("/#{subject.class.element_name}", 'listing_cart_new.json', 'listing_cart_post.json')
+    subject.ListingIds = [
+      '20110112234857732941000000',
+      '20110302120238448431000000',
+      '20110510011212354751000000']
+    subject.Name = "My Cart's Name"
+    subject.save.should be(true)
+    subject.ResourceUri.should eq("/v1/listingcarts/20100912153422758914000000")
+  end
+
+  it "should fail saving" do
+    stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/#{subject.class.element_name}").
+      with(:query => {
+        :ApiSig => "f225f58f16349cdd3b2f2e33bfc4db0f",
+        :AuthToken => "c401736bf3d3f754f07c04e460e09573",
+        :ApiUser => "foobar",
+      },
+      :body => '{"D":{"ListingCarts":[{}]}}'
+      ).
+      to_return(:status => 400, :body => fixture('errors/failure.json'))
+    subject
+    subject.save.should be(false)
+    expect{ subject.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
+  end
+
+end

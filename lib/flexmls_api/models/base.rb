@@ -73,7 +73,11 @@ module FlexmlsApi
         else
           return attributes[method_name] if attributes.include?(method_name)
           super # GTFO
-        end 
+        end
+      end
+      
+      def parse_id(uri)
+        uri[/\/.*\/(.+)$/, 1]
       end
     end
   end
