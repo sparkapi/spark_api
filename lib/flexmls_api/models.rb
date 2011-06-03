@@ -19,6 +19,7 @@ require File.expand_path('../models/document', __FILE__)
 require File.expand_path('../models/note', __FILE__)
 require File.expand_path('../models/listing_cart.rb', __FILE__)
 require File.expand_path('../models/shared_listing.rb', __FILE__)
+require File.expand_path('../models/saved_search.rb', __FILE__)
 
 module FlexmlsApi
   module Models

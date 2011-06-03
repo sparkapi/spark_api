@@ -1,0 +1,17 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            { 
+              "ResourceUri": "/v1/savedsearches/20100815220615294367000000",
+              "Id":  "20100815220615294367000000",
+              "Name": "Search name here" 
+            },
+            { 
+              "ResourceUri": "/v1/savedsearches/20100615220615292711000000",
+              "Id":  "20100615220615292711000000",
+              "Name": "Second search name here" 
+            }
+        ]
+    }
+}
