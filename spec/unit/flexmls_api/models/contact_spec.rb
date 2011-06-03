@@ -12,7 +12,6 @@ describe Contact do
 
   it "should get all my contacts" do
     stub_api_get("/contacts", 'contacts.json')
-    
     contacts = Contact.get
     contacts.should be_an(Array)
     contacts.length.should eq(3)
@@ -28,14 +27,24 @@ describe Contact do
     c.Id.should eq('20101230223226074204000000')
   end
 
+  it "should save a new contact and notify" do
+    stub_api_post("/contacts", 'contact_new_notify.json', 'contacts_post.json')
+    c=Contact.new
+    c.notify=true
+    c.attributes["DisplayName"] = "Contact Four"
+    c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
+    c.save.should be(true)
+    c.Id.should eq('20101230223226074204000000')
+  end
+
   it "should fail saving" do
     stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/contacts").
       with(:query => {
-        :ApiSig => "479d7afe0c36fc0925e7a5e84f3e1a2f",
+        :ApiSig => "afb8bd30fe41de3e1e738a6dec7de41d",
         :AuthToken => "c401736bf3d3f754f07c04e460e09573",
         :ApiUser => "foobar",
       },
-      :body => '{"D":{"Contacts":[{}]}}'
+      :body => JSON.parse(fixture('contact_new_empty.json').read).to_json
       ).
       to_return(:status => 400, :body => fixture('errors/failure.json'))
     c=Contact.new
@@ -47,11 +56,11 @@ describe Contact do
     it "should fail saving and asplode" do
       stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/contacts").
         with(:query => {
-          :ApiSig => "479d7afe0c36fc0925e7a5e84f3e1a2f",
+          :ApiSig => "afb8bd30fe41de3e1e738a6dec7de41d",
           :AuthToken => "c401736bf3d3f754f07c04e460e09573",
           :ApiUser => "foobar",
         },
-        :body => '{"D":{"Contacts":[{}]}}'
+        :body => JSON.parse(fixture('contact_new_empty.json').read).to_json
         ).
         to_return(:status => 500, :body => fixture('errors/failure.json'))
       c=Contact.new()

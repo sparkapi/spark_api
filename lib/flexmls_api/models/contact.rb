@@ -8,19 +8,28 @@ module FlexmlsApi
         begin
           return save!(arguments)
         rescue BadResourceRequest => e
+          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         rescue NotFound => e
-          # log and leave
-          FlexmlsApi.logger.error("Failed to save contact #{self}: #{e.message}")
+          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
         false
       end
       def save!(arguments={})
-        results = connection.post self.class.path, {"Contacts" => [ attributes ]}, arguments
+        results = connection.post self.class.path, {"Contacts" => [ attributes ], "Notify" => notify? }, arguments
         result = results.first
         attributes['ResourceUri'] = result['ResourceUri']
         attributes['Id'] = parse_id(result['ResourceUri'])
         true
       end
+      
+      # Notify the agent of contact creation via a flexmls message.
+      def notify?
+        @notify == true
+      end
+      def notify=(notify_me=true)
+        @notify = notify_me
+      end
+      
     end
   end
 end

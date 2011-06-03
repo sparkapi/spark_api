@@ -1,1 +1,8 @@
-{"D":{"Contacts":[{}]}}
+{
+	"D": {
+		"Notify": false,
+		"Contacts": [
+			{ }
+		]
+	}
+}
