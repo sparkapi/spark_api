@@ -1,6 +1,10 @@
 require './spec/spec_helper'
 
 describe SavedSearch do
+  
+  before(:each) do
+    stub_auth_request
+  end
 
   let(:id){ "20100815220615294367000000" }
     
