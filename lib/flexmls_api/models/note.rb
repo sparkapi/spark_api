@@ -13,7 +13,6 @@ module FlexmlsApi
         end
       end
 
-
       def save(arguments={})
         begin
           return save!(arguments)
@@ -36,7 +35,6 @@ module FlexmlsApi
       def delete(args={})
         connection.delete(self.class.path, args)
       end
-
 
     end
   end

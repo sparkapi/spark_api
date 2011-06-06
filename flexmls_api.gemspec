@@ -70,11 +70,13 @@ Gem::Specification.new do |s|
     "spec/fixtures/contacts.json",
     "spec/fixtures/contacts_post.json",
     "spec/fixtures/count.json",
+    "spec/fixtures/empty.json",
     "spec/fixtures/errors/expired.json",
     "spec/fixtures/errors/failure.json",
     "spec/fixtures/generic_delete.json",
     "spec/fixtures/generic_failure.json",
     "spec/fixtures/listing_cart.json",
+    "spec/fixtures/listing_cart_empty.json",
     "spec/fixtures/listing_cart_new.json",
     "spec/fixtures/listing_cart_post.json",
     "spec/fixtures/listing_document_index.json",
@@ -87,6 +89,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/listing_with_supplement.json",
     "spec/fixtures/listing_with_videos.json",
     "spec/fixtures/listing_with_vtour.json",
+    "spec/fixtures/note_new.json",
     "spec/fixtures/oauth2_access.json",
     "spec/fixtures/oauth2_error.json",
     "spec/fixtures/saved_search.json",
@@ -128,7 +131,6 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/paginate_spec.rb",
     "spec/unit/flexmls_api/primary_array_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
-    "spec/unit/flexmls_api/standard_fields_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
   s.homepage = %q{https://github.com/flexmls/flexmls_api}
@@ -165,7 +167,6 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/paginate_spec.rb",
     "spec/unit/flexmls_api/primary_array_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
-    "spec/unit/flexmls_api/standard_fields_spec.rb",
     "spec/unit/flexmls_api_spec.rb"
   ]
 

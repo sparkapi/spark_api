@@ -24,13 +24,7 @@ describe VirtualTour do
 
   it "should get virtual tours for a listing" do
     stub_auth_request
-    stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234/virtualtours").
-          with( :query => { 
-            :ApiSig => "1cb60934d68b64e5eaaab4aff4b7cd3a", 
-            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-            :ApiUser => "foobar"
-          }).
-          to_return(:body => fixture('listing_virtual_tours_index.json'))
+    stub_api_get('/listings/1234/virtualtours','listing_virtual_tours_index.json')
 
     v = VirtualTour.find_by_listing_key('1234')
     v.should be_an(Array)

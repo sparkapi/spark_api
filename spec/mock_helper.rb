@@ -10,8 +10,13 @@ def stub_api_get(service_path, stub_fixture="success.json", opts={})
   s=stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}#{service_path}").
       with(:query => {
         :ApiSig => sig        
-        }.merge(params)).
-      to_return(:body => fixture(stub_fixture))
+        }.merge(params))
+  if(block_given?)
+    yield s
+  else
+    s.to_return(:body => fixture(stub_fixture))
+  end
+  log_stub(s)
 end
 def stub_api_delete(service_path, stub_fixture="success.json", opts={})
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
@@ -19,8 +24,13 @@ def stub_api_delete(service_path, stub_fixture="success.json", opts={})
   s=stub_request(:delete, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}#{service_path}").
       with(:query => {
         :ApiSig => sig        
-        }.merge(params)).
-      to_return(:body => fixture(stub_fixture))
+        }.merge(params))
+  if(block_given?)
+    yield s
+  else
+    s.to_return(:body => fixture(stub_fixture))
+  end
+  log_stub(s)
 end
 def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
   body_str = JSON.parse(fixture(body).read).to_json
@@ -31,8 +41,12 @@ def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
         :ApiSig => sig        
         }.merge(params),
         :body => body_str
-      ).
-      to_return(:body => fixture(stub_fixture))
+      )
+  if(block_given?)
+    yield s
+  else
+    s.to_return(:body => fixture(stub_fixture))
+  end
   log_stub(s)
 end
 def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
@@ -44,8 +58,13 @@ def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
         :ApiSig => sig        
         }.merge(params),
         :body => body_str
-      ).
-      to_return(:body => fixture(stub_fixture))
+      )
+  if(block_given?)
+    yield s
+  else
+    s.to_return(:body => fixture(stub_fixture))
+  end
+  log_stub(s)
 end
 
 def log_stub(s)

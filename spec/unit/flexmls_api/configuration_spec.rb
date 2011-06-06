@@ -79,7 +79,6 @@ describe FlexmlsApi::Client, "Client config"  do
           to_return(:body => '{"D":{"Success": true,"Results": [{"SSL":false}]}}')
           
       FlexmlsApi.client.get('/connections')[0]["SSL"].should eq(false)
-
     end
 
     it "should use https when ssl is enabled" do
@@ -90,8 +89,8 @@ describe FlexmlsApi::Client, "Client config"  do
             :AuthToken => "c401736bf3d3f754f07c04e460e09573"
           }).
           to_return(:body => '{"D":{"Success": true,"Results": [{"SSL":true}]}}')
-      c = FlexmlsApi::Client.new(:endpoint => "https://api.flexmls.com",
-                                :ssl => true)
+          
+      c = FlexmlsApi::Client.new(:endpoint => "https://api.flexmls.com", :ssl => true)
       c.get('/connections')[0]["SSL"].should eq(true)
     end
     

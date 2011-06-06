@@ -38,15 +38,10 @@ describe Contact do
   end
 
   it "should fail saving" do
-    stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/contacts").
-      with(:query => {
-        :ApiSig => "afb8bd30fe41de3e1e738a6dec7de41d",
-        :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-        :ApiUser => "foobar",
-      },
-      :body => JSON.parse(fixture('contact_new_empty.json').read).to_json
-      ).
-      to_return(:status => 400, :body => fixture('errors/failure.json'))
+    stub_api_post("/contacts", 'contact_new_empty.json') do |request|
+      request.to_return(:status => 400, :body => fixture('errors/failure.json'))
+    end
+
     c=Contact.new
     c.save.should be(false)
     expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
@@ -54,15 +49,10 @@ describe Contact do
   
   context "on an epic fail" do
     it "should fail saving and asplode" do
-      stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/contacts").
-        with(:query => {
-          :ApiSig => "afb8bd30fe41de3e1e738a6dec7de41d",
-          :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-          :ApiUser => "foobar",
-        },
-        :body => JSON.parse(fixture('contact_new_empty.json').read).to_json
-        ).
-        to_return(:status => 500, :body => fixture('errors/failure.json'))
+      stub_api_post("/contacts", 'contact_new_empty.json') do |request|
+        request.to_return(:status => 500, :body => fixture('errors/failure.json'))
+      end
+      
       c=Contact.new()
       expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 500 }
       expect{ c.save }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 500 }

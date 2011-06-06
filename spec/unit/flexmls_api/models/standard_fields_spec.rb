@@ -1,42 +1,62 @@
 require './spec/spec_helper'
 
 describe StandardFields do
+  
   before(:each) do 
-    @stdfields = StandardFields.new({
-      "StreetNumber"=>{"Searchable"=>false}, 
-      "ListingId"=>{"Searchable"=>true}, 
-      "City"=>{"Searchable"=>true}, 
-      "Longitude"=>{"Searchable"=>false}, 
-      "StreetName"=>{"Searchable"=>false}, 
-      "YearBuilt"=>{"Searchable"=>true}, 
-      "BuildingAreaTotal"=>{"Searchable"=>true}, 
-      "PublicRemarks"=>{"Searchable"=>false}, 
-      "PostalCode"=>{"Searchable"=>true}, 
-      "ListPrice"=>{"Searchable"=>true}, 
-      "BathsThreeQuarter"=>{"Searchable"=>true}, 
-      "Latitude"=>{"Searchable"=>false}, 
-      "StreetDirPrefix"=>{"Searchable"=>false}, 
-      "StreetAdditionalInfo"=>{"Searchable"=>false}, 
-      "PropertyType"=>{"Searchable"=>true}, 
-      "StateOrProvince"=>{"Searchable"=>true}, 
-      "BathsTotal"=>{"Searchable"=>true}, 
-      "BathsFull"=>{"Searchable"=>true}, 
-      "ListingKey"=>{"Searchable"=>false}, 
-      "StreetDirSuffix"=>{"Searchable"=>false}, 
-      "BedsTotal"=>{"Searchable"=>true}, 
-      "ModificationTimestamp"=>{"Searchable"=>false}, 
-      "BathsHalf"=>{"Searchable"=>true}, 
-      "CountyOrParish"=>{"Searchable"=>true}
-    })
+    stub_auth_request
   end
+
 
   it "should respond to get" do
     StandardFields.should respond_to(:get)
   end
-  
 
-  after(:each) do 
-    @stdfields = nil
+
+  it "should find and expand all" do
+    StandardFields.should respond_to(:find_and_expand_all)
+    
+    # stub request to standardFields
+    stub_api_get('/standardfields','standardfields.json')
+    
+    # stub request for City
+    stub_api_get('/standardfields/City','standardfields_city.json')
+    
+    # stub request for StateOrProvince
+    stub_api_get('/standardfields/StateOrProvince','standardfields_stateorprovince.json')
+    
+    # request
+    fields = StandardFields.find_and_expand_all(["City","StateOrProvince"])
+
+    # keys are present
+    fields.should have_key("City")
+    fields.should have_key("StateOrProvince")
+    fields.should_not have_key("SubdivisionName")
+
+    # FieldList
+    fields["City"]["FieldList"].length.should eq(235)
+    fields["StateOrProvince"]["FieldList"].length.should eq(5)
+    
   end
+  
+  
+  it "should find nearby fields" do
+    StandardFields.should respond_to(:find_nearby)
+    
+    # stub request
+    stub_api_get('/standardfields/nearby/A','standardfields_nearby.json',
+      :Lat => "50",
+      :Lon => "-92",
+      :_expand => "1")
+    
+    # request
+    fields = StandardFields.find_nearby(["A"], {:Lat => 50, :Lon => -92})
+    
+    # validate response
+    fields["D"]["Success"].should eq(true)
+    fields["D"]["Results"].first.should have_key("City")
+    fields["D"]["Results"].first.should have_key("PostalCode")
+    fields["D"]["Results"].first.should have_key("StateOrProvince")
 
+  end
+  
 end

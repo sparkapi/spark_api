@@ -38,13 +38,9 @@ describe Note do
     it "should raise an exception when adding a note fails" do
       n = @note.new(:Note => "lorem ipsum dolor")
       
-      stub_request(:put, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}#{@note.path}").
-        with(:query => {
-          :ApiSig => '1e8bcca11ab7307ca99463f199a58c7d',
-          :ApiUser => 'foobar', 
-          :AuthToken => 'c401736bf3d3f754f07c04e460e09573'
-        }).
-        to_return(:status => 500, :body => fixture('generic_failure.json'))
+      stub_api_put("#{@note.path}", 'note_new.json') do |request|
+        request.to_return(:status => 500, :body => fixture('generic_failure.json'))
+      end
 
       expect { n.save! }.to raise_error(FlexmlsApi::ClientError) { |e| e.status.should == 500 }
       expect { n.save }.to raise_error(FlexmlsApi::ClientError) { |e| e.status.should == 500 }
@@ -52,15 +48,7 @@ describe Note do
 
     it "should allow adding of a note" do
       n = @note.new(:Note => "lorem ipsum dolor")
-
-      stub_request(:put, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}#{@note.path}").
-        with(:query => {
-          :ApiSig => '1e8bcca11ab7307ca99463f199a58c7d',
-          :ApiUser => 'foobar', 
-          :AuthToken => 'c401736bf3d3f754f07c04e460e09573'
-        }).
-        to_return(:body => fixture('add_note.json'))
-
+      stub_api_put("#{@note.path}", 'note_new.json', 'add_note.json')
       n.save
       n.ResourceUri.should == '/v1/listings/20100909200152674436000000/shared/notes/contacts/20110407212043616271000000/'
     end

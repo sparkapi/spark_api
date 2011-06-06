@@ -39,15 +39,9 @@ describe ListingCart do
   end
 
   it "should fail saving" do
-    stub_request(:post, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/#{subject.class.element_name}").
-      with(:query => {
-        :ApiSig => "f225f58f16349cdd3b2f2e33bfc4db0f",
-        :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-        :ApiUser => "foobar",
-      },
-      :body => '{"D":{"ListingCarts":[{}]}}'
-      ).
-      to_return(:status => 400, :body => fixture('errors/failure.json'))
+    stub_api_post("/#{subject.class.element_name}",'listing_cart_empty.json') do |request|
+      request.to_return(:status => 400, :body => fixture('errors/failure.json'))
+    end
     subject
     subject.save.should be(false)
     expect{ subject.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
