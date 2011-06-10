@@ -68,12 +68,12 @@ module FlexmlsApi
       
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
-        escapted_path = URI.escape(path)
+        escaped_path = URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
         request_opts = {}
         request_opts.merge!(options)
-        request_path = "#{escapted_path}?#{build_url_parameters({:access_token => session.access_token}.merge(options))}"
+        request_path = "#{escaped_path}?#{build_url_parameters({:access_token => session.access_token}.merge(options))}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
         if body.nil?
           response = connection.send(method, request_path)
