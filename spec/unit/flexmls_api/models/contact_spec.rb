@@ -18,6 +18,23 @@ describe Contact do
     contacts.first.Id.should eq("20101230223226074201000000")
   end
 
+  it "should get all my Tags" do
+    stub_api_get("/contacts/tags", 'contact_tags.json')
+    tags = Contact.tags
+    tags.should be_an(Array)
+    tags.length.should eq(4)
+    tags.first["Tag"].should eq("Current Buyers")
+  end
+  
+  it "should get all my Tags" do
+    stub_api_get("/contacts/tags/IDX%20Lead", 'contacts.json')
+    contacts = Contact.by_tag("IDX Lead")
+    contacts.should be_an(Array)
+    contacts.length.should eq(3)
+    contacts.first.Id.should eq("20101230223226074201000000")
+    contacts.first.Tags[0].should eq("IDX Lead")
+  end
+    
   it "should save a new contact" do
     stub_api_post("/contacts", 'contact_new.json', 'contacts_post.json')
     c=Contact.new

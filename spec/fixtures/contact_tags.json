@@ -1,0 +1,11 @@
+{
+  "D": {
+    "Success": true, 
+    "Results": [
+		{"ResourceUri": "/v1/contacts/tags/Current Buyers", "Tag": "Current Buyers"},
+		{"ResourceUri": "/v1/contacts/tags/Past Buyers", "Tag": "Past Buyers"}, 
+		{"ResourceUri": "/v1/contacts/tags/Current Sellers", "Tag": "Current Sellers"},
+		{"ResourceUri": "/v1/contacts/tags/TEST", "Tag": "TEST"}
+    ]
+  }
+}
