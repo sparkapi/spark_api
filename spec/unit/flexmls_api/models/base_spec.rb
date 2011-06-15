@@ -37,5 +37,56 @@ describe Base, "Base model" do
       end
     end
   end
+
+  describe "attribute access" do
+    before(:each) do
+      stub_auth_request
+      stub_api_get("/test/example", 'base.json')
+      @model = MyExampleModel.first
+    end
+
+    it "should access valid attributes" do
+      @model.Id.should == 1
+      @model.Name.should == 'My Example'
+      @model.Test.should be_true
+    end
+
+    it "should repond_to valid attributes" do
+      @model.should respond_to(:Id)
+      @model.should respond_to(:Name)
+      @model.should respond_to(:Test)
+    end
+
+    it "should raise errors on access to invalid attributes" do
+      lambda { @model.Nonsense }.should raise_error(NoMethodError)
+      lambda { @model.Heidi }.should raise_error(NoMethodError)
+      lambda { @model.Named }.should raise_error(NoMethodError)
+      lambda { @model.Testy }.should raise_error(NoMethodError)
+    end
+
+    it "should not respond_to invalid attributes" do
+      @model.should_not respond_to(:MlsId)
+      @model.should_not respond_to(:Named)
+      @model.should_not respond_to(:Testy)
+    end
+
+    it "should respond to any setter or predicate" do
+      @model.should respond_to(:Id?)
+      @model.should respond_to(:Name?)
+      @model.should respond_to(:Test?)
+
+      @model.should respond_to(:Id=)
+      @model.should respond_to(:Name=)
+      @model.should respond_to(:Test=)
+
+      @model.should respond_to(:MlsId?)
+      @model.should respond_to(:Named?)
+      @model.should respond_to(:Testy?)
+
+      @model.should respond_to(:MlsId=)
+      @model.should respond_to(:Named=)
+      @model.should respond_to(:Testy=)
+    end
+  end
   
 end

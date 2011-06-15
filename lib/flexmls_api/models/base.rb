@@ -75,6 +75,16 @@ module FlexmlsApi
           super # GTFO
         end
       end
+
+      def respond_to?(method_symbol, include_private=false)
+        method_name = method_symbol.to_s
+
+        if method_name =~ /(=|\?)$/
+          true
+        else
+          attributes.include?(method_name) || super
+        end
+      end
       
       def parse_id(uri)
         uri[/\/.*\/(.+)$/, 1]
