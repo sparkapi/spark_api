@@ -68,7 +68,11 @@ module FlexmlsApi
             attributes[$`] = arguments.first
             # TODO figure out a nice way to present setters for the standard fields
           when "?" 
-            attributes[$`]
+            if attributes.include?($`)
+              attributes[$`] ? true : false
+            else
+              raise NoMethodError
+            end
           end 
         else
           return attributes[method_name] if attributes.include?(method_name)
@@ -77,12 +81,19 @@ module FlexmlsApi
       end
 
       def respond_to?(method_symbol, include_private=false)
-        method_name = method_symbol.to_s
-
-        if method_name =~ /(=|\?)$/
-          true
+        if super
+          return true
         else
-          attributes.include?(method_name) || super
+          method_name = method_symbol.to_s
+
+          if method_name =~ /=$/
+            true
+          elsif method_name =~ /(\?)$/
+            attributes.include?($`)
+          else
+            attributes.include?(method_name)
+          end
+
         end
       end
       
