@@ -107,7 +107,6 @@ end
 def test_connection(stubs)
   Faraday::Connection.new(nil, {:headers => FlexmlsApi::Client.new.headers}) do |builder|
     builder.adapter :test, stubs
-    builder.use Faraday::Response::ParseJson
     builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
   end
 end

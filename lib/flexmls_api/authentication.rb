@@ -66,7 +66,6 @@ module FlexmlsApi
       end
       conn = Faraday::Connection.new(opts) do |builder|
         builder.adapter Faraday.default_adapter
-        builder.use Faraday::Response::ParseJson
         builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
       end
       FlexmlsApi.logger.debug("Connection: #{conn.inspect}")

@@ -16,10 +16,23 @@ begin
     gemspec.authors = ["Brandon Hornseth", "Wade McEwen"]
     # Need to skip spec/reports for CI builds
     gemspec.files =  FileList["[A-Z]*", "{lib,spec/fixtures,spec/unit}/**/*", "spec/*.rb"]
-    gemspec.add_development_dependency "rspec"
-    gemspec.add_development_dependency "jeweler"
-    gemspec.add_development_dependency "curb"
-    gemspec.add_development_dependency "json"
+    # GEMS
+    gemspec.add_dependency 'curb', '~> 0.7.15'
+    gemspec.add_dependency 'faraday', '~> 0.6.1'
+    gemspec.add_dependency 'faraday_middleware', '~> 0.6.3'
+    gemspec.add_dependency 'multi_json', '~> 1.0.0'
+    gemspec.add_dependency 'json', '~> 1.5.1'
+    gemspec.add_dependency 'yajl-ruby', '~> 0.8.2'
+    gemspec.add_dependency 'builder', '~> 2.1.2'
+    gemspec.add_dependency 'addressable', '~> 2.2.5'
+    gemspec.add_dependency 'will_paginate', '~> 3.0.pre2'    
+    # TEST GEMS
+    gemspec.add_development_dependency 'rspec', '~> 2.3.0'
+    gemspec.add_development_dependency 'webmock', '~> 1.4.0'
+    gemspec.add_development_dependency 'jeweler', '~> 1.5.2'
+    gemspec.add_development_dependency 'typhoeus', '~> 0.2.0'
+    gemspec.add_development_dependency 'ci_reporter', '= 1.6.3'
+    gemspec.add_development_dependency 'rcov', '~> 0.9.9'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
