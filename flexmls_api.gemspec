@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.4.6"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-06-21}
+  s.date = %q{2011-06-23}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -182,14 +182,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<multi_json>, ["~> 1.0.0"])
       s.add_runtime_dependency(%q<json>, ["~> 1.5.1"])
       s.add_runtime_dependency(%q<yajl-ruby>, ["~> 0.8.2"])
-      s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
+      s.add_runtime_dependency(%q<builder>, ["< 4.0.0", ">= 2.1.2"])
       s.add_runtime_dependency(%q<addressable>, ["~> 2.2.5"])
-      s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+      s.add_runtime_dependency(%q<will_paginate>, ["< 4.0.0", ">= 3.0.pre2"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<webmock>, ["~> 1.4.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<typhoeus>, ["~> 0.2.0"])
-      s.add_development_dependency(%q<ci_reporter>, ["= 1.6.3"])
+      s.add_development_dependency(%q<ci_reporter>, ["~> 1.6.3"])
       s.add_development_dependency(%q<rcov>, ["~> 0.9.9"])
     else
       s.add_dependency(%q<flexmls_api>, [">= 0"])
@@ -199,14 +199,14 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<multi_json>, ["~> 1.0.0"])
       s.add_dependency(%q<json>, ["~> 1.5.1"])
       s.add_dependency(%q<yajl-ruby>, ["~> 0.8.2"])
-      s.add_dependency(%q<builder>, ["~> 2.1.2"])
+      s.add_dependency(%q<builder>, ["< 4.0.0", ">= 2.1.2"])
       s.add_dependency(%q<addressable>, ["~> 2.2.5"])
-      s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+      s.add_dependency(%q<will_paginate>, ["< 4.0.0", ">= 3.0.pre2"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<webmock>, ["~> 1.4.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<typhoeus>, ["~> 0.2.0"])
-      s.add_dependency(%q<ci_reporter>, ["= 1.6.3"])
+      s.add_dependency(%q<ci_reporter>, ["~> 1.6.3"])
       s.add_dependency(%q<rcov>, ["~> 0.9.9"])
     end
   else
@@ -217,14 +217,14 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<multi_json>, ["~> 1.0.0"])
     s.add_dependency(%q<json>, ["~> 1.5.1"])
     s.add_dependency(%q<yajl-ruby>, ["~> 0.8.2"])
-    s.add_dependency(%q<builder>, ["~> 2.1.2"])
+    s.add_dependency(%q<builder>, ["< 4.0.0", ">= 2.1.2"])
     s.add_dependency(%q<addressable>, ["~> 2.2.5"])
-    s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+    s.add_dependency(%q<will_paginate>, ["< 4.0.0", ">= 3.0.pre2"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<webmock>, ["~> 1.4.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<typhoeus>, ["~> 0.2.0"])
-    s.add_dependency(%q<ci_reporter>, ["= 1.6.3"])
+    s.add_dependency(%q<ci_reporter>, ["~> 1.6.3"])
     s.add_dependency(%q<rcov>, ["~> 0.9.9"])
   end
 end
