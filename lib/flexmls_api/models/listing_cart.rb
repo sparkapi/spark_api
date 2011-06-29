@@ -27,12 +27,26 @@ module FlexmlsApi
         false
       end
       def save!(arguments={})
-      results = connection.post self.class.path, {"ListingCarts" => [ attributes ]}, arguments
+        attributes['Id'].nil? ? create!(arguments) : update!(arguments)
+      end
+      
+      def delete(args={})
+        connection.delete("#{self.class.path}/#{self.Id}", args)
+      end
+      
+      private 
+      def create!(arguments={})
+        results = connection.post self.class.path, {"ListingCarts" => [ attributes ]}, arguments
         result = results.first
         attributes['ResourceUri'] = result['ResourceUri']
         attributes['Id'] = parse_id(result['ResourceUri'])
         true
       end
+      def update!(arguments={})
+        results = connection.put "#{self.class.path}/#{self.Id}", {"ListingCarts" => [ {"Name" => attributes["Name"], "ListingIds" => attributes["ListingIds"]} ] }, arguments
+        true
+      end
+
     end
   end
 end

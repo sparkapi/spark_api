@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require "rubygems"
 
-Bundler.require(:default, "test") if defined?(Bundler)
+Bundler.require(:default, "development") if defined?(Bundler)
 
 path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)

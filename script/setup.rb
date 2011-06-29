@@ -5,7 +5,7 @@ require "rubygems"
 # do is set "API_KEY" and "API_SECRET" environment variables and run:
 #  > irb -r script/setup
 
-Bundler.require(:default, "test") if defined?(Bundler)
+Bundler.require(:default, "development") if defined?(Bundler)
 
 path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)

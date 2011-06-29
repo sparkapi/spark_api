@@ -2,21 +2,12 @@ module FlexmlsApi
   module FaradayExt
     #=Flexmls API Faraday middleware
     # HTTP Response after filter to package api responses and bubble up basic api errors.
-    class FlexmlsMiddleware < Faraday::Response::Middleware
-      begin
-        def self.register_on_complete(env)
-          env[:response].on_complete do |finished_env|
-            validate_and_build_response(finished_env)
-          end
-        end
-      rescue LoadError, NameError => e
-        self.load_error = e
-      end
+    class FlexmlsMiddleware < Faraday::Response::ParseJson
       
       # Handles pretty much all the api response parsing and error handling.  All responses that
       # indicate a failure will raise a FlexmlsApi::ClientError exception
-      def self.validate_and_build_response(finished_env)
-        body = finished_env[:body]
+      def on_complete(finished_env)
+        body = parse(finished_env[:body])
         FlexmlsApi.logger.debug("Response Body: #{body.inspect}")
         unless body.is_a?(Hash) && body.key?("D")
           raise InvalidResponse, "The server response could not be understood"
@@ -44,10 +35,9 @@ module FlexmlsApi
         end
         finished_env[:body] = response
       end
-
+      
       def initialize(app)
-        super
-        @parser = nil
+        super(app)
       end
       
     end

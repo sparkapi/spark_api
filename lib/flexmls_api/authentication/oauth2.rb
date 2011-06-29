@@ -68,11 +68,12 @@ module FlexmlsApi
       
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
+        escaped_path = URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
         request_opts = {}
         request_opts.merge!(options)
-        request_path = "#{path}?#{build_url_parameters({:access_token => session.access_token}.merge(options))}"
+        request_path = "#{escaped_path}?#{build_url_parameters({:access_token => session.access_token}.merge(options))}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
         if body.nil?
           response = connection.send(method, request_path)
@@ -103,7 +104,6 @@ module FlexmlsApi
         opts[:url] = endpoint       
         conn = Faraday::Connection.new(opts) do |builder|
           builder.adapter Faraday.default_adapter
-          builder.use Faraday::Response::ParseJson
           builder.use FlexmlsApi::Authentication::FlexmlsOAuth2Middleware
         end
       end
@@ -175,19 +175,9 @@ module FlexmlsApi
 
     #==OAuth2 Faraday response middleware
     # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
-    class FlexmlsOAuth2Middleware < Faraday::Response::Middleware
-      begin
-        def self.register_on_complete(env)
-          env[:response].on_complete do |finished_env|
-            validate_and_build_response(finished_env)
-          end
-        end
-      rescue LoadError, NameError => e
-        self.load_error = e
-      end
-      
-      def self.validate_and_build_response(finished_env)
-        body = finished_env[:body]
+    class FlexmlsOAuth2Middleware < Faraday::Response::ParseJson
+      def on_complete(finished_env)
+        body = parse(finished_env[:body])
         FlexmlsApi.logger.debug("Response Body: #{body.inspect}")
         unless body.is_a?(Hash)
           raise InvalidResponse, "The server response could not be understood"
@@ -208,8 +198,7 @@ module FlexmlsApi
       end
   
       def initialize(app)
-        super
-        @parser = nil
+        super(app)
       end
       
     end

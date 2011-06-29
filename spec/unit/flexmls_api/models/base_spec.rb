@@ -37,5 +37,70 @@ describe Base, "Base model" do
       end
     end
   end
-  
+
+  describe "attribute accessors, setters, and predicates" do
+    before(:each) do
+      stub_auth_request
+      stub_api_get("/test/example", 'base.json')
+      @model = MyExampleModel.first
+    end
+
+    it "should access existing attributes" do
+      @model.Name.should == 'My Example'
+    end
+
+    it "should raise errors on access to non-existant attributes" do
+      lambda { @model.Nonsense }.should raise_error(NoMethodError)
+    end
+
+    it "should set existing attributes" do
+      new_name = 'John Jacob Jingleheimerschmidt'
+      @model.Name = new_name
+      @model.Name.should == new_name
+    end
+
+    it "should set non-existant attributes" do
+      nonsense = 'nonsense'
+      @model.Nonsense = nonsense
+      @model.Nonsense.should == nonsense
+    end
+
+    it "should return a boolean for a predicate for an existing attribute" do
+      @model.Name?.should satisfy { |p| [true, false].include?(p) }
+    end
+
+    it "should raise an Error for a predicate for a non-existant attribute" do
+      lambda { @model.Nonsense? }.should raise_error(NoMethodError)
+    end
+
+    it "should repond_to existing attributes" do
+      @model.should respond_to(:Name)
+    end
+
+    it "should not respond_to non-existant attributes" do
+      @model.should_not respond_to(:Nonsense)
+    end
+
+    it "should respond_to a setter for an existing attribute" do
+      @model.should respond_to(:Name=)
+    end
+
+    it "should respond_to a setter for a non-existant attribute" do
+      @model.should respond_to(:Nonsense=)
+    end
+
+    it "should respond_to a predicate for an existing attribute" do
+      @model.should respond_to(:Name?)
+    end
+
+    it "should not respond_to a predicate for a non-existant attribute" do
+      @model.should_not respond_to(:Nonsense?)
+    end
+
+    it "should respond_to methods inherited from parent classes" do
+      @model.should respond_to(:freeze)
+    end
+
+  end
+
 end

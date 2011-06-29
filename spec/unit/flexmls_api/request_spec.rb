@@ -92,6 +92,14 @@ describe FlexmlsApi do
           }]}
           }'] 
         }
+        # TEST escaped paths
+        stub.get('/v1/test%20path%20with%20spaces?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
+          "Success": true,
+          "Results": []
+          }
+          }'] 
+        }
+
       end
       @connection = test_connection(stubs)
     end  
@@ -143,6 +151,12 @@ describe FlexmlsApi do
         # This is a hypothetical unsupported service action at this time
         subject.delete('/contacts/1000').should be(nil)
         # No validation here, if no error is raised, everything is hunky dory
+      end
+      
+      it "should escape a path correctly" do
+        subject.get('/test path with spaces').length.should == 0
+        # now try this with an already escaped path.  Kaboom!
+        expect { subject.get('/test%20path%20with%20spaces') }.to raise_error()
       end
 
       it "should give me BigDecimal results for large floating point numbers" do

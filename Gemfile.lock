@@ -1,28 +1,43 @@
+PATH
+  remote: .
+  specs:
+    flexmls_api (0.5.0)
+      addressable (~> 2.2.5)
+      builder (< 4.0.0, >= 2.1.2)
+      curb (~> 0.7.15)
+      faraday (~> 0.6.1)
+      faraday_middleware (~> 0.6.3)
+      flexmls_api
+      json (~> 1.5.1)
+      multi_json (~> 1.0.0)
+      will_paginate (< 4.0.0, >= 3.0.pre2)
+      yajl-ruby (~> 0.8.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
-    addressable (2.2.2)
+    addressable (2.2.6)
     builder (2.1.2)
     ci_reporter (1.6.3)
       builder (>= 2.1.2)
     crack (0.1.8)
-    curb (0.7.8)
+    curb (0.7.15)
     diff-lcs (1.1.2)
-    faraday (0.5.3)
-      addressable (~> 2.2.2)
-      multipart-post (~> 1.0.1)
-      rack (>= 1.1.0, < 2)
-    faraday_middleware (0.3.1)
-      faraday (~> 0.5.3)
+    faraday (0.6.1)
+      addressable (~> 2.2.4)
+      multipart-post (~> 1.1.0)
+      rack (< 2, >= 1.1.0)
+    faraday_middleware (0.6.3)
+      faraday (~> 0.6.0)
     git (1.2.5)
     jeweler (1.5.2)
       bundler (~> 1.0.0)
       git (>= 1.2.5)
       rake
-    json (1.4.6)
-    multi_json (0.0.5)
-    multipart-post (1.0.1)
-    rack (1.2.1)
+    json (1.5.1)
+    multi_json (1.0.0)
+    multipart-post (1.1.0)
+    rack (1.2.2)
     rake (0.8.7)
     rcov (0.9.9)
     rspec (2.3.0)
@@ -38,23 +53,16 @@ GEM
       addressable (>= 2.2.2)
       crack (>= 0.1.7)
     will_paginate (3.0.pre2)
-    yajl-ruby (0.7.8)
+    yajl-ruby (0.8.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  builder (= 2.1.2)
-  ci_reporter (>= 1.6.3)
-  curb (= 0.7.8)
-  faraday (= 0.5.3)
-  faraday_middleware (= 0.3.1)
-  jeweler
-  json (= 1.4.6)
-  multi_json (= 0.0.5)
-  rcov
-  rspec
-  typhoeus
-  webmock
-  will_paginate (~> 3.0.pre2)
-  yajl-ruby (= 0.7.8)
+  ci_reporter (~> 1.6.3)
+  flexmls_api!
+  jeweler (~> 1.5.2)
+  rcov (~> 0.9.9)
+  rspec (~> 2.3.0)
+  typhoeus (~> 0.2.0)
+  webmock (~> 1.4.0)

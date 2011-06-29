@@ -28,13 +28,7 @@ describe TourOfHome do
 
   it "should get home tours for a listing" do
     stub_auth_request
-    stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/20060725224713296297000000/tourofhomes").
-    with( :query => {
-      :ApiSig => "153446de6d1db765d541587d34ed0fcf",
-      :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-      :ApiUser => "foobar"
-    }).
-    to_return(:body => fixture('tour_of_homes.json'))
+    stub_api_get('/listings/20060725224713296297000000/tourofhomes','tour_of_homes.json')
     v = subject.class.find_by_listing_key('20060725224713296297000000')
     v.should be_an(Array)
     v.length.should == 2

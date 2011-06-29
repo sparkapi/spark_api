@@ -16,13 +16,7 @@ describe Document do
 
   it "should get documents for a listing" do
     stub_auth_request
-    stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234/documents").
-          with( :query => { 
-            :ApiSig => "82f62b685e4318a1ab6bc3fc5a031c5a", 
-            :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-            :ApiUser => "foobar"
-          }).
-          to_return(:body => fixture('listing_document_index.json'))
+    stub_api_get('/listings/1234/documents','listing_document_index.json')
 
     v = Document.find_by_listing_key('1234')
     v.should be_an(Array)

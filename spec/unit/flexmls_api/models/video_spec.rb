@@ -18,13 +18,7 @@ describe Video do
   describe "find videos by listing id"  do
     before do
       stub_auth_request
-      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/listings/1234/videos").
-                   with(:query => {
-                     :ApiSig => "c95bfef766128b91a2643fcc2fa40dfc", 
-                     :AuthToken => "c401736bf3d3f754f07c04e460e09573",
-                     :ApiUser => "foobar"
-                   }).
-                   to_return(:body => fixture('listing_videos_index.json'))
+      stub_api_get('/listings/1234/videos','listing_videos_index.json')
     end
 
     it "should get an array of videos" do
@@ -34,8 +28,5 @@ describe Video do
     end
 
   end
-
-
-
 
 end

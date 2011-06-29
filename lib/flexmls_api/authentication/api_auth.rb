@@ -60,6 +60,7 @@ module FlexmlsApi
       
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
+        escaped_path = URI.escape(path)
         request_opts = {
           "AuthToken" => @session.auth_token
         }
@@ -67,8 +68,8 @@ module FlexmlsApi
           request_opts.merge!(:ApiUser => "#{@client.api_user}")
         end
         request_opts.merge!(options)
-        sig = sign_token(path, request_opts, body)
-        request_path = "#{path}?#{build_url_parameters({"ApiSig"=>sig}.merge(request_opts))}"
+        sig = sign_token(escaped_path, request_opts, body)
+        request_path = "#{escaped_path}?#{build_url_parameters({"ApiSig"=>sig}.merge(request_opts))}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
         if body.nil?
           response = @client.connection.send(method, request_path)
