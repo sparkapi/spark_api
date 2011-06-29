@@ -63,7 +63,22 @@ describe Account do
       "Images"=>[
         {
           "Type"=>"Photo",
-          "Name"=>"My Photo",
+          "Name"=>"My Photo 1",
+          "Uri"=>"http://photos.flexmls.com/az/...."
+        },
+        {
+          "Type"=>"Photo",
+          "Name"=>"My Photo two",
+          "Uri"=>"http://photos.flexmls.com/az/...."
+        },
+        {
+          "Type"=>"Logo",
+          "Name"=>"1 My Logo",
+          "Uri"=>"http://photos.flexmls.com/az/...."
+        },
+        {
+          "Type"=>"Logo",
+          "Name"=>"My Other Logo",
           "Uri"=>"http://photos.flexmls.com/az/...."
         },
         {
@@ -86,7 +101,11 @@ describe Account do
     @account.phones.primary.Number.should eq("701-555-1212")
     @account.addresses.primary.Address.should eq("101 Main Ave, Phoenix, AZ 12345")
     @account.websites.primary.Uri.should eq("http://iamthebestagent.com")
-    @account.images.primary.should be(nil)
+  end
+
+  it "should be able to provide a primary image" do
+    @account.primary_img("Photo").Name.should == 'My Photo 1'
+    @account.primary_img("Logo").Name.should == '1 My Logo'
   end
 
   after(:each) do

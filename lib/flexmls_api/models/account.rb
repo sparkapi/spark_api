@@ -11,12 +11,26 @@ module FlexmlsApi
         @phones = subresource(Phone, "Phones", attributes)
         @websites = subresource(Website, "Websites", attributes)
         @addresses = subresource(Address, "Addresses", attributes)
-        @images = subresource(Image, "Images", attributes)
+        if attributes["Images"]
+          @images = [] 
+          attributes["Images"].each { |i| @images << Image.new(i) }
+        else
+          @images = nil
+        end
         super(attributes)
       end
 
       def self.my(arguments={})
         collect(connection.get("/my/account", arguments)).first
+      end
+
+      def primary_img(typ)
+        if @images.is_a?(Array)
+          matches = @images.select {|i| i.Type == typ}
+          matches.sort {|a,b| a.Name <=> b.Name }.first
+        else
+          nil
+        end
       end
 
       private
@@ -46,8 +60,8 @@ module FlexmlsApi
       class Address < Base
         include Primary
       end
+
       class Image < Base
-        include Primary
       end
     end
   end
