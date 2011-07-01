@@ -2,7 +2,7 @@ require './spec/spec_helper'
 
 describe FlexmlsApi do
   describe FlexmlsApi::ClientError do
-    subject { FlexmlsApi::ClientError.new(["OMG FAIL", 1234, 500]) }
+    subject { FlexmlsApi::ClientError.new({:message=>"OMG FAIL", :code=>1234, :status=>500}) }
     it "should print a helpful to_s" do
       subject.to_s.should == "OMG FAIL"
       subject.message.should == "OMG FAIL"
@@ -14,10 +14,25 @@ describe FlexmlsApi do
       subject.status.should == 500
     end
     it "should raise and exception with attached message" do
-      expect { raise subject.class, ["My Message", 1000, 404] }.to raise_error(FlexmlsApi::ClientError)  do |e| 
+      expect { raise subject.class, {:message=>"My Message", :code=>1000, :status=>404}}.to raise_error(FlexmlsApi::ClientError)  do |e| 
         e.message.should == "My Message" 
         e.code.should == 1000
         e.status.should == 404
+      end
+      expect { raise subject.class.new({:message=>"My Message", :code=>1000, :status=>404}) }.to raise_error(FlexmlsApi::ClientError)  do |e| 
+        e.message.should == "My Message" 
+        e.code.should == 1000
+        e.status.should == 404
+      end
+      expect { raise subject.class.new({:code=>1000, :status=>404}), "My Message"}.to raise_error(FlexmlsApi::ClientError)  do |e| 
+        e.message.should == "My Message" 
+        e.code.should == 1000
+        e.status.should == 404
+      end
+      expect { raise subject.class, "My Message"}.to raise_error(FlexmlsApi::ClientError)  do |e| 
+        e.message.should == "My Message" 
+        e.code.should be == nil
+        e.status.should be == nil
       end
     end
   end

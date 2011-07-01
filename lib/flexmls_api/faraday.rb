@@ -15,23 +15,23 @@ module FlexmlsApi
         response = ApiResponse.new body
         case finished_env[:status]
         when 400, 409
-          raise BadResourceRequest, [response.message, response.code, finished_env[:status]]
+          raise BadResourceRequest, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 401
           # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
           # OAuth2 implementations and wouldn't hurt to log.
           auth_header_error = finished_env[:request_headers]["WWW-Authenticate"]
           FlexmlsApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
-          raise PermissionDenied, [response.message, response.code, finished_env[:status]]
+          raise PermissionDenied, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 404
-          raise NotFound, [response.message, response.code, finished_env[:status]]
+          raise NotFound, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 405
-          raise NotAllowed, [response.message, response.code, finished_env[:status]]
+    raise NotAllowed, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 500
-          raise ClientError, [response.message, response.code, finished_env[:status]]
+          raise ClientError, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 200..299
           FlexmlsApi.logger.debug("Success!")
         else 
-          raise ClientError, [response.message, response.code, finished_env[:status]]
+          raise ClientError, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         end
         finished_env[:body] = response
       end

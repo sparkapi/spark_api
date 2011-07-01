@@ -125,10 +125,12 @@ module FlexmlsApi
   class InvalidResponse < StandardError; end
   class ClientError < StandardError
     attr_reader :code, :status
-    def initialize (args)
-      @code = args[1]
-      @status = args[2]
-      super(args[0])
+    def initialize (options = {})
+      # Support the standard initializer for errors
+      opts = options.is_a?(Hash) ? options : {:message => options.to_s}
+      @code = opts[:code]
+      @status = opts[:status]
+      super(opts[:message])
     end
     
   end
