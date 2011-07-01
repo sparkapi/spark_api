@@ -102,7 +102,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
         :_pagination => '1'
       }
       c = stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings").
-        with(:query => {:access_token => "1234"}.merge(args)).
+        with(:query => args).
         to_return(:body => fixture("listing_no_subresources.json"))
       subject.session = session
       subject.request(:get, "/#{FlexmlsApi.version}/listings", nil, args).status.should eq(200)
@@ -112,9 +112,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
       args = {}
       contact = '{"D":{"Contacts":[{"DisplayName":"Contact Four","PrimaryEmail":"contact4@fbsdata.com"}]}}'
       stub_request(:post, "https://api.flexmls.com/#{FlexmlsApi.version}/contacts").
-        with(:query => {:access_token => "1234"}.merge(args),
-          :body => contact
-          ).
+        with(:body => contact).
         to_return(:body => '{"D": {
           "Success": true, 
           "Results": [
@@ -139,7 +137,6 @@ describe FlexmlsApi::Authentication::OAuth2  do
       # Make sure the auth request goes out twice.
       # Fail the first time, but then return the correct value after reauthentication
       stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
-        with(:query => {:access_token => "04u7h-4cc355-70k3n"}).
           to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
           to_return(:body => fixture('listing_with_documents.json'))
             

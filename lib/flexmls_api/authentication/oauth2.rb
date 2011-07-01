@@ -71,7 +71,7 @@ module FlexmlsApi
         escaped_path = URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
-        parameter_string = options.size > 0 ? "?build_url_parameters(options)" : ""
+        parameter_string = options.size > 0 ? "?#{build_url_parameters(options)}" : ""
         request_path = "#{escaped_path}#{parameter_string}"
         FlexmlsApi.logger.debug("Request: #{request_path}")
         if body.nil?
