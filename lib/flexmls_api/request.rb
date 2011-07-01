@@ -125,10 +125,12 @@ module FlexmlsApi
   class InvalidResponse < StandardError; end
   class ClientError < StandardError
     attr_reader :code, :status
-    def initialize (code, status)
-      @code = code
-      @status = status
+    def initialize (args)
+      @code = args[1]
+      @status = args[2]
+      super(args[0])
     end
+    
   end
   class NotFound < ClientError; end
   class PermissionDenied < ClientError; end

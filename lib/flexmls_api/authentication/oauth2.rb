@@ -190,7 +190,7 @@ module FlexmlsApi
           # OAuth2 implementations and wouldn't hurt to log.
           auth_header_error = finished_env[:request_headers]["WWW-Authenticate"]
           FlexmlsApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
-          raise ClientError.new(0, finished_env[:status]), body["error"]
+          raise ClientError, [body["error"], 0, finished_env[:status]]
         end
         FlexmlsApi.logger.debug("Session= #{session.inspect}")
         finished_env[:body] = session

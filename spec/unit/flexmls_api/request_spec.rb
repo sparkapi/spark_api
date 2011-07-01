@@ -2,15 +2,23 @@ require './spec/spec_helper'
 
 describe FlexmlsApi do
   describe FlexmlsApi::ClientError do
-    subject { FlexmlsApi::ClientError.new("1234", 200) }
+    subject { FlexmlsApi::ClientError.new(["OMG FAIL", 1234, 500]) }
+    it "should print a helpful to_s" do
+      subject.to_s.should == "OMG FAIL"
+      subject.message.should == "OMG FAIL"
+    end
     it "should have an api code" do
-      subject.code.should == "1234"
+      subject.code.should == 1234
     end
     it "should have an http status" do
-      subject.status.should == 200
+      subject.status.should == 500
     end
     it "should raise and exception with attached message" do
-      expect { raise subject, "My Message" }.to raise_error(FlexmlsApi::ClientError){ |e| e.message.should == "My Message" }
+      expect { raise subject.class, ["My Message", 1000, 404] }.to raise_error(FlexmlsApi::ClientError)  do |e| 
+        e.message.should == "My Message" 
+        e.code.should == 1000
+        e.status.should == 404
+      end
     end
   end
 
@@ -317,5 +325,5 @@ describe FlexmlsApi do
     end
     
   end
-
+  
 end
