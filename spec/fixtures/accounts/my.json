@@ -1,0 +1,74 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            {
+                "Name" : "Sample User",
+                "Id" : "20000426173054342350000000",
+                "Office" : "Sample Office Inc",
+                "OfficeId" : "20030426173014239760000000",
+                "Mls" : "Your Local MLS",
+                "MlsId": "20000426143505724628000000",
+                "Emails": [
+                    {
+                        "Type": "Work",
+                        "Name": "My Work E-mail",
+                        "Address": "work@test.com",
+                        "Primary": true
+                    },
+                    {
+                        "Type": "Mobile",
+                        "Name": "My Mobile E-mail",
+                        "Address": "mobile@test.com"
+                    }
+                ],
+                "Phones": [
+                    {
+                        "Type": "Work",
+                        "Name": "My Work Phone",
+                        "Number": "701-555-1212",
+                        "Primary": true
+                    },
+                    {
+                        "Type": "Mobile",
+                        "Name": "My Mobile Phone",
+                        "Number": "702-555-1313"
+                    }
+                ],
+                "Websites": [
+                    {
+                        "Type": "Work",
+                        "Name": "My Work Website",
+                        "Uri": "http://iamthebestagent.com",
+                        "Primary": true
+                    },
+                    {
+                        "Type": "Mobile",
+                        "Name": "My Mobile Website",
+                        "Uri": "http://m.iamthebestagent.com"
+                    }
+                ],
+                "Addresses": [
+                    {
+                        "Type": "Work",
+                        "Name": "My Work Address",
+                        "Address": "101 Main Ave, Phoenix, AZ 12345",
+                        "Primary": true
+                    }
+                ],
+                "Images": [
+                    {
+                        "Type": "Photo",
+                        "Name": "My Photo",
+                        "Uri": "http://photos.flexmls.com/az/...."
+                    },
+                    {
+                        "Type": "Logo",
+                        "Name": "My Logo",
+                        "Uri": "http://photos.flexmls.com/az/...."
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,6 +1,7 @@
 module FlexmlsApi
   module Models
     class Account < Base
+      extend Finders
       self.element_name="accounts"
       
       SUBELEMENTS = [:emails, :phones, :websites, :addresses, :images]
@@ -22,6 +23,10 @@ module FlexmlsApi
 
       def self.my(arguments={})
         collect(connection.get("/my/account", arguments)).first
+      end
+      
+      def self.by_office(office_id, arguments={})
+        collect(connection.get("#{self.path()}/by/office/#{office_id}", arguments))
       end
 
       def primary_img(typ)
