@@ -17,14 +17,27 @@ describe ListingCart do
     resource.Name.should eq("My Listing Cart")
     resource.ListingCount.should eq(10)
   end
+  
+  it "should remove a listing from a cart" do
+    list_id = "20110621133454434543000000"
+    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    resource = subject.class.get.first
+    resource.Id.should eq("20100912153422758914000000")
+    stub_api_delete("/#{subject.class.element_name}/#{resource.Id}/listings/#{list_id}", 'listing_cart_remove_listing.json')
+    resource.ListingCount.should eq(10)
+    resource.remove_listing(list_id)
+    resource.ListingCount.should eq(9)
+  end
 
   let(:listing){ Listing.new(:Id => "20110112234857732941000000") }
   it "should get all carts for a listing" do
     stub_api_get("/#{subject.class.element_name}/for/#{listing.Id}", 'listing_cart.json')
-    resources = subject.class.for(listing)
+    [listing, listing.Id ].each do |l|
+    resources = subject.class.for(l)
     resources.should be_an(Array)
     resources.length.should eq(2)
     resources.first.Id.should eq("20100912153422758914000000")
+    end
   end
   
   it "should save a new listing cart" do

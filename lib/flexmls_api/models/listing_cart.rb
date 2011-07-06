@@ -11,9 +11,15 @@ module FlexmlsApi
         attributes["Name"] = name
       end
       
+      def remove_listing(listing)
+        id = listing.respond_to?(:Id) ? listing.Id : listing.to_s
+        results = connection.delete("#{self.class.path}/#{self.Id}/listings/#{id}")
+        self.ListingCount = results.first["ListingCount"]
+      end
+      
       def self.for(listings,arguments={})
-        keys = Array(listings).map{ |l| l.Id }.join(",")
-        collect(connection.get("/#{self.element_name}/for/#{keys}", arguments))
+        keys = Array(listings).map { |l| l.respond_to?(:Id) ? l.Id : l.to_s }
+        collect(connection.get("/#{self.element_name}/for/#{keys.join(",")}", arguments))
       end
       
       def save(arguments={})
