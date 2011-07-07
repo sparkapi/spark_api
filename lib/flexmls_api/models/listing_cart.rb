@@ -11,6 +11,12 @@ module FlexmlsApi
         attributes["Name"] = name
       end
       
+      def add_listing(listing)
+        id = listing.respond_to?(:Id) ? listing.Id : listing.to_s
+        results = connection.post("#{self.class.path}/#{self.Id}", {"ListingIds" => [ listing ]})
+        self.ListingCount = results.first["ListingCount"]
+      end
+      
       def remove_listing(listing)
         id = listing.respond_to?(:Id) ? listing.Id : listing.to_s
         results = connection.delete("#{self.class.path}/#{self.Id}/listings/#{id}")
