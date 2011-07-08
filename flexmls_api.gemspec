@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.5.3"
+  s.version = "0.5.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
@@ -81,6 +81,8 @@ Gem::Specification.new do |s|
     "spec/fixtures/generic_delete.json",
     "spec/fixtures/generic_failure.json",
     "spec/fixtures/listing_cart.json",
+    "spec/fixtures/listing_cart_add_listing.json",
+    "spec/fixtures/listing_cart_add_listing_post.json",
     "spec/fixtures/listing_cart_empty.json",
     "spec/fixtures/listing_cart_new.json",
     "spec/fixtures/listing_cart_post.json",
