@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-07-06}
+  s.date = %q{2011-07-08}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -67,6 +67,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/agent_shared_note_empty.json",
     "spec/fixtures/authentication_failure.json",
     "spec/fixtures/base.json",
+    "spec/fixtures/contact_my.json",
     "spec/fixtures/contact_new.json",
     "spec/fixtures/contact_new_empty.json",
     "spec/fixtures/contact_new_notify.json",

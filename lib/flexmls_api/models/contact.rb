@@ -29,6 +29,10 @@ module FlexmlsApi
       def self.tags(arguments={})
         connection.get("#{path}/tags", arguments)
       end
+
+      def self.my(arguments={})
+        new(connection.get('/my/contact', arguments).first)
+      end
             
       # Notify the agent of contact creation via a flexmls message.
       def notify?

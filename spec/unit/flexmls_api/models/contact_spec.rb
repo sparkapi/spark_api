@@ -8,6 +8,7 @@ describe Contact do
   
   it "should include the finders module" do
     Contact.should respond_to(:find)
+    Contact.should respond_to(:my)
   end
 
   it "should get all my contacts" do
@@ -16,6 +17,14 @@ describe Contact do
     contacts.should be_an(Array)
     contacts.length.should eq(3)
     contacts.first.Id.should eq("20101230223226074201000000")
+  end
+
+  it "should get a single contact when using #my" do
+    stub_api_get("/my/contact", 'contact_my.json')
+    contact = Contact.my
+    contact.should be_a(Contact)
+    contact.Id.should == '20090928182824338901000000'
+    contact.DisplayName.should == 'BH FOO'
   end
 
   it "should get all my Tags" do
