@@ -5,6 +5,11 @@ describe SharedListing do
   before(:each) do
     stub_auth_request
   end
+
+  it "should respond to the finders" do
+    SharedListing.should respond_to(:find)
+  end
+
   it "should save shared listings" do
     stub_api_post("/#{subject.class.element_name}", 'shared_listing_new.json', 'shared_listing_post.json')
     subject.ListingIds = ["20110224152431857619000000","20110125122333785431000000"]

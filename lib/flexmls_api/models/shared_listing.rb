@@ -1,6 +1,7 @@
 module FlexmlsApi
   module Models
     class SharedListing < Base 
+      extend Finders
       self.element_name="sharedlistings"
       
       def ListingIds=(listing_ids)
