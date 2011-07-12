@@ -19,7 +19,7 @@ module FlexmlsApi
         rescue BadResourceRequest => e
         rescue NotFound => e
           # log and leave
-          FlexmlsApi.logger.error("Failed to save contact #{self}: #{e.message}")
+          FlexmlsApi.logger.error("Failed to save SharedListing #{self}: #{e.message}")
         end
         false
       end
