@@ -40,6 +40,11 @@ module FlexmlsApi
     # :returns:
     #   An array of class instances for the Class of the calling finder
     def collect(result_array)
+      
+      # when conducting a count (pagination=count), the result_array is not an array
+      # in those cases, simply return the Fixnum
+      return result_array unless result_array.kind_of? Array
+      
       collection = result_array.collect { |item| new(item)}
       result_array.replace(collection)
       result_array
