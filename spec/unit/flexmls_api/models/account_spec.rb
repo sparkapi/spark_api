@@ -144,6 +144,18 @@ describe Account do
         accounts.first.OfficeId.should eq("20030426173014239760000000")
       end
     end
+    
+    it "should save my portal account" do
+      stub_api_get("/my/account", 'accounts/my_portal.json')
+      stub_api_put("/my/account", 'accounts/my_save.json', 'accounts/my_put.json')
+      account = Account.my
+      account.Id.should eq("20110426173054342350000000")
+      account.GetEmailUpdates.should eq(false)
+      account.GetEmailUpdates = true
+      account.save!
+      account.GetEmailUpdates.should eq(true)
+    end
+
   
   end
 

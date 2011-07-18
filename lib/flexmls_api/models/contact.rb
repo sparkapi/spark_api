@@ -7,9 +7,7 @@ module FlexmlsApi
       def save(arguments={})
         begin
           return save!(arguments)
-        rescue BadResourceRequest => e
-          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
-        rescue NotFound => e
+        rescue NotFound, BadResourceRequest => e
           FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
         false
@@ -44,4 +42,12 @@ module FlexmlsApi
       
     end
   end
+end
+
+class E1 < Exception ; end
+class E2 < Exception ; end
+def testex(c)
+  raise c
+rescue E1,E2 => e
+  puts e.class
 end

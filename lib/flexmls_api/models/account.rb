@@ -5,7 +5,7 @@ module FlexmlsApi
       self.element_name="accounts"
       
       SUBELEMENTS = [:emails, :phones, :websites, :addresses, :images]
-      attr_accessor *SUBELEMENTS
+      attr_accessor :my_account, *SUBELEMENTS 
       
       def initialize(attributes={})
         @emails = subresource(Email, "Emails", attributes)
@@ -18,11 +18,18 @@ module FlexmlsApi
         else
           @images = nil
         end
+        @my_account = false
         super(attributes)
       end
 
       def self.my(arguments={})
-        collect(connection.get("/my/account", arguments)).first
+        account  = collect(connection.get("/my/account", arguments)).first
+        account.my_account = true
+        account
+      end
+      
+      def my_account?
+        @my_account
       end
       
       def self.by_office(office_id, arguments={})
@@ -36,6 +43,23 @@ module FlexmlsApi
         else
           nil
         end
+      end
+      
+      def save(arguments={})
+        begin
+          return save!(arguments)
+        rescue NotFound, BadResourceRequest => e
+          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
+        end
+        false
+      end
+      def save!(arguments={})
+        # The long-term idea is that any setting in the user's account could be updated by including
+        # an attribute and calling PUT /my/account, but for now only the GetEmailUpdates attribute 
+        # is supported
+        save_path = my_account? ? "/my/account" : self.class.path
+        results = connection.put save_path, {"GetEmailUpdates" => self.GetEmailUpdates }, arguments
+        true
       end
 
       private
