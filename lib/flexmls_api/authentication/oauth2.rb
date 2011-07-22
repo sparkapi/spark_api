@@ -1,8 +1,18 @@
 require 'uri'
 
+
 module FlexmlsApi
 
   module Authentication
+    
+    module OAuth2Impl
+      require 'flexmls_api/authentication/oauth2_impl/middleware'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_base'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_refresh'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_code'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_password'
+    end
+    
     #=OAuth2 Authentication
     # Auth implementation to the API using the OAuth2 service endpoint.  Current adheres to the 10 
     # draft of the OAuth2 specification.  With OAuth2, the application supplies credentials for the 
@@ -19,6 +29,11 @@ module FlexmlsApi
     # Implementation the BaseAuth interface for API style authentication  
     class OAuth2 < BaseAuth
       
+      def initialize(client)
+        @client = client
+        @provider = client.oauth2_provider
+      end
+      
       def session
         @provider.load_session()
       end
@@ -26,44 +41,10 @@ module FlexmlsApi
         @provider.save_session(s)
       end
       
-      def initialize(client)
-        @client = client
-        @provider = client.oauth2_provider
-      end
-      
-      # Generate the appropriate request uri for authorizing this application for current user.
-      def authorization_url
-        params = {
-          "client_id" => @provider.client_id,
-          "response_type" => "code",
-          "redirect_uri" => @provider.redirect_uri
-        }
-        "#{@provider.authorization_uri}?#{build_url_parameters(params)}"
-      end
-      
-      def token_params
-        params = {
-          "client_id" => @provider.client_id,
-          "client_secret" => @provider.client_secret,
-          "grant_type" => "authorization_code",
-          "code" => @provider.code,
-          "redirect_uri" => @provider.redirect_uri
-        }
-       params.to_json 
-      end
-      
       def authenticate
-        if(@provider.code.nil?)
-          FlexmlsApi.logger.debug("Redirecting to provider to get the authorization code")
-          @provider.redirect(authorization_url)
-        end
-        FlexmlsApi.logger.debug("Authenticating to #{@provider.access_uri}")
-        uri = URI.parse(@provider.access_uri)
-        request_path = "#{uri.path}"
-        response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "#{token_params}").body
-        response.expires_in = @provider.session_timeout if response.expires_in.nil?
-        self.session=response
-        response
+        granter = OAuth2Impl::GrantTypeBase.create(@client, @provider, session)
+        self.session = granter.authenticate
+        session
       end
       
       # Perform an HTTP request (no data)
@@ -86,6 +67,15 @@ module FlexmlsApi
       def logout
         @provider.save_session(nil)
       end
+      
+      def authorization_url()
+        params = {
+          "client_id" => @provider.client_id,
+          "response_type" => "code",
+          "redirect_uri" => @provider.redirect_uri
+        }
+        "#{@provider.authorization_uri}?#{build_url_parameters(params)}"
+      end
 
             
       protected
@@ -94,34 +84,29 @@ module FlexmlsApi
         {"Authorization"=> "OAuth #{session.access_token}"}
       end
       
-      # Setup a faraday connection for dealing with an OAuth2 endpoint
-      def oauth_access_connection(endpoint)
-        opts = {
-          :headers => @client.headers
-        }
-        opts[:ssl] = {:verify => false }
-        opts[:url] = endpoint       
-        conn = Faraday::Connection.new(opts) do |builder|
-          builder.adapter Faraday.default_adapter
-          builder.use FlexmlsApi::Authentication::FlexmlsOAuth2Middleware
-        end
+      def provider
+        @provider
       end
+      def client
+        @client
+      end
+
     end
     
     # Representation of a session with the api using oauth2
     class OAuthSession
-      attr_accessor :access_token, :expires_in, :scope, :refresh_token
+      attr_accessor :access_token, :expires_in, :scope, :refresh_token, :refresh_timeout
       def initialize(options={})
         @access_token = options["access_token"]
-        # TODO The current oauth2 service does not send an expiration time.  I'm setting it to default to 1 hour.
         @expires_in = options["expires_in"]
         @scope = options["scope"]
         @refresh_token = options["refresh_token"]
         @start_time = DateTime.now
+        @refresh_timeout = 3600
       end
       #  Is the user session token expired?
       def expired?
-        @start_time + Rational(@expires_in, 24*60*60) < DateTime.now
+        @start_time + Rational(@expires_in - @refresh_timeout, 86400) < DateTime.now
       end
     end
     
@@ -136,7 +121,16 @@ module FlexmlsApi
     #  @client_secret - OAuth2 provided password for the client id
     class BaseOAuth2Provider
       
-      attr_accessor :authorization_uri, :code, :access_uri, :redirect_uri, :client_id, :client_secret
+      attr_accessor :authorization_uri, :access_uri, :grant_type, :client_id, :client_secret
+      
+      # Requirements for authorization_code grant type
+      attr_accessor :code, :redirect_uri
+      # Requirements for password grant type
+      attr_accessor :username, :password
+      
+      def grant_type
+        :authorization_code
+      end
 
       # Application using the client must handle user redirect for user authentication.  For 
       # command line applications, this method is called prior to initial client requests so that  
@@ -167,41 +161,11 @@ module FlexmlsApi
       # Provides a default session time out
       # returns - the session timeout length (in seconds)
       def session_timeout
-        3600
+        86400
       end
-      
+
     end
 
-    #==OAuth2 Faraday response middleware
-    # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
-    class FlexmlsOAuth2Middleware < Faraday::Response::ParseJson
-      def on_complete(finished_env)
-        body = parse(finished_env[:body])
-        FlexmlsApi.logger.debug("Response Body: #{body.inspect}")
-        unless body.is_a?(Hash)
-          raise InvalidResponse, "The server response could not be understood"
-        end
-        case finished_env[:status]
-        when 200..299
-          FlexmlsApi.logger.debug("Success!")
-          session = OAuthSession.new(body)
-        else 
-          # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
-          # OAuth2 implementations and wouldn't hurt to log.
-          auth_header_error = finished_env[:request_headers]["WWW-Authenticate"]
-          FlexmlsApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
-          raise ClientError, {:message => body["error"], :code =>0, :status => finished_env[:status]}
-        end
-        FlexmlsApi.logger.debug("Session= #{session.inspect}")
-        finished_env[:body] = session
-      end
-  
-      def initialize(app)
-        super(app)
-      end
-      
-    end
-    
   end
  
 end

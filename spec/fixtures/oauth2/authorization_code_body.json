@@ -1,0 +1,7 @@
+{
+	"code":"my_code",
+	"client_secret":"example-password",
+	"client_id":"example-id",
+	"redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback",
+	"grant_type":"authorization_code"
+}

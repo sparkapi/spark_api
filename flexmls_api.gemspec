@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-07-18}
+  s.date = %q{2011-07-28}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     "Gemfile",
     "Gemfile.lock",
+    "KEYS",
     "LICENSE",
     "README.md",
     "Rakefile",
@@ -28,6 +29,11 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/authentication/api_auth.rb",
     "lib/flexmls_api/authentication/base_auth.rb",
     "lib/flexmls_api/authentication/oauth2.rb",
+    "lib/flexmls_api/authentication/oauth2_impl/grant_type_base.rb",
+    "lib/flexmls_api/authentication/oauth2_impl/grant_type_code.rb",
+    "lib/flexmls_api/authentication/oauth2_impl/grant_type_password.rb",
+    "lib/flexmls_api/authentication/oauth2_impl/grant_type_refresh.rb",
+    "lib/flexmls_api/authentication/oauth2_impl/middleware.rb",
     "lib/flexmls_api/client.rb",
     "lib/flexmls_api/configuration.rb",
     "lib/flexmls_api/faraday.rb",
@@ -101,7 +107,13 @@ Gem::Specification.new do |s|
     "spec/fixtures/listing_with_videos.json",
     "spec/fixtures/listing_with_vtour.json",
     "spec/fixtures/note_new.json",
-    "spec/fixtures/oauth2_access.json",
+    "spec/fixtures/oauth2/access.json",
+    "spec/fixtures/oauth2/access_with_old_refresh.json",
+    "spec/fixtures/oauth2/access_with_refresh.json",
+    "spec/fixtures/oauth2/authorization_code_body.json",
+    "spec/fixtures/oauth2/error.json",
+    "spec/fixtures/oauth2/password_body.json",
+    "spec/fixtures/oauth2/refresh_body.json",
     "spec/fixtures/oauth2_error.json",
     "spec/fixtures/saved_search.json",
     "spec/fixtures/session.json",

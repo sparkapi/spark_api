@@ -46,7 +46,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
         with(:body => 
             '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}' 
         ).
-        to_return(:body => fixture("oauth2_access.json"), :status=>200)
+        to_return(:body => fixture("oauth2/access.json"), :status=>200)
       subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
       subject.authenticate.expires_in.should eq(7200)
     end
@@ -56,7 +56,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
         with(:body => 
              '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'
         ).
-        to_return(:body => fixture("oauth2_error.json"), :status=>400)
+        to_return(:body => fixture("oauth2/error.json"), :status=>400)
       expect {subject.authenticate()}.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
     end
     
@@ -78,6 +78,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
       subject.authenticated?.should eq(false)
     end
   end
+
 
   describe "logout" do
     let(:session) { mock_oauth_session }
@@ -125,33 +126,61 @@ describe FlexmlsApi::Authentication::OAuth2  do
     end
   end
 
-  context "when the server says the session is expired (even if we disagree)" do
-    it "should reset the session and reauthenticate" do
-      count = 0
-      stub_request(:post, provider.access_uri).
-        with(:body => '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'). 
-        to_return do
-          count += 1
-          {:body => fixture("oauth2_access.json"), :status=>200}
-        end
-      # Make sure the auth request goes out twice.
-      # Fail the first time, but then return the correct value after reauthentication
-      stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
-          to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
-          to_return(:body => fixture('listing_with_documents.json'))
-            
-      client.get("/listings/1234")
-      count.should eq(2)
-      client.session.expired?.should eq(false)
+  context "with an expired session" do
+    context "and a valid refresh token" do
+      it "should reset the session and reauthenticate" do
+        count = 0
+        refresh_count = 0
+        stub_request(:post, provider.access_uri).
+          with(:body => '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'). 
+          to_return do
+            count += 1
+            {:body => fixture("oauth2/access_with_old_refresh.json"), :status=>200}
+          end
+        stub_request(:post, provider.access_uri).
+          with(:body => '{"client_id":"example-id","client_secret":"example-password","grant_type":"refresh_token","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","refresh_token":"0ld-r3fr35h-70k3n"}'). 
+          to_return do
+            refresh_count += 1
+            {:body => fixture("oauth2/access_with_refresh.json"), :status=>200}
+          end
+        # Make sure the auth request goes out twice.
+        # Fail the first time, but then return the correct value after reauthentication
+        stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
+            to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
+            to_return(:body => fixture('listing_with_documents.json'))
+        client.get("/listings/1234")
+        count.should eq(1)
+        refresh_count.should eq(1)
+        client.session.expired?.should eq(false)
+      end
+    end
+    context "and an invalid refresh token" do
+      it "should reset the session and reauthenticate" do
+        count = 0
+        stub_request(:post, provider.access_uri).
+          with(:body => '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'). 
+          to_return do
+            count += 1
+            {:body => fixture("oauth2/access.json"), :status=>200}
+          end
+        # Make sure the auth request goes out twice.
+        # Fail the first time, but then return the correct value after reauthentication
+        stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
+            to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
+            to_return(:body => fixture('listing_with_documents.json'))
+              
+        client.get("/listings/1234")
+        count.should eq(2)
+        client.session.expired?.should eq(false)
+      end
     end
   end
-
 end
 
 describe FlexmlsApi::Authentication::BaseOAuth2Provider  do
   context "session_timeout" do
     it "should provide a default" do
-      subject.session_timeout.should eq(3600)
+      subject.session_timeout.should eq(86400)
     end
     describe TestOAuth2Provider do
       subject { TestOAuth2Provider.new }
@@ -159,5 +188,49 @@ describe FlexmlsApi::Authentication::BaseOAuth2Provider  do
         subject.session_timeout.should eq(7200)
       end
     end
+  end
+end
+
+class TestCLIOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
+  def initialize
+    @authorization_uri = "https://test.fbsdata.com/r/oauth2"
+    @access_uri = "https://api.test.fbsdata.com/v1/oauth2/grant"
+    @client_id="example-id"
+    @client_secret="example-secret"
+    @username="example-user"
+    @password="example-password"
+    @session_cache = {}
+  end
+  
+  def grant_type
+    :password
+  end
+  
+  def redirect(url)
+    raise "Unsupported in oauth grant_type=password mode"
+  end
+  
+  def load_session()
+    @session_cache["test_user_session"]
+  end
+  def save_session(session)
+    @session_cache["test_user_session"] = session
+    nil
+  end
+  def session_timeout; 60; end
+end
+
+describe "password authentication" do
+  let(:provider) { TestCLIOAuth2Provider.new() }
+  let(:client) { FlexmlsApi::Client.new({:authentication_mode => FlexmlsApi::Authentication::OAuth2,:oauth2_provider => provider}) }
+  subject {client.authenticator }  
+  it "should authenticate the api credentials with username and password" do
+    stub_request(:post, provider.access_uri).
+      with(:body => 
+        '{"username":"example-user","client_secret":"example-secret","client_id":"example-id","password":"example-password","grant_type":"password"}' 
+      ).
+      to_return(:body => fixture("oauth2/access.json"), :status=>200)
+    subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
+    subject.authenticate.expires_in.should eq(60)
   end
 end

@@ -1,0 +1,7 @@
+{
+	"client_id":"example-id",
+	"client_secret":"example-password",
+	"refresh_token":"example-token",
+	"grant_type":"refresh_token",
+	"redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback",
+}

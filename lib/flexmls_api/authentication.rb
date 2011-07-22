@@ -5,9 +5,9 @@ require 'faraday_middleware'
 require 'yajl'
 require 'date'
 
-require File.expand_path('../authentication/base_auth', __FILE__)
-require File.expand_path('../authentication/api_auth', __FILE__)
-require File.expand_path('../authentication/oauth2', __FILE__)
+require 'flexmls_api/authentication/base_auth'
+require 'flexmls_api/authentication/api_auth'
+require 'flexmls_api/authentication/oauth2'
 
 module FlexmlsApi
   # =Authentication
