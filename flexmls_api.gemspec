@@ -127,8 +127,10 @@ Gem::Specification.new do |s|
     "spec/fixtures/tour_of_homes.json",
     "spec/json_helper.rb",
     "spec/mock_helper.rb",
+    "spec/oauth2_helper.rb",
     "spec/spec_helper.rb",
     "spec/unit/flexmls_api/authentication/api_auth_spec.rb",
+    "spec/unit/flexmls_api/authentication/oauth2_impl/grant_type_base_spec.rb",
     "spec/unit/flexmls_api/authentication/oauth2_spec.rb",
     "spec/unit/flexmls_api/authentication_spec.rb",
     "spec/unit/flexmls_api/configuration_spec.rb",
@@ -160,38 +162,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.6.2}
   s.summary = %q{A library for interacting with the flexmls web services.}
-  s.test_files = [
-    "spec/json_helper.rb",
-    "spec/mock_helper.rb",
-    "spec/spec_helper.rb",
-    "spec/unit/flexmls_api/authentication/api_auth_spec.rb",
-    "spec/unit/flexmls_api/authentication/oauth2_spec.rb",
-    "spec/unit/flexmls_api/authentication_spec.rb",
-    "spec/unit/flexmls_api/configuration_spec.rb",
-    "spec/unit/flexmls_api/faraday_spec.rb",
-    "spec/unit/flexmls_api/models/account_spec.rb",
-    "spec/unit/flexmls_api/models/base_spec.rb",
-    "spec/unit/flexmls_api/models/connect_prefs_spec.rb",
-    "spec/unit/flexmls_api/models/contact_spec.rb",
-    "spec/unit/flexmls_api/models/document_spec.rb",
-    "spec/unit/flexmls_api/models/listing_cart_spec.rb",
-    "spec/unit/flexmls_api/models/listing_spec.rb",
-    "spec/unit/flexmls_api/models/note_spec.rb",
-    "spec/unit/flexmls_api/models/photo_spec.rb",
-    "spec/unit/flexmls_api/models/property_types_spec.rb",
-    "spec/unit/flexmls_api/models/saved_search_spec.rb",
-    "spec/unit/flexmls_api/models/shared_listing_spec.rb",
-    "spec/unit/flexmls_api/models/standard_fields_spec.rb",
-    "spec/unit/flexmls_api/models/system_info_spec.rb",
-    "spec/unit/flexmls_api/models/tour_of_home_spec.rb",
-    "spec/unit/flexmls_api/models/video_spec.rb",
-    "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
-    "spec/unit/flexmls_api/multi_client_spec.rb",
-    "spec/unit/flexmls_api/paginate_spec.rb",
-    "spec/unit/flexmls_api/primary_array_spec.rb",
-    "spec/unit/flexmls_api/request_spec.rb",
-    "spec/unit/flexmls_api_spec.rb"
-  ]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

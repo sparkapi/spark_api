@@ -6,7 +6,6 @@ module FlexmlsApi
       # request.  This implementation is geared towards authentication styles for web applications
       # that have a OAuth flow for redirects.
       class GrantTypeCode < GrantTypeBase
-        attr_reader :provider
         def initialize(client, provider, session)
           super(client, provider, session)
         end

@@ -15,7 +15,7 @@ module FlexmlsApi
           when :refresh_token
             granter = GrantTypeRefresh.new(client, provider, session)
           else
-            raise ClientError, "Unsupported grant type [#{type}]"
+            raise ClientError, "Unsupported grant type [#{provider.grant_type}]"
           end
           granter
         end

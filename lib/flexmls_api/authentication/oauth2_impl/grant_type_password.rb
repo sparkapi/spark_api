@@ -6,7 +6,6 @@ module FlexmlsApi
       # request.  This implementation is geared towards authentication styles for native 
       # applications that need to use OAuth2
       class GrantTypePassword < GrantTypeBase
-        attr_reader :provider
         def initialize(client, provider, session)
           super(client, provider, session)
         end

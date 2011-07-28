@@ -5,7 +5,6 @@ module FlexmlsApi
     module OAuth2Impl
       class GrantTypeRefresh < GrantTypeBase
         attr_accessor :params
-        attr_reader :provider
         def initialize(client, provider, session)
           super(client, provider, session)
           @params = {}
