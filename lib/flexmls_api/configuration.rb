@@ -12,7 +12,7 @@ module FlexmlsApi
     DEFAULT_SSL = false
     DEFAULT_OAUTH2 = nil
     
-    X_FLEXMLS_API_USER_AGENT = "X-Flexmlsapi-User-Agent"
+    X_FLEXMLS_API_USER_AGENT = "X-flexmlsApi-User-Agent"
 
     attr_accessor *VALID_OPTION_KEYS
     def configure
