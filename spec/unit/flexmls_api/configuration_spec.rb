@@ -11,7 +11,7 @@ describe FlexmlsApi::Client, "Client config"  do
       FlexmlsApi.api_secret.should be_nil
       FlexmlsApi.version.should match("v1")
       FlexmlsApi.endpoint.should match("api.flexmls.com")
-
+      FlexmlsApi.user_agent.should match(/flexmls API Ruby Gem .*/)
       FlexmlsApi.api_key = "my_api_key"
       FlexmlsApi.api_key.should match("my_api_key")
     end
@@ -92,6 +92,28 @@ describe FlexmlsApi::Client, "Client config"  do
           
       c = FlexmlsApi::Client.new(:endpoint => "https://api.flexmls.com", :ssl => true)
       c.get('/connections')[0]["SSL"].should eq(true)
+    end
+    
+    it "should have correct headers based on configuration" do
+      stub_auth_request
+      stub_request(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/headers").
+          with(:query => {
+            :ApiSig => "6f0cfef263e0bfe7a9ae1f60063a8ad9",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573"
+          }).
+          to_return(:body => '{"D":{"Success": true,"Results": []}}')
+      FlexmlsApi.reset
+      FlexmlsApi.configure do |config|
+        config.user_agent = "my useragent"
+      end
+      FlexmlsApi.client.get '/headers'
+      WebMock.should have_requested(:get, "#{FlexmlsApi.endpoint}/#{FlexmlsApi.version}/headers?ApiSig=6f0cfef263e0bfe7a9ae1f60063a8ad9&AuthToken=c401736bf3d3f754f07c04e460e09573").
+        with(:headers => {
+          'User-Agent' => FlexmlsApi::Configuration::DEFAULT_USER_AGENT,
+          FlexmlsApi::Configuration::X_FLEXMLS_API_USER_AGENT => "my useragent",
+          'Accept'=>'application/json', 
+          'Content-Type'=>'application/json'
+        })
     end
     
   end

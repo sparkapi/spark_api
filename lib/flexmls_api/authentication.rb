@@ -77,8 +77,8 @@ module FlexmlsApi
       {
         :accept => 'application/json',
         :content_type => 'application/json',
-        :user_agent => user_agent,
-        'X-flexmlsApi-User-Agent' => user_agent
+        :user_agent => Configuration::DEFAULT_USER_AGENT,
+        Configuration::X_FLEXMLS_API_USER_AGENT => user_agent
       }
     end
     
