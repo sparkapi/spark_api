@@ -14,6 +14,8 @@ Installation
 
 Usage Examples
 ------------------------
+
+#### Ruby Script
     # initialize the gem with your key/secret
     # api_key and _api_secret are the only required settings
     # other options and their defaults:
@@ -31,6 +33,24 @@ Usage Examples
 
     # Grab your listings!
     my_listings = Listing.my()
+    
+    
+#### IRB Session
+Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.flexmls_api_testing_ filling in the credentials for your account.
+
+    API_USER="20110101000000000000000000" # ID for an api user
+    API_ENDPOINT="http://api.developers.flexmls.com"
+    API_KEY="my_test_key"
+    API_SECRET="my_test_secret"
+    
+    export API_USER API_ENDPOINT API_KEY API_SECRET
+
+Now, to run with this setup, run the following from the command line:
+
+    > source .flexmls_api_testing
+    > bundle exec irb -r script/setup.rb
+    irb> FlexmlsApi.client.get '/my/account'
+
 
 Authentication
 --------------
@@ -40,7 +60,7 @@ Authentication is handled transparently by the request framework in the gem, so 
 Usually supplied for a single user, this authentication mode is the simplest, and is setup as the default.  The example usage above demonstrates how to get started using this authentication mode.
 
 #### OAuth2 Authentication
-Authentication mode the separates application and user authentication.  This mode requires further setup which is described in lib/flexmls_api/authentication/oauth2.rb
+Authentication mode the separates application and user authentication.  This mode requires further setup which is described in _lib/flexmls_api/authentication/oauth2.rb_
 
 Error Codes
 ---------------------
