@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/authentication/oauth2_impl/grant_type_refresh.rb",
     "lib/flexmls_api/authentication/oauth2_impl/middleware.rb",
     "lib/flexmls_api/cli.rb",
+    "lib/flexmls_api/cli/api_auth.rb",
     "lib/flexmls_api/cli/oauth2.rb",
     "lib/flexmls_api/cli/setup.rb",
     "lib/flexmls_api/client.rb",

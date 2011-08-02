@@ -1,4 +1,15 @@
 require "rubygems"
+require 'pp'
+
+IRB.conf[:AUTO_INDENT]=true
+IRB.conf[:PROMPT][:FLEXMLS]= {
+  :PROMPT_I => "flexmlsApi:%03n:%i> ",
+  :PROMPT_S => "flexmlsApi:%03n:%i%l ",
+  :PROMPT_C => "flexmlsApi:%03n:%i* ",
+  :RETURN => "%s\n"
+} 
+
+IRB.conf[:PROMPT_MODE] = :FLEXMLS
 
 Bundler.require(:default, "development") if defined?(Bundler)
 
@@ -18,12 +29,8 @@ end
 
 FlexmlsApi.logger.info("Client configured!")
 
-FlexmlsApi.configure do |config|
-  config.api_key = ENV["API_KEY"] 
-  config.api_secret = ENV["API_SECRET"]
-  config.api_user = ENV["API_USER"] if ENV["API_USER"]
-  config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
-end
-
 include FlexmlsApi::Models
 
+def c
+  FlexmlsApi.client
+end

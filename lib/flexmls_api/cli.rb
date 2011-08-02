@@ -20,16 +20,17 @@ module FlexmlsApi
       }
       
       def self.execute(stdout, arguments=[])
-        
-        irb = RUBY_PLATFORM =~ /(:?mswin|mingw)/ ? 'irb.bat' : 'irb'
-        
         options = setup_options(stdout,arguments)
         libs =  " -r irb/completion"
         # Perhaps use a console_lib to store any extra methods I may want available in the cosole
         libs << (options[:oauth2] ? setup_oauth2 : setup_api_auth)
         cmd = "#{export_env(options)} bundle exec #{irb} #{libs} --simple-prompt"
-        puts "Loading flexmls_api gem (#{libs})"
+        puts "Loading flexmls_api gem..."
         exec "#{cmd}"
+      end
+      
+      def self.irb()
+        RUBY_PLATFORM =~ /(:?mswin|mingw)/ ? 'irb.bat' : 'irb'
       end
       
       private
@@ -114,7 +115,7 @@ module FlexmlsApi
       end
       
       def self.setup_api_auth
-        " -r #{File.dirname(__FILE__) + '/../../lib/flexmls_api/cli/setup.rb'}"
+        " -r #{File.dirname(__FILE__) + '/../../lib/flexmls_api/cli/api_auth.rb'}"
       end
   
       def self.setup_oauth2

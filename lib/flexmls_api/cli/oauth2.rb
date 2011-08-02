@@ -1,20 +1,4 @@
-require "rubygems"
-
-Bundler.require(:default, "development") if defined?(Bundler)
-
-path = File.expand_path(File.dirname(__FILE__) + "/../../../lib/")
-$LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
-require path + '/flexmls_api'
-
-module FlexmlsApi
-  def self.logger
-    if @logger.nil?
-      @logger = Logger.new(STDOUT)
-      @logger.level = ENV["VERBOSE"].nil? ? Logger::WARN : Logger::DEBUG
-    end
-    @logger
-  end
-end
+require File.dirname(__FILE__) + "/../cli/setup"
 
 class CLIOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
   def initialize(credentials)
@@ -45,8 +29,6 @@ class CLIOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
   end
 end
 
-FlexmlsApi.logger.info("Client configured!")
-
 FlexmlsApi.configure do |config|
   config.oauth2_provider = CLIOAuth2Provider.new(
                             :authorization_uri=> ENV["AUTH_URI"],
@@ -59,5 +41,3 @@ FlexmlsApi.configure do |config|
   config.authentication_mode = FlexmlsApi::Authentication::OAuth2
   config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
 end
-
-include FlexmlsApi::Models
