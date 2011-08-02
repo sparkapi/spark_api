@@ -2,5 +2,5 @@
 # File: script/console
 
 require File.dirname(__FILE__) + '/../lib/flexmls_api/cli'
-
+ENV["FLEXMLS_API_CONSOLE"] = "true"
 FlexmlsApi::CLI::ConsoleCLI.execute(STDOUT, ARGV)

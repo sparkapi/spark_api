@@ -1,6 +1,16 @@
 require "rubygems"
 require 'pp'
 
+if ENV["FLEXMLS_API_CONSOLE"].nil?
+  require 'flexmls_api'
+else
+  puts "Enabling console mode for local gem"
+  Bundler.require(:default, "development") if defined?(Bundler)
+  path = File.expand_path(File.dirname(__FILE__) + "/../../../lib/")
+  $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
+  require path + '/flexmls_api'
+end
+
 IRB.conf[:AUTO_INDENT]=true
 IRB.conf[:PROMPT][:FLEXMLS]= {
   :PROMPT_I => "flexmlsApi:%03n:%i> ",
@@ -10,8 +20,6 @@ IRB.conf[:PROMPT][:FLEXMLS]= {
 } 
 
 IRB.conf[:PROMPT_MODE] = :FLEXMLS
-
-Bundler.require(:default, "development") if defined?(Bundler)
 
 path = File.expand_path(File.dirname(__FILE__) + "/../../../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)

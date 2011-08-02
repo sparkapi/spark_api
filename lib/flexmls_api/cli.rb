@@ -16,7 +16,8 @@ module FlexmlsApi
         :api_secret => "API_SECRET",
         :api_user => "API_USER",
         # OTHER
-        :verbose => "VERBOSE"
+        :verbose => "VERBOSE",
+        :console => "FLEXMLS_API_CONSOLE"  # not a public option, meant to distinguish bin/flexmls_api and script/console
       }
       
       def self.execute(stdout, arguments=[])
@@ -24,7 +25,9 @@ module FlexmlsApi
         libs =  " -r irb/completion"
         # Perhaps use a console_lib to store any extra methods I may want available in the cosole
         libs << (options[:oauth2] ? setup_oauth2 : setup_api_auth)
-        cmd = "#{export_env(options)} bundle exec #{irb} #{libs} --simple-prompt"
+        
+        bundler = (options[:console] ? "bundle exec" : "")  
+        cmd = "#{export_env(options)} #{bundler} #{irb} #{libs} --simple-prompt"
         puts "Loading flexmls_api gem..."
         exec "#{cmd}"
       end
@@ -47,8 +50,9 @@ module FlexmlsApi
           # API AUTH Options
           :api_key => ENV[OPTIONS_ENV[:api_key]], 
           :api_secret => ENV[OPTIONS_ENV[:api_secret]],
-          :api_user => ENV[OPTIONS_ENV[:api_user]]
-        }
+          :api_user => ENV[OPTIONS_ENV[:api_user]],
+          :console => ENV[OPTIONS_ENV[:console]]
+       }
         # NOTE: the option -p/--path= is given as an example, and should be replaced in your application.
   
         mandatory_options = %w(  )
