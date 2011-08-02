@@ -1,13 +1,8 @@
-#!/usr/bin/env ruby
 require "rubygems"
-
-# This is a handy startup script for working with the client from an irb session.  All you need to 
-# do is set "API_KEY" and "API_SECRET" environment variables and run:
-#  > irb -r script/setup
 
 Bundler.require(:default, "development") if defined?(Bundler)
 
-path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
+path = File.expand_path(File.dirname(__FILE__) + "/../../../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require path + '/flexmls_api'
 
@@ -15,7 +10,7 @@ module FlexmlsApi
   def self.logger
     if @logger.nil?
       @logger = Logger.new(STDOUT)
-      @logger.level = Logger::DEBUG
+      @logger.level = ENV["VERBOSE"].nil? ? Logger::WARN : Logger::DEBUG
     end
     @logger
   end

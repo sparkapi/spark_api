@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    flexmls_api (0.6.0)
+    flexmls_api (0.6.1)
       addressable (~> 2.2.5)
       builder (< 4.0.0, >= 2.1.2)
       curb (~> 0.7.15)
