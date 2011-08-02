@@ -35,7 +35,7 @@ Usage Examples
     my_listings = Listing.my()
     
     
-#### IRB Session
+#### Interactive Console
 Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.flexmls_api_testing_ filling in the credentials for your account.
 
     API_USER="20110101000000000000000000" # ID for an api user
@@ -48,8 +48,8 @@ Included in the gem is a simple setup script to run the client in IRB.  To use i
 Now, to run with this setup, run the following from the command line:
 
     > source .flexmls_api_testing
-    > script/console
-    irb> FlexmlsApi.client.get '/my/account'
+    > bin/flexmls_api
+    flemxlsApi> FlexmlsApi.client.get '/my/account'
 
 You can also provide these options from the command line, see "script/console -h" for more information
 

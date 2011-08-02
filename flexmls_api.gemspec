@@ -10,8 +10,10 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
   s.date = %q{2011-08-02}
+  s.default_executable = %q{flexmls_api}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
+  s.executables = ["flexmls_api"]
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md"
@@ -24,6 +26,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "bin/flexmls_api",
     "lib/flexmls_api.rb",
     "lib/flexmls_api/authentication.rb",
     "lib/flexmls_api/authentication/api_auth.rb",
@@ -69,6 +72,8 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
     "lib/flexmls_api/version.rb",
+    "script/console",
+    "script/example.rb",
     "spec/fixtures/accounts/all.json",
     "spec/fixtures/accounts/my.json",
     "spec/fixtures/accounts/my_portal.json",

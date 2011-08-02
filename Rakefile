@@ -15,7 +15,7 @@ begin
     gemspec.homepage = "https://github.com/flexmls/flexmls_api"
     gemspec.authors = ["Brandon Hornseth", "Wade McEwen"]
     # Need to skip spec/reports for CI builds
-    gemspec.files =  FileList["[A-Z]*", "{lib,spec/fixtures,spec/unit}/**/*", "spec/*.rb"]
+    gemspec.files =  FileList["[A-Z]*", "{bin,lib,spec/fixtures,script,spec/unit}/**/*", "spec/*.rb"]
     # GEMS
     gemspec.add_dependency 'curb', '~> 0.7.15'
     gemspec.add_dependency 'faraday', '~> 0.6.1'
