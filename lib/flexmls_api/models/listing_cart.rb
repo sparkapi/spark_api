@@ -27,6 +27,10 @@ module FlexmlsApi
         keys = Array(listings).map { |l| l.respond_to?(:Id) ? l.Id : l.to_s }
         collect(connection.get("/#{self.element_name}/for/#{keys.join(",")}", arguments))
       end
+
+      def self.portal(arguments={})
+          collect(connection.get("/#{self.element_name}/portal", arguments))
+      end
       
       def save(arguments={})
         begin

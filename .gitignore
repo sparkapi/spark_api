@@ -9,5 +9,6 @@ bundle
 vendor/cache/
 pkg/
 doc/
+tmp/*
 .buildpath
 .project
