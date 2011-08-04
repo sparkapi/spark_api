@@ -44,11 +44,19 @@ describe ListingCart do
   it "should get all carts for a listing" do
     stub_api_get("/#{subject.class.element_name}/for/#{listing.Id}", 'listing_cart.json')
     [listing, listing.Id ].each do |l|
-    resources = subject.class.for(l)
+        resources = subject.class.for(l)
+        resources.should be_an(Array)
+        resources.length.should eq(2)
+        resources.first.Id.should eq("20100912153422758914000000")
+    end
+  end
+
+  it "should get the carts specific to a portal user" do
+    stub_api_get("/#{subject.class.element_name}/portal", 'listing_cart.json')
+    resources = subject.class.portal
     resources.should be_an(Array)
     resources.length.should eq(2)
     resources.first.Id.should eq("20100912153422758914000000")
-    end
   end
   
   it "should save a new listing cart" do
