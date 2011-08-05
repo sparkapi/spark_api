@@ -28,6 +28,10 @@ module FlexmlsApi
         collect(connection.get("/#{self.element_name}/for/#{keys.join(",")}", arguments))
       end
 
+      def self.my(arguments={})
+        collect(connection.get("/my/#{self.element_name}", arguments))
+      end
+
       def self.portal(arguments={})
           collect(connection.get("/#{self.element_name}/portal", arguments))
       end

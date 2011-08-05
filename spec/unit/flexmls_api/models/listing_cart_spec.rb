@@ -51,6 +51,14 @@ describe ListingCart do
     end
   end
 
+  it "should get the carts for a user" do
+    stub_api_get("/my/#{subject.class.element_name}", 'listing_cart.json')
+    resources = subject.class.my
+    resources.should be_an(Array)
+    resources.length.should eq(2)
+    resources.first.Id.should eq("20100912153422758914000000")
+  end
+
   it "should get the carts specific to a portal user" do
     stub_api_get("/#{subject.class.element_name}/portal", 'listing_cart.json')
     resources = subject.class.portal
