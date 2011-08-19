@@ -60,6 +60,11 @@ module FlexmlsApi
         @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, arguments)
       end
 
+      def open_houses(arguments={})
+        return @open_houses unless @open_houses.nil?
+        @open_houses = OpenHouse.find_by_listing_key(self.Id, arguments)
+      end
+      
       def my_notes
         Note.build_subclass.tap do |note|
           note.prefix = "/listings/#{self.ListingKey}"
@@ -83,6 +88,7 @@ module FlexmlsApi
         end
       end
 
+      
       private
 
       # TODO trim this down so we're only overriding the StandardFields access

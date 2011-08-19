@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{flexmls_api}
-  s.version = "0.6.2"
+  s.version = "0.6.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-08-04}
+  s.date = %q{2011-08-19}
   s.default_executable = %q{flexmls_api}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
@@ -57,6 +57,7 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/listing_cart.rb",
     "lib/flexmls_api/models/market_statistics.rb",
     "lib/flexmls_api/models/note.rb",
+    "lib/flexmls_api/models/open_house.rb",
     "lib/flexmls_api/models/photo.rb",
     "lib/flexmls_api/models/property_types.rb",
     "lib/flexmls_api/models/saved_search.rb",
@@ -124,6 +125,7 @@ Gem::Specification.new do |s|
     "spec/fixtures/oauth2/password_body.json",
     "spec/fixtures/oauth2/refresh_body.json",
     "spec/fixtures/oauth2_error.json",
+    "spec/fixtures/open_houses.json",
     "spec/fixtures/saved_search.json",
     "spec/fixtures/session.json",
     "spec/fixtures/shared_listing_new.json",
@@ -152,6 +154,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/listing_cart_spec.rb",
     "spec/unit/flexmls_api/models/listing_spec.rb",
     "spec/unit/flexmls_api/models/note_spec.rb",
+    "spec/unit/flexmls_api/models/open_house_spec.rb",
     "spec/unit/flexmls_api/models/photo_spec.rb",
     "spec/unit/flexmls_api/models/property_types_spec.rb",
     "spec/unit/flexmls_api/models/saved_search_spec.rb",
