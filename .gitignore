@@ -7,6 +7,7 @@ spec/reports/
 coverage
 bundle
 vendor/cache/
+Gemfile.lock
 pkg/
 doc/
 tmp/*
