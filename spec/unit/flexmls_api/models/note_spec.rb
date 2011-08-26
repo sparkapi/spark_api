@@ -20,13 +20,13 @@ describe Note do
     end
 
     it "should get my notes" do
-      stub_api_get("#{@note.path}", 'agent_shared_note.json')
+      stub_api_get("#{@note.path}", 'notes/agent_shared.json')
       ret = @note.get
       ret.Note.should == "lorem ipsum dolor sit amet"
     end
 
     it "should return a nil when no shared notes exist" do
-      stub_api_get("#{@note.path}", 'agent_shared_note_empty.json')
+      stub_api_get("#{@note.path}", 'notes/agent_shared_empty.json')
       @note.get.should be_nil
     end
 
@@ -38,7 +38,7 @@ describe Note do
     it "should raise an exception when adding a note fails" do
       n = @note.new(:Note => "lorem ipsum dolor")
       
-      stub_api_put("#{@note.path}", 'note_new.json') do |request|
+      stub_api_put("#{@note.path}", 'notes/new.json') do |request|
         request.to_return(:status => 500, :body => fixture('generic_failure.json'))
       end
 
@@ -48,7 +48,7 @@ describe Note do
 
     it "should allow adding of a note" do
       n = @note.new(:Note => "lorem ipsum dolor")
-      stub_api_put("#{@note.path}", 'note_new.json', 'add_note.json')
+      stub_api_put("#{@note.path}", 'notes/new.json', 'notes/add.json')
       n.save
       n.ResourceUri.should == '/v1/listings/20100909200152674436000000/shared/notes/contacts/20110407212043616271000000/'
     end

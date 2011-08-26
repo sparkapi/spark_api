@@ -6,23 +6,21 @@ describe StandardFields do
     stub_auth_request
   end
 
-
   it "should respond to get" do
     StandardFields.should respond_to(:get)
   end
-
 
   it "should find and expand all" do
     StandardFields.should respond_to(:find_and_expand_all)
     
     # stub request to standardFields
-    stub_api_get('/standardfields','standardfields.json')
+    stub_api_get('/standardfields','standardfields/standardfields.json')
     
     # stub request for City
-    stub_api_get('/standardfields/City','standardfields_city.json')
+    stub_api_get('/standardfields/City','standardfields/city.json')
     
     # stub request for StateOrProvince
-    stub_api_get('/standardfields/StateOrProvince','standardfields_stateorprovince.json')
+    stub_api_get('/standardfields/StateOrProvince','standardfields/stateorprovince.json')
     
     # request
     fields = StandardFields.find_and_expand_all(["City","StateOrProvince"])
@@ -38,12 +36,11 @@ describe StandardFields do
     
   end
   
-  
   it "should find nearby fields" do
     StandardFields.should respond_to(:find_nearby)
     
     # stub request
-    stub_api_get('/standardfields/nearby/A','standardfields_nearby.json',
+    stub_api_get('/standardfields/nearby/A','standardfields/nearby.json',
       :Lat => "50",
       :Lon => "-92",
       :_expand => "1")

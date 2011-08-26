@@ -26,7 +26,7 @@ describe OpenHouse do
 
   it "should get open house for a listing" do
     stub_auth_request
-    stub_api_get('/listings/20060412165917817933000000/openhouses','open_houses.json')
+    stub_api_get('/listings/20060412165917817933000000/openhouses','listings/open_houses.json')
     houses = subject.class.find_by_listing_key('20060412165917817933000000')
     houses.should be_an(Array)
     houses.length.should eq(2)

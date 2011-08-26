@@ -11,7 +11,7 @@ describe SharedListing do
   end
 
   it "should save shared listings" do
-    stub_api_post("/#{subject.class.element_name}", 'shared_listing_new.json', 'shared_listing_post.json')
+    stub_api_post("/#{subject.class.element_name}", 'listings/shared_listing_new.json', 'listings/shared_listing_post.json')
     subject.ListingIds = ["20110224152431857619000000","20110125122333785431000000"]
     subject.ViewId = "20080125122333787615000000"
     subject.save.should be(true)

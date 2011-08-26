@@ -12,7 +12,7 @@ describe Contact do
   end
 
   it "should get all my contacts" do
-    stub_api_get("/contacts", 'contacts.json')
+    stub_api_get("/contacts", 'contacts/contacts.json')
     contacts = Contact.get
     contacts.should be_an(Array)
     contacts.length.should eq(3)
@@ -20,7 +20,7 @@ describe Contact do
   end
 
   it "should get a single contact when using #my" do
-    stub_api_get("/my/contact", 'contact_my.json')
+    stub_api_get("/my/contact", 'contacts/my.json')
     contact = Contact.my
     contact.should be_a(Contact)
     contact.Id.should == '20090928182824338901000000'
@@ -28,7 +28,7 @@ describe Contact do
   end
 
   it "should get all my Tags" do
-    stub_api_get("/contacts/tags", 'contact_tags.json')
+    stub_api_get("/contacts/tags", 'contacts/tags.json')
     tags = Contact.tags
     tags.should be_an(Array)
     tags.length.should eq(4)
@@ -36,7 +36,7 @@ describe Contact do
   end
   
   it "should get all my Tags" do
-    stub_api_get("/contacts/tags/IDX%20Lead", 'contacts.json')
+    stub_api_get("/contacts/tags/IDX%20Lead", 'contacts/contacts.json')
     contacts = Contact.by_tag("IDX Lead")
     contacts.should be_an(Array)
     contacts.length.should eq(3)
@@ -45,7 +45,7 @@ describe Contact do
   end
     
   it "should save a new contact" do
-    stub_api_post("/contacts", 'contact_new.json', 'contacts_post.json')
+    stub_api_post("/contacts", 'contacts/new.json', 'contacts/post.json')
     c=Contact.new
     c.attributes["DisplayName"] = "Contact Four"
     c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
@@ -54,7 +54,7 @@ describe Contact do
   end
 
   it "should save a new contact and notify" do
-    stub_api_post("/contacts", 'contact_new_notify.json', 'contacts_post.json')
+    stub_api_post("/contacts", 'contacts/new_notify.json', 'contacts/post.json')
     c=Contact.new
     c.notify=true
     c.attributes["DisplayName"] = "Contact Four"
@@ -64,7 +64,7 @@ describe Contact do
   end
 
   it "should fail saving" do
-    stub_api_post("/contacts", 'contact_new_empty.json') do |request|
+    stub_api_post("/contacts", 'contacts/new_empty.json') do |request|
       request.to_return(:status => 400, :body => fixture('errors/failure.json'))
     end
 
@@ -75,7 +75,7 @@ describe Contact do
   
   context "on an epic fail" do
     it "should fail saving and asplode" do
-      stub_api_post("/contacts", 'contact_new_empty.json') do |request|
+      stub_api_post("/contacts", 'contacts/new_empty.json') do |request|
         request.to_return(:status => 500, :body => fixture('errors/failure.json'))
       end
       

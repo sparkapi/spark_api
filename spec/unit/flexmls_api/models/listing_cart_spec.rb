@@ -3,7 +3,7 @@ require './spec/spec_helper'
 describe ListingCart do
 
   it "should get all listing carts" do
-    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resources = subject.class.get
     resources.should be_an(Array)
     resources.length.should eq(2)
@@ -11,7 +11,7 @@ describe ListingCart do
   end
 
   it "should get a listing cart" do
-    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resource = subject.class.get.first
     resource.Id.should eq("20100912153422758914000000")
     resource.Name.should eq("My Listing Cart")
@@ -20,10 +20,10 @@ describe ListingCart do
   
   it "should add a listing to a cart" do
     list_id = "20110621133454434543000000"
-    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resource = subject.class.get.first
     resource.Id.should eq("20100912153422758914000000")
-    stub_api_post("/#{subject.class.element_name}/#{resource.Id}",'listing_cart_add_listing_post.json', 'listing_cart_add_listing.json')
+    stub_api_post("/#{subject.class.element_name}/#{resource.Id}",'listing_carts/add_listing_post.json', 'listing_carts/add_listing.json')
     resource.ListingCount.should eq(10)
     resource.add_listing(list_id)
     resource.ListingCount.should eq(11)
@@ -31,10 +31,10 @@ describe ListingCart do
   
   it "should remove a listing from a cart" do
     list_id = "20110621133454434543000000"
-    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resource = subject.class.get.first
     resource.Id.should eq("20100912153422758914000000")
-    stub_api_delete("/#{subject.class.element_name}/#{resource.Id}/listings/#{list_id}", 'listing_cart_remove_listing.json')
+    stub_api_delete("/#{subject.class.element_name}/#{resource.Id}/listings/#{list_id}", 'listing_carts/remove_listing.json')
     resource.ListingCount.should eq(10)
     resource.remove_listing(list_id)
     resource.ListingCount.should eq(9)
@@ -42,7 +42,7 @@ describe ListingCart do
 
   let(:listing){ Listing.new(:Id => "20110112234857732941000000") }
   it "should get all carts for a listing" do
-    stub_api_get("/#{subject.class.element_name}/for/#{listing.Id}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}/for/#{listing.Id}", 'listing_carts/listing_cart.json')
     [listing, listing.Id ].each do |l|
         resources = subject.class.for(l)
         resources.should be_an(Array)
@@ -52,7 +52,7 @@ describe ListingCart do
   end
 
   it "should get the carts for a user" do
-    stub_api_get("/my/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/my/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resources = subject.class.my
     resources.should be_an(Array)
     resources.length.should eq(2)
@@ -60,7 +60,7 @@ describe ListingCart do
   end
 
   it "should get the carts specific to a portal user" do
-    stub_api_get("/#{subject.class.element_name}/portal", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}/portal", 'listing_carts/listing_cart.json')
     resources = subject.class.portal
     resources.should be_an(Array)
     resources.length.should eq(2)
@@ -68,7 +68,7 @@ describe ListingCart do
   end
   
   it "should save a new listing cart" do
-    stub_api_post("/#{subject.class.element_name}", 'listing_cart_new.json', 'listing_cart_post.json')
+    stub_api_post("/#{subject.class.element_name}", 'listing_carts/new.json', 'listing_carts/post.json')
     subject.ListingIds = [
       '20110112234857732941000000',
       '20110302120238448431000000',
@@ -79,9 +79,9 @@ describe ListingCart do
   end
 
   it "should save a listing cart" do
-    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resource = subject.class.get.first
-    stub_api_put("/#{subject.class.element_name}/#{resource.Id}", 'listing_cart_new.json', 'success.json')
+    stub_api_put("/#{subject.class.element_name}/#{resource.Id}", 'listing_carts/new.json', 'success.json')
     resource.ListingIds = [
       '20110112234857732941000000',
       '20110302120238448431000000',
@@ -93,7 +93,7 @@ describe ListingCart do
   end
   
   it "should fail saving" do
-    stub_api_post("/#{subject.class.element_name}",'listing_cart_empty.json') do |request|
+    stub_api_post("/#{subject.class.element_name}",'listing_carts/empty.json') do |request|
       request.to_return(:status => 400, :body => fixture('errors/failure.json'))
     end
     subject
@@ -102,7 +102,7 @@ describe ListingCart do
   end
 
   it "should delete a listing cart" do
-    stub_api_get("/#{subject.class.element_name}", 'listing_cart.json')
+    stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
     resource = subject.class.get.first
     resource.Id.should eq("20100912153422758914000000")
     resource.Name.should eq("My Listing Cart")

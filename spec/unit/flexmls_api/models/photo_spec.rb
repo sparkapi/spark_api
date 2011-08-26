@@ -33,7 +33,7 @@ describe Photo do
   describe "find photos by listing id"  do
     before do
       stub_auth_request
-      stub_api_get('/listings/1234/photos', 'listing_photos_index.json')
+      stub_api_get('/listings/1234/photos', 'listings/photos_index.json')
     end
 
     it "should get an array of photos" do

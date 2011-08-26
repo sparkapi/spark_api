@@ -24,7 +24,7 @@ describe VirtualTour do
 
   it "should get virtual tours for a listing" do
     stub_auth_request
-    stub_api_get('/listings/1234/virtualtours','listing_virtual_tours_index.json')
+    stub_api_get('/listings/1234/virtualtours','listings/virtual_tours_index.json')
 
     v = VirtualTour.find_by_listing_key('1234')
     v.should be_an(Array)

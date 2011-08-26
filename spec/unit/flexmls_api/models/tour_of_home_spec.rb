@@ -28,7 +28,7 @@ describe TourOfHome do
 
   it "should get home tours for a listing" do
     stub_auth_request
-    stub_api_get('/listings/20060725224713296297000000/tourofhomes','tour_of_homes.json')
+    stub_api_get('/listings/20060725224713296297000000/tourofhomes','listings/tour_of_homes.json')
     v = subject.class.find_by_listing_key('20060725224713296297000000')
     v.should be_an(Array)
     v.length.should == 2

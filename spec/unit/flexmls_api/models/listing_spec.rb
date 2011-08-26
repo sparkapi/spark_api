@@ -102,7 +102,7 @@ describe Listing do
     end
 
     it "should return an array of photos" do
-      stub_api_get("/listings/1234", 'listing_with_photos.json', { :_expand => "Photos" })
+      stub_api_get("/listings/1234", 'listings/with_photos.json', { :_expand => "Photos" })
       
       l = Listing.find('1234', :_expand => "Photos")
       l.photos.length.should == 5
@@ -112,7 +112,7 @@ describe Listing do
     end
 
     it "should return an array of documents" do
-      stub_api_get("/listings/1234", 'listing_with_documents.json', { :_expand => "Documents" })
+      stub_api_get("/listings/1234", 'listings/with_documents.json', { :_expand => "Documents" })
       
       l = Listing.find('1234', :_expand => "Documents")
       l.photos.length.should == 0
@@ -122,7 +122,7 @@ describe Listing do
     end
 
     it "should return an array of virtual tours" do
-      stub_api_get("/listings/1234", 'listing_with_vtour.json', { :_expand => "VirtualTours" })
+      stub_api_get("/listings/1234", 'listings/with_vtour.json', { :_expand => "VirtualTours" })
       
       l = Listing.find('1234', :_expand => "VirtualTours")
       l.virtual_tours.length.should == 1
@@ -133,7 +133,7 @@ describe Listing do
 
 
     it "should return an array of videos" do
-      stub_api_get("/listings/1234", 'listing_with_videos.json', { :_expand => "Videos" })
+      stub_api_get("/listings/1234", 'listings/with_videos.json', { :_expand => "Videos" })
       
       l = Listing.find('1234', :_expand => "Videos")
       l.videos.length.should == 2
@@ -143,8 +143,8 @@ describe Listing do
     end 
 
     it "should return tour of homes" do
-      stub_api_get("/listings/20060725224713296297000000", 'listing_no_subresources.json')
-      stub_api_get("/listings/20060725224713296297000000/tourofhomes", 'tour_of_homes.json')
+      stub_api_get("/listings/20060725224713296297000000", 'listings/no_subresources.json')
+      stub_api_get("/listings/20060725224713296297000000/tourofhomes", 'listings/tour_of_homes.json')
 
       l = Listing.find('20060725224713296297000000')
       l.tour_of_homes().length.should == 2

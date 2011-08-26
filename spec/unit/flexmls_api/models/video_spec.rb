@@ -18,7 +18,7 @@ describe Video do
   describe "find videos by listing id"  do
     before do
       stub_auth_request
-      stub_api_get('/listings/1234/videos','listing_videos_index.json')
+      stub_api_get('/listings/1234/videos','listings/videos_index.json')
     end
 
     it "should get an array of videos" do

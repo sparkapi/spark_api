@@ -75,7 +75,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
       }
       c = stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings").
         with(:query => args).
-        to_return(:body => fixture("listing_no_subresources.json"))
+        to_return(:body => fixture("listings/no_subresources.json"))
       subject.session = session
       subject.request(:get, "/#{FlexmlsApi.version}/listings", nil, args).status.should eq(200)
     end
@@ -118,7 +118,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
         # Fail the first time, but then return the correct value after reauthentication
         stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
             to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
-            to_return(:body => fixture('listing_with_documents.json'))
+            to_return(:body => fixture('listings/with_documents.json'))
         client.get("/listings/1234")
         count.should eq(1)
         refresh_count.should eq(1)
@@ -138,7 +138,7 @@ describe FlexmlsApi::Authentication::OAuth2  do
         # Fail the first time, but then return the correct value after reauthentication
         stub_request(:get, "https://api.flexmls.com/#{FlexmlsApi.version}/listings/1234").
             to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
-            to_return(:body => fixture('listing_with_documents.json'))
+            to_return(:body => fixture('listings/with_documents.json'))
               
         client.get("/listings/1234")
         count.should eq(2)

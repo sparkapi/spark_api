@@ -96,7 +96,7 @@ describe FlexmlsApi::Authentication::ApiAuth  do
         with(:query => {
           :ApiSig => "1cb789831f8f4c6925dc708c93762a2c",
           :AuthToken => "1234"}.merge(args)).
-        to_return(:body => fixture("listing_no_subresources.json"))
+        to_return(:body => fixture("listings/no_subresources.json"))
       subject.session = session
       subject.request(:get, "/#{FlexmlsApi.version}/listings", nil, args).status.should eq(200)
     end
@@ -149,7 +149,7 @@ describe FlexmlsApi::Authentication::ApiAuth  do
             :_expand => "Documents"
           }).
           to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
-          to_return(:body => fixture('listing_with_documents.json'))
+          to_return(:body => fixture('listings/with_documents.json'))
       l = Listing.find('1234', :_expand => "Documents")
       
       count.should eq(2)

@@ -16,7 +16,7 @@ describe Document do
 
   it "should get documents for a listing" do
     stub_auth_request
-    stub_api_get('/listings/1234/documents','listing_document_index.json')
+    stub_api_get('/listings/1234/documents','listings/document_index.json')
 
     v = Document.find_by_listing_key('1234')
     v.should be_an(Array)
