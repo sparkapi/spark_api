@@ -4,16 +4,16 @@ require 'curb'
 require 'json'
 require 'logger'
 
-require File.expand_path('../flexmls_api/version', __FILE__)
-require File.expand_path('../flexmls_api/configuration', __FILE__)
-require File.expand_path('../flexmls_api/multi_client', __FILE__)
-require File.expand_path('../flexmls_api/authentication', __FILE__)
-require File.expand_path('../flexmls_api/paginate', __FILE__)
-require File.expand_path('../flexmls_api/request', __FILE__)
-require File.expand_path('../flexmls_api/client', __FILE__)
-require File.expand_path('../flexmls_api/faraday', __FILE__)
-require File.expand_path('../flexmls_api/primary_array', __FILE__)
-require File.expand_path('../flexmls_api/models', __FILE__)
+require 'flexmls_api/version'
+require 'flexmls_api/configuration'
+require 'flexmls_api/multi_client'
+require 'flexmls_api/authentication'
+require 'flexmls_api/paginate'
+require 'flexmls_api/request'
+require 'flexmls_api/client'
+require 'flexmls_api/faraday'
+require 'flexmls_api/primary_array'
+require 'flexmls_api/models'
 
 module FlexmlsApi
   extend Configuration

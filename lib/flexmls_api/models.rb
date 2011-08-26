@@ -1,26 +1,26 @@
-require File.expand_path('../models/base', __FILE__)
-require File.expand_path('../models/finders', __FILE__)
-require File.expand_path('../models/account', __FILE__)
-require File.expand_path('../models/listing', __FILE__)
-require File.expand_path('../models/subresource', __FILE__)
-require File.expand_path('../models/photo', __FILE__)
-require File.expand_path('../models/system_info', __FILE__)
-require File.expand_path('../models/standard_fields', __FILE__)
-require File.expand_path('../models/custom_fields', __FILE__)
-require File.expand_path('../models/property_types', __FILE__)
-require File.expand_path('../models/connect_prefs', __FILE__)
-require File.expand_path('../models/contact', __FILE__)
-require File.expand_path('../models/idx_link', __FILE__)
-require File.expand_path('../models/market_statistics', __FILE__)
-require File.expand_path('../models/video', __FILE__)
-require File.expand_path('../models/open_house', __FILE__)
-require File.expand_path('../models/tour_of_home', __FILE__)
-require File.expand_path('../models/virtual_tour', __FILE__)
-require File.expand_path('../models/document', __FILE__)
-require File.expand_path('../models/note', __FILE__)
-require File.expand_path('../models/listing_cart.rb', __FILE__)
-require File.expand_path('../models/shared_listing.rb', __FILE__)
-require File.expand_path('../models/saved_search.rb', __FILE__)
+require 'flexmls_api/models/base'
+require 'flexmls_api/models/finders'
+require 'flexmls_api/models/account'
+require 'flexmls_api/models/listing'
+require 'flexmls_api/models/subresource'
+require 'flexmls_api/models/photo'
+require 'flexmls_api/models/system_info'
+require 'flexmls_api/models/standard_fields'
+require 'flexmls_api/models/custom_fields'
+require 'flexmls_api/models/property_types'
+require 'flexmls_api/models/connect_prefs'
+require 'flexmls_api/models/contact'
+require 'flexmls_api/models/idx_link'
+require 'flexmls_api/models/market_statistics'
+require 'flexmls_api/models/video'
+require 'flexmls_api/models/open_house'
+require 'flexmls_api/models/tour_of_home'
+require 'flexmls_api/models/virtual_tour'
+require 'flexmls_api/models/document'
+require 'flexmls_api/models/note'
+require 'flexmls_api/models/listing_cart.rb'
+require 'flexmls_api/models/shared_listing.rb'
+require 'flexmls_api/models/saved_search.rb'
 
 module FlexmlsApi
   module Models
