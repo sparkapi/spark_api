@@ -55,14 +55,16 @@ module FlexmlsApi
   
       # Sign a request with request data.
       def sign_token(path, params = {}, post_data="")
-        sign("#{@client.api_secret}ApiKey#{@client.api_key}ServicePath#{path}#{build_param_string(params)}#{post_data}")
+        token_string = "#{@client.api_secret}ApiKey#{@client.api_key}ServicePath#{path}#{build_param_string(params)}#{post_data}"
+        signed = sign(token_string)
+        signed
       end
       
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
         escaped_path = URI.escape(path)
         request_opts = {
-          "AuthToken" => @session.auth_token
+          :AuthToken => @session.auth_token
         }
         unless @client.api_user.nil?
           request_opts.merge!(:ApiUser => "#{@client.api_user}")

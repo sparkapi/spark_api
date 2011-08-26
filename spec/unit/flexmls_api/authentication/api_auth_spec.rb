@@ -129,6 +129,15 @@ describe FlexmlsApi::Authentication::ApiAuth  do
     end
   end
   
+  describe "sign_token" do
+    let(:client) { FlexmlsApi::Client.new({:api_key => "my_key", :api_secret => "my_secret"}) }
+    subject {FlexmlsApi::Authentication::ApiAuth.new(client) }
+    it "should fully sign the token" do
+      parms = {:AuthToken => "1234", :ApiUser => "CoolAsIce"}
+      subject.sign_token("/test", parms).should eq("7bbe3384a8b64368357f8551cab271e3")
+    end
+  end
+  
   context "when the server says the session is expired (even if we disagree)" do
     it "should reset the session and reauthenticate" do
       reset_config
