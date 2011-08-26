@@ -68,7 +68,7 @@ def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
 end
 
 def log_stub(s)
-  FlexmlsApi.logger.debug("Stubbed Request: #{s.inspect}")
+  FlexmlsApi.logger.debug("Stubbed Request: #{s.inspect} \n\n")
 end
 
 def mock_session()

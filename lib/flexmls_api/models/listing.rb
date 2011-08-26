@@ -11,6 +11,7 @@ module FlexmlsApi
         @virtual_tours = []
         @documents = []
 
+          
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
         end
