@@ -25,7 +25,7 @@ module FlexmlsApi
         false
       end
       def save!(arguments={})
-        payload = {"Photos" => [ {:Picture => @Picture, :Description => @Description, :Caption=> @Caption}]}
+        payload = {"Photos" => [ {"Picture" => @Picture, "Caption"=> @Caption, "Description" => @Description}]}
         if @attributes.include?("Id")
           results = connection.put "#{self.class.path}/#{self.Id}", payload, arguments
         else
