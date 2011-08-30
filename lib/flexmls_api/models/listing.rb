@@ -5,13 +5,13 @@ module FlexmlsApi
       attr_accessor :photos, :videos, :virtual_tours, :documents
       self.element_name="listings"
 
+      DATA_MASK = "********"
+
       def initialize(attributes={})
-        @@data_mask = "********"
         @photos = []
         @videos = []
         @virtual_tours = []
         @documents = []
-
           
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
@@ -91,11 +91,11 @@ module FlexmlsApi
       end
 
       def street_address
-        "#{self.StreetNumber} #{self.StreetDirPrefix} #{self.StreetName} #{self.StreetSuffix} #{self.StreetDirSuffix} #{self.StreetAdditionalInfo}".delete(@@data_mask).strip().gsub(/\s{2,}/, ' ')
+        "#{self.StreetNumber} #{self.StreetDirPrefix} #{self.StreetName} #{self.StreetSuffix} #{self.StreetDirSuffix} #{self.StreetAdditionalInfo}".delete(DATA_MASK).strip().gsub(/\s{2,}/, ' ')
       end
 
       def region_address
-        "#{self.City}, #{self.StateOrProvince} #{self.PostalCode}".delete(@@data_mask).strip().gsub(/^,\s/, '').gsub(/,$/, '')
+        "#{self.City}, #{self.StateOrProvince} #{self.PostalCode}".delete(DATA_MASK).strip().gsub(/^,\s/, '').gsub(/,$/, '')
       end
 
       def full_address
