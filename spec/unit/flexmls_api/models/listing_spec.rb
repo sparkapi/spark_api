@@ -1,16 +1,14 @@
-require './spec/spec_helper'
-
 describe Listing do
   before(:each) do
 
     @listing = Listing.new({
       "ResourceUri"=>"/v1/listings/20080619000032866372000000", 
       "StandardFields"=>{
-        "StreetNumber"=>"********", 
+        "StreetNumber"=>"100", 
         "ListingId"=>"07-32", 
         "City"=>"Fargo", 
         "Longitude"=>"", 
-        "StreetName"=>"********", 
+        "StreetName"=>"Someone's", 
         "YearBuilt"=>nil, 
         "BuildingAreaTotal"=>"1321.0", 
         "PublicRemarks"=>nil, 
@@ -25,6 +23,7 @@ describe Listing do
         "BathsTotal"=>"0.0", 
         "BathsFull"=>nil, 
         "ListingKey"=>"20080619000032866372000000", 
+        "StreetSuffix"=>"St", 
         "StreetDirSuffix"=>"********", 
         "BedsTotal"=>2, 
         "ModificationTimestamp"=>"2010-11-22T23:36:42Z", 
@@ -42,7 +41,7 @@ describe Listing do
           "Caption"=>"apostrophe test for CUR-10508",
           "Uri1280"=>"http=>//devresize.flexmls.com/fgo/1280x1024/true/20101115201631519737000000-o.jpg",
           "UriThumb"=>"http=>//images.dev.fbsdata.com/fgo/20101115201631519737000000-t.jpg",
-           "Uri640"=>"http=>//devresize.flexmls.com/fgo/640x480/true/20101115201631519737000000-o.jpg"
+          "Uri640"=>"http=>//devresize.flexmls.com/fgo/640x480/true/20101115201631519737000000-o.jpg"
         }]
       }, 
       "Id"=>"20080619000032866372000000"
@@ -152,6 +151,18 @@ describe Listing do
       l.photos.length.should == 0
       l.documents.length.should == 0
     end 
+
+    it "should return street address" do
+        @listing.street_address.should eq("100 Someone's St")
+    end
+
+    it "should return the regional address" do
+        @listing.region_address.should eq("Fargo, ND 55320")
+    end
+
+    it "should return full address" do
+        @listing.full_address.should eq("100 Someone's St, Fargo, ND 55320")
+    end
     
   end
 

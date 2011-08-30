@@ -6,6 +6,7 @@ module FlexmlsApi
       self.element_name="listings"
 
       def initialize(attributes={})
+        @@data_mask = "********"
         @photos = []
         @videos = []
         @virtual_tours = []
@@ -89,6 +90,17 @@ module FlexmlsApi
         end
       end
 
+      def street_address
+        "#{self.StreetNumber} #{self.StreetDirPrefix} #{self.StreetName} #{self.StreetSuffix} #{self.StreetDirSuffix} #{self.StreetAdditionalInfo}".delete(@@data_mask).strip().gsub(/\s{2,}/, ' ')
+      end
+
+      def region_address
+        "#{self.City}, #{self.StateOrProvince} #{self.PostalCode}".delete(@@data_mask).strip().gsub(/^,\s/, '').gsub(/,$/, '')
+      end
+
+      def full_address
+        "#{self.street_address}, #{self.region_address}".strip().gsub(/^,\s/, '').gsub(/,$/, '')
+      end
       
       private
 
