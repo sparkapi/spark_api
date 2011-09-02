@@ -21,6 +21,6 @@ module FlexmlsApi
       # Instanciate the authenication class passed in.
       @authenticator = authentication_mode.send("new", self)
     end
-
+    
   end
 end

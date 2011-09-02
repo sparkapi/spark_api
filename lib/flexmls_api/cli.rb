@@ -1,5 +1,15 @@
 require 'optparse'
 
+if ENV["FLEXMLS_API_CONSOLE"].nil?
+  require 'flexmls_api'
+else
+  puts "Enabling console mode for local gem"
+  Bundler.require(:default, "development") if defined?(Bundler)
+  path = File.expand_path(File.dirname(__FILE__) + "/../../../lib/")
+  $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
+  require path + '/flexmls_api'
+end
+
 module FlexmlsApi
   module CLI
     class ConsoleCLI
@@ -16,7 +26,7 @@ module FlexmlsApi
         :api_secret => "API_SECRET",
         :api_user => "API_USER",
         # OTHER
-        :verbose => "VERBOSE",
+        :debug=> "DEBUG",
         :console => "FLEXMLS_API_CONSOLE"  # not a public option, meant to distinguish bin/flexmls_api and script/console
       }
       
@@ -38,7 +48,7 @@ module FlexmlsApi
       
       private
       def self.setup_options(stdout,arguments)
-        options = {
+        env_options = {
           :oauth2            => false,
           :endpoint          => ENV[OPTIONS_ENV[:endpoint]],
           # OAUTH2 Options
@@ -53,9 +63,11 @@ module FlexmlsApi
           :api_user => ENV[OPTIONS_ENV[:api_user]],
           :console => ENV[OPTIONS_ENV[:console]]
         }
-        
+        cli_options = {}
+        file_options = {}
         parser = OptionParser.new do |opts|
           opts.banner = <<-BANNER.gsub(/^          /,'')
+            #{version}
             FlexmlsApi Client Console - http://www.flexmls.com/developers/api/
             
             Usage: #{File.basename($0)} [options]
@@ -68,47 +80,51 @@ module FlexmlsApi
           opts.on("-o","--oauth2",
                   "Run the API using OAuth2 credentials.  The client defaults to using the flexmls API authentication mode for access. ",
                   "See http://www.flexmls.com/developers/api/api-services/authentication/ for more information on authentication types.",
-                  "Default: false") { |arg| options[:oauth2] = arg }
-          opts.on("-e","--endpoint",
+                  "Default: false") { |arg| cli_options[:oauth2] = arg }
+          opts.on("-e","--endpoint ENDPOINT",
                   "URI of the API.",
-                  "Default: ENV['#{OPTIONS_ENV[:endpoint]}']") { |arg| options[:endpoint] = arg }
+                  "Default: ENV['#{OPTIONS_ENV[:endpoint]}']") { |arg| cli_options[:endpoint] = arg }
 
           # OAUTH2
-          opts.on("--client_id",
+          opts.on("--client_id CLIENT_ID",
                   "OAuth2 client id",
-                  "Default: ENV['#{OPTIONS_ENV[:client_id]}']") { |arg| options[:client_id] = arg }
-          opts.on("--client_secret",
+                  "Default: ENV['#{OPTIONS_ENV[:client_id]}']") { |arg| cli_options[:client_id] = arg }
+          opts.on("--client_secret CLIENT_SECRET",
                   "OAuth2 client secret",
-                  "Default: ENV['#{OPTIONS_ENV[:client_secret]}']") { |arg| options[:client_secret] = arg }
-          opts.on("-u","--username",
+                  "Default: ENV['#{OPTIONS_ENV[:client_secret]}']") { |arg| cli_options[:client_secret] = arg }
+          opts.on("-u","--username USERNAME",
                   "OAuth2 username",
-                  "Default: ENV['#{OPTIONS_ENV[:username]}']") { |arg| options[:username] = arg }
-          opts.on("-p","--password",
+                  "Default: ENV['#{OPTIONS_ENV[:username]}']") { |arg| cli_options[:username] = arg }
+          opts.on("-p","--password PASSWORD",
                   "OAuth2 password",
-                  "Default: ENV['#{OPTIONS_ENV[:password]}']") { |arg| options[:password] = arg }
-          opts.on("--access_uri",
+                  "Default: ENV['#{OPTIONS_ENV[:password]}']") { |arg| cli_options[:password] = arg }
+          opts.on("--access_uri ACCESS_URI",
                   "OAuth2 path for granting access to the application",
-                  "Default: ENV['#{OPTIONS_ENV[:access_uri]}']") { |arg| options[:access_uri] = arg }
+                  "Default: ENV['#{OPTIONS_ENV[:access_uri]}']") { |arg| cli_options[:access_uri] = arg }
                     
           # API AUTH
-          opts.on("--api_key",
+          opts.on("--api_key API_KEY",
                   "Authentication key for running the api using the default api authentication",
-                  "Default: ENV['#{OPTIONS_ENV[:api_key]}']") { |arg| options[:api_key] = arg }
-          opts.on("--api_secret",
+                  "Default: ENV['#{OPTIONS_ENV[:api_key]}']") { |arg| cli_options[:api_key] = arg }
+          opts.on("--api_secret API_SECRET",
                   "API secret for the api key",
-                   "Default: ENV['#{OPTIONS_ENV[:api_secret]}']") { |arg| options[:api_secret] = arg }
-          opts.on("--api_user",
+                   "Default: ENV['#{OPTIONS_ENV[:api_secret]}']") { |arg| cli_options[:api_secret] = arg }
+          opts.on("--api_user API_USER",
                   "ID of the flexmls user to run the client as.",
                   "Default: ENV['#{OPTIONS_ENV[:api_user]}']") { |arg| options[:api_user] = arg }
                     
-          opts.on("-v", "--verbose",
-                  "Show detailed request logging information.") { |arg| options[:verbose] = arg }
+          opts.on("-f", "--file FILE",
+                  "Load configuration for yaml file.") { |arg| file_options = parse_file_options(arg) }
+          opts.on("-d", "--debug",
+                  "Show detailed request logging information.") { |arg| cli_options[:debug] = arg }
+          opts.on("-v", "--version",
+                  "Show client version.") { stdout.puts version; exit }
           opts.on("-h", "--help",
                   "Show this help message.") { stdout.puts opts; exit }
           opts.parse!(arguments)
         
         end
-        
+        options = env_options.merge(file_options.merge(cli_options))
         return options
       end
       
@@ -126,6 +142,16 @@ module FlexmlsApi
           run_env << " #{v}=\"#{options[k]}\"" unless options[k].nil?
         end
         run_env
+      end
+      
+      private 
+      def self.parse_file_options(file)
+        yaml = FlexmlsApi::Configuration::YamlConfig.new(file)
+        return {:oauth2 => yaml.oauth2}.merge(yaml.client_keys.merge(yaml.oauth2_keys))
+      end
+      
+      def self.version
+        "flexmlsApi v#{FlexmlsApi::VERSION}"
       end
     end
   end

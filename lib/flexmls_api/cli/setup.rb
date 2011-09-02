@@ -1,5 +1,8 @@
 require "rubygems"
 require 'pp'
+require 'irb/ext/save-history'
+IRB.conf[:SAVE_HISTORY] = 1000
+IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.flexmls-api-history"
 
 if ENV["FLEXMLS_API_CONSOLE"].nil?
   require 'flexmls_api'
@@ -29,7 +32,7 @@ module FlexmlsApi
   def self.logger
     if @logger.nil?
       @logger = Logger.new(STDOUT)
-      @logger.level = ENV["VERBOSE"].nil? ? Logger::WARN : Logger::DEBUG
+      @logger.level = ENV["DEBUG"].nil? ? Logger::WARN : Logger::DEBUG
     end
     @logger
   end

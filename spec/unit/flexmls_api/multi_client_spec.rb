@@ -3,7 +3,7 @@ require './spec/spec_helper'
 # Test client implemenations for multi client switching
 module FlexmlsApi
   def self.test_client_a
-    Client.new(:api_key => "a")
+    Thread.current[:test_client_a] ||= Client.new(:api_key => "a")
   end
   def self.test_client_b
     Client.new(:api_key => "b")
@@ -42,6 +42,14 @@ describe FlexmlsApi::MultiClient do
       end
     end.to raise_error
     FlexmlsApi.client.api_key.should eq('a')
+  end
+
+  context "yaml" do
+    it "should activate a client implemenation when activate()" do
+      FlexmlsApi::Configuration::YamlConfig.stub(:config_path) { "spec/config/flexmls_api" }
+      FlexmlsApi.activate(:test_key)
+      FlexmlsApi.client.api_key.should eq('demo_key')
+    end
   end
   
 end

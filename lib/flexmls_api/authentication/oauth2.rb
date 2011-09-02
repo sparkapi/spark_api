@@ -5,14 +5,6 @@ module FlexmlsApi
 
   module Authentication
     
-    module OAuth2Impl
-      require 'flexmls_api/authentication/oauth2_impl/middleware'
-      require 'flexmls_api/authentication/oauth2_impl/grant_type_base'
-      require 'flexmls_api/authentication/oauth2_impl/grant_type_refresh'
-      require 'flexmls_api/authentication/oauth2_impl/grant_type_code'
-      require 'flexmls_api/authentication/oauth2_impl/grant_type_password'
-    end
-    
     #=OAuth2 Authentication
     # Auth implementation to the API using the OAuth2 service endpoint.  Current adheres to the 10 
     # draft of the OAuth2 specification.  With OAuth2, the application supplies credentials for the 
@@ -30,7 +22,7 @@ module FlexmlsApi
     class OAuth2 < BaseAuth
       
       def initialize(client)
-        @client = client
+        super(client)
         @provider = client.oauth2_provider
       end
       
@@ -120,18 +112,23 @@ module FlexmlsApi
     #  @client_id - OAuth2 provided application identifier
     #  @client_secret - OAuth2 provided password for the client id
     class BaseOAuth2Provider
-      
-      attr_accessor :authorization_uri, :access_uri, :grant_type, :client_id, :client_secret
-      
+      attr_accessor *Configuration::OAUTH2_KEYS
       # Requirements for authorization_code grant type
-      attr_accessor :code, :redirect_uri
-      # Requirements for password grant type
-      attr_accessor :username, :password
+      attr_accessor :code
+      attr_accessor :grant_type
+      
+      def initialize(opts={})
+        Configuration::OAUTH2_KEYS.each do |key|
+          send("#{key}=", opts[key]) if opts.include? key
+        end
+        @grant_type = :authorization_code
+      end
       
       def grant_type
-        :authorization_code
+        # backwards compatibility check
+        @grant_type.nil? ?  :authorization_code : @grant_type
       end
-
+      
       # Application using the client must handle user redirect for user authentication.  For 
       # command line applications, this method is called prior to initial client requests so that  
       # the process can notify the user to go to the url and retrieve the access_code for the app.  
@@ -166,6 +163,15 @@ module FlexmlsApi
 
     end
 
+    module OAuth2Impl
+      require 'flexmls_api/authentication/oauth2_impl/middleware'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_base'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_refresh'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_code'
+      require 'flexmls_api/authentication/oauth2_impl/grant_type_password'
+      require 'flexmls_api/authentication/oauth2_impl/password_provider'
+    end
+    
   end
  
 end

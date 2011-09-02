@@ -1,7 +1,17 @@
+
 module FlexmlsApi
   module Configuration
+    
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, :user_agent, :version, :ssl, :oauth2_provider, :authentication_mode].freeze
+    OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
+      # Requirements for authorization_code grant type
+      :redirect_uri,  
+      # Requirements for password grant type
+      :username, :password
+    ]
+      
+    require File.expand_path('../configuration/yaml', __FILE__)
     
     DEFAULT_API_KEY = nil
     DEFAULT_API_SECRET = nil

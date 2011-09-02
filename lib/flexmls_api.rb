@@ -1,4 +1,3 @@
-# Flexmlsapi
 require 'rubygems'
 require 'curb'
 require 'json'
@@ -19,6 +18,7 @@ module FlexmlsApi
   extend Configuration
   extend MultiClient
  
+  #:nocov:
   def self.logger
     if @logger.nil?
       @logger = Logger.new(STDOUT)
@@ -26,6 +26,7 @@ module FlexmlsApi
     end
     @logger
   end
+  #:nocov:
 
   def self.client(opts={})
     Thread.current[:flexmls_api_client] ||= FlexmlsApi::Client.new(opts)

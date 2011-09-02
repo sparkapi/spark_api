@@ -1,0 +1,27 @@
+development:
+  oauth2:            true
+  authorization_uri: 'https://dev.flexmls.com/r/login/'
+  access_uri:        'https://api.dev.flexmls.com/v1/oauth2/grant'
+  redirect_uri:      'http://localhost/oauth2/callback'
+  client_id:         'developmentid124nj4qu3pua'
+  client_secret:     'developmentsecret4orkp29f'
+  endpoint:          'http://api.dev.flexmls.com'
+  
+alpha:
+  oauth2:            true
+  authorization_uri: 'https://alpha.flexmls.com/r/login/'
+  access_uri:        'https://api.alpha.flexmls.com/v1/oauth2/grant'
+  redirect_uri:      'http://localhost/oauth2/callback'
+  client_id:         'alpha1234id1124nj4qu3pua'
+  client_secret:     'alphasupersecret4okp29vf'
+  endpoint:          'http://api.alpha.flexmls.com'
+
+production:
+  oauth2:            true
+  authorization_uri: 'https://www.flexmls.com/r/login/'
+  access_uri:        'https://api.flexmls.com/v1/oauth2/grant'
+  redirect_uri:      'http://localhost/oauth2/callback'
+  client_id:         'production1id124nj4qu3pua'
+  client_secret:     'productionsecret4orkp29fv'
+  endpoint:          'http://api.flexmls.com'
+

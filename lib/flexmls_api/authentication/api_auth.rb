@@ -12,7 +12,7 @@ module FlexmlsApi
     class ApiAuth < BaseAuth
       
       def initialize(client)
-        @client = client
+        super(client)
       end
       
       def authenticate

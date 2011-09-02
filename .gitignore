@@ -10,6 +10,7 @@ vendor/cache/
 Gemfile.lock
 pkg/
 doc/
+config/
 tmp/*
 .buildpath
 .project
