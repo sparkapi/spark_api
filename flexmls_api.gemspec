@@ -44,6 +44,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'typhoeus', '~> 0.2.0'
   s.add_development_dependency 'ci_reporter', '~> 1.6.3'
   s.add_development_dependency 'rcov', '~> 0.9.9'
-  s.add_development_dependency 'flexmls_gems', '~> 0.2.1'
+  s.add_development_dependency 'flexmls_gems', '~> 0.2.3'
 end
 
