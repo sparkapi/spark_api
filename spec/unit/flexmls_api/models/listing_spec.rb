@@ -93,6 +93,7 @@ describe Listing do
       count = Listing.count()
       count.should == 2001
     end 
+    
   end
 
   describe "subresources" do
@@ -130,7 +131,6 @@ describe Listing do
       l.videos.length.should == 0
     end
 
-
     it "should return an array of videos" do
       stub_api_get("/listings/1234", 'listings/with_videos.json', { :_expand => "Videos" })
       
@@ -164,11 +164,42 @@ describe Listing do
         @listing.full_address.should eq("100 Someone's St, Fargo, ND 55320")
     end
     
+    it "should return permissions" do
+      stub_api_get("/listings/20060725224713296297000000", 'listings/with_permissions.json', { :_expand => "Permissions" })
+      
+      l = Listing.find('20060725224713296297000000', :_expand => "Permissions")
+      l.Permissions["Editable"].should eq(true)
+      l.editable?().should eq(true)
+      l.editable?(:PriceChange).should eq(true)
+      l.editable?(:Photos).should eq(false)
+    end 
+  end
+  
+  context "on save" do
+    it "should save a listing that has modified" do
+      list_id = "20060725224713296297000000"
+      stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
+      stub_api_put("/listings/#{list_id}", 'listings/put.json', 'success.json')
+      l = Listing.find(list_id)
+      l.ListPrice = 10000.0
+      l.save.should be(true)
+    end
+    it "should not save a listing that does not exist" do
+      list_id = "20060725224713296297000000"
+      stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
+      stub_api_put("/listings/lolwut", 'listings/put.json') do |request|
+        request.to_return(:status => 400, :body => fixture('errors/failure.json'))
+      end
+      l = Listing.find(list_id)
+      l.Id = "lolwut"
+      l.ListPrice = 10000.0
+      l.save.should be(false)
+      expect{ l.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
+    end    
   end
 
   after(:each) do  
     @listing = nil
   end
-
 
 end

@@ -12,7 +12,7 @@ module FlexmlsApi
         @videos = []
         @virtual_tours = []
         @documents = []
-          
+        
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
         end
@@ -101,6 +101,31 @@ module FlexmlsApi
       def full_address
         "#{self.street_address}, #{self.region_address}".strip().gsub(/^,\s/, '').gsub(/,$/, '')
       end
+      
+      def save(arguments={})
+        begin
+          return save!(arguments)
+        rescue NotFound, BadResourceRequest => e
+          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
+        end
+        false
+      end
+      def save!(arguments={})
+        results = connection.put "#{self.class.path}/#{self.Id}", {"ListPrice"=> self.ListPrice}, arguments
+        true
+      end
+      
+      EDITABLE_SETTINGS = [:StatusChange, :PriceChange, :Photos]
+      
+      def editable?(editable_settings = [])
+        settings = Array(editable_settings)
+        editable = attributes.include?("Permissions") && self.Permissions["Editable"] == true
+        if editable
+          settings.each{ |setting| editable = false unless self.Permissions["EditableSettings"][setting.to_s] == true }
+        end
+        editable
+      end
+
       
       private
 
