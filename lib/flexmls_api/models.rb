@@ -1,5 +1,7 @@
 require 'flexmls_api/models/base'
 require 'flexmls_api/models/finders'
+require 'flexmls_api/models/constraint'
+
 require 'flexmls_api/models/account'
 require 'flexmls_api/models/listing'
 require 'flexmls_api/models/subresource'
@@ -18,9 +20,9 @@ require 'flexmls_api/models/tour_of_home'
 require 'flexmls_api/models/virtual_tour'
 require 'flexmls_api/models/document'
 require 'flexmls_api/models/note'
-require 'flexmls_api/models/listing_cart.rb'
-require 'flexmls_api/models/shared_listing.rb'
-require 'flexmls_api/models/saved_search.rb'
+require 'flexmls_api/models/listing_cart'
+require 'flexmls_api/models/shared_listing'
+require 'flexmls_api/models/saved_search'
 
 module FlexmlsApi
   module Models

@@ -3,15 +3,17 @@ module FlexmlsApi
     class Listing < Base 
       extend Finders
       attr_accessor :photos, :videos, :virtual_tours, :documents
+      attr_accessor :constraints
       self.element_name="listings"
-
       DATA_MASK = "********"
+      EDITABLE_SETTINGS = [:StatusChange, :PriceChange, :Photos]
 
       def initialize(attributes={})
         @photos = []
         @videos = []
         @virtual_tours = []
         @documents = []
+        @constraints = []
         
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
@@ -112,10 +114,14 @@ module FlexmlsApi
       end
       def save!(arguments={})
         results = connection.put "#{self.class.path}/#{self.Id}", {"ListPrice"=> self.ListPrice}, arguments
+        @contstraints = []
+        results.details.each do |detail|
+          detail.each_pair do |k,v|
+            v.each { |constraint| @constraints << Constraint.new(constraint)}
+          end
+        end
         true
       end
-      
-      EDITABLE_SETTINGS = [:StatusChange, :PriceChange, :Photos]
       
       def editable?(editable_settings = [])
         settings = Array(editable_settings)
@@ -125,7 +131,7 @@ module FlexmlsApi
         end
         editable
       end
-
+      
       
       private
 

@@ -156,7 +156,7 @@ module FlexmlsApi
         self.results    = hash["Results"]
         self.success    = hash["Success"]
         self.pagination = hash["Pagination"]
-        self.details    = hash["Details"]
+        self.details    = hash["Details"] || []
       rescue Exception => e
         FlexmlsApi.logger.error "Unable to understand the response! #{d}"
         raise
