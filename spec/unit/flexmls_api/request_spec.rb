@@ -167,12 +167,12 @@ describe FlexmlsApi do
       it "should put to a service" do
         # This is a hypothetical unsupported service action at this time
         data = {"Contacts" => [{"DisplayName"=>"WLMCEWENS Contact","PrimaryEmail"=>"wlmcewen789@fbsdata.com"}]}
-        subject.put('/contacts/1000', data).should be(nil)
+        subject.put('/contacts/1000', data).size.should be(0)
         # No validation here, if no error is raised, everything is hunky dory
       end
       it "should delete from a service" do
         # This is a hypothetical unsupported service action at this time
-        subject.delete('/contacts/1000').should be(nil)
+        subject.delete('/contacts/1000').size.should be(0)
         # No validation here, if no error is raised, everything is hunky dory
       end
       

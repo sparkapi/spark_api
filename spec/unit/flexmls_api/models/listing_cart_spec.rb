@@ -108,7 +108,7 @@ describe ListingCart do
     resource.Name.should eq("My Listing Cart")
     resource.ListingCount.should eq(10)
     stub_api_delete("/#{subject.class.element_name}/#{resource.Id}", 'success.json')
-    resource.delete.should be(nil)
+    resource.delete.empty?.should be(true)
   end
 
 end

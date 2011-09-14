@@ -91,7 +91,10 @@ module FlexmlsApi
       end
       results = response.body.results
       paging = response.body.pagination
-      unless paging.nil?
+      if paging.nil?
+        results = ResponseCollection.new(results)
+        results.details = response.body.details
+      else
         if request_opts[:_pagination] == "count"
           results = paging['TotalRows']
         else
@@ -141,18 +144,19 @@ module FlexmlsApi
   
   # Nice and handy class wrapper for the api response hash
   class ApiResponse
-    attr_accessor :code, :message, :results, :success, :pagination
+    attr_accessor :code, :message, :results, :success, :pagination, :details
     def initialize(d)
       begin
         hash = d["D"]
         if hash.nil? || hash.empty?
           raise InvalidResponse, "The server response could not be understood"
         end
-        self.message  = hash["Message"]
-        self.code     = hash["Code"]
-        self.results  = hash["Results"]
-        self.success  = hash["Success"]
+        self.message    = hash["Message"]
+        self.code       = hash["Code"]
+        self.results    = hash["Results"]
+        self.success    = hash["Success"]
         self.pagination = hash["Pagination"]
+        self.details    = hash["Details"]
       rescue Exception => e
         FlexmlsApi.logger.error "Unable to understand the response! #{d}"
         raise
@@ -160,6 +164,13 @@ module FlexmlsApi
     end
     def success?
       @success
+    end
+  end
+  
+  class ResponseCollection < ::Array
+    attr_accessor :details
+    def initialize(results=[])
+      super(results||[])
     end
   end
 
