@@ -45,10 +45,12 @@ describe Photo do
   
   describe "save" do
     subject do
-      Photo.build_subclass.tap do |photo|
+      p = Photo.build_subclass.tap do |photo|
         photo.prefix = "/listings/1234"
         photo.element_name ="/photos"
       end.new
+      p.update_path = "/listings/1234/photos"
+      p
     end
     it "should be scoped to a listing" do
       subject.class.path.should eq("/listings/1234/photos")
