@@ -4,6 +4,8 @@ module FlexmlsApi
       extend Subresource
       self.element_name = "photos"
       
+      attr_accessor :update_path
+      
       EDITABLE_FIELDS = [:Picture, :FileName, :Name, :Caption, :Primary]
       
       def initialize(opts={})
@@ -30,9 +32,9 @@ module FlexmlsApi
       def save!(arguments={})
         payload = {"Photos" => [ build_photo_hash]}
         if exists?
-          results = connection.put "#{self.class.path}/#{self.Id}", payload, arguments
+          results = connection.put "#{update_path}/#{self.Id}", payload, arguments
         else
-          results = connection.post self.class.path, payload, arguments
+          results = connection.post update_path, payload, arguments
         end
         result = results.first
         load(result)
@@ -45,7 +47,7 @@ module FlexmlsApi
       end
       
       def delete(args={})
-        connection.delete("#{self.class.path}/#{self.Id}", args)
+        connection.delete("#{update_path}/#{self.Id}", args)
       end
       
       def exists?
