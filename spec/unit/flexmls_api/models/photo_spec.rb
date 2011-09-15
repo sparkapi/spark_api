@@ -55,7 +55,7 @@ describe Photo do
     end
     it "should upload a new photo" do
       stub_api_post('/listings/1234/photos', 'listings/photos/new.json', 'listings/photos/post.json')
-      subject.Description  = "FBS Logo"
+      subject.Name  = "FBS Logo"
       subject.Caption = "Creators of flexMLS!"
       subject.load_picture("spec/fixtures/logo_fbs.png")
       subject.save!
@@ -64,7 +64,7 @@ describe Photo do
     it "should upload a modified photo" do
       stub_api_put('/listings/1234/photos/20110826220032167405000000', 'listings/photos/new.json', 'listings/photos/post.json')
       subject.Id = "20110826220032167405000000"
-      subject.Description  = "FBS Logo"
+      subject.Name  = "FBS Logo"
       subject.Caption = "Creators of flexMLS!"
       subject.load_picture("spec/fixtures/logo_fbs.png")
       subject.save!
