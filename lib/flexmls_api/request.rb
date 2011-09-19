@@ -89,12 +89,9 @@ module FlexmlsApi
         FlexmlsApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
         raise
       end
-      results = response.body.results
+      results = response.body
       paging = response.body.pagination
-      if paging.nil?
-        results = ResponseCollection.new(results)
-        results.details = response.body.details
-      else
+      unless paging.nil?
         if request_opts[:_pagination] == "count"
           results = paging['TotalRows']
         else
@@ -143,7 +140,7 @@ module FlexmlsApi
   class BadResourceRequest < ClientError; end
   
   # Nice and handy class wrapper for the api response hash
-  class ApiResponse
+  class ApiResponse < ::Array
     attr_accessor :code, :message, :results, :success, :pagination, :details
     def initialize(d)
       begin
@@ -153,10 +150,11 @@ module FlexmlsApi
         end
         self.message    = hash["Message"]
         self.code       = hash["Code"]
-        self.results    = hash["Results"]
+        self.results    = Array(hash["Results"])
         self.success    = hash["Success"]
         self.pagination = hash["Pagination"]
         self.details    = hash["Details"] || []
+        super(results)
       rescue Exception => e
         FlexmlsApi.logger.error "Unable to understand the response! #{d}"
         raise
@@ -167,11 +165,4 @@ module FlexmlsApi
     end
   end
   
-  class ResponseCollection < ::Array
-    attr_accessor :details
-    def initialize(results=[])
-      super(results||[])
-    end
-  end
-
 end

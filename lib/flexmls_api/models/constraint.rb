@@ -1,10 +1,10 @@
 module FlexmlsApi
   module Models
     class Constraint
-      FIELDS = [:RuleValue,:Value,:RuleFieldValue,:RuleField,:RuleName]
-      attr_accessor *FIELDS
+      ATTRIBUTES = ["RuleValue","Value","RuleFieldValue","RuleField","RuleName"]
+      attr_accessor *ATTRIBUTES
       def initialize(args)
-        FIELDS.each { |f| send("#{f.to_s}=", args[f.to_s]) if args.include?(f.to_s) }
+        ATTRIBUTES.each { |f| send("#{f}=", args[f]) if args.include?(f) || args.include?(f.to_sym) }
       end
       
       def to_s

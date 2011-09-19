@@ -6,7 +6,6 @@ module FlexmlsApi
       attr_accessor :constraints
       self.element_name="listings"
       DATA_MASK = "********"
-      EDITABLE_SETTINGS = [:StatusChange, :PriceChange, :Photos]
 
       def initialize(attributes={})
         @photos = []
@@ -23,7 +22,7 @@ module FlexmlsApi
           pics.collect { |pic| @photos.push(Photo.new(pic)) } 
           attributes['StandardFields'].delete('Photos')
         end
-         
+        
         if vids != nil
           vids.collect { |vid| @videos.push(Video.new(vid)) } 
           attributes['StandardFields'].delete('Videos')
