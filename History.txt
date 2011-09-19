@@ -1,3 +1,12 @@
+== v0.7.0
+* Major changes to results object returned from the client (and models). Results are no longer allowed to be nil, and Array is decorated with non result response information.
+* Finished listing photo uploads
+* ListPrice save operation for listings
+* Listing contraints processing
+== v0.6.7 2011-09-02
+* YAML key management
+== v0.6.6 2011-08-30
+* Added methods for returning street, region, and full address for a listing
 == v0.6.5 2011-08-02
 *  Fixed some recursive gemspec issues from jewler by removing jeweler and going with some of our own custom rake tasks.
 == v0.6.4 2011-08-02
