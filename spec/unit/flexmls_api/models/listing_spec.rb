@@ -166,7 +166,6 @@ describe Listing do
     
     it "should return permissions" do
       stub_api_get("/listings/20060725224713296297000000", 'listings/with_permissions.json', { :_expand => "Permissions" })
-      
       l = Listing.find('20060725224713296297000000', :_expand => "Permissions")
       l.Permissions["Editable"].should eq(true)
       l.editable?().should eq(true)
@@ -195,7 +194,31 @@ describe Listing do
       l.ListPrice = 10000.0
       l.save.should be(false)
       expect{ l.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
-    end    
+    end
+    it "should save a listing with constraints" do
+      list_id = "20060725224713296297000000"
+      stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
+      stub_api_put("/listings/#{list_id}", 'listings/put.json', 'listings/constraints.json')
+      l = Listing.find(list_id)
+      l.ListPrice = 10000.0
+      l.save.should be(true)
+      l.constraints.size.should eq(1)
+      l.constraints.first.RuleName.should eq("MaxValue")
+    end
+    context "with pagination" do
+      # This is really a bogus call, but we should make sure our pagination collection impl still behaves sanely
+      it "should save a listing with constraints" do
+        list_id = "20060725224713296297000000"
+        stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
+        stub_api_put("/listings/#{list_id}", 'listings/put.json', 'listings/constraints_with_pagination.json', :_pagination => '1')
+        l = Listing.find(list_id)
+        l.ListPrice = 10000.0
+        l.save(:_pagination => '1').should be(true)
+        l.constraints.size.should eq(1)
+        l.constraints.first.RuleName.should eq("MaxValue")
+      end
+    end
+    
   end
 
   after(:each) do  

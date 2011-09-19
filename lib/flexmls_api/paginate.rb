@@ -55,13 +55,28 @@ module FlexmlsApi
     def per_page
       DEFAULT_PAGE_SIZE
     end
+    
+    
   end
 
   # ==Paginate Api Responses
-  # Module use by the request layer to decorate the response's results array with paging support.
+  # Module used by the request layer to decorate the response's results array with paging support.
   # Pagination only happens if the response includes the pagination information as specified by the 
   # API.
   module PaginateResponse
+    attr_accessor :results
+    def method_missing(method_symbol, *arguments)
+      if results.respond_to?(method_symbol)
+        arguments.empty? ? self.results.send(method_symbol) : self.results.send(method_symbol, arguments)
+      else
+        super
+      end
+    end
+  end
+    
+  # ==Pagination Helpers
+  # Helpers to create the pagination collection
+  module PaginateHelper
     # ==Enable pagination
     # * results -- array of hashes representing api resources
     # * paging_hash -- the pagination response information from the api representing paging state.
@@ -73,6 +88,8 @@ module FlexmlsApi
       paged_results = WillPaginate::Collection.create(pager.current_page, pager.page_size, pager.total_rows) do |p|
         p.replace(results)
       end
+      paged_results.extend PaginateResponse
+      paged_results.results = results
       paged_results
     end
   end

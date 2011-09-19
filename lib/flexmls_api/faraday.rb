@@ -3,7 +3,7 @@ module FlexmlsApi
     #=Flexmls API Faraday middleware
     # HTTP Response after filter to package api responses and bubble up basic api errors.
     class FlexmlsMiddleware < Faraday::Response::ParseJson
-      
+      include FlexmlsApi::PaginateHelper      
       # Handles pretty much all the api response parsing and error handling.  All responses that
       # indicate a failure will raise a FlexmlsApi::ClientError exception
       def on_complete(finished_env)
@@ -13,6 +13,16 @@ module FlexmlsApi
           raise InvalidResponse, "The server response could not be understood"
         end
         response = ApiResponse.new body
+        paging = response.pagination
+        if paging.nil?
+          results = response
+        else
+          if finished_env[:url].query_values["_pagination"] == "count"
+            results = paging['TotalRows']
+          else
+            results = paginate_response(response, paging)
+          end
+        end
         case finished_env[:status]
         when 400, 409
           raise BadResourceRequest, {:message => response.message, :code => response.code, :status => finished_env[:status]}
@@ -33,7 +43,7 @@ module FlexmlsApi
         else 
           raise ClientError, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         end
-        finished_env[:body] = response
+        finished_env[:body] = results
       end
       
       def initialize(app)

@@ -1,0 +1,24 @@
+{
+    "D": {
+        "Details": [
+            {
+	         "ListPrice": [ 
+	           {
+	              "RuleValue": 1000000.0,
+	              "RuleField": null,
+	              "RuleFieldValue": null, 
+	              "Value": 1000001.0,
+	              "RuleName": "MaxValue"
+               }
+             ]
+	       }
+        ],
+	    "Pagination": {
+	      "TotalRows": 0,
+	      "PageSize": 1,
+	      "TotalPages": 1,
+	      "CurrentPage": 1
+	    },        
+        "Success": true
+    }
+}

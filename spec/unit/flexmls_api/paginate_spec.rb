@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 class PaginateResponseTester
-  include FlexmlsApi::PaginateResponse
+  include FlexmlsApi::PaginateHelper
 end
 
 class PaginateModelTester < FlexmlsApi::Models::Base
