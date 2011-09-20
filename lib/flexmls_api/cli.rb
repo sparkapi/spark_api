@@ -111,7 +111,7 @@ module FlexmlsApi
                    "Default: ENV['#{OPTIONS_ENV[:api_secret]}']") { |arg| cli_options[:api_secret] = arg }
           opts.on("--api_user API_USER",
                   "ID of the flexmls user to run the client as.",
-                  "Default: ENV['#{OPTIONS_ENV[:api_user]}']") { |arg| options[:api_user] = arg }
+                  "Default: ENV['#{OPTIONS_ENV[:api_user]}']") { |arg| cli_options[:api_user] = arg }
                     
           opts.on("-f", "--file FILE",
                   "Load configuration for yaml file.") { |arg| file_options = parse_file_options(arg) }
