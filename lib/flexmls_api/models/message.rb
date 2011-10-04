@@ -13,7 +13,6 @@ module FlexmlsApi
       end
       def save!(arguments={})
         results = connection.post self.class.path, {"Messages" => [ attributes ]}, arguments
-        puts "MESSAGE RESULTS: #{results.inspect}"
         true
       end
       

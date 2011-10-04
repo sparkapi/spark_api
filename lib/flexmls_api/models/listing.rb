@@ -6,6 +6,7 @@ module FlexmlsApi
       attr_accessor :constraints
       self.element_name="listings"
       DATA_MASK = "********"
+      WRITEABLE_FIELDS = ["ListPrice", "ExpirationDate"]
 
       def initialize(attributes={})
         @photos = []
@@ -112,11 +113,16 @@ module FlexmlsApi
         false
       end
       def save!(arguments={})
-        results = connection.put "#{self.class.path}/#{self.Id}", {"ListPrice"=> self.ListPrice}, arguments
-        @contstraints = []
-        results.details.each do |detail|
-          detail.each_pair do |k,v|
-            v.each { |constraint| @constraints << Constraint.new(constraint)}
+        writable_changed_keys = changed & WRITEABLE_FIELDS
+        if writable_changed_keys.empty?
+          FlexmlsApi.logger.warn("No supported listing change detected")
+        else
+          results = connection.put "#{self.class.path}/#{self.Id}", build_hash(writable_changed_keys), arguments
+          @contstraints = []
+          results.details.each do |detail|
+            detail.each_pair do |k,v|
+              v.each { |constraint| @constraints << Constraint.new(constraint)}
+            end
           end
         end
         true
@@ -131,6 +137,13 @@ module FlexmlsApi
         editable
       end
       
+      def ExpirationDate
+        attributes["ExpirationDate"]
+      end
+      def ExpirationDate=(value)
+        write_attribute("ExpirationDate", value)
+      end
+      
       
       private
 
@@ -141,7 +154,7 @@ module FlexmlsApi
         if method_name =~ /(=|\?)$/
           case $1
           when "="
-            attributes[$`] = arguments.first
+            write_attribute($`,arguments.first)
             # TODO figure out a nice way to present setters for the standard fields
           when "?"
             attributes[$`]
@@ -152,6 +165,15 @@ module FlexmlsApi
           super # GTFO
         end
       end
+      
+      def build_hash(keys)
+        hash = {}
+        keys.each do |key|
+          hash[key] = attributes[key]
+        end
+        hash
+      end
+      
     end
   end
 end

@@ -1,3 +1,5 @@
+* Added messaging model
+* ExpirationDate editable for Listing
 == v0.7.0
 * Major changes to results object returned from the client (and models). Results are no longer allowed to be nil, and Array is decorated with non result response information.
 * Finished listing photo uploads
