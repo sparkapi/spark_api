@@ -7,6 +7,7 @@ module FlexmlsApi
       extend Paginate
 
       attr_accessor :attributes
+      attr_reader :changed
       
       # Name of the resource as related to the path name
       def self.element_name
@@ -38,6 +39,7 @@ module FlexmlsApi
 
       def initialize(attributes={})
         @attributes = {}
+        @changed = []
         load(attributes)
       end
 
@@ -65,7 +67,7 @@ module FlexmlsApi
         if method_name =~ /(=|\?)$/
           case $1
           when "=" 
-            attributes[$`] = arguments.first
+            write_attribute($`, arguments.first)
             # TODO figure out a nice way to present setters for the standard fields
           when "?" 
             if attributes.include?($`)
@@ -79,7 +81,7 @@ module FlexmlsApi
           super # GTFO
         end
       end
-
+      
       def respond_to?(method_symbol, include_private=false)
         if super
           return true
@@ -100,6 +102,16 @@ module FlexmlsApi
       def parse_id(uri)
         uri[/\/.*\/(.+)$/, 1]
       end
+      
+      protected
+      
+      def write_attribute(attribute,  value)
+        unless attributes[attribute] == value
+          attributes[attribute] = value
+          @changed << attribute unless @changed.include?(attribute)
+        end
+      end
+        
     end
   end
 end

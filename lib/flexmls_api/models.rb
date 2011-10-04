@@ -23,6 +23,7 @@ require 'flexmls_api/models/note'
 require 'flexmls_api/models/listing_cart'
 require 'flexmls_api/models/shared_listing'
 require 'flexmls_api/models/saved_search'
+require 'flexmls_api/models/message'
 
 module FlexmlsApi
   module Models

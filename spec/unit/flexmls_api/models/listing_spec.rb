@@ -175,12 +175,20 @@ describe Listing do
   end
   
   context "on save" do
-    it "should save a listing that has modified" do
+    it "should save a listing that has modified ListPrice" do
       list_id = "20060725224713296297000000"
       stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
       stub_api_put("/listings/#{list_id}", 'listings/put.json', 'success.json')
       l = Listing.find(list_id)
       l.ListPrice = 10000.0
+      l.save.should be(true)
+    end
+    it "should save a listing that has modified ExpirationDate" do
+      list_id = "20060725224713296297000000"
+      stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
+      stub_api_put("/listings/#{list_id}", 'listings/put_expiration_date.json', 'success.json')
+      l = Listing.find(list_id)
+      l.ExpirationDate = "2011-10-04"
       l.save.should be(true)
     end
     it "should not save a listing that does not exist" do

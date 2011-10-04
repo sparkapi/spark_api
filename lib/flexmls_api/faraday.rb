@@ -35,7 +35,7 @@ module FlexmlsApi
         when 404
           raise NotFound, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 405
-    raise NotAllowed, {:message => response.message, :code => response.code, :status => finished_env[:status]}
+          raise NotAllowed, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 500
           raise ClientError, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 200..299
@@ -51,6 +51,5 @@ module FlexmlsApi
       end
       
     end
-
   end
 end
