@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'curb'
 require 'json'
 require 'logger'
 
@@ -10,6 +9,7 @@ require 'flexmls_api/authentication'
 require 'flexmls_api/response'
 require 'flexmls_api/paginate'
 require 'flexmls_api/request'
+require 'flexmls_api/connection'
 require 'flexmls_api/client'
 require 'flexmls_api/faraday'
 require 'flexmls_api/primary_array'

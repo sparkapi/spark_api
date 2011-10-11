@@ -4,6 +4,7 @@ module FlexmlsApi
   # FlexmlsApi::client if the global configuration has been set as well.  Otherwise, this class may 
   # be instanciated separately with the configuration information.
   class Client
+    include Connection
     include Authentication
     include Request
     
