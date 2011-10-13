@@ -1,3 +1,5 @@
+== v0.7.1 2011-10-13
+* Updated connection dependencies
 * Added messaging model
 * ExpirationDate editable for Listing
 == v0.7.0 2011-10-03
