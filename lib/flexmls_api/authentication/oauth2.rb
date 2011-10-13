@@ -170,6 +170,15 @@ module FlexmlsApi
       require 'flexmls_api/authentication/oauth2_impl/grant_type_code'
       require 'flexmls_api/authentication/oauth2_impl/grant_type_password'
       require 'flexmls_api/authentication/oauth2_impl/password_provider'
+      
+      # Loads a provider class from a string
+      def self.load_provider(string, args={})
+        constant = Object
+        string.split("::").compact.each { |name| constant = constant.const_get(name) unless name == ""}
+        constant.new(args)
+      rescue => e
+        raise ArgumentError, "The value '#{string}' is an invalid class name for an oauth2 provider:  #{e.message}"
+      end
     end
     
   end

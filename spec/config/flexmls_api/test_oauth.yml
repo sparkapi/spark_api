@@ -6,6 +6,7 @@ development:
   client_id:         'developmentid124nj4qu3pua'
   client_secret:     'developmentsecret4orkp29f'
   endpoint:          'http://api.dev.flexmls.com'
+  oauth2_provider:   'FlexmlsApi::TestOAuth2Provider'
   
 alpha:
   oauth2:            true

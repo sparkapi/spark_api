@@ -1,35 +1,22 @@
 require 'erb'
+
 module FlexmlsApi
   module Configuration
     class YamlConfig
       KEY_CONFIGURATIONS = VALID_OPTION_KEYS  + [:oauth2] + OAUTH2_KEYS  
-      
+      DEFAULT_OAUTH2_PROVIDER = "FlexmlsApi::Authentication::OAuth2Impl::PasswordProvider"
       attr_accessor *KEY_CONFIGURATIONS
-      attr_reader :client_keys, :oauth2_keys
+      attr_reader :client_keys, :oauth2_keys, :provider
       
       def initialize(filename=nil)
-        @client_keys = {}
-        @oauth2_keys = {}
         @oauth2 = false
         load_file(filename) unless filename.nil?()
       end
       def load_file(file)
-        @client_keys = {}
-        @oauth2_keys = {}
         @file = file
         @name = File.basename(file, ".yml")
         config = YAML.load(ERB.new(File.read(file)).result)[api_env]
-        config.each do |key,val|
-          sym = key.to_sym
-          if KEY_CONFIGURATIONS.include? sym
-            self.send("#{sym}=", val)
-            if VALID_OPTION_KEYS.include?(sym)
-              @client_keys[sym] = val
-            elsif OAUTH2_KEYS.include?(sym)
-              @oauth2_keys[sym] = val
-            end
-          end
-        end
+        config["oauth2"] == true  ? load_oauth2(config) : load_api_auth(config)
       rescue => e
         FlexmlsApi.logger().error("Unable to load config file #{file}[#{api_env}]")
         raise e
@@ -74,7 +61,36 @@ module FlexmlsApi
       def env
         ENV
       end
-
+      
+      private 
+      def load_api_auth(config={})
+        @client_keys = {}
+        @oauth2_keys = {}
+        config.each do |key,val|
+          sym = key.to_sym
+          if VALID_OPTION_KEYS.include?(sym)
+            self.send("#{sym}=", val)
+            @client_keys[sym] = val
+          end
+        end
+      end
+      def load_oauth2(config={})
+        @oauth2_provider = DEFAULT_OAUTH2_PROVIDER
+        @client_keys = {:oauth2_provider => @oauth2_provider }
+        @oauth2_keys = {}
+        @oauth2 = true
+        config.each do |key,val|
+          sym = key.to_sym
+          if VALID_OPTION_KEYS.include?(sym)
+            self.send("#{sym}=", val)
+            @client_keys[sym] = val
+          elsif OAUTH2_KEYS.include? sym
+            self.send("#{sym}=", val)
+            @oauth2_keys[sym] = val
+          end
+        end
+      end
+      
     end
   end
 end

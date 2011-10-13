@@ -176,3 +176,14 @@ describe "password authentication" do
     subject.authenticate.expires_in.should eq(60)
   end
 end
+describe FlexmlsApi::Authentication::OAuth2Impl  do
+  it "should load a provider" do
+    example = "FlexmlsApi::Authentication::OAuth2Impl::PasswordProvider"
+    FlexmlsApi::Authentication::OAuth2Impl.load_provider(example,{}).class.to_s.should eq(example)
+    prefix = "::#{example}"
+    FlexmlsApi::Authentication::OAuth2Impl.load_provider(prefix,{}).class.to_s.should eq(example)
+    bad_example = "Derp::Derp::Derp::DerpProvider"
+    expect{FlexmlsApi::Authentication::OAuth2Impl.load_provider(bad_example,{}).class.to_s.should eq(bad_example)}.to raise_error(ArgumentError)
+  end
+
+end

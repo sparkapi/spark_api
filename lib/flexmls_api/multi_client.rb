@@ -45,7 +45,14 @@ module FlexmlsApi
     def activate_client_from_config(symbol)
       FlexmlsApi.logger.debug("Loading multiclient [#{symbol.to_s}] from config")
       yaml = YamlConfig.build(symbol.to_s)
-      Client.new(yaml.client_keys)
+      if(yaml.oauth2?)
+        Client.new(yaml.client_keys.merge({
+              :oauth2_provider => Authentication::OAuth2Impl.load_provider(yaml.oauth2_provider, yaml.oauth2_keys),
+              :authentication_mode => FlexmlsApi::Authentication::OAuth2,
+            }))
+      else
+        Client.new(yaml.client_keys)
+      end
     end
     
   end
