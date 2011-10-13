@@ -24,8 +24,9 @@ Usage Examples
     #  - ssl:         false
     #  - user_agent: 'flexmls API Ruby Gem'
     FlexmlsApi.configure do |config|
-        config.api_key    = 'your_api_key'
-        config.api_secret = 'your_api_secret'
+        config.endpoint   = 'http://api.developers.flexmls.com'
+        config.api_key    = 'my_api_key'
+        config.api_secret = 'my_api_secret'
     end
 
     # mixin the models so you can use them without prefix
@@ -38,23 +39,22 @@ Usage Examples
 #### Interactive Console
 Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.flexmls_api_testing_ filling in the credentials for your account.
 
-    API_USER="20110101000000000000000000" # ID for an api user
     API_ENDPOINT="http://api.developers.flexmls.com"
-    API_KEY="my_test_key"
-    API_SECRET="my_test_secret"
+    API_KEY="my_api_key"
+    API_SECRET="my_api_secret"
     
     export API_USER API_ENDPOINT API_KEY API_SECRET
 
 Now, to run with this setup, run the following from the command line:
 
     > source .flexmls_api_testing
-    > bin/flexmls_api
+    > flexmls_api
     flemxlsApi> FlexmlsApi.client.get '/my/account'
 
-You can also provide these options from the command line, see "script/console -h" for more information
+You can also provide these options from the command line, see "flexmls_api -h" for more information
 
 
-Authentication
+Authentication Types
 --------------
 Authentication is handled transparently by the request framework in the gem, so you should never need to manually make an authentication request.  More than one mode of authentication is supported, so the client needs to be configured accordingly.
 
