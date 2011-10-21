@@ -3,7 +3,7 @@ lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
 require 'flexmls_api/version'
-
+require 'rubygems/user_interaction'
 Gem::Specification.new do |s|
   s.name        = "flexmls_api"
   s.version     = FlexmlsApi::VERSION
