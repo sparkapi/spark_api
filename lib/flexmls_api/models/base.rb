@@ -6,7 +6,7 @@ module FlexmlsApi
     class Base
       extend Paginate
 
-      attr_accessor :attributes
+      attr_accessor :attributes, :errors
       attr_reader :changed
       
       # Name of the resource as related to the path name
@@ -39,6 +39,7 @@ module FlexmlsApi
 
       def initialize(attributes={})
         @attributes = {}
+        @errors = []
         @changed = []
         load(attributes)
       end

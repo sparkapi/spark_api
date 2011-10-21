@@ -213,6 +213,22 @@ describe Listing do
       l.constraints.size.should eq(1)
       l.constraints.first.RuleName.should eq("MaxValue")
     end
+
+    it "should fail saving a listing with constraints and provide the constraints" do
+      list_id = "20060725224713296297000000"
+      stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
+      stub_api_put("/listings/#{list_id}", 'listings/put.json') do |request|
+        request.to_return(:status => 400, :body => fixture('errors/failure_with_constraint.json'))
+      end 
+
+      l = Listing.find(list_id)
+      l.ListPrice = 10000.0
+      l.save.should be_false
+      l.constraints.size.should eq(1)
+      l.constraints.first.RuleName.should eq("MaxIncreasePercent")
+      l.errors.size.should eq(1)
+    end
+
     context "with pagination" do
       # This is really a bogus call, but we should make sure our pagination collection impl still behaves sanely
       it "should save a listing with constraints" do

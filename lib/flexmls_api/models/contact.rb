@@ -5,8 +5,12 @@ module FlexmlsApi
       self.element_name="contacts"
       
       def save(arguments={})
+        self.errors = [] # clear the errors hash
         begin
           return save!(arguments)
+        rescue BadResourceRequest => e
+          self.errors << {:code => e.code, :message => e.message}
+          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         rescue NotFound, BadResourceRequest => e
           FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end

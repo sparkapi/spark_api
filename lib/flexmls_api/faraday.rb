@@ -24,8 +24,15 @@ module FlexmlsApi
           end
         end
         case finished_env[:status]
-        when 400, 409
-          raise BadResourceRequest, {:message => response.message, :code => response.code, :status => finished_env[:status]}
+        when 400
+          hash = {:message => response.message, :code => response.code, :status => finished_env[:status]}
+
+          # constraint violation
+          if response.code == 1053
+            details = body['D']['Details']
+            hash[:details] = details
+          end
+          raise BadResourceRequest,hash
         when 401
           # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
           # OAuth2 implementations and wouldn't hurt to log.
@@ -36,6 +43,8 @@ module FlexmlsApi
           raise NotFound, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 405
           raise NotAllowed, {:message => response.message, :code => response.code, :status => finished_env[:status]}
+        when 409
+          raise BadResourceRequest, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 500
           raise ClientError, {:message => response.message, :code => response.code, :status => finished_env[:status]}
         when 200..299

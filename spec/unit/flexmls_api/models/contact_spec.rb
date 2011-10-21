@@ -72,6 +72,18 @@ describe Contact do
     c.save.should be(false)
     expect{ c.save! }.to raise_error(FlexmlsApi::ClientError){ |e| e.status.should == 400 }
   end
+
+  it "should fail saving and set @errors" do
+    stub_api_post("/contacts", 'contacts/new_empty.json') do |request|
+      request.to_return(:status => 400, :body => fixture('errors/failure_with_msg.json'))
+    end
+
+    c=Contact.new
+    c.errors.length.should eq(0)
+    c.save.should be_false
+    c.errors.length.should eq(1)
+    c.errors.first[:code].should eq(1055)
+  end
   
   context "on an epic fail" do
     it "should fail saving and asplode" do

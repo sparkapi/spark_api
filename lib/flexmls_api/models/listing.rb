@@ -105,9 +105,22 @@ module FlexmlsApi
       end
       
       def save(arguments={})
+        self.errors = []
         begin
           return save!(arguments)
-        rescue NotFound, BadResourceRequest => e
+        rescue BadResourceRequest => e
+          self.errors << {:code => e.code, :message => e.message}
+          FlexmlsApi.logger.debug("BHDEBUG: #{e.inspect}")
+          if e.code == 1053
+            @constraints = []
+            e.details.each do |detail|
+              detail.each_pair do |k,v|
+                v.each { |constraint| @constraints << Constraint.new(constraint)}
+              end
+            end
+          end
+          FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
+        rescue NotFound => e
           FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
         false

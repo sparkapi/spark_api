@@ -1,0 +1,17 @@
+{
+  "D": {
+    "Message": "The data you provided failed constraints",
+    "Success": false,
+    "Details": [{
+      "ListPrice": [{
+        "RuleValue": 25.0,
+        "Value": 500000.0,
+        "RuleField": null,
+        "RuleFieldValue": null,
+        "RuleName": "MaxIncreasePercent"
+      }]
+    }],
+    "Code": 1053
+  }
+}
+
