@@ -5,15 +5,15 @@ describe Constraint do
   
   subject do
     Constraint.new(
-      "RuleValue" => 1000000.0,
-      "Value" => 1000001.0,
-      "RuleFieldValue" => 1.0,
-      "RuleField" => "ListPrice",
-      "RuleName" => "MaxValue")
+      "RuleValue" => 1,
+      "Value" => 0,
+      "RuleFieldValue" => nil,
+      "RuleField" => nil,
+      "RuleName" => "MinValue")
   end
   
   it "should print to string" do
-    subject.to_s.should eq("MaxValue: Field(ListPrice,1.0) Value(1000000.0,1000001.0)")
+    subject.to_s.should eq("The minimum value for this field is 1")
   end
 
 end
