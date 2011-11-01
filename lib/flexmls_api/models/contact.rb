@@ -11,7 +11,7 @@ module FlexmlsApi
         rescue BadResourceRequest => e
           self.errors << {:code => e.code, :message => e.message}
           FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
-        rescue NotFound, BadResourceRequest => e
+        rescue NotFound => e
           FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
         false
