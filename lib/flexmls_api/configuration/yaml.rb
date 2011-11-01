@@ -41,7 +41,7 @@ module FlexmlsApi
       
       # Used to specify the root of where to look for flexmlsApi config files
       def self.config_path
-        "config/flexmls_api"
+        path_prefix + "config/flexmls_api"
       end
       
       def self.config_keys()
@@ -90,8 +90,12 @@ module FlexmlsApi
           end
         end
       end
-      
+      # In a rails app, default to the rails root, regardless of where that may be      
+      def self.path_prefix
+        "#{Rails.root}/"
+      rescue => e
+        ""
+      end
     end
   end
 end
-
