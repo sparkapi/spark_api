@@ -152,6 +152,12 @@ describe Listing do
       l.documents.length.should == 0
     end 
 
+    it "should return nearby homes" do
+      stub_api_get("/listings/nearby", 'listings/no_subresources.json', {:Lat => "45.45", :Lon => "-93.98"})
+      l = Listing.nearby(45.45, -93.98)
+      l.length.should == 1
+    end 
+    
     it "should return street address" do
         @listing.street_address.should eq("100 Someone's St")
     end

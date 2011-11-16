@@ -59,6 +59,11 @@ module FlexmlsApi
         collect(connection.get("/company/listings", arguments))
       end
       
+      def self.nearby(latitude, longitude, arguments={})
+        nearby_args = {:Lat => latitude, :Lon => longitude}.merge(arguments)
+        collect(connection.get("/listings/nearby", nearby_args))
+      end
+      
       def tour_of_homes(arguments={})
         return @tour_of_homes unless @tour_of_homes.nil?
         @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, arguments)
