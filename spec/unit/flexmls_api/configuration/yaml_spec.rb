@@ -46,7 +46,7 @@ describe FlexmlsApi::Configuration::YamlConfig, "Yaml Config"  do
       subject.endpoint.should eq("http://api.dev.flexmls.com")
       subject.oauth2_provider.should eq("FlexmlsApi::TestOAuth2Provider")
       subject.name.should eq("test_oauth")
-      subject.client_keys.keys.should eq([:endpoint, :oauth2_provider])
+      subject.client_keys.keys.should =~ [:endpoint, :oauth2_provider]
       subject.oauth2_keys.keys.should =~ [:authorization_uri, :client_id, :access_uri, :client_secret, :redirect_uri]
     end
     it "should load a configured api key for production" do
