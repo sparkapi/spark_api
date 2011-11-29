@@ -13,7 +13,7 @@ module FlexmlsApi
         def authenticate
           new_session = nil
           unless @session.refresh_token.nil?
-            FlexmlsApi.logger.debug("Refreshing authentication to #{provider.access_uri} using [#{session.refresh_token}]")
+            FlexmlsApi.logger.debug("[oauth2] Refreshing authentication to #{provider.access_uri} using [#{session.refresh_token}]")
             new_session = create_session(token_params)
           end
           new_session 

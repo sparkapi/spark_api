@@ -21,7 +21,7 @@ module FlexmlsApi
         def refresh()
           GrantTypeRefresh.new(client,provider,session).authenticate
         rescue ClientError => e
-          FlexmlsApi.logger.info("Refreshing token failed, the library will try and authenticate from scratch: #{e.message}")
+          FlexmlsApi.logger.info("[oauth2] Refreshing token failed, the library will try and authenticate from scratch: #{e.message}")
           nil
         end
 

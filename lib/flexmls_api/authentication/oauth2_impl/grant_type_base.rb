@@ -17,6 +17,7 @@ module FlexmlsApi
           else
             raise ClientError, "Unsupported grant type [#{provider.grant_type}]"
           end
+          FlexmlsApi.logger.debug("[oauth2] setup #{granter.class.name}")
           granter
         end
         
@@ -37,11 +38,12 @@ module FlexmlsApi
         protected
 
         def create_session(token_params)
-          FlexmlsApi.logger.debug("Authenticating to #{provider.access_uri}")
+          FlexmlsApi.logger.debug("[oauth2] create_session to #{provider.access_uri} params #{token_params}")
           uri = URI.parse(provider.access_uri)
           request_path = "#{uri.path}"
           response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "#{token_params}").body
           response.expires_in = provider.session_timeout if response.expires_in.nil?
+          FlexmlsApi.logger.debug("[oauth2] New session created #{response}")
           response
         end
                 

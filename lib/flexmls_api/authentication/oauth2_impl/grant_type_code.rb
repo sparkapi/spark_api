@@ -11,7 +11,7 @@ module FlexmlsApi
         end
         def authenticate
           if(provider.code.nil?)
-            FlexmlsApi.logger.debug("Redirecting to provider to get the authorization code")
+            FlexmlsApi.logger.debug("[oauth2] No authoriztion code present. Redirecting to #{authorization_url}.")
             provider.redirect(authorization_url)
           end
           if needs_refreshing?
@@ -22,11 +22,12 @@ module FlexmlsApi
         end
         
         def refresh()
+          FlexmlsApi.logger.debug("[oauth2] Refresh oauth session.")
           refresher = GrantTypeRefresh.new(client,provider,session)
           refresher.params = {"redirect_uri" => @provider.redirect_uri}
           refresher.authenticate
         rescue ClientError => e
-          FlexmlsApi.logger.info("Refreshing token failed, the library will try and authenticate from scratch: #{e.message}")
+          FlexmlsApi.logger.info("[oauth2] Refreshing token failed, the library will try and authenticate from scratch: #{e.message}")
           nil
         end
 
