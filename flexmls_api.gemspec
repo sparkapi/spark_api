@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday', '~> 0.7.5'
   s.add_dependency 'faraday_middleware', '~> 0.7.0'
   s.add_dependency 'multi_json', '~> 1.0.0'
-  s.add_dependency 'json', '~> 1.5.1'
+  s.add_dependency 'json', '~> 1.6.5'
   s.add_dependency 'yajl-ruby', '~> 0.8.2'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
   s.add_dependency 'addressable', '~> 2.2.5'
