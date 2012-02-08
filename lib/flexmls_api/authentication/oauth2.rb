@@ -87,18 +87,31 @@ module FlexmlsApi
     
     # Representation of a session with the api using oauth2
     class OAuthSession
-      attr_accessor :access_token, :expires_in, :scope, :refresh_token, :refresh_timeout
+      SESSION_ATTRIBUTES = [:access_token, :expires_in, :scope, :refresh_token, :refresh_timeout, :start_time]
+      attr_accessor *SESSION_ATTRIBUTES
       def initialize(options={})
         @access_token = options["access_token"]
         @expires_in = options["expires_in"]
         @scope = options["scope"]
         @refresh_token = options["refresh_token"]
-        @start_time = DateTime.now
-        @refresh_timeout = 3600
+        @start_time = options.fetch("start_time", DateTime.now)
+        @refresh_timeout = options.fetch("refresh_timeout",3600)
+        if @start_time.is_a? String
+          @start_time = DateTime.parse(@start_time)
+        end
       end
       #  Is the user session token expired?
       def expired?
         @start_time + Rational(@expires_in - @refresh_timeout, 86400) < DateTime.now
+      end
+      
+      def to_json(*a)
+        hash = {}
+        SESSION_ATTRIBUTES.each do |k|
+          value = self.send(k)
+          hash[k.to_s] = value unless value.nil?
+        end
+        hash.to_json(*a)
       end
     end
     

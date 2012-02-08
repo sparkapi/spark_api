@@ -187,3 +187,19 @@ describe FlexmlsApi::Authentication::OAuth2Impl  do
   end
 
 end
+
+describe FlexmlsApi::Authentication::OAuthSession do
+  it "should serialize to json" do
+    args = {
+      "access_token" => "abc", 
+      "expires_in" => 3600, 
+      "refresh_token" => "123", 
+      "refresh_timeout" => 10000,
+      "start_time" => "2012-01-01T00:00:00+00:00"
+    }
+    session = FlexmlsApi::Authentication::OAuthSession.new(args)
+    session.start_time.should eq(DateTime.parse(args["start_time"]))
+    JSON.parse(session.to_json).should eq(args)
+    
+  end
+end
