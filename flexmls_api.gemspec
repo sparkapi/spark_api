@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{A library for interacting with the flexmls web services.}
   s.description = %q{The FlexmlsApi gem handles most of the boilerplate for communicating with the flexmls API rest services, including authentication and request parsing.}
 
-  s.required_rubygems_version = ">= 1.8.0"
+  s.required_rubygems_version = "~> 1.8"
   s.rubyforge_project         = "flexmls_api"
 
   s.extra_rdoc_files = [
@@ -28,13 +28,13 @@ Gem::Specification.new do |s|
   s.default_executable = %q{flexmls_api}
   s.require_paths      = ["lib"]
   
-  s.add_dependency 'faraday', '~> 0.7.5'
-  s.add_dependency 'faraday_middleware', '~> 0.7.0'
-  s.add_dependency 'multi_json', '~> 1.0.0'
+  s.add_dependency 'faraday', '~> 0.7'
+  s.add_dependency 'faraday_middleware', '~> 0.7'
+  s.add_dependency 'multi_json', '~> 1.0'
   s.add_dependency 'json', '~> 1.5'
-  s.add_dependency 'yajl-ruby', '~> 0.8.2'
+  s.add_dependency 'yajl-ruby', '~> 0.8'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
-  s.add_dependency 'addressable', '~> 2.2.5'
+  s.add_dependency 'addressable', '~> 2.2'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
