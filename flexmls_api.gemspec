@@ -28,8 +28,8 @@ Gem::Specification.new do |s|
   s.default_executable = %q{flexmls_api}
   s.require_paths      = ["lib"]
   
-  s.add_dependency 'faraday', '~> 0.7'
-  s.add_dependency 'faraday_middleware', '~> 0.7'
+  s.add_dependency 'faraday', '~> 0.7.5'
+  s.add_dependency 'faraday_middleware', '~> 0.7.0'
   s.add_dependency 'multi_json', '~> 1.0'
   s.add_dependency 'json', '~> 1.5'
   s.add_dependency 'yajl-ruby', '~> 0.8'
