@@ -22,16 +22,20 @@ describe VirtualTour do
     @virtualtour.unbranded?.should == false
   end
 
-  it "should get virtual tours for a listing" do
-    stub_auth_request
-    stub_api_get('/listings/1234/virtualtours','listings/virtual_tours_index.json')
+  context "/listings/<listing_id>/virtualtours", :support do
+    on_get_it "should get virtual tours for a listing" do
+      stub_auth_request
+      stub_api_get('/listings/1234/virtualtours','listings/virtual_tours_index.json')
 
-    v = VirtualTour.find_by_listing_key('1234')
-    v.should be_an(Array)
-    v.length.should == 5
+      v = VirtualTour.find_by_listing_key('1234')
+      v.should be_an(Array)
+      v.length.should == 5
+    end
   end
 
-
+  context "/listings/<listing_id>/virtualtours/<tour_id>", :support do
+    on_get_it "should return information about a specific virtual tour"
+  end
 
   after(:each) do
     @virtualtour = nil

@@ -37,3 +37,11 @@ end
 reset_config
 
 include FlexmlsApi::Models
+
+RSpec.configure do |config|
+  config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.alias_example_to :on_get_it, :method => 'GET'
+  config.alias_example_to :on_put_it, :method => 'PUT'
+  config.alias_example_to :on_post_it, :method => 'POST'
+  config.alias_example_to :on_delete_it, :method => 'DELETE'
+end

@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
-  s.add_development_dependency 'rspec', '~> 2.3.0'
+  s.add_development_dependency 'rspec', '~> 2.8.0'
   s.add_development_dependency 'webmock', '>= 1.7.0', '< 2.0.0'
   s.add_development_dependency 'typhoeus', '~> 0.2.4'
   s.add_development_dependency 'ci_reporter', '~> 1.6.3'

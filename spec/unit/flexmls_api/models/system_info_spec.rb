@@ -64,6 +64,18 @@ describe SystemInfo do
     end 
   end
 
+  context "/system", :support do
+    on_get_it "should return system settings and configuration"
+  end
+
+  context "/system/languages", :support do
+    on_get_it "should return a list of languages"
+  end
+
+  context "/system/accounts", :support do
+    on_get_it "should return account metadata"
+  end
+
   after(:each) do 
     @sysinfo = nil
   end

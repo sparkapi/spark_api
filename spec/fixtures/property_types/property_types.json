@@ -1,0 +1,31 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            {
+                "MlsName": "Residential",
+                "MlsCode": "A"
+            },
+            {
+                "MlsName": "Multi Family",
+                "MlsCode": "B"
+            },
+            {
+                "MlsName": "Land",
+                "MlsCode": "C"
+            },
+            {
+                "MlsName": "Commercial",
+                "MlsCode": "D"
+            },
+            {
+                "MlsName": "Farm",
+                "MlsCode": "E"
+            },
+            {
+                "MlsName": "Rental",
+                "MlsCode": "F"
+            }
+        ]
+    }
+}

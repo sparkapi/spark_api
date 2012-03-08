@@ -15,18 +15,22 @@ describe Video do
     Video.new(:Type => "branded").unbranded?.should == false
   end
 
-  describe "find videos by listing id"  do
+  describe "/listings/<listing_id>/videos", :support do
     before do
       stub_auth_request
       stub_api_get('/listings/1234/videos','listings/videos_index.json')
     end
 
-    it "should get an array of videos" do
+    on_get_it "should get an array of videos" do
       p = Video.find_by_listing_key('1234')
       p.should be_an(Array)
       p.length.should == 2
     end
 
+  end
+
+  context "/listings/<listing_id>/videos/<video_id>", :support do
+    on_get_it "should return information about a single video"
   end
 
 end

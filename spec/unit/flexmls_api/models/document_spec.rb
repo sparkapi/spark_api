@@ -14,13 +14,15 @@ describe Document do
     Document.should respond_to(:find_by_listing_key)
   end
 
-  it "should get documents for a listing" do
-    stub_auth_request
-    stub_api_get('/listings/1234/documents','listings/document_index.json')
+  context "/listings/<listing_id>/documents" do
+    on_get_it "should get documents for a listing" do
+      stub_auth_request
+      stub_api_get('/listings/1234/documents','listings/document_index.json')
 
-    v = Document.find_by_listing_key('1234')
-    v.should be_an(Array)
-    v.length.should == 2
+      v = Document.find_by_listing_key('1234')
+      v.should be_an(Array)
+      v.length.should == 2
+    end
   end
 
   after(:each) do

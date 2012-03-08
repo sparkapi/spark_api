@@ -16,6 +16,7 @@ describe OpenHouse do
   it "should respond to a few methods" do
     subject.class.should respond_to(:find_by_listing_key)
   end
+
   it "should return date and times" do
     start_time = DateTime.new(2010,10,1,9,0,0, "-0700")
     end_time = DateTime.new(2010,10,1,12,0,0, "-0700")
@@ -24,13 +25,15 @@ describe OpenHouse do
     subject.EndTime.should eq(Time.parse(end_time.to_s))
   end
 
-  it "should get open house for a listing" do
-    stub_auth_request
-    stub_api_get('/listings/20060412165917817933000000/openhouses','listings/open_houses.json')
-    houses = subject.class.find_by_listing_key('20060412165917817933000000')
-    houses.should be_an(Array)
-    houses.length.should eq(2)
-    houses.first.Id.should eq("20101127153422574618000000")
+  context "/listings/<listing_id>/openhouses", :support do
+    on_get_it "should get open house for a listing" do
+      stub_auth_request
+      stub_api_get('/listings/20060412165917817933000000/openhouses','listings/open_houses.json')
+      houses = subject.class.find_by_listing_key('20060412165917817933000000')
+      houses.should be_an(Array)
+      houses.length.should eq(2)
+      houses.first.Id.should eq("20101127153422574618000000")
+    end
   end
 
 end

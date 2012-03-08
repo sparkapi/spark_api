@@ -1,0 +1,14 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            {
+                "Id": "15Ar",
+                "ResourceUri":  "/v1/sharedlistings/15Ar",
+                "SharedUri":  "http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Filabee-AZ-85719",
+                "ListingIds": ["20110224152431857619000000","20110125122333785431000000"],
+                "Mode": "Public"
+            }
+        ]
+    }
+}

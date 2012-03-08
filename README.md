@@ -39,6 +39,7 @@ Usage Examples
 #### Interactive Console
 Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.flexmls_api_testing_ filling in the credentials for your account.
 
+    API_USER="12345678901234567890123456" # 26-digit identifier of an API user
     API_ENDPOINT="http://api.developers.flexmls.com"
     API_KEY="my_api_key"
     API_SECRET="my_api_secret"
