@@ -1,0 +1,8 @@
+{
+    "D": {
+      "Type":              "OperationComplete",
+      "Message":           "Your PDF generation has completed!",
+      "BrowserUri":        "http://myapplication.com/cmas/19581825.pdf",
+      "ResourceUri":       "http://myapplication.com/cmas/19581825.json"
+    }
+}

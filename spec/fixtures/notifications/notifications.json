@@ -1,0 +1,43 @@
+{
+  "D": {
+    "Results": [
+      { "Id":                "20100000000000000000000000",
+        "Type":              "OperationComplete",
+        "SenderApplication": "My Application",
+        "SenderId":          "20110000000000000000000001",
+        "RecipientId":       "20110000000000000000000002",
+        "Message":           "Your PDF generation has completed!",
+        "BrowserUri":        "http://myapplication.com/cmas/19581825.pdf",
+        "ResourceUri":       "http://myapplication.com/cmas/19581825.json",
+        "Read":              false,
+        "CreatedTimestamp":  "2011-11-18T16:35:43",
+        "ReadTimestamp":     null
+      },
+      { "Id":                "20100000000000000000000001",
+        "Type":              "OperationComplete",
+        "SenderApplication": "My Application",
+        "SenderId":          "20110000000000000000000001",
+        "RecipientId":       "20110000000000000000000002",
+        "Message":           "Your PDF generation has completed!",
+        "BrowserUri":        "http://myapplication.com/cmas/19581826.pdf",
+        "ResourceUri":       "http://myapplication.com/cmas/19581826.json",
+        "Read":              false,
+        "CreatedTimestamp":  "2011-11-18T16:35:40",
+        "ReadTimestamp":     null
+      },
+      { "Id":                "20100000000000000000000002",
+        "Type":              "OperationComplete",
+        "SenderApplication": "My Application",
+        "SenderId":          "20110000000000000000000001",
+        "RecipientId":       "20110000000000000000000002",
+        "Message":           "Your PDF generation has completed!",
+        "BrowserUri":        "http://myapplication.com/cmas/19581827.pdf",
+        "ResourceUri":       "http://myapplication.com/cmas/19581827.json",
+        "Read":              false,
+        "CreatedTimestamp":  "2011-11-18T16:35:37",
+        "ReadTimestamp":     null
+      }
+    ],
+    "Success": true
+  }
+}
