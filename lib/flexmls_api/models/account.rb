@@ -46,9 +46,11 @@ module FlexmlsApi
       end
       
       def save(arguments={})
+        self.errors = [] # clear the errors hash
         begin
           return save!(arguments)
         rescue NotFound, BadResourceRequest => e
+          self.errors << {:code => e.code, :message => e.message}
           FlexmlsApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
         false
@@ -57,8 +59,22 @@ module FlexmlsApi
         # The long-term idea is that any setting in the user's account could be updated by including
         # an attribute and calling PUT /my/account, but for now only the GetEmailUpdates attribute 
         # is supported
-        save_path = my_account? ? "/my/account" : self.class.path
-        results = connection.put save_path, {"GetEmailUpdates" => self.GetEmailUpdates }, arguments
+        
+        @ojbsome = {}
+        if defined? self.GetEmailUpdates
+          save_path = my_account? ? "/my/account" : self.class.path
+          @ojbsome["GetEmailUpdates"] = self.GetEmailUpdates
+        end
+        if attributes['PasswordValidation']
+          save_path = "/accounts/"+self.Id
+          @ojbsome["PasswordValidation"] = attributes['PasswordValidation']
+        end
+        if attributes['Password']
+          save_path = "/accounts/"+self.Id
+          @ojbsome["Password"] = attributes['Password']
+        end    
+          
+        results = connection.put save_path, @ojbsome, arguments
         true
       end
 
