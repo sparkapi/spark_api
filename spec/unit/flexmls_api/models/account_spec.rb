@@ -148,6 +148,14 @@ describe Account do
         accounts.first.Id.should eq("20000426173054342350000000")
         accounts.last.Id.should eq("20110126173054382350000000")
       end
+      
+      on_put_it "should save password" do
+        stub_api_put("/accounts", 'accounts/password_save.json', 'accounts/all.json')
+        account = Account.my
+        account.Id.should eq("20110426173054342350000000")
+        account.save!
+        account.Name.should eq("Sample User")
+      end      
     end
 
     context "/accounts/by/office/<office_id>" do
