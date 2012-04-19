@@ -7,9 +7,9 @@ require 'webmock/rspec'
 begin require "redgreen" unless ENV['TM_CURRENT_LINE']; rescue LoadError; end
 path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
-require path + '/flexmls_api'
+require path + '/spark_api'
 
-require 'flexmls_api'
+require 'spark_api'
 require File.expand_path('../mock_helper', __FILE__)
 require File.expand_path('../json_helper', __FILE__)
 
@@ -17,7 +17,7 @@ require File.expand_path('../json_helper', __FILE__)
 FileUtils.mkdir 'log' unless File.exists? 'log'
 
 # TODO, really we should change the library to support configuration without overriding
-module FlexmlsApi
+module SparkApi
   def self.logger
     if @logger.nil?
       @logger = Logger.new('log/test.log')
@@ -27,17 +27,17 @@ module FlexmlsApi
   end
 end
 
-FlexmlsApi.logger.info("Setup gem for rspec testing")
+SparkApi.logger.info("Setup gem for rspec testing")
 
 def reset_config()
-  FlexmlsApi.reset
-  FlexmlsApi.configure do |config|
+  SparkApi.reset
+  SparkApi.configure do |config|
     config.api_user = "foobar"
   end
 end
 reset_config
 
-include FlexmlsApi::Models
+include SparkApi::Models
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true

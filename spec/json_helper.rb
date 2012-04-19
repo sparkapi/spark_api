@@ -1,4 +1,3 @@
-
 class ListingJson
   @counter = 0
   def self.next_tech_id()

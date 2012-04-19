@@ -1,8 +1,0 @@
-#!/usr/bin/env ruby
-# File: bin/flexmls_api
-
-require File.dirname(__FILE__) + '/../lib/flexmls_api/cli'
-
-FlexmlsApi::CLI::ConsoleCLI.execute(STDOUT, ARGV)
-
-

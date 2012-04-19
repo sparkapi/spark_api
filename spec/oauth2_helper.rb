@@ -1,6 +1,5 @@
-
 # Lightweight example of an oauth2 provider used by the ruby client.
-class TestOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
+class TestOAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
   
   def initialize
     @authorization_uri = "https://test.fbsdata.com/r/oauth2"
@@ -30,7 +29,7 @@ class TestOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
 end
 
 
-class TestCLIOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
+class TestCLIOAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
   def initialize
     @authorization_uri = "https://test.fbsdata.com/r/oauth2"
     @access_uri = "https://api.test.fbsdata.com/v1/oauth2/grant"
@@ -60,7 +59,7 @@ class TestCLIOAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
 end
 
 
-class InvalidAuth2Provider < FlexmlsApi::Authentication::BaseOAuth2Provider
+class InvalidAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
   
   def grant_type
     :not_a_real_type

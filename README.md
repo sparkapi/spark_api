@@ -1,16 +1,16 @@
-flexmls API
+Spark API
 =====================
-A Ruby wrapper for the flexmls REST API. Loosely based on ActiveResource to provide models to interact with remote services.
+A Ruby wrapper for the Spark REST API. Loosely based on ActiveResource to provide models to interact with remote services.
 
 
 Documentation
 -------------
-For full information on the API, see [http://www.flexmls.com/developers/](http://www.flexmls.com/developers/)
+For full information on the API, see [http://sparkplatform.com/docs/overview/api](http://sparkplatform.com/docs/overview/api)
 
 
 Installation
 ---------
-    gem install flexmls_api
+    gem install spark_api
 
 Usage Examples
 ------------------------
@@ -19,40 +19,40 @@ Usage Examples
     # initialize the gem with your key/secret
     # api_key and _api_secret are the only required settings
     # other options and their defaults:
-    #  - endpoint:   'http://api.flexmls.com'  
+    #  - endpoint:   'https://api.sparkapi.com'
     #  - version:    'v1'
     #  - ssl:         false
-    #  - user_agent: 'flexmls API Ruby Gem'
-    FlexmlsApi.configure do |config|
-        config.endpoint   = 'http://api.developers.flexmls.com'
+    #  - user_agent: 'Spark API Ruby Gem'
+    SparkApi.configure do |config|
+        config.endpoint   = 'https://developers.sparkapi.com'
         config.api_key    = 'my_api_key'
         config.api_secret = 'my_api_secret'
     end
 
     # mixin the models so you can use them without prefix
-    include FlexmlsApi::Models
+    include SparkApi::Models
 
     # Grab your listings!
     my_listings = Listing.my()
-    
-    
+
+
 #### Interactive Console
-Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.flexmls_api_testing_ filling in the credentials for your account.
+Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.spark_api_testing_ filling in the credentials for your account.
 
     API_USER="12345678901234567890123456" # 26-digit identifier of an API user
-    API_ENDPOINT="http://api.developers.flexmls.com"
+    API_ENDPOINT="https://developers.sparkapi.com"
     API_KEY="my_api_key"
     API_SECRET="my_api_secret"
-    
+
     export API_USER API_ENDPOINT API_KEY API_SECRET
 
 Now, to run with this setup, run the following from the command line:
 
-    > source .flexmls_api_testing
-    > flexmls_api
-    flemxlsApi> FlexmlsApi.client.get '/my/account'
+    > source .spark_api_testing
+    > spark_api
+    SparkApi> SparkApi.client.get '/my/account'
 
-You can also provide these options from the command line, see "flexmls_api -h" for more information
+You can also provide these options from the command line, see "spark_api -h" for more information
 
 
 Authentication Types
@@ -63,7 +63,7 @@ Authentication is handled transparently by the request framework in the gem, so 
 Usually supplied for a single user, this authentication mode is the simplest, and is setup as the default.  The example usage above demonstrates how to get started using this authentication mode.
 
 #### OAuth2 Authentication
-Authentication mode the separates application and user authentication.  This mode requires further setup which is described in _lib/flexmls_api/authentication/oauth2.rb_
+Authentication mode the separates application and user authentication.  This mode requires further setup which is described in _lib/spark_api/authentication/oauth2.rb_
 
 Error Codes
 ---------------------
@@ -71,7 +71,7 @@ Error Codes
   <thead>
     <tr>
       <th>HTTP Code</th>
-      <th>flexmls API Error Code</th>
+      <th>Spark API Error Code</th>
       <th>Exception Raised</th>
       <th>Description</th>
     </tr>

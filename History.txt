@@ -116,7 +116,7 @@
 *  Handy startup script picking keys from the environment.
 == v0.2.2 2010-12-29
 *  per_page setting for the client models.
-*  Pagination support for the flexmls api client
+*  Pagination support for the Spark api client
 *  Added branded? and unbranded? instance methods to Video
 *  Added document model
 *  Added virtual tours model

@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
-# File: script/console
+# File: bin/spark_api
 
 require File.dirname(__FILE__) + '/../lib/spark_api/cli'
-ENV["SPARK_API_CONSOLE"] = "true"
+
 SparkApi::CLI::ConsoleCLI.execute(STDOUT, ARGV)
+
+
