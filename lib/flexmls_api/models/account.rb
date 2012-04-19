@@ -60,23 +60,24 @@ module FlexmlsApi
         # an attribute and calling PUT /my/account, but for now only the GetEmailUpdates attribute 
         # is supported
         
-        @ojbsome = {}
-        if defined? self.GetEmailUpdates
+        save_path = "/accounts/"+self.Id
+        
+        ojbsome = {}
+        if attributes['GetEmailUpdates']
           save_path = my_account? ? "/my/account" : self.class.path
-          @ojbsome["GetEmailUpdates"] = self.GetEmailUpdates
+          ojbsome["GetEmailUpdates"] = attributes['GetEmailUpdates']
         end
         if attributes['PasswordValidation']
-          save_path = "/accounts/"+self.Id
-          @ojbsome["PasswordValidation"] = attributes['PasswordValidation']
+          ojbsome["PasswordValidation"] = attributes['PasswordValidation']
         end
         if attributes['Password']
-          save_path = "/accounts/"+self.Id
-          @ojbsome["Password"] = attributes['Password']
+          ojbsome["Password"] = attributes['Password']
         end    
           
-        results = connection.put save_path, @ojbsome, arguments
+        results = connection.put save_path, ojbsome, arguments
         true
       end
+
 
       private
 
