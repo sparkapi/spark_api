@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.description = %q{The spark_api gem handles most of the boilerplate for communicating with the Spark API rest services, including authentication and request parsing.}
 
   s.required_rubygems_version = "~> 1.8"
-  #s.rubyforge_project         = "spark_api"
+  s.rubyforge_project         = "spark_api"
 
   s.extra_rdoc_files = [
     "LICENSE",
