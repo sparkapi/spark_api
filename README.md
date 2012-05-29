@@ -105,8 +105,10 @@ Authentication is handled transparently by the request framework in the gem, so 
 #### API Authentication (Default)
 Usually supplied for a single user, this authentication mode is the simplest, and is setup as the default.  The example usage above demonstrates how to get started using this authentication mode.
 
-#### OAuth2 Authentication
-Authentication mode the separates application and user authentication.  This mode requires further setup which is described in _lib/spark_api/authentication/oauth2.rb_
+#### OAuth2 Authorization (Preferred)
+Authorization mode the separates application and user authentication.  This mode requires the end user to be redirected to Spark Platform's auth endpoint.  See "script/oauth2_example.rb" for an example.
+
+Read more about Spark Platform's OAuth 2 flow <a href="http://sparkplatform.com/docs/authentication/oauth2_authentication">here</a>.
 
 Error Codes
 ---------------------
