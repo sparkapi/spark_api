@@ -2,7 +2,9 @@ module SparkApi
   module Configuration
     
     # valid configuration options
-    VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, :user_agent, :version, :ssl, :oauth2_provider, :authentication_mode].freeze
+    VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
+      :user_agent, :version, :ssl, :oauth2_provider, :authentication_mode, 
+      :auth_endpoint, :callback].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
       :redirect_uri,  
@@ -11,11 +13,15 @@ module SparkApi
     ]
       
     require File.expand_path('../configuration/yaml', __FILE__)
+    require File.expand_path('../configuration/oauth2_configurable', __FILE__)
+
+    include OAuth2Configurable
     
     DEFAULT_API_KEY = nil
     DEFAULT_API_SECRET = nil
     DEFAULT_API_USER = nil
     DEFAULT_ENDPOINT = 'https://api.sparkapi.com'
+    DEFAULT_AUTH_ENDPOINT = 'https://sparkplatform.com/openid'  # Ignored for Spark API Auth
     DEFAULT_VERSION = 'v1'
     DEFAULT_USER_AGENT = "Spark API Ruby Gem #{VERSION}"
     DEFAULT_SSL = true
@@ -25,7 +31,8 @@ module SparkApi
 
     attr_accessor *VALID_OPTION_KEYS
     def configure
-      yield self
+      yield(self)
+      oauthify! if convert_to_oauth2?
     end
 
     def self.extended(base)
@@ -43,6 +50,7 @@ module SparkApi
       self.api_secret  = DEFAULT_API_SECRET
       self.api_user    = DEFAULT_API_USER
       self.authentication_mode = SparkApi::Authentication::ApiAuth
+      self.auth_endpoint  = DEFAULT_AUTH_ENDPOINT
       self.endpoint    = DEFAULT_ENDPOINT
       self.oauth2_provider = DEFAULT_OAUTH2
       self.user_agent  = DEFAULT_USER_AGENT

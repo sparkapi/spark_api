@@ -7,6 +7,9 @@ module SparkApi
     include Connection
     include Authentication
     include Request
+
+    require File.expand_path('../configuration/oauth2_configurable', __FILE__)
+    include Configuration::OAuth2Configurable
     
     attr_accessor :authenticator
     attr_accessor *Configuration::VALID_OPTION_KEYS
