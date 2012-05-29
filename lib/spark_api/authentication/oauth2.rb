@@ -182,6 +182,7 @@ module SparkApi
       require 'spark_api/authentication/oauth2_impl/grant_type_code'
       require 'spark_api/authentication/oauth2_impl/grant_type_password'
       require 'spark_api/authentication/oauth2_impl/password_provider'
+      require 'spark_api/authentication/oauth2_impl/simple_provider'
       
       # Loads a provider class from a string
       def self.load_provider(string, args={})

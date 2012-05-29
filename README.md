@@ -15,6 +15,49 @@ Installation
 Usage Examples
 ------------------------
 
+#### Ruby Script: OAuth 2
+    # initialize the gem with your OAuth 2 key/secret.
+    # See also: script/oauth2_example.rb
+    # api_key, api_secret, and callback are all required.
+    # The following options are required:
+    #  - api_key: Your OAuth 2 client key
+    #  - api-secret: Your OAuth 2 client secret
+    #  - callback: Your OAuth 2 redirect_uri, which the end user will be redirected
+    #              to after authorizing your application to access their data.
+    #  - auth_endpoint: The URI to redirect the user's web browser to, in order for them to
+    #                   authorize your application to access their data.
+    # other options and their defaults:
+    #  - endpoint:   'https://api.sparkapi.com'
+    #  - version:    'v1'
+    #  - ssl:        true
+    #  - user_agent: 'Spark API Ruby Gem'
+    SparkApi.configure do |config|
+      config.authentication_mode = SparkApi::Authentication::OAuth2
+      config.api_key      = "YOUR_CLIENT_ID"
+      config.api_secret   = "YOUR_CLIENT_SECRET"
+      config.callback     = "YOUR_REDIRECT_URI"
+      config.auth_endpoint = "https://developers.sparkplatform.com/oauth2"
+      config.endpoint   = 'https://developers.sparkapi.com'
+    end
+
+    # Code is retrieved from the method. client.authenticator.authorization_url
+    # See script/oauth2_example.rb for more details.
+
+
+    SparkApi.client.oauth2_provider.code = "CODE_FROM_ABOVE_URI"
+    SparkApi.client.authenticate
+
+    # Alternatively, if you've already received an access token, you may
+    # do the following instead of the above two lines:
+    #SparkApi.client.session = SparkApi::Authentication::OAuthSession.new "access_token"=> "ACCESS_TOKEN", 
+    #                           "refresh_token" => "REFRESH_TOKEN", "expires_in" => 86400
+
+    # mixin the models so you can use them without prefix
+    include SparkApi::Models
+
+    # Grab your listings!
+    my_listings = Listing.my()
+
 #### Ruby Script
     # initialize the gem with your key/secret
     # api_key and _api_secret are the only required settings
