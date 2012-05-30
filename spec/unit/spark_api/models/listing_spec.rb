@@ -44,6 +44,13 @@ describe Listing do
           "Uri1280"=>"http=>//devresize.flexmls.com/fgo/1280x1024/true/20101115201631519737000000-o.jpg",
           "UriThumb"=>"http=>//images.dev.fbsdata.com/fgo/20101115201631519737000000-t.jpg",
           "Uri640"=>"http=>//devresize.flexmls.com/fgo/640x480/true/20101115201631519737000000-o.jpg"
+        }],
+        "OpenHouses" => [{
+          'ResourceUri'=>"/v1/listings/20060412165917817933000000/openhouses/20101127153422574618000000",
+          'Id'=>"20060412165917817933000000",
+          'Date'=>"10/01/2010",
+          'StartTime'=>"09:00:00-07:00",
+          'EndTime'=>"12:00:00-07:00"
         }]
       },
       "Id"=>"20080619000032866372000000"
@@ -250,17 +257,18 @@ describe Listing do
           l.photos.length.should == 0
           l.documents.length.should == 0
         end
+        
+        ## TourOfHomes: Not implemented yet ##
+        #on_get_it "should return tour of homes" do
+          #stub_api_get("/listings/20060725224713296297000000", 'listings/no_subresources.json')
+          #stub_api_get("/listings/20060725224713296297000000/tourofhomes", 'listings/tour_of_homes.json')
 
-        on_get_it "should return tour of homes" do
-          stub_api_get("/listings/20060725224713296297000000", 'listings/no_subresources.json')
-          stub_api_get("/listings/20060725224713296297000000/tourofhomes", 'listings/tour_of_homes.json')
-
-          l = Listing.find('20060725224713296297000000')
-          l.tour_of_homes().length.should == 2
-          l.videos.length.should == 0
-          l.photos.length.should == 0
-          l.documents.length.should == 0
-        end
+          #l = Listing.find('20060725224713296297000000')
+          #l.tour_of_homes().length.should == 2
+          #l.videos.length.should == 0
+          #l.photos.length.should == 0
+          #l.documents.length.should == 0
+        #end
 
         on_get_it "should return permissions" do
           stub_api_get("/listings/20060725224713296297000000", 'listings/with_permissions.json', { :_expand => "Permissions" })
@@ -306,7 +314,7 @@ describe Listing do
     context "/listings/nearby", :support do
       on_get_it "should return nearby homes" do
         stub_api_get("/listings/nearby",
-                     'listings/no_subresources.json', {:Lat => "45.45", :Lon => "-93.98"})
+                     'listings/no_subresources.json', {:_lat => "45.45", :_lon => "-93.98"})
         l = Listing.nearby(45.45, -93.98)
         l.length.should == 1
       end

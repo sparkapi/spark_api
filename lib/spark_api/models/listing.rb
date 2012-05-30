@@ -2,7 +2,7 @@ module SparkApi
   module Models
     class Listing < Base 
       extend Finders
-      attr_accessor :photos, :videos, :virtual_tours, :documents
+      attr_accessor :photos, :videos, :virtual_tours, :documents, :open_houses, :tour_of_homes
       attr_accessor :constraints
       self.element_name="listings"
       DATA_MASK = "********"
@@ -14,9 +14,10 @@ module SparkApi
         @virtual_tours = []
         @documents = []
         @constraints = []
+        #@tour_of_homes = []
         
         if attributes.has_key?('StandardFields')
-          pics, vids, tours, docs = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents')
+          pics, vids, tours, docs, ohouses, tourhomes = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents', 'OpenHouses', 'TourOfHomes')
         end
         
         if pics != nil
@@ -37,6 +38,18 @@ module SparkApi
         if docs != nil
           docs.collect { |doc| @documents.push(Document.new(doc)) }
           attributes['StandardFields'].delete('Documents')
+        end
+        
+        if ohouses != nil
+          @open_houses = []
+          ohouses.collect { |ohouse| @open_houses.push(OpenHouse.new(ohouse)) }
+          attributes['StandardFields'].delete('OpenHouses')
+        end
+        
+        if tourhomes != nil
+          @tour_of_homes = []
+          tourhomes.collect { |tourhome| @tour_of_homes.push(TourOfHome.new(tourhome)) }
+          attributes['StandardFields'].delete('TourOfHomes')
         end
         
         super(attributes)
@@ -60,18 +73,18 @@ module SparkApi
       end
       
       def self.nearby(latitude, longitude, arguments={})
-        nearby_args = {:Lat => latitude, :Lon => longitude}.merge(arguments)
+        nearby_args = {:_lat => latitude, :_lon => longitude}.merge(arguments)
         collect(connection.get("/listings/nearby", nearby_args))
       end
       
       def tour_of_homes(arguments={})
+        @tour_of_homes ||= TourOfHome.find_by_listing_key(self.Id, arguments)
         return @tour_of_homes unless @tour_of_homes.nil?
-        @tour_of_homes = TourOfHome.find_by_listing_key(self.Id, arguments)
       end
 
       def open_houses(arguments={})
+        @open_houses ||= OpenHouse.find_by_listing_key(self.Id, arguments)
         return @open_houses unless @open_houses.nil?
-        @open_houses = OpenHouse.find_by_listing_key(self.Id, arguments)
       end
       
       def my_notes

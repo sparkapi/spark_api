@@ -16,6 +16,11 @@ module SparkApi
           attributes['StartTime'] = Time.parse("#{date}T#{attributes['StartTime']}") unless attributes['StartTime'].nil?
           attributes['EndTime'] = Time.parse("#{date}T#{attributes['EndTime']}") unless attributes['EndTime'].nil?
         end
+        
+        if attributes["Comments"].nil?
+          attributes["Comments"] = ""
+        end
+        
         super(attributes)
       end
       
