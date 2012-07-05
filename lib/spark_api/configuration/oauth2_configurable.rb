@@ -2,7 +2,9 @@ module SparkApi
   module Configuration
     module OAuth2Configurable
       def convert_to_oauth2?
-        self.authentication_mode == SparkApi::Authentication::OAuth2 &&
+        (self.authentication_mode == SparkApi::Authentication::OAuth2 ||
+         self.authentication_mode == SparkApi::Authentication::OpenId ||
+         self.authentication_mode == SparkApi::Authentication::OpenIdOAuth2Hybrid) &&
           self.oauth2_provider.nil? 
       end
 

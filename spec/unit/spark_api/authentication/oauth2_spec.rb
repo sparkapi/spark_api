@@ -148,6 +148,72 @@ describe SparkApi::Authentication::OAuth2  do
   end
 end
 
+describe SparkApi::Authentication::OpenIdOAuth2Hybrid do
+  let(:provider) do 
+    SparkApi::Authentication::SimpleProvider.new({
+      :access_uri    => "https://mygrantsite.com",
+      :client_id     => "mykey",
+      :client_secret => "mysecret",
+      :authorization_uri => "https://sparkplatform.com",
+      :redirect_uri  => "https://mycallback.com"
+    })
+  end
+  let(:client) do 
+    SparkApi::Client.new({:authentication_mode => SparkApi::Authentication::OpenIdOAuth2Hybrid,:oauth2_provider => provider}) 
+  end
+  describe "plugin" do
+    it "should load the hybrid authenticator" do
+      client.authenticator.class.should eq(SparkApi::Authentication::OpenIdOAuth2Hybrid)
+    end
+  end
+
+  describe "#authorization_url" do
+    it "should include combined flow parameter" do
+      client.authenticator.authorization_url.should match("openid.spark.combined_flow=true")
+    end
+    it "should allow custom parameters" do
+      client.authenticator.authorization_url({"joshua" => "iscool"}).should match("joshua=iscool")
+    end
+  end
+end
+
+describe SparkApi::Authentication::OpenId do
+  let(:provider) do 
+    SparkApi::Authentication::SimpleProvider.new({
+      :access_uri    => "https://mygrantsite.com",
+      :client_id     => "mykey",
+      :client_secret => "mysecret",
+      :authorization_uri => "https://sparkplatform.com",
+      :redirect_uri  => "https://mycallback.com"
+    })
+  end
+
+  let(:client) {SparkApi::Client.new({:authentication_mode => SparkApi::Authentication::OpenId, :oauth2_provider => provider}) }
+
+  describe "plugin" do
+    it "should not include combined flow parameter" do
+      client.authenticator.authorization_url.should_not match("openid.spark.combined_flow=true")
+    end
+    it "should load the oauth2 authenticator" do
+      client.authenticator.class.should eq(SparkApi::Authentication::OpenId)
+    end
+  end
+
+  describe "#authorization_url" do
+    it "should allow custom parameters" do
+      client.authenticator.authorization_url({"joshua" => "iscool"}).should match("joshua=iscool")
+    end
+  end
+
+  describe "forbidden methods" do
+    it "should not allow authentication" do
+      lambda {
+        client.authenticate
+      }.should raise_error(RuntimeError)
+    end
+  end
+end
+
 describe SparkApi::Authentication::BaseOAuth2Provider  do
   context "session_timeout" do
     it "should provide a default" do
