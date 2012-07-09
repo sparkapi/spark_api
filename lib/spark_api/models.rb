@@ -25,6 +25,7 @@ require 'spark_api/models/system_info'
 require 'spark_api/models/tour_of_home'
 require 'spark_api/models/video'
 require 'spark_api/models/virtual_tour'
+require 'spark_api/models/rental_calendar'
 
 module SparkApi
   module Models

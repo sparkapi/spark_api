@@ -257,6 +257,13 @@ describe Listing do
           l.photos.length.should == 0
           l.documents.length.should == 0
         end
+
+        on_get_it "should return an array of rental calendars" do
+          stub_api_get("/listings/1234", 'listings/with_rental_calendar.json', { :_expand => "RentalCalendar" })
+
+          l = Listing.find('1234', :_expand => "RentalCalendar")
+          l.rental_calendars.length.should == 2
+        end
         
         ## TourOfHomes: Not implemented yet ##
         #on_get_it "should return tour of homes" do
