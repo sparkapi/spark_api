@@ -15,13 +15,56 @@ Installation
 Usage Examples
 ------------------------
 
+#### Ruby Script: OpenId/OAuth2 Combined Flow
+    # initialize the gem with your key/secret.
+    # See also: script/combined_flow_example.rb
+    # api_key, api_secret, and callback are all required.
+    # The following options are required:
+    #  - api_key: Your client key
+    #  - api_secret: Your client secret
+    #  - callback: Your redirect_uri, which the end user will be redirected
+    #              to after authorizing your application to access their data.
+    #  - auth_endpoint: The URI to redirect the user's web browser to, in order for them to
+    #                   authorize your application to access their data.
+    # other options and their defaults:
+    #  - endpoint:   'https://api.sparkapi.com'
+    #  - version:    'v1'
+    #  - ssl:        true
+    #  - user_agent: 'Spark API Ruby Gem'
+    SparkApi.configure do |config|
+      config.authentication_mode = SparkApi::Authentication::OpenIdOAuth2Hybrid
+      config.api_key      = "YOUR_CLIENT_ID"
+      config.api_secret   = "YOUR_CLIENT_SECRET"
+      config.callback     = "YOUR_REDIRECT_URI"
+      config.auth_endpoint = "https://developers.sparkplatform.com/openid"
+      config.endpoint   = 'https://developers.sparkapi.com'
+    end
+
+    # Code is retrieved from the method: SparkApi.client.authenticator.authorization_url
+    # See script/combined_flow_example.rb for more details.
+
+
+    SparkApi.client.oauth2_provider.code = "CODE_FROM_ABOVE_URI"
+    SparkApi.client.authenticate
+
+    # Alternatively, if you've already received an access token, you may
+    # do the following instead of the above two lines:
+    # SparkApi.client.session = SparkApi::Authentication::OAuthSession.new "access_token"=> "ACCESS_TOKEN", 
+    #                            "refresh_token" => "REFRESH_TOKEN", "expires_in" => 86400
+
+    # mixin the models so you can use them without prefix
+    include SparkApi::Models
+
+    # Grab your listings!
+    my_listings = Listing.my()
+
 #### Ruby Script: OAuth 2
     # initialize the gem with your OAuth 2 key/secret.
     # See also: script/oauth2_example.rb
     # api_key, api_secret, and callback are all required.
     # The following options are required:
     #  - api_key: Your OAuth 2 client key
-    #  - api-secret: Your OAuth 2 client secret
+    #  - api_secret: Your OAuth 2 client secret
     #  - callback: Your OAuth 2 redirect_uri, which the end user will be redirected
     #              to after authorizing your application to access their data.
     #  - auth_endpoint: The URI to redirect the user's web browser to, in order for them to
@@ -40,7 +83,7 @@ Usage Examples
       config.endpoint   = 'https://developers.sparkapi.com'
     end
 
-    # Code is retrieved from the method. client.authenticator.authorization_url
+    # Code is retrieved from the method. SparkApi.client.authenticator.authorization_url
     # See script/oauth2_example.rb for more details.
 
 
@@ -57,6 +100,36 @@ Usage Examples
 
     # Grab your listings!
     my_listings = Listing.my()
+
+
+#### Ruby Script: OpenId Only
+    # initialize the gem with your key/secret.
+    # api_key, api_secret, and callback are all required.
+    # The following options are required:
+    #  - api_key: Your client key
+    #  - api_secret: Your client secret
+    #  - callback: Your redirect_uri, which the end user will be redirected
+    #              to after authorizing your application to access their data.
+    #  - auth_endpoint: The URI to redirect the user's web browser to, in order for them to
+    #                   authorize your application to access their data.
+    # other options and their defaults:
+    #  - user_agent: 'Spark API Ruby Gem'
+    SparkApi.configure do |config|
+      config.authentication_mode = SparkApi::Authentication::OpenId
+      config.api_key      = "YOUR_CLIENT_ID"
+      config.api_secret   = "YOUR_CLIENT_SECRET"
+      config.callback     = "YOUR_REDIRECT_URI"
+      config.auth_endpoint = "https://developers.sparkplatform.com/openid"
+    end
+
+    # Code is retrieved from the method: 
+    # See script/combined_flow_example.rb for more details.
+    # Optionally, additional a GET parameters can be supplied as a hash to
+    # authorization_url.
+    # SparkApi.client.authenticator.authorization_url
+
+    # That's it! No API Access is available when using OpenID alone.
+
 
 #### Ruby Script
     # initialize the gem with your key/secret
@@ -105,10 +178,20 @@ Authentication is handled transparently by the request framework in the gem, so 
 #### API Authentication (Default)
 Usually supplied for a single user, this authentication mode is the simplest, and is setup as the default.  The example usage above demonstrates how to get started using this authentication mode.
 
-#### OAuth2 Authorization (Preferred)
+#### OpenId/OAuth2 Combined Flow (Preferred)
+Authorization mode the separates application and user authentication.  This mode requires the end user to be redirected to Spark Platform's openid endpoint.  See "script/combined_flow_example.rb" for an example.
+
+Read more about Spark Platform's combined flow <a href="http://sparkplatform.com/docs/authentication/openid_oauth2_authentication">here</a>.
+
+#### OAuth2 Authorization
 Authorization mode the separates application and user authentication.  This mode requires the end user to be redirected to Spark Platform's auth endpoint.  See "script/oauth2_example.rb" for an example.
 
 Read more about Spark Platform's OAuth 2 flow <a href="http://sparkplatform.com/docs/authentication/oauth2_authentication">here</a>.
+
+#### OpenId Authentication
+There is also the option to only access a user's Spark Platform identity without accessing any data (e.g. listings, contacts, etc.).  In circumstances where you ONLY with to authenticate users through the Spark Platform, but do not have a use case to access any of their data, consider the OpenId authentication flow in lieu of API Authentication or the Combined flow.
+
+Read more about Spark Platform's OpenId flow <a href="http://sparkplatform.com/docs/authentication/openid_authentication">here</a>.
 
 Error Codes
 ---------------------

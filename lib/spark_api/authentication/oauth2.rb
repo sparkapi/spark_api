@@ -67,7 +67,6 @@ module SparkApi
         }
         "#{@provider.authorization_uri}?#{build_url_parameters(params)}"
       end
-
             
       protected
       
@@ -82,6 +81,45 @@ module SparkApi
         @client
       end
 
+    end
+
+    #==OpenId/OAuth 2 Hybrid
+    # Uses OpenId for Authentication, but also uses OAuth2 for authorization.
+    class OpenIdOAuth2Hybrid < OAuth2
+      def authorization_url(parameters={})
+        params = openid_parameters.merge(parameters)
+        params["openid.spark.combined_flow"] = true
+        build_openid_uri(params)
+      end
+
+      protected
+
+      def build_openid_uri(params)
+        "#{@provider.authorization_uri}?#{build_url_parameters(params)}"
+      end
+
+      def openid_parameters
+        {
+          "openid.mode" => "checkid_setup",
+          "openid.spark.client_id" => @provider.client_id,
+          "openid.return_to" => @provider.redirect_uri
+        }
+      end
+    end
+
+    class OpenId < OpenIdOAuth2Hybrid
+      def authorization_url(parameters={})
+        params = openid_parameters.merge(parameters)
+        build_openid_uri(params)
+      end
+
+      def authenticate
+        raise RuntimeError, "API Authorization not available with an OpenId-only Auth instance"
+      end
+      
+      def request(method, path, body, options={})
+        raise RuntimeError, "API Data not available with an OpenId-only Auth instance"
+      end
     end
     
     # Representation of a session with the api using oauth2
