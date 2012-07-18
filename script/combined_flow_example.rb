@@ -37,13 +37,13 @@ puts "Go here and log in to get your code: #{client.authenticator.authorization_
 #puts "Access Token: #{client.session.access_token}, Refresh Token: #{client.session.refresh_token}"
 
 
-# Step 4: Comment out Step 3, and uncomment the following.
+# Step 3: Comment out Step 2, and uncomment the following.
 #         Pass in your access_token and refresh_token to make authenticated requests to the API
 #client.session = SparkApi::Authentication::OAuthSession.new "access_token"=> "ACCESS_TOKEN", 
 #                    "refresh_token" => "REFRESH_TOKEN", "expires_in" => 86400
 
 
-# Step 3a and 4a: Uncomment with Step 3 and 4.
+# Step 2a and 3a: Uncomment with Step 3 and 4.
 #                 Make requests for authorized listing data
 #list = client.get '/contacts'
 #puts "client: #{list.inspect}"
