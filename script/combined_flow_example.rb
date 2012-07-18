@@ -10,13 +10,12 @@ require path + '/spark_api'
 SparkApi.logger.info("Hello!")
 
 SparkApi.configure do |config|
-  config.authentication_mode = SparkApi::Authentication::OAuth2
+  config.authentication_mode = SparkApi::Authentication::OpenIdOAuth2Hybrid
   config.api_key      = "YOUR_CLIENT_ID"
   config.api_secret   = "YOUR_CLIENT_SECRET"
   config.callback     = "YOUR_REDIRECT_URI"
-  config.version      = "v1"
-  config.endpoint     = "https://developers.sparkapi.com"
-  config.auth_endpoint = "https://developers.sparkplatform.com/oauth2"
+  config.auth_endpoint = "https://developers.sparkplatform.com/openid"
+  config.endpoint   = 'https://developers.sparkapi.com'
 end
 
 client = SparkApi.client
@@ -44,7 +43,7 @@ puts "Go here and log in to get your code: #{client.authenticator.authorization_
 #                    "refresh_token" => "REFRESH_TOKEN", "expires_in" => 86400
 
 
-# Step 2a and 3a: Uncomment with Step 2 and 3.
+# Step 2a and 3a: Uncomment with Step 3 and 4.
 #                 Make requests for authorized listing data
 #list = client.get '/contacts'
 #puts "client: #{list.inspect}"
