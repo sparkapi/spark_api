@@ -1,0 +1,52 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/listings/20060813163018826257000000",
+                "StandardFields": {
+                    "StreetNumber": "2755",
+                    "Longitude": "-116.7506",
+                    "City": "Hayden",
+                    "ListingId": "06-10376",
+                    "PublicRemarks": "Incredible horse estate in Hayden. Over 14 acres with panoramic views. Cape Cod style residence, 4500+ sq ft w/4 bdrms, 4.5 baths. 82x60 horse barn, heated with hayloft & lg guest house. 70x160 indoor horse arean, heated, viewing area boasts large river rock fireplace & bbq area. The Ultimate in luxury living!",
+                    "BuildingAreaTotal": "5400.0",
+                    "YearBuilt": 1996,
+                    "StreetName": "SPRING ROCK LN",
+                    "ListPrice": "2950000.0",
+                    "PostalCode": "83835",
+                    "Latitude": "47.7959",
+                    "BathsThreeQuarter": null,
+                    "BathsFull": null,
+                    "BathsTotal": "4.5",
+                    "StateOrProvince": "ID",
+                    "PropertyType": "A",
+                    "StreetAdditionalInfo": null,
+                    "StreetDirPrefix": "E",
+                    "BedsTotal": 4,
+                    "StreetDirSuffix": null,
+                    "ListingKey": "20060813163018826257000000",
+                    "ListOfficeName": "Coldwell Banker Schneidmiller Realty",
+                    "BathsHalf": null,
+                    "ModificationTimestamp": "2010-11-22T20:52:54Z",
+                    "CountyOrParish": "Kootenai"
+                },
+                "Id": "20060813163018826257000000",
+                "RentalCalendar": [
+                  {
+                      "EndDate": "2012-07-16",
+                      "Id": "20120705192139246257000000",
+                      "StartDate": "2012-07-12",
+                      "Type": "Rented" 
+                  },
+                  {
+                      "EndDate": "2012-07-23",
+                      "Id": "20120705192148668143000000",
+                      "StartDate": "2012-07-20",
+                      "Type": "Rented"
+                  }
+                ]
+            }
+        ],
+        "Success": true
+    }
+}
