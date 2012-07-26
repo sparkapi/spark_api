@@ -13,6 +13,7 @@ require 'spark_api/connection'
 require 'spark_api/client'
 require 'spark_api/faraday'
 require 'spark_api/primary_array'
+require 'spark_api/options_hash'
 require 'spark_api/models'
 
 module SparkApi

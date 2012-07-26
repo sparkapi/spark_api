@@ -126,7 +126,10 @@ module SparkApi
     class OAuthSession
       SESSION_ATTRIBUTES = [:access_token, :expires_in, :scope, :refresh_token, :refresh_timeout, :start_time]
       attr_accessor *SESSION_ATTRIBUTES
-      def initialize(options={})
+      def initialize(o={})
+
+        options = OptionsHash.new(o)
+
         @access_token = options["access_token"]
         @expires_in = options["expires_in"]
         @scope = options["scope"]
