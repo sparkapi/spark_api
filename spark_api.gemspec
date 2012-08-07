@@ -4,6 +4,7 @@ $:.unshift lib unless $:.include?(lib)
 
 require 'spark_api/version'
 require 'rubygems/user_interaction'
+
 Gem::Specification.new do |s|
   s.name        = "spark_api"
   s.version     = SparkApi::VERSION
@@ -28,14 +29,15 @@ Gem::Specification.new do |s|
   s.default_executable = %q{spark_api}
   s.require_paths      = ["lib"]
   
-  s.add_dependency 'faraday', '~> 0.7.5'
-  s.add_dependency 'faraday_middleware', '~> 0.7.0'
+  s.add_dependency 'faraday', '~> 0.8.1'
+  s.add_dependency 'faraday_middleware', '~> 0.8.8'
   s.add_dependency 'multi_json', '~> 1.0'
-  s.add_dependency 'json', '~> 1.5'
-  s.add_dependency 'yajl-ruby', '~> 0.8'
+  s.add_dependency 'json', '~> 1.7'
+  s.add_dependency 'yajl-ruby', '~> 1.1.0'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
-  s.add_dependency 'addressable', '~> 2.2'
+  s.add_dependency 'addressable', '~> 2.3'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
+
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
   s.add_development_dependency 'rspec', '~> 2.8.0'
