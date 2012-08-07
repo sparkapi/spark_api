@@ -5,6 +5,10 @@ describe SparkApi do
     reset_config
   end
 
+  it "should use 'yajl-ruby' for parsing json" do
+    MultiJson.engine.should eq(MultiJson::Adapters::Yajl)
+  end
+
   it "should load the version" do
     subject::VERSION.should match(/\d+\.\d+\.\d+/)
   end

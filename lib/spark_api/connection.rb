@@ -1,7 +1,5 @@
 require 'openssl'
 require 'faraday'
-require 'faraday_middleware'
-require 'yajl'
 
 module SparkApi
   # =Connection
@@ -20,9 +18,10 @@ module SparkApi
       else 
         opts[:url] = @endpoint.sub /^https:/, "http:"
       end
-      conn = Faraday::Connection.new(opts) do |builder|
-        builder.adapter Faraday.default_adapter
-        builder.use SparkApi::FaradayExt::SparkMiddleware
+
+      conn = Faraday.new(opts) do |conn|
+        conn.response :spark_api
+        conn.adapter Faraday.default_adapter
       end
       SparkApi.logger.debug("Connection: #{conn.inspect}")
       conn

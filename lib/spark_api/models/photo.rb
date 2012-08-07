@@ -1,3 +1,5 @@
+require 'base64'
+
 module SparkApi
   module Models
     class Photo < Base

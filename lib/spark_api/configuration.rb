@@ -1,5 +1,7 @@
 module SparkApi
   module Configuration
+
+    MultiJson.engine = "yajl"
     
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 

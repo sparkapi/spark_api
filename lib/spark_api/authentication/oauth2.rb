@@ -217,7 +217,7 @@ module SparkApi
     end
 
     module OAuth2Impl
-      require 'spark_api/authentication/oauth2_impl/middleware'
+      require 'spark_api/authentication/oauth2_impl/faraday_middleware'
       require 'spark_api/authentication/oauth2_impl/grant_type_base'
       require 'spark_api/authentication/oauth2_impl/grant_type_refresh'
       require 'spark_api/authentication/oauth2_impl/grant_type_code'
