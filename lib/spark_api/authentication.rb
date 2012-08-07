@@ -1,7 +1,6 @@
 
 require 'openssl'
 require 'faraday'
-require 'faraday_middleware'
 require 'yajl'
 require 'date'
 

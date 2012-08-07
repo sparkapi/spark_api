@@ -68,9 +68,10 @@ module SparkApi
           }
           opts[:ssl] = {:verify => false }
           opts[:url] = endpoint       
-          conn = Faraday::Connection.new(opts) do |builder|
-            builder.adapter Faraday.default_adapter
-            builder.use SparkApi::Authentication::OAuth2Impl::Middleware
+          Faraday.register_middleware :response, :faraday_middleware => FaradayMiddleware
+          conn = Faraday::Connection.new(opts) do |conn|
+            conn.response :oauth2_impl
+            conn.adapter Faraday.default_adapter
           end
         end        
         def build_url_parameters(parameters={})

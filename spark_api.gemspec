@@ -30,12 +30,10 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
   
   s.add_dependency 'faraday', '~> 0.8.1'
-  s.add_dependency 'faraday_middleware', '~> 0.8.8'
   s.add_dependency 'multi_json', '~> 1.0'
   s.add_dependency 'json', '~> 1.7'
   s.add_dependency 'yajl-ruby', '~> 1.1.0'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
-  s.add_dependency 'addressable', '~> 2.3'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
 
   # TEST GEMS
