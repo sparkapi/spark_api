@@ -106,9 +106,9 @@ def mock_expired_session()
 end
 
 def test_connection(stubs)
-  Faraday::Connection.new(nil, {:headers => SparkApi::Client.new.headers}) do |builder|
-    builder.adapter :test, stubs
-    builder.use SparkApi::FaradayExt::SparkMiddleware
+  Faraday.new(nil, {:headers => SparkApi::Client.new.headers}) do |conn|
+    conn.response :spark_api
+    conn.adapter :test, stubs
   end
 end
 

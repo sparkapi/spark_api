@@ -139,7 +139,7 @@ describe SparkApi::Paginate do
           "Success": true, 
           "Results": [#{ListingJson.create_all(10)}],
           #{paginate_json}
-        }
+        }}
       JSON
       stub_request(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/listings").
         with(:query => {
@@ -172,7 +172,7 @@ describe SparkApi::Paginate do
           "Success": true, 
           "Results": [#{ListingJson.create_all(10)}],
           #{paginate_json(2)}
-        }
+        }}
       JSON
       stub_request(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/listings").
         with(:query => {
@@ -195,7 +195,7 @@ describe SparkApi::Paginate do
           "Success": true, 
           "Results": [#{ListingJson.create_all(8)}],
           #{paginate_json(4)}
-        }
+        }}
       JSON
       stub_request(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/listings").
         with(:query => {
