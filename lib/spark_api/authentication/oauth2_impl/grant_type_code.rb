@@ -32,13 +32,14 @@ module SparkApi
 
         private 
         def token_params
-          params = {
-            "client_id" => @provider.client_id,
-            "client_secret" => @provider.client_secret,
-            "grant_type" => "authorization_code",
-            "code" => @provider.code,
-            "redirect_uri" => @provider.redirect_uri
-          }.to_json 
+          hash = {
+           "client_id" => @provider.client_id,
+           "client_secret" => @provider.client_secret,
+           "code" => @provider.code,
+           "grant_type" => "authorization_code",
+           "redirect_uri" => @provider.redirect_uri
+         }
+         MultiJson.dump(hash)
         end
         
       end

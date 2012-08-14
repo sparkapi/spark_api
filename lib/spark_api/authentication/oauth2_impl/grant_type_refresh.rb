@@ -20,12 +20,13 @@ module SparkApi
         
         private 
         def token_params
-          @params.merge({
+          hash = @params.merge({
             "client_id" => @provider.client_id,
             "client_secret" => @provider.client_secret,
             "grant_type" => "refresh_token",
             "refresh_token"=> session.refresh_token,
-          }).to_json 
+          }) 
+          MultiJson.dump(hash)
         end
       end
       

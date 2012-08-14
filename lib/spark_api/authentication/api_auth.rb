@@ -38,12 +38,12 @@ module SparkApi
       # specifically for signing a request.
       def build_param_string(param_hash)
         return "" if param_hash.nil?
-          sorted = param_hash.sort do |a,b|
+          sorted = param_hash.keys.sort do |a,b|
             a.to_s <=> b.to_s
           end
           params = ""
-          sorted.each do |key,val|
-            params += key.to_s + val.to_s
+          sorted.each do |key|
+            params += key.to_s + param_hash[key].to_s
           end
           params
       end

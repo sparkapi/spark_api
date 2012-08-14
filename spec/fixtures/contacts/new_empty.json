@@ -1,8 +1,8 @@
 {
 	"D": {
-		"Notify": false,
 		"Contacts": [
 			{ }
-		]
+		],
+		"Notify": false
 	}
 }

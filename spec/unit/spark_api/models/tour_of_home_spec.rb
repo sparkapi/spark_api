@@ -23,8 +23,14 @@ describe TourOfHome do
     start_time = DateTime.new(2010,10,1,9,0,0, "-0700")
     end_time = DateTime.new(2010,10,1,23,0,0, "-0700")
     subject.Date.should eq(Date.new(2010,10,1))
-    subject.StartTime.should eq(Time.parse(start_time.to_s))
-    subject.EndTime.should eq(Time.parse(end_time.to_s))
+# TRYING TO MAKE THIS BACKWARDS COMPATIBLE AND NOT HAPPY ABOUT IT
+if RUBY_VERSION < '1.9'
+  subject.StartTime.should eq(Time.parse(start_time.to_s))
+  subject.EndTime.should eq(Time.parse(end_time.to_s))
+else
+  subject.StartTime.should eq(start_time.to_time)
+  subject.EndTime.should eq(end_time.to_time)
+end
   end
 
   context "/listings/<listing_id>/tourofhomes", :support do

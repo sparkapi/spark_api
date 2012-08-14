@@ -4,16 +4,16 @@
 	        {"ResourceUri":"/listings/20060725224713296297000000/tourofhomes/20101127153422574618000000",
 	         "Id": "20101127153422574618000000",
 	         "Date": "10/01/2010",
-	         "StartTime": "09:00 AM",
-	         "EndTime": "12:00 PM",
+	         "StartTime": "09:00-07:00",
+	         "EndTime": "12:00-07:00",
 	         "Comments": "Wonderful home; must see!",
 	         "AdditionalInfo": [{"Hosted By": "Joe Smith"}, {"Host Phone": "123-456-7890"}, {"Tour Area": "North-Central"}]
 	        },
 	        {"ResourceUri":"/listings/20060725224713296297000000/tourofhomes/20101127153422174618000000",
 	         "Id": "20101127153422174618000000",
 	         "Date": "10/08/2010",
-	         "StartTime": "09:00 AM",
-	         "EndTime": "12:00 PM",
+	         "StartTime": "09:00-07:00",
+	         "EndTime": "12:00-07:00",
 	         "Comments": "Wonderful home; must see!",
 	         "AdditionalInfo": [{"Hosted By": "Joe Smith"}, {"Host Phone": "123-456-7890"}, {"Tour Area": "North-Central"}]
 	        }        

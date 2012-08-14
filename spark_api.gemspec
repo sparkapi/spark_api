@@ -38,11 +38,10 @@ Gem::Specification.new do |s|
 
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
-  s.add_development_dependency 'rspec', '~> 2.8.0'
-  # s.add_development_dependency 'webmock', '>= 1.7.0', '< 1.8.0'
+  s.add_development_dependency 'rspec', '~> 2.11.0'
   s.add_development_dependency 'webmock', '1.7.5'
   s.add_development_dependency 'typhoeus', '~> 0.2.4'
-  s.add_development_dependency 'ci_reporter', '~> 1.6.3'
+  s.add_development_dependency 'ci_reporter', '~> 1.7.0'
   s.add_development_dependency 'rcov', '~> 0.9.9'
   s.add_development_dependency 'flexmls_gems', '~> 0.2.5'
 end

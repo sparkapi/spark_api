@@ -63,7 +63,7 @@ module SparkApi
         true
       end
       def update!(arguments={})
-        results = connection.put "#{self.class.path}/#{self.Id}", {"ListingCarts" => [ {"Name" => attributes["Name"], "ListingIds" => attributes["ListingIds"]} ] }, arguments
+        results = connection.put "#{self.class.path}/#{self.Id}", {"ListingCarts" => [ {"ListingIds" => attributes["ListingIds"],"Name" => attributes["Name"]} ] }, arguments
         true
       end
 

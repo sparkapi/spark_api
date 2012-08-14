@@ -13,6 +13,7 @@ require path + '/spark_api'
 require 'spark_api'
 require File.expand_path('../mock_helper', __FILE__)
 require File.expand_path('../json_helper', __FILE__)
+require File.expand_path('../json_hash_test_support', __FILE__)
 
 
 FileUtils.mkdir 'log' unless File.exists? 'log'
@@ -47,3 +48,4 @@ RSpec.configure do |config|
   config.alias_example_to :on_post_it, :method => 'POST'
   config.alias_example_to :on_delete_it, :method => 'DELETE'
 end
+

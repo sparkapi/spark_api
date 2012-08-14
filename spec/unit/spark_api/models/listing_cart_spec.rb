@@ -47,11 +47,10 @@ describe ListingCart do
       stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
       resource = subject.class.get.first
       stub_api_put("/#{subject.class.element_name}/#{resource.Id}", 'listing_carts/new.json', 'success.json')
+      resource.Name = "My Cart's Name"
       resource.ListingIds = ['20110112234857732941000000',
                              '20110302120238448431000000',
                              '20110510011212354751000000']
-
-      resource.Name = "My Cart's Name"
       resource.save.should be(true)
       resource.ResourceUri.should eq("/v1/listingcarts/20100912153422758914000000")
     end

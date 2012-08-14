@@ -15,7 +15,7 @@ describe SparkApi::Authentication::OAuth2  do
     it "should authenticate the api credentials" do
       stub_request(:post, provider.access_uri).
         with(:body => 
-            '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}' 
+          '{"client_id":"example-id","client_secret":"example-password","code":"my_code","grant_type":"authorization_code","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback"}' 
         ).
         to_return(:body => fixture("oauth2/access.json"), :status=>200)
       subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
@@ -25,7 +25,7 @@ describe SparkApi::Authentication::OAuth2  do
     it "should raise an error when api credentials are invalid" do
       s=stub_request(:post, provider.access_uri).
         with(:body => 
-             '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'
+          '{"client_id":"example-id","client_secret":"example-password","code":"my_code","grant_type":"authorization_code","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback"}'
         ).
         to_return(:body => fixture("oauth2/error.json"), :status=>400)
       expect {subject.authenticate()}.to raise_error(SparkApi::ClientError){ |e| e.status.should == 400 }
@@ -103,22 +103,24 @@ describe SparkApi::Authentication::OAuth2  do
         count = 0
         refresh_count = 0
         stub_request(:post, provider.access_uri).
-          with(:body => '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'). 
-          to_return do
+          with(:body => 
+            '{"client_id":"example-id","client_secret":"example-password","code":"my_code","grant_type":"authorization_code","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback"}'
+          ).to_return do
             count += 1
             {:body => fixture("oauth2/access_with_old_refresh.json"), :status=>200}
           end
         stub_request(:post, provider.access_uri).
-          with(:body => '{"client_id":"example-id","client_secret":"example-password","grant_type":"refresh_token","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","refresh_token":"0ld-r3fr35h-70k3n"}'). 
-          to_return do
+          with(:body => 
+            '{"client_id":"example-id","client_secret":"example-password","grant_type":"refresh_token","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","refresh_token":"0ld-r3fr35h-70k3n"}'
+          ).to_return do
             refresh_count += 1
             {:body => fixture("oauth2/access_with_refresh.json"), :status=>200}
           end
         # Make sure the auth request goes out twice.
         # Fail the first time, but then return the correct value after reauthentication
         stub_request(:get, "https://api.sparkapi.com/#{SparkApi.version}/listings/1234").
-            to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
-            to_return(:body => fixture('listings/with_documents.json'))
+          to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
+          to_return(:body => fixture('listings/with_documents.json'))
         client.get("/listings/1234")
         count.should eq(1)
         refresh_count.should eq(1)
@@ -129,16 +131,17 @@ describe SparkApi::Authentication::OAuth2  do
       it "should reset the session and reauthenticate" do
         count = 0
         stub_request(:post, provider.access_uri).
-          with(:body => '{"code":"my_code","client_secret":"example-password","client_id":"example-id","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback","grant_type":"authorization_code"}'). 
-          to_return do
+          with(:body =>
+            '{"client_id":"example-id","client_secret":"example-password","code":"my_code","grant_type":"authorization_code","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback"}' 
+          ).to_return do
             count += 1
             {:body => fixture("oauth2/access.json"), :status=>200}
           end
         # Make sure the auth request goes out twice.
         # Fail the first time, but then return the correct value after reauthentication
         stub_request(:get, "https://api.sparkapi.com/#{SparkApi.version}/listings/1234").
-            to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
-            to_return(:body => fixture('listings/with_documents.json'))
+          to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
+          to_return(:body => fixture('listings/with_documents.json'))
               
         client.get("/listings/1234")
         count.should eq(2)
@@ -234,10 +237,9 @@ describe "password authentication" do
   subject {client.authenticator }  
   it "should authenticate the api credentials with username and password" do
     stub_request(:post, provider.access_uri).
-      with(:body => 
-        '{"username":"example-user","client_secret":"example-secret","client_id":"example-id","password":"example-password","grant_type":"password"}' 
-      ).
-      to_return(:body => fixture("oauth2/access.json"), :status=>200)
+      with(:body =>
+        '{"client_id":"example-id","client_secret":"example-secret","grant_type":"password","password":"example-password","username":"example-user"}' 
+      ).to_return(:body => fixture("oauth2/access.json"), :status=>200)
     subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
     subject.authenticate.expires_in.should eq(60)
   end

@@ -26,13 +26,14 @@ module SparkApi
 
         private 
         def token_params
-          params = {
+          hash = {
             "client_id" => @provider.client_id,
             "client_secret" => @provider.client_secret,
             "grant_type" => "password",
-            "username" => @provider.username,
             "password" => @provider.password,
-          }.to_json 
+            "username" => @provider.username
+          }
+          MultiJson.dump(hash)
         end
       end
     end
