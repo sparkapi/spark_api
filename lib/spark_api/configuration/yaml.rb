@@ -31,13 +31,15 @@ module SparkApi
         @name
       end
       def api_env
-        current_env = "development"
-        if env.include?("SPARK_API_ENV")
-          current_env = env["SPARK_API_ENV"]
-        elsif env.include?("RAILS_ENV")
-          current_env = env["RAILS_ENV"]
+        if env.include? "SPARK_API_ENV"
+          env["SPARK_API_ENV"]
+        elsif env.include? "RAILS_ENV"
+          env["RAILS_ENV"]
+        elsif env.include? "RACK_ENV"
+          env["RACK_ENV"]
+        else
+          "development"
         end
-        return current_env
       end
       
       # Used to specify the root of where to look for SparkApi config files
