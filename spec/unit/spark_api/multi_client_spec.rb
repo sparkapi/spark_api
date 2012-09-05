@@ -51,6 +51,10 @@ describe SparkApi::MultiClient do
       SparkApi.client.api_key.should eq('demo_key')
     end
   end
+
+  after(:all) do
+    reset_config
+  end
   
 end
 

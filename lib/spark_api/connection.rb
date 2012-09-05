@@ -11,7 +11,6 @@ module SparkApi
       opts = {
         :headers => headers
       }
-      domain = @endpoint 
       if(force_ssl || self.ssl)
         opts[:ssl] = {:verify => false }
         opts[:url] = @endpoint.sub /^http:/, "https:"

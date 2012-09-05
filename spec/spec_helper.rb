@@ -31,7 +31,7 @@ end
 
 SparkApi.logger.info("Setup gem for rspec testing")
 
-def reset_config()
+def reset_config
   SparkApi.reset
   SparkApi.configure do |config|
     config.api_user = "foobar"
