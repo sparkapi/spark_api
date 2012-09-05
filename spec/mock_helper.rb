@@ -113,7 +113,7 @@ def test_connection(stubs)
 end
 
 def stub_auth_request()
-  stub_request(:post, "https://api.sparkapi.com/#{SparkApi.version}/session").
+  stub_request(:post, "#{SparkApi.endpoint}/#{SparkApi.version}/session").
               with(:query => {:ApiKey => "", :ApiSig => "806737984ab19be2fd08ba36030549ac"}).
               to_return(:body => fixture("session.json"))
 end

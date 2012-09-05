@@ -15,6 +15,10 @@ module SparkApi
           else             find_single(scope, options)
         end
       end
+
+      def all(*arguments)
+        find(:all, *arguments)
+      end
       
       def first(*arguments)
         find(:first, *arguments)

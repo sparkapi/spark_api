@@ -16,8 +16,7 @@ module SparkApi
     
     # Constructor bootstraps the client with configuration and authorization class.
     # options - see Configuration::VALID_OPTION_KEYS
-    # auth_klass - subclass of Authentication::BaseAuth Defaults to the original api auth system.
-    def initialize(options={}, auth_klass=ApiAuth)
+    def initialize(options={})
       options = SparkApi.options.merge(options)
       Configuration::VALID_OPTION_KEYS.each do |key|
         send("#{key}=", options[key])
