@@ -8,8 +8,8 @@ describe TourOfHome do
       'ResourceUri'=>"/listings/20060725224713296297000000/tourofhomes/20101127153422574618000000",
       'Id'=>"20101127153422574618000000",
       'Date'=>"10/01/2010",
-      'StartTime'=>"09:00:00-07:00",
-      'EndTime'=>"23:00:00-07:00",
+      'StartTime'=>"9:00 am",
+      'EndTime'=>"11:00 pm",
       'Comments'=>"Wonderful home; must see!",
       'AdditionalInfo'=> [{"Hosted By"=>"Joe Smith"}, {"Host Phone"=>"123-456-7890"}, {"Tour Area"=>"North-Central"}]
     )
@@ -17,20 +17,6 @@ describe TourOfHome do
 
   it "should respond to a few methods" do
     subject.class.should respond_to(:find_by_listing_key)
-  end
-
-  it "should return tour date and times" do
-    start_time = DateTime.new(2010,10,1,9,0,0, "-0700")
-    end_time = DateTime.new(2010,10,1,23,0,0, "-0700")
-    subject.Date.should eq(Date.new(2010,10,1))
-# TRYING TO MAKE THIS BACKWARDS COMPATIBLE AND NOT HAPPY ABOUT IT
-if RUBY_VERSION < '1.9'
-  subject.StartTime.should eq(Time.parse(start_time.to_s))
-  subject.EndTime.should eq(Time.parse(end_time.to_s))
-else
-  subject.StartTime.should eq(start_time.to_time)
-  subject.EndTime.should eq(end_time.to_time)
-end
   end
 
   context "/listings/<listing_id>/tourofhomes", :support do
