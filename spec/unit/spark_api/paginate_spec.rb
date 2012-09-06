@@ -128,7 +128,7 @@ describe SparkApi::Paginate do
   
   # non unit-y real world test of paginations with listings
   context "paginating listings" do
-    before do
+    before(:each) do
       stub_auth_request
     end
 
