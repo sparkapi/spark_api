@@ -103,6 +103,10 @@ module SparkApi
       def parse_id(uri)
         uri[/\/.*\/(.+)$/, 1]
       end
+
+      def changed_attributes
+        @changed.inject({}) { |h, c| h[c] = attributes[c]; h }
+      end
       
       protected
       

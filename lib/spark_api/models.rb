@@ -2,6 +2,7 @@ require 'spark_api/models/base'
 require 'spark_api/models/constraint'
 require 'spark_api/models/finders'
 require 'spark_api/models/subresource'
+require 'spark_api/models/modifiers'
 
 require 'spark_api/models/account'
 require 'spark_api/models/connect_prefs'
