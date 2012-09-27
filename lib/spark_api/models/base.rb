@@ -41,7 +41,6 @@ module SparkApi
         @attributes = {}
         @errors = []
         @changed = []
-        @destroyed = false
         load(attributes)
       end
 
@@ -106,10 +105,12 @@ module SparkApi
       end
 
       def changed_attributes
-        @changed.inject({}) { |h, c| h[c] = attributes[c]; h }
+        @changed.inject({}) { |h, c| h[c] = @attributes[c]; h }
       end
 
-      def destroyed?; @destroyed end
+      def persisted?;
+        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
+      end
       
       protected
       

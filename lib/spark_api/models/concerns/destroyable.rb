@@ -23,6 +23,8 @@ module SparkApi
         end
         alias :delete :destroy # backwards compatibility
 
+        def destroyed?; @destroyed ? @destroyed : false end
+
       end
 
     end

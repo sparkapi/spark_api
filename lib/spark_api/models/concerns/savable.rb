@@ -17,7 +17,7 @@ module SparkApi
           false
         end
         def save!(arguments = {})
-          attributes['Id'].nil? ? create!(arguments) : update!(arguments)
+          persisted? ? update!(arguments) : create!(arguments)
         end
 
         def create!(arguments = {})
