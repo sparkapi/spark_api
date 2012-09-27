@@ -9,8 +9,23 @@ end
 class MyDefaultModel < Base
 end
 
+describe MyExampleModel, "Example model" do
+  before(:each) do
+    stub_auth_request
+    stub_api_get("/test/example", 'base.json')
+    @model = MyExampleModel.first
+  end
+  it "should be persisted" do
+    @model.persisted?.should eq(true)
+  end
+  it "should not be persisted" do
+    @new_model = MyExampleModel.new()
+    @new_model.persisted?.should eq(false)
+  end
+end
 
 describe Base, "Base model" do
+
   describe "class methods" do
     it "should set the element name" do
       MyExampleModel.element_name.should eq("example")
@@ -99,6 +114,13 @@ describe Base, "Base model" do
 
     it "should respond_to methods inherited from parent classes" do
       @model.should respond_to(:freeze)
+    end
+
+    it "should return changed attributes" do
+      @model.Name = "a different name"
+      @model.changed_attributes.should eq({
+        "Name" => "a different name"
+      })
     end
 
   end

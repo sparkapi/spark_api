@@ -2,11 +2,13 @@
             "Success": true, 
             "Results": [{
               "Id": 1,
+              "ResourceUri": "some/place",
               "Name": "My Example", 
               "Test": true
             },
             {
               "Id": 2, 
+              "ResourceUri": "some/place",
               "Name": "My Example2", 
               "Test": false
             }]}
