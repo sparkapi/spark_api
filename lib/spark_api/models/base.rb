@@ -41,7 +41,7 @@ module SparkApi
         @attributes = {}
         @errors = []
         @changed = []
-        @destoyred = false
+        @destroyed = false
         load(attributes)
       end
 
