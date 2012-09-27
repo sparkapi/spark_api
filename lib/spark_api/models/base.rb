@@ -41,6 +41,7 @@ module SparkApi
         @attributes = {}
         @errors = []
         @changed = []
+        @destoyred = false
         load(attributes)
       end
 
@@ -106,6 +107,10 @@ module SparkApi
 
       def changed_attributes
         @changed.inject({}) { |h, c| h[c] = attributes[c]; h }
+      end
+
+      def destroyed?
+        self.destroyed
       end
       
       protected

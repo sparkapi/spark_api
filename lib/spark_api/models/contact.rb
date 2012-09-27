@@ -2,7 +2,10 @@ module SparkApi
   module Models
     class Contact < Base
       extend Finders
-      include Createable, Updateable, Destroyable
+
+      include Concerns::Saveable,
+              Concerns::Destroyable
+
       self.element_name="contacts"
       
       def self.by_tag(tag_name, arguments={})
