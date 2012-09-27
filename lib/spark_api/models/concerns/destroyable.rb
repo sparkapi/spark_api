@@ -18,10 +18,10 @@ module SparkApi
         end
         def destroy!(arguments = {})
           connection.delete("#{self.class.path}/#{self.Id}", arguments)
-          self.destroyed = true
+          @destroyed = true
           true
         end
-        alias :delete :destroy
+        alias :delete :destroy # backwards compatibility
 
       end
 

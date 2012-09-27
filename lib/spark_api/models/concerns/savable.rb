@@ -31,7 +31,7 @@ module SparkApi
 
         def update!(arguments= {})
           connection.put "#{self.class.path}/#{self.Id}", changed_attributes, arguments
-          self.changed = []
+          @changed = []
           true
         end
 

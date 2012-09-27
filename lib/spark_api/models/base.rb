@@ -109,9 +109,7 @@ module SparkApi
         @changed.inject({}) { |h, c| h[c] = attributes[c]; h }
       end
 
-      def destroyed?
-        self.destroyed
-      end
+      def destroyed?; @destroyed end
       
       protected
       
