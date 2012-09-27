@@ -3,7 +3,7 @@ module SparkApi
     class Contact < Base
       extend Finders
 
-      include Concerns::Saveable,
+      include Concerns::Savable,
               Concerns::Destroyable
 
       self.element_name="contacts"

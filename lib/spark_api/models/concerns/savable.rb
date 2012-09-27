@@ -2,7 +2,7 @@ module SparkApi
   module Models
     module Concerns
 
-      module Saveable
+      module Savable
 
         def save(arguments = {})
           self.errors = [] # clear the errors hash
