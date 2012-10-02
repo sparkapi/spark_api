@@ -21,18 +21,33 @@ module SparkApi
         end
 
         def create!(arguments = {})
-          resources = self.class.name.demodulize.pluralize
-          results = connection.post self.class.path, { resources => [ attributes ] }, arguments
-          result = results.first
-          attributes['ResourceUri'] = result['ResourceUri']
-          attributes['Id'] = parse_id(result['ResourceUri'])
+          results = connection.post self.class.path, {
+            self.class.name.split('::').last + "s" => [ attributes ]
+          }.merge(params_for_save), arguments
+
+          update_resource_identifiers(results.first)
+          reset_dirty
+          params_for_save.clear
           true
         end
 
-        def update!(arguments= {})
-          connection.put "#{self.class.path}/#{self.Id}", changed_attributes, arguments
-          @changed = []
+        def update!(arguments = {})
+          return true unless changed?
+          connection.put "#{self.class.path}/#{self.Id}", dirty_attributes, arguments
+          reset_dirty
+          params_for_save.clear
           true
+        end
+
+        def params_for_save
+          @params_for_save ||= {}
+        end
+
+        private 
+
+        def update_resource_identifiers(result)
+          attributes['ResourceUri'] = result['ResourceUri']
+          attributes['Id'] = parse_id(result['ResourceUri'])
         end
 
       end

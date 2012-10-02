@@ -21,7 +21,7 @@ module SparkApi
           @destroyed = true
           true
         end
-        alias :delete :destroy # backwards compatibility
+        alias_method :delete, :destroy # backwards compatibility
 
         def destroyed?; @destroyed ? @destroyed : false end
 

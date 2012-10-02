@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 class MyExampleModel < Base
-  include Destroyable
+  include Concerns::Destroyable
   self.prefix = "/test/"
   self.element_name = "example"
 end
 
-describe Destroyable, "Destroyable Concern" do
+describe Concerns::Destroyable, "Destroyable Concern" do
 
   before :each do
     stub_auth_request
@@ -23,7 +23,6 @@ describe Destroyable, "Destroyable Concern" do
     @model = MyExampleModel.first
     @model.destroy
     @model.destroyed?.should eq(true)
-    @model.persisted?.should eq(false)
   end
 
 end

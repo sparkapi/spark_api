@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 class MyExampleModel < Base
-  include Savable
+  include Concerns::Savable
   self.prefix = "/test/"
   self.element_name = "example"
 end
 
-describe Savable, "Savable Concern" do
+describe Concerns::Savable, "Model" do
 
   before :each do
     stub_auth_request
@@ -14,18 +14,18 @@ describe Savable, "Savable Concern" do
 
   it "should be creatable" do
     @model = MyExampleModel.new({ :Name => "my name" })
-    stub_api_post("/test/example", { :D => { :Name => "my name" } })
+    stub_api_post("/test/example", { :MyExampleModels => [ @model.attributes ] }, "base.json")
     @model.save.should eq(true)
-    @model.persisted.should eq(true)
+    @model.persisted?.should eq(true)
   end
 
   it "should be updatable" do
     stub_api_get("/test/example", 'base.json')
     @model = MyExampleModel.first
     @model.Name = "new name"
-    stub_api_put("/test/example/1", @model.changed_attributes)
+    stub_api_put("/test/example/1", @model.dirty_attributes)
     @model.save.should eq(true)
-    @model.persisted.should eq(true)
+    @model.persisted?.should eq(true)
   end
 
 end

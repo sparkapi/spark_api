@@ -5,9 +5,9 @@ module SparkApi
     # active model type niceties.
     class Base
       extend Paginate
+      include Dirty
 
       attr_accessor :attributes, :errors
-      attr_reader :changed
       
       # Name of the resource as related to the path name
       def self.element_name
@@ -40,7 +40,6 @@ module SparkApi
       def initialize(attributes={})
         @attributes = {}
         @errors = []
-        @changed = []
         load(attributes)
       end
 
@@ -65,17 +64,17 @@ module SparkApi
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
 
-        if method_name =~ /(=|\?)$/
+        if method_name =~ /(=|\?|_will_change!)$/
           case $1
           when "=" 
             write_attribute($`, arguments.first)
             # TODO figure out a nice way to present setters for the standard fields
           when "?" 
-            if attributes.include?($`)
-              attributes[$`] ? true : false
-            else
-              raise NoMethodError
-            end
+            raise NoMethodError unless attributes.include?($`)
+            attributes[$`] ? true : false
+          when "_will_change!"
+            raise NoMethodError unless attributes.include?($`)
+            attribute_will_change!($`)
           end 
         else
           return attributes[method_name] if attributes.include?(method_name)
@@ -93,6 +92,8 @@ module SparkApi
             true
           elsif method_name =~ /(\?)$/
             attributes.include?($`)
+          elsif method_name =~ /(\w*)_will_change!$/
+            attributes.include?($1)
           else
             attributes.include?(method_name)
           end
@@ -104,10 +105,6 @@ module SparkApi
         uri[/\/.*\/(.+)$/, 1]
       end
 
-      def changed_attributes
-        @changed.inject({}) { |h, c| h[c] = @attributes[c]; h }
-      end
-
       def persisted?;
         !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
       end
@@ -116,8 +113,8 @@ module SparkApi
       
       def write_attribute(attribute,  value)
         unless attributes[attribute] == value
+          attribute_will_change!(attribute)
           attributes[attribute] = value
-          @changed << attribute unless @changed.include?(attribute)
         end
       end
         

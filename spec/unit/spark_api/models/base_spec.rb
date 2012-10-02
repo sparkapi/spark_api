@@ -84,6 +84,10 @@ describe Base, "Base model" do
       @model.Name?.should satisfy { |p| [true, false].include?(p) }
     end
 
+    it "should return a boolean for whether or not a model is persisted through the api" do
+      @model.persisted?.should satisfy { |p| [true, false].include?(p) }
+    end
+
     it "should raise an Error for a predicate for a non-existant attribute" do
       lambda { @model.Nonsense? }.should raise_error(NoMethodError)
     end
@@ -116,11 +120,12 @@ describe Base, "Base model" do
       @model.should respond_to(:freeze)
     end
 
-    it "should return changed attributes" do
-      @model.Name = "a different name"
-      @model.changed_attributes.should eq({
-        "Name" => "a different name"
-      })
+    it "should respond_to a will_change! method for an existing attribute" do
+      @model.should respond_to(:Name_will_change!)
+    end
+
+    it "should not respond_to a will_change! method for a non-existant attribute" do
+      @model.should_not respond_to(:Nonsense_will_change!)
     end
 
   end

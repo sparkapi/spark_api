@@ -21,11 +21,9 @@ module SparkApi
       end
             
       # Notify the agent of contact creation via a Spark notification.
-      def notify?
-        self.attributes[:Notify] == true
-      end
-      def notify=(notify_me=true)
-        self.attributes[:Notify] = notify_me
+      def notify?; params_for_save[:Notify] == true end
+      def notify=(notify_me)
+        params_for_save[:Notify] = notify_me
       end
       
     end
