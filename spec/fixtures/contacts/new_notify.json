@@ -1,11 +1,11 @@
 {
 	"D": {
-		"Notify": true,
 		"Contacts": [
 			{
 				"DisplayName": "Contact Four",
 				"PrimaryEmail": "contact4@fbsdata.com"
 			}
-		]
+		],
+		"Notify": true
 	}
 }
