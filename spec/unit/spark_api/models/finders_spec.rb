@@ -12,11 +12,6 @@ describe Finders, "Finders model" do
     stub_api_get("/my_resource", 'finders.json')
   end
 
-  it "should get all results" do
-    resources = MyResource.all
-    resources.size.should eq(2)
-  end
-
   it "should get first result" do
     resource = MyResource.first
     resource.Id.should eq(1)
