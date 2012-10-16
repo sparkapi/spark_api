@@ -1,6 +1,5 @@
 require './spec/spec_helper'
 
-
 describe Contact do
   before(:each) do
     stub_auth_request
@@ -23,20 +22,21 @@ describe Contact do
     on_post_it "should save a new contact" do
       stub_api_post("/contacts", 'contacts/new.json', 'contacts/post.json')
       c=Contact.new
-      c.attributes["DisplayName"] = "Contact Four"
-      c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
+      c.DisplayName = "Contact Four"
+      c.PrimaryEmail = "contact4@fbsdata.com"
       c.save.should be(true)
       c.Id.should eq('20101230223226074204000000')
     end
 
     on_post_it "should save a new contact and notify" do
       stub_api_post("/contacts", 'contacts/new_notify.json', 'contacts/post.json')
-      c=Contact.new
-      c.notify=true
+      c = Contact.new
+      c.notify = true
       c.attributes["DisplayName"] = "Contact Four"
       c.attributes["PrimaryEmail"] = "contact4@fbsdata.com"
       c.save.should be(true)
       c.Id.should eq('20101230223226074204000000')
+      c.ResourceUri.should eq('/v1/contacts/20101230223226074204000000')
     end
 
     on_post_it "should fail saving" do
