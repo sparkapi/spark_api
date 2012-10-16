@@ -36,8 +36,8 @@ Usage Examples
       config.api_key      = "YOUR_CLIENT_ID"
       config.api_secret   = "YOUR_CLIENT_SECRET"
       config.callback     = "YOUR_REDIRECT_URI"
-      config.auth_endpoint = "https://developers.sparkplatform.com/openid"
-      config.endpoint   = 'https://developers.sparkapi.com'
+      config.auth_endpoint = "https://sparkplatform.com/openid"
+      config.endpoint   = 'https://sparkapi.com'
     end
 
     # Code is retrieved from the method: SparkApi.client.authenticator.authorization_url
@@ -79,8 +79,8 @@ Usage Examples
       config.api_key      = "YOUR_CLIENT_ID"
       config.api_secret   = "YOUR_CLIENT_SECRET"
       config.callback     = "YOUR_REDIRECT_URI"
-      config.auth_endpoint = "https://developers.sparkplatform.com/oauth2"
-      config.endpoint   = 'https://developers.sparkapi.com'
+      config.auth_endpoint = "https://sparkplatform.com/oauth2"
+      config.endpoint   = 'https://sparkapi.com'
     end
 
     # Code is retrieved from the method. SparkApi.client.authenticator.authorization_url
@@ -119,7 +119,7 @@ Usage Examples
       config.api_key      = "YOUR_CLIENT_ID"
       config.api_secret   = "YOUR_CLIENT_SECRET"
       config.callback     = "YOUR_REDIRECT_URI"
-      config.auth_endpoint = "https://developers.sparkplatform.com/openid"
+      config.auth_endpoint = "https://sparkplatform.com/openid"
     end
 
     # Code is retrieved from the method: 
@@ -140,7 +140,7 @@ Usage Examples
     #  - ssl:         false
     #  - user_agent: 'Spark API Ruby Gem'
     SparkApi.configure do |config|
-        config.endpoint   = 'https://developers.sparkapi.com'
+        config.endpoint   = 'https://sparkapi.com'
         config.api_key    = 'my_api_key'
         config.api_secret = 'my_api_secret'
     end
@@ -156,7 +156,7 @@ Usage Examples
 Included in the gem is a simple setup script to run the client in IRB.  To use it, first create the file called _.spark_api_testing_ filling in the credentials for your account.
 
     API_USER="12345678901234567890123456" # 26-digit identifier of an API user
-    API_ENDPOINT="https://developers.sparkapi.com"
+    API_ENDPOINT="https://sparkapi.com"
     API_KEY="my_api_key"
     API_SECRET="my_api_secret"
 
