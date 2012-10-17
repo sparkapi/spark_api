@@ -43,6 +43,7 @@ module SparkApi
         escaped_path = URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
+        options.merge!(:ApiUser => "#{@client.api_user}") unless @client.api_user.nil?
         parameter_string = options.size > 0 ? "?#{build_url_parameters(options)}" : ""
         request_path = "#{escaped_path}#{parameter_string}"
         SparkApi.logger.debug("Request: #{request_path}")
