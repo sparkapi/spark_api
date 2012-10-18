@@ -11,7 +11,9 @@ module SparkApi
       # Requirements for authorization_code grant type
       :redirect_uri,  
       # Requirements for password grant type
-      :username, :password
+      :username, :password,
+      # Requirements for single session keys
+      :access_token
     ]
       
     require File.expand_path('../configuration/yaml', __FILE__)
