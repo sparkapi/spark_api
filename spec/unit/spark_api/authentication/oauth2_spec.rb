@@ -2,6 +2,7 @@ require './spec/spec_helper'
 require './spec/oauth2_helper'
 
 describe SparkApi::Authentication::OAuth2  do
+  before(:all) { SparkApi.reset } # dump api user stuff from other tests
   let(:provider) { TestOAuth2Provider.new() }
   let(:client) { SparkApi::Client.new({:authentication_mode => SparkApi::Authentication::OAuth2,:oauth2_provider => provider}) }
   subject {client.authenticator }  
@@ -67,7 +68,6 @@ describe SparkApi::Authentication::OAuth2  do
   describe "request" do
     let(:session) { mock_oauth_session }
     it "should handle a get request" do
-      SparkApi.reset
       subject.session = session
       args = {
         :_limit => '10',
@@ -81,7 +81,6 @@ describe SparkApi::Authentication::OAuth2  do
       subject.request(:get, "/#{SparkApi.version}/listings", nil, args).status.should eq(200)
     end
     it "should handle a post request" do
-      SparkApi.reset
       subject.session = session
       args = {}
       contact = '{"D":{"Contacts":[{"DisplayName":"Contact Four","PrimaryEmail":"contact4@fbsdata.com"}]}}'
@@ -102,7 +101,6 @@ describe SparkApi::Authentication::OAuth2  do
   context "with an expired session" do
     context "and a valid refresh token" do
       it "should reset the session and reauthenticate" do
-        SparkApi.reset
         count = 0
         refresh_count = 0
         stub_request(:post, provider.access_uri).
@@ -132,7 +130,6 @@ describe SparkApi::Authentication::OAuth2  do
     end
     context "and an invalid refresh token" do
       it "should reset the session and reauthenticate" do
-        SparkApi.reset
         count = 0
         stub_request(:post, provider.access_uri).
           with(:body =>

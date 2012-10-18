@@ -1,10 +1,6 @@
 require './spec/spec_helper'
 
 describe SparkApi::Client, "Client config"  do
-  after(:all) do
-    reset_config
-  end
-
   describe "default settings" do
     it "should return the proper defaults when called with no arguments" do
       SparkApi.api_key.should be_nil
@@ -144,19 +140,20 @@ describe SparkApi::Client, "Client config"  do
     end
     
     it "should have correct headers based on configuration" do
+      reset_config
       stub_auth_request
       stub_request(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers").
           with(:query => {
-            :ApiSig => "6f0cfef263e0bfe7a9ae1f60063a8ad9",
+            :ApiUser => "foobar",
+            :ApiSig => "717a066c4f4302c5ca9507e484db4812",
             :AuthToken => "c401736bf3d3f754f07c04e460e09573"
           }).
           to_return(:body => '{"D":{"Success": true,"Results": []}}')
-      SparkApi.reset
       SparkApi.configure do |config|
         config.user_agent = "my useragent"
       end
       SparkApi.client.get '/headers'
-      WebMock.should have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiSig=6f0cfef263e0bfe7a9ae1f60063a8ad9&AuthToken=c401736bf3d3f754f07c04e460e09573").
+      WebMock.should have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiUser=foobar&ApiSig=717a066c4f4302c5ca9507e484db4812&AuthToken=c401736bf3d3f754f07c04e460e09573").
         with(:headers => {
           'User-Agent' => SparkApi::Configuration::DEFAULT_USER_AGENT,
           SparkApi::Configuration::X_SPARK_API_USER_AGENT => "my useragent",

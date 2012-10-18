@@ -1,9 +1,6 @@
 require './spec/spec_helper'
 
 describe SparkApi do
-  after(:each) do
-    reset_config
-  end
 
   it "should use 'yajl-ruby' for parsing json" do
     MultiJson.engine.should eq(MultiJson::Adapters::Yajl)
