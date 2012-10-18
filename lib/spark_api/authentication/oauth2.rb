@@ -143,6 +143,7 @@ module SparkApi
       end
       #  Is the user session token expired?
       def expired?
+        return false if @expires_in.nil?
         @start_time + Rational(@expires_in - @refresh_timeout, 86400) < DateTime.now
       end
       
