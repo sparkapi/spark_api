@@ -66,7 +66,7 @@ describe SparkApi::Configuration::YamlConfig, "Yaml Config"  do
     
     it "should list available keys" do
       SparkApi::Configuration::YamlConfig.stub(:config_path) { "spec/config/spark_api" }
-      subject.class.config_keys.should =~ ["test_key", "test_oauth"]
+      subject.class.config_keys.should =~ ["test_key", "test_oauth", "test_single_session_oauth"]
     end
   end
 end
