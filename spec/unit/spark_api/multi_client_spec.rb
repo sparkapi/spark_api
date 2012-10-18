@@ -45,10 +45,22 @@ describe SparkApi::MultiClient do
   end
 
   context "yaml" do
-    it "should activate a client implemenation when activate()" do
+    before :each do
       SparkApi::Configuration::YamlConfig.stub(:config_path) { "spec/config/spark_api" }
+    end
+
+    it "should activate a client implemenation when activate()" do
+      SparkApi.reset
       SparkApi.activate(:test_key)
       SparkApi.client.api_key.should eq('demo_key')
+    end
+
+    it "should activate a single session key" do
+      SparkApi.reset
+      SparkApi::Configuration::YamlConfig.stub(:config_path) { "spec/config/spark_api" }
+      SparkApi.activate(:test_single_session_oauth)
+      SparkApi.client.session.should respond_to(:access_token)
+      SparkApi.client.session.access_token.should eq("yay success!")
     end
   end
 
