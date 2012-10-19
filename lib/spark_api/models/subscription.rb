@@ -16,7 +16,7 @@ module SparkApi
         results
       end
 
-      # subscribe/unsubscript contact (private role)
+      # subscribe/unsubscribe contact (private role)
       [:subscribe, :unsubscribe].each do |action|
         method = (action == :subscribe ? :put : :delete)
         define_method(action) do |contact|
@@ -30,13 +30,19 @@ module SparkApi
             SparkApi.logger.error("Failed to #{action} contact #{contact}: #{e.message}")
             return false
           end
-          recipients = @attributes['RecipientIds'] || []
-          if method == :subscribe
-            recipients << contact_id
-          else
-            recipients.delete contact_id
-          end
+          update_recipients(action, contact_id)
           true
+        end
+      end
+
+      private
+
+      def update_recipients(method, id)
+        recipients = @attributes['RecipientIds'] || []
+        if method == :subscribe
+          recipients << contact_id
+        else
+          recipients.delete contact_id
         end
       end
 
