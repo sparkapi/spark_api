@@ -5,12 +5,14 @@
 			{
                 "Id":"20101230223226074204000000",
 				"ResourceUri":"/v1/contacts/20101230223226074204000000",
-                "Name":"First subscription"
+                "Name":"First subscription",
+                "RecipientIds": ["20101230223226074307000000"]
 			},
 			{
                 "Id":"20101230223226074205000000",
 				"ResourceUri":"/v1/contacts/20101230223226074205000000",
-                "Name":"Second subscription"
+                "Name":"Second subscription",
+                "RecipientIds": []
 			}
 		]
 	}
