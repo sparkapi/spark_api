@@ -31,7 +31,6 @@ end
 
 
 describe SparkApi::PaginateResponse do
-
   describe "paginate_response" do
     subject { PaginateResponseTester.new } 
     it "should give me the first page" do

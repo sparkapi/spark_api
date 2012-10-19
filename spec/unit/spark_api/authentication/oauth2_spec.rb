@@ -2,6 +2,7 @@ require './spec/spec_helper'
 require './spec/oauth2_helper'
 
 describe SparkApi::Authentication::OAuth2  do
+  before(:all) { SparkApi.reset } # dump api user stuff from other tests
   let(:provider) { TestOAuth2Provider.new() }
   let(:client) { SparkApi::Client.new({:authentication_mode => SparkApi::Authentication::OAuth2,:oauth2_provider => provider}) }
   subject {client.authenticator }  
@@ -281,5 +282,10 @@ describe SparkApi::Authentication::OAuthSession do
     session = SparkApi::Authentication::OAuthSession.new(args)
     session.start_time.should eq(DateTime.parse(args[:start_time]))
     JSON.parse(session.to_json).should eq(JSON.parse(args.to_json))
+  end
+
+  it "should not expire if expires_in is nil" do
+    session = SparkApi::Authentication::OAuthSession.new
+    session.expired?.should eq(false)
   end
 end
