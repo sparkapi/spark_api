@@ -1,7 +1,11 @@
 module SparkApi
   module Models
+
     class SavedSearch < Base 
       extend Finders
+      include Concerns::Savable,
+              Concerns::Destroyable
+
       self.element_name="savedsearches"
 
       def self.provided()
@@ -11,6 +15,12 @@ module SparkApi
           SparkApi.logger.info("#{self.name}.path: #{provided.path}")
         end
       end
+
+      private
+
+      def resource_pluralized; "SavedSearches" end
+
     end
+
   end
 end

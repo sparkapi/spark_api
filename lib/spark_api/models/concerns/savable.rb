@@ -22,7 +22,7 @@ module SparkApi
 
         def create!(arguments = {})
           results = connection.post self.class.path, {
-            self.class.name.split('::').last + "s" => [ attributes ]
+            resource_pluralized => [ attributes ]
           }.merge(params_for_save), arguments
 
           update_resource_identifiers(results.first)
@@ -47,7 +47,16 @@ module SparkApi
 
         def update_resource_identifiers(result)
           attributes['ResourceUri'] = result['ResourceUri']
-          attributes['Id'] = parse_id(result['ResourceUri'])
+          attributes['Id'] = result['Id'] ? result['Id'] : parse_id(result['ResourceUri'])
+        end
+
+        # can be overridden
+        def resource_pluralized
+          resource = self.class.name.split('::').last
+          unless resource.split('').last == "s"
+            resource = resource + "s"
+          end
+          resource
         end
 
       end
