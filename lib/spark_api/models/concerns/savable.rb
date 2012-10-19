@@ -52,7 +52,11 @@ module SparkApi
 
         # can be overridden
         def resource_pluralized
-          self.class.name.split('::').last + "s"
+          resource = self.class.name.split('::').last
+          unless resource.split('').last == "s"
+            resource = resource + "s"
+          end
+          resource
         end
 
       end

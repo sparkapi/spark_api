@@ -16,6 +16,12 @@ class MyOtherExampleModel < Base
   end
 end
 
+class MyPluralizedModels < Base
+  include Concerns::Savable
+  self.prefix = "/test/"
+  self.element_name = "example"
+end
+
 describe Concerns::Savable, "Model" do
 
   before :each do
@@ -41,6 +47,13 @@ describe Concerns::Savable, "Model" do
   it "should allow the pluralize method to be overriden" do
     @model = MyOtherExampleModel.new({ :Name => "my name" })
     stub_api_post("/test/example", { :MyOtherExampleModelThatIsPluralized => [ @model.attributes ] }, "base.json")
+    @model.save.should eq(true)
+    @model.persisted?.should eq(true)
+  end
+
+  it "should not pluralize the resource if it already is" do
+    @model = MyPluralizedModels.new({ :Name => "my name" })
+    stub_api_post("/test/example", { :MyPluralizedModels => [ @model.attributes ] }, "base.json")
     @model.save.should eq(true)
     @model.persisted?.should eq(true)
   end
