@@ -2,7 +2,6 @@ module SparkApi
   module Models
     class Contact < Base
       extend Finders
-
       include Concerns::Savable,
               Concerns::Destroyable
 

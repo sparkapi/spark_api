@@ -1,0 +1,12 @@
+{
+    "D": {
+        "Success": true,
+		"Results": [
+			{
+              "ResourceUri": "/v1/savedsearches/20100815220615294367000000",
+              "Id":  "20100815220615294367000000",
+              "Name": "A new search name here" 
+			}
+        ]
+    }
+}
