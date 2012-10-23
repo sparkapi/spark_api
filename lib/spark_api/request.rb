@@ -64,13 +64,13 @@ module SparkApi
       begin
         request_opts = {}
         request_opts.merge!(options)
-        post_data = body.nil? ? nil : {"D" => body }.to_json
         request_path = "/#{version}#{path}"
         start_time = Time.now
         SparkApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
-        if post_data.nil?
+        if [:get, :delete, :head].include?(method.to_sym)
           response = authenticator.request(method, request_path, nil, request_opts)
         else
+          post_data = process_request_body(body)
           SparkApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
           response = authenticator.request(method, request_path, post_data, request_opts)
         end
@@ -89,6 +89,14 @@ module SparkApi
         raise
       end
       response.body
+    end
+    
+    def process_request_body(body)
+      if body.is_a?(Hash) && !body.empty?
+        {"D" => body }.to_json
+      else
+        body
+      end
     end
     
   end

@@ -32,8 +32,8 @@ def stub_api_delete(service_path, stub_fixture="success.json", opts={})
   log_stub(s)
 end
 def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
-  if body.is_a? Hash
-    body = { :D => body }
+  if body.is_a?(Hash)
+    body = { :D => body } unless body.empty? 
   else
     body = MultiJson.load(fixture(body).read)
   end
