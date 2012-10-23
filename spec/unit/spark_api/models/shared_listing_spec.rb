@@ -20,7 +20,7 @@ describe SharedListing do
     end
 
     on_post_it "should fail creating" do
-      stub_api_post("/#{subject.class.element_name}",'empty.json') do |request|
+      stub_api_post("/#{subject.class.element_name}",{}) do |request|
         request.to_return(:status => 400, :body => fixture('errors/failure.json'))
       end
       subject
