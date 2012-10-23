@@ -90,6 +90,11 @@ describe SparkApi do
         stub.delete('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
           "Success": true}}'] 
         }
+        # Other MISC requests
+        stub.post('/v1/stringdata?ApiSig=SignedToken&AuthToken=1234', 'I am a lonely String!') { [200, {}, '{"D": {
+          "Success": true,
+          "Results": []}}'] 
+        }
         # EXPIRED RESPONSES
         stub.get('/v1/system?ApiSig=SignedToken&AuthToken=EXPIRED') { [401 , {}, '{"D": {
           "Success": false,
@@ -180,6 +185,11 @@ describe SparkApi do
         subject.get('/test path with spaces').length.should == 0
         # now try this with an already escaped path.  Kaboom!
         expect { subject.get('/test%20path%20with%20spaces') }.to raise_error()
+      end
+      
+      it "post data should support non json data" do
+        # Other MISC requests
+        subject.post('/stringdata', 'I am a lonely String!').success?.should == true
       end
 
       it "should give me BigDecimal results for large floating point numbers" do
