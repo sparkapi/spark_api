@@ -18,45 +18,52 @@ describe Subscription do
 
     on_get_it "should get sum subscriptions" do
       stub_api_get("/subscriptions", "subscriptions/get.json")
-      subject.get
+      subject.class.get
     end
 
     on_post_it "should create a new subscription" do
-      stub_api_post("/subscriptions", @subscription.attributes.as_json, 'subscriptions/post.json')
-      subject.save.should be(true)
-      subject.persisted?.should eq(true)
+      @subscription = Subscription.new({
+        :Name => "A new subscription name",
+        :SearchId => "20101230223226074204000000",
+        :RecipientIds => [ "20101230223226074204000000" ],
+        :Subject => "my subject",
+        :Message => "my message"
+      })
+      stub_api_post("/subscriptions", 'subscriptions/new.json', 'subscriptions/post.json')
+      @subscription.save.should be(true)
+      @subscription.persisted?.should eq(true)
     end
 
     it "should subscribe a contact by id" do
-      stub_api_get("/subscriptions", "subscriptions/get.json")
-      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", {}, 'subscriptions/subscribe_unsubscribe.json')
-      resource = subject.find(id)
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", {}, 'subscriptions/subscribe.json')
+      resource = subject.class.find(id)
       resource.subscribe("20101230223226074306000000")
-      resource.RecipientIds.size.should eq(1)
-      resource.RecipientIds.find { |c| c == "20101230223226074306000000" }.should eq(true)
+      resource.RecipientIds.size.should eq(2)
+      resource.RecipientIds.any? { |c| c == "20101230223226074306000000" }.should eq(true)
     end
 
     it "should unsubscribe a contact by id" do
-      stub_api_get("/subscriptions", "subscriptions/get.json")
-      stub_api_post("/subscriptions/#{id}/subscribers/20101230223226074307000000", {}, 'subscriptions/subscribe_unsubscribe.json')
-      resource = subject.find(id)
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_delete("/subscriptions/#{id}/subscribers/20101230223226074307000000", 'generic_delete.json')
+      resource = subject.class.find(id)
       resource.unsubscribe("20101230223226074307000000")
       resource.RecipientIds.size.should eq(0)
     end
 
     it "should subscribe a contact by Contact object" do
-      stub_api_get("/subscriptions", "subscriptions/get.json")
-      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", {}, 'subscriptions/subscribe_unsubscribe.json')
-      resource = subject.find(id)
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", {}, 'subscriptions/subscribe.json')
+      resource = subject.class.find(id)
       resource.subscribe(Contact.new({ :Id => "20101230223226074306000000" }))
-      resource.RecipientIds.size.should eq(1)
-      resource.RecipientIds.find { |c| c == "20101230223226074306000000" }.should eq(true)
+      resource.RecipientIds.size.should eq(2)
+      resource.RecipientIds.any? { |c| c == "20101230223226074306000000" }.should eq(true)
     end
 
     it "should unsubscribe a contact by Contact object" do
-      stub_api_get("/subscriptions", "subscriptions/get.json")
-      stub_api_post("/subscriptions/#{id}/subscribers/20101230223226074307000000", {}, 'subscriptions/subscribe_unsubscribe.json')
-      resource = subject.find(id)
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_delete("/subscriptions/#{id}/subscribers/20101230223226074307000000", 'generic_delete.json')
+      resource = subject.class.find(id)
       resource.unsubscribe(Contact.new({ :Id => "20101230223226074307000000" }))
       resource.RecipientIds.size.should eq(0)
     end
@@ -73,15 +80,15 @@ describe Subscription do
     on_put_it "should update a subscription" do
       stub_api_get("/subscriptions/#{id}", 'subscriptions/get.json')
       stub_api_put("/subscriptions/#{id}", 'subscriptions/update.json', 'subscriptions/post.json')
-      resource = subject.class.get
+      resource = subject.class.find(id)
       resource.Name = "A new subscription name"
-      subject.save.should be(true)
+      resource.save.should be(true)
     end
 
     on_delete_it "should delete a subscription" do
       stub_api_get("/subscriptions/#{id}", 'subscriptions/get.json')
       stub_api_delete("/subscriptions/#{id}", 'generic_delete.json')
-      resource = subject.class.get
+      resource = subject.class.find(id)
       resource.delete
     end
 

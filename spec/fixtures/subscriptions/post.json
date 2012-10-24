@@ -3,7 +3,7 @@
 		"Success": true, 
 		"Results": [
 			{
-				"ResourceUri":"/v1/contacts/20101230223226074204000000"
+				"ResourceUri":"/v1/subscriptions/20101230223226074204000000"
 			}
 		]
 	}

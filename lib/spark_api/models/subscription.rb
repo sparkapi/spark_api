@@ -37,7 +37,7 @@ module SparkApi
 
       private
 
-      def update_recipients(method, id)
+      def update_recipients(method, contact_id)
         recipients = @attributes['RecipientIds'] || []
         if method == :subscribe
           recipients << contact_id
