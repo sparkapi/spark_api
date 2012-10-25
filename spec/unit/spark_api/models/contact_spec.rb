@@ -105,4 +105,33 @@ describe Contact do
     end
   end
 
+  context "/contact/export", :support do
+    it "should respond to export" do
+      Contact.should respond_to(:export)
+    end
+
+    on_get_it "should get all contacts belonging to the current user" do
+      stub_api_get("/contacts/export", 'contacts/contacts.json')
+      contacts = Contact.export
+      contacts.should be_an(Array)
+      contacts.length.should eq(3)
+    end
+
+  end
+
+  context "/contact/export/all", :support do
+    it "should respond to export_all" do
+      Contact.should respond_to(:export_all)
+    end
+
+    on_get_it "should get all contacts belonging to the current user" do
+      stub_api_get("/contacts/export", 'contacts/contacts.json')
+      contacts = Contact.export
+      contacts.should be_an(Array)
+      contacts.length.should eq(3)
+    end
+
+  end
+
+
 end
