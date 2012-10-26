@@ -36,7 +36,7 @@ describe Subscription do
 
     it "should subscribe a contact by id" do
       stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
-      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", {}, 'subscriptions/subscribe.json')
+      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", nil, 'subscriptions/subscribe.json')
       resource = subject.class.find(id)
       resource.subscribe("20101230223226074306000000")
       resource.RecipientIds.size.should eq(2)
@@ -53,7 +53,7 @@ describe Subscription do
 
     it "should subscribe a contact by Contact object" do
       stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
-      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", {}, 'subscriptions/subscribe.json')
+      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", nil, 'subscriptions/subscribe.json')
       resource = subject.class.find(id)
       resource.subscribe(Contact.new({ :Id => "20101230223226074306000000" }))
       resource.RecipientIds.size.should eq(2)
