@@ -68,6 +68,15 @@ describe Subscription do
       resource.RecipientIds.size.should eq(0)
     end
 
+    it "should initialize RecipientIds as an array if nil" do
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", nil, 'subscriptions/subscribe.json')
+      resource = subject.class.find(id)
+      resource.RecipientIds = nil
+      resource.subscribe(Contact.new({ :Id => "20101230223226074306000000" }))
+      resource.RecipientIds.size.should eq(1)
+    end
+
   end
 
   context "/subscriptions/:id", :support do

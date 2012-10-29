@@ -38,11 +38,11 @@ module SparkApi
       private
 
       def update_recipients(method, contact_id)
-        recipients = @attributes['RecipientIds'] || []
+        @attributes['RecipientIds'] = [] if @attributes['RecipientIds'].nil?
         if method == :subscribe
-          recipients << contact_id
+          @attributes['RecipientIds'] << contact_id
         else
-          recipients.delete contact_id
+          @attributes['RecipientIds'].delete contact_id
         end
       end
 
