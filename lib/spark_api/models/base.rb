@@ -106,7 +106,7 @@ module SparkApi
       end
 
       def persisted?;
-        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
+        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil? && !destroyed?
       end
       
       protected
