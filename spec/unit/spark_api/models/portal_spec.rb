@@ -32,16 +32,18 @@ describe Portal do
 
     it "should enable the current user's portal" do
       stub_api_get("/portal", "portal/my.json")
-      stub_api_put("/portal", "portal/enable.json", "portal/post.json")
+      s = stub_api_put("/portal/20100912153422758914000000", "portal/enable.json", "portal/post.json")
       portal = Portal.my
       portal.enable
+      s.should have_been_requested
     end
 
     it "should disable the current user's portal" do
       stub_api_get("/portal", "portal/my.json")
-      stub_api_put("/portal", "portal/disable.json", "portal/post.json")
+      s = stub_api_put("/portal/20100912153422758914000000", "portal/disable.json", "portal/post.json")
       portal = Portal.my
-      portal.enable
+      portal.disable
+      s.should have_been_requested
     end
 
   end

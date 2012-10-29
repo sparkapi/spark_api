@@ -3,6 +3,7 @@ RSpec.configure do |config|
 end
 
 $test_client = SparkApi::Client.new({:api_key=>"", :api_secret=>""})
+
 def stub_api_get(service_path, stub_fixture="success.json", opts={})
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params)
@@ -62,9 +63,9 @@ def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
   body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
-  s=stub_request(:put, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
-      with(:query => {
-        :ApiSig => sig        
+  full_path = "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}"
+  s=stub_request(:put, full_path).with(:query => {
+        :ApiSig => sig
         }.merge(params),
         :body => body
       )
@@ -78,6 +79,7 @@ end
 
 def log_stub(s)
   SparkApi.logger.debug("Stubbed Request: #{s.inspect} \n\n")
+  return s
 end
 
 def mock_session()

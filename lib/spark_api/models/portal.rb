@@ -18,11 +18,13 @@ module SparkApi
       end
 
       def enable
+        attribute_will_change! "Enabled"
         @attributes['Enabled'] = true
         save
       end
 
       def disable
+        attribute_will_change! "Enabled"
         @attributes['Enabled'] = false
         save
       end
