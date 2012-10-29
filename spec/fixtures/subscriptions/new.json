@@ -1,0 +1,13 @@
+{
+	"D": {
+        "Subscriptions": [
+            {
+                "Name":"A new subscription name",
+                "SearchId":"20101230223226074204000000",
+                "RecipientIds": ["20101230223226074204000000"],
+                "Subject": "my subject",
+                "Message": "my message"
+            }
+        ]
+	}
+}

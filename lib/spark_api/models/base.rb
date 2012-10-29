@@ -8,7 +8,7 @@ module SparkApi
       include Dirty
 
       attr_accessor :attributes, :errors
-      
+
       # Name of the resource as related to the path name
       def self.element_name
         # TODO I'd love to pull in active model at this point to provide default naming
@@ -18,7 +18,7 @@ module SparkApi
       def self.element_name=(name)
         @element_name = name
       end
-      
+
       # Resource path prefix, prepended to the url
       def self.prefix
         @prefix ||= "/"
@@ -29,7 +29,7 @@ module SparkApi
       def self.path
         "#{prefix}#{element_name}"
       end
-      
+
       def self.connection
         SparkApi.client
       end
@@ -48,7 +48,7 @@ module SparkApi
           @attributes[key.to_s] = val
         end
       end
-      
+
       def self.get(options={})
         collect(connection.get(path, options))
       end
@@ -60,7 +60,7 @@ module SparkApi
       def self.count(options={})
         connection.get(path, options.merge({:_pagination=>"count"}))
       end
-      
+
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
 
@@ -81,7 +81,7 @@ module SparkApi
           super # GTFO
         end
       end
-      
+
       def respond_to?(method_symbol, include_private=false)
         if super
           return true
@@ -100,24 +100,24 @@ module SparkApi
 
         end
       end
-      
+
       def parse_id(uri)
         uri[/\/.*\/(.+)$/, 1]
       end
 
-      def persisted?;
-        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
+      def persisted?
+        !(@attributes['Id'].nil? && @attributes['ResourceUri'].nil?)
       end
-      
+
       protected
-      
+
       def write_attribute(attribute,  value)
         unless attributes[attribute] == value
           attribute_will_change!(attribute)
           attributes[attribute] = value
         end
       end
-        
+
     end
   end
 end
