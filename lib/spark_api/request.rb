@@ -24,7 +24,7 @@ module SparkApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   SparkApi::ClientError or subclass if the request failed.
-    def post(path, body={}, options={})
+    def post(path, body = nil, options={})
       request(:post, path, body, options)
     end
 
@@ -37,7 +37,7 @@ module SparkApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   SparkApi::ClientError or subclass if the request failed.
-    def put(path, body={}, options={})
+    def put(path, body = nil, options={})
       request(:put, path, body, options)
     end
 

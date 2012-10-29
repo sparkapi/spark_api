@@ -34,10 +34,10 @@ end
 def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
   if body.is_a?(Hash)
     body = { :D => body } unless body.empty? 
-  else
+  elsif !body.nil?
     body = MultiJson.load(fixture(body).read)
   end
-  body_str = MultiJson.dump(body)
+  body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
   s=stub_request(:post, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
@@ -56,10 +56,10 @@ end
 def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
   if body.is_a? Hash
     body = { :D => body }
-  else
+  elsif !body.nil?
     body = MultiJson.load(fixture(body).read)
   end
-  body_str = MultiJson.dump(body)
+  body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
   s=stub_request(:put, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
