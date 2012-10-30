@@ -18,6 +18,10 @@ module SparkApi
       def self.my(arguments={})
         new(connection.get('/my/contact', arguments).first)
       end
+
+      def subscriptions
+        @subscriptions ||= Subscription.get(:_filter => "RecipientId Eq '#{self.attributes['Id']}'")
+      end
             
       # Notify the agent of contact creation via a Spark notification.
       def notify?; params_for_save[:Notify] == true end
