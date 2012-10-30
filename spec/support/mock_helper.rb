@@ -129,6 +129,6 @@ def stub_auth_request()
 end
 
 def fixture(file)
-  File.new(File.expand_path("../fixtures", __FILE__) + '/' + file)
+  File.new(File.expand_path("../../fixtures", __FILE__) + '/' + file)
 end
 
