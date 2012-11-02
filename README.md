@@ -1,5 +1,7 @@
 Spark API
 =====================
+[![Build Status](https://secure.travis-ci.org/ifightcrime/spark_api.png)](http://travis-ci.org/ifightcrime/spark_api)
+
 A Ruby wrapper for the Spark REST API. Loosely based on ActiveResource to provide models to interact with remote services.
 
 
