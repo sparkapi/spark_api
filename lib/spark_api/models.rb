@@ -1,3 +1,4 @@
+require 'spark_api/models/associations'
 require 'spark_api/models/dirty'
 require 'spark_api/models/base'
 require 'spark_api/models/constraint'
