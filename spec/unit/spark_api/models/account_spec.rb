@@ -73,6 +73,11 @@ describe Account do
             "Uri"=>"http://photos.flexmls.com/az/...."
           },
           {
+            "Type"=>"Photo",
+            "Name"=>nil,
+            "Uri"=>"http://photos.flexmls.com/az/...."
+          },
+          {
             "Type"=>"Logo",
             "Name"=>"1 My Logo",
             "Uri"=>"http://photos.flexmls.com/az/...."
