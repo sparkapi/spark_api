@@ -101,7 +101,7 @@ module SparkApi
           elsif method_name =~ /(\?)$/
             attributes.include?($`)
           elsif method_name =~ /(\w*)_will_change!$/
-            attributes.include?($1)
+            attributes.include?($1) || includes_association?($1)
           else
             attributes.include?(method_name)
           end
