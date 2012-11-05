@@ -8,8 +8,8 @@ module SparkApi
       self.element_name="contacts"
 
       def initialize(attributes={})
-        has_many :saved_searches, :subresource_class => SavedSearch
-        has_many :listing_carts, :subresource_class => ListingCart
+        has_many :saved_searches, :class => SavedSearch
+        has_many :listing_carts, :class => ListingCart
 
         super(attributes)
       end

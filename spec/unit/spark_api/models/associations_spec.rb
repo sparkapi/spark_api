@@ -7,8 +7,8 @@ class ToolBox < Base
   self.element_name="toolboxes"
 
   def initialize(attributes={})
-    has_many :hammers, :subresource_class => Hammer
-    has_many :nails, :subresource_class => Nail
+    has_many :hammers, :class => Hammer
+    has_many :nails, :class => Nail
 
     super(attributes)
   end
@@ -99,6 +99,37 @@ describe ToolBox do
 
     it "makes a copy of an associated resource if that resource was already persisted under a different URI" do
       pending
+    end
+
+    it "should allow standard api parameters to be passed" do
+      opts = {
+        :_pagination => 1,
+        :_filter => "A filter"
+      }
+      s = stub_api_get("/toolboxes/1/hammers", "base.json", opts)
+      s = stub_api_get("/toolboxes/1/hammers/2", "base.json", opts)
+
+      toolbox = ToolBox.new({ :Id => 1, :ResourceUri => "oh geeze" })
+      hammers = toolbox.hammers(opts)
+      hammers.should be_a(Array)
+      hammers.should respond_to(:find)
+      hammers.first.should be_a(Hammer)
+
+      hammer = toolbox.hammers.find("2", opts)
+      hammer.should be_a(Hammer)
+
+      s.should have_been_requested
+      s.should have_been_requested
+    end
+
+    it "should define find method on an associated array" do
+      s = stub_api_get("/toolboxes/1/hammers/2", "base.json")
+
+      toolbox = ToolBox.new(:Id => 1)
+      hammer = toolbox.hammers.find("2")
+      hammer.should be_a(Hammer)
+
+      s.should have_been_requested
     end
 
   end

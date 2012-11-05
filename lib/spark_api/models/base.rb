@@ -90,7 +90,7 @@ module SparkApi
         end
       end
 
-      def respond_to?(method_symbol, include_private=false)
+      def respond_to?(method_symbol)
         if super
           return true
         else
