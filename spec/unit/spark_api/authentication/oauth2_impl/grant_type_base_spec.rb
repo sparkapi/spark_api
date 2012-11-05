@@ -1,5 +1,4 @@
-require './spec/spec_helper'
-require './spec/oauth2_helper'
+require 'spec_helper'
 
 describe SparkApi::Authentication::OAuth2Impl::GrantTypeBase do
   subject { SparkApi::Authentication::OAuth2Impl::GrantTypeBase }
