@@ -4,6 +4,12 @@ development:
   endpoint:        'http://api.dev.fbsdata.com'
   access_token:    'yay success!'
 
+test:
+  oauth2:          true
+  oauth2_provider: 'SparkApi::Authentication::SingleSessionProvider'
+  endpoint:        'http://api.dev.fbsdata.com'
+  access_token:    'yay success!'
+
 production:
   oauth2:          true
   oauth2_provider: 'SparkApi::Authentication::SingleSessionProvider'

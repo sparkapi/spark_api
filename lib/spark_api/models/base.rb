@@ -15,9 +15,15 @@ module SparkApi
         # TODO I'd love to pull in active model at this point to provide default naming
         @element_name ||= "resource"
       end
-
       def self.element_name=(name)
         @element_name = name
+      end
+
+      def self.plural
+        @plural ||= true
+      end
+      def self.plural=(_plural)
+        @plural = _plural
       end
 
       # Resource path prefix, prepended to the url
@@ -84,7 +90,7 @@ module SparkApi
         end
       end
 
-      def respond_to?(method_symbol, include_private=false)
+      def respond_to?(method_symbol)
         if super
           return true
         else
@@ -95,7 +101,7 @@ module SparkApi
           elsif method_name =~ /(\?)$/
             attributes.include?($`)
           elsif method_name =~ /(\w*)_will_change!$/
-            attributes.include?($1)
+            attributes.include?($1) || includes_association?($1)
           else
             attributes.include?(method_name)
           end

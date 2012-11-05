@@ -25,10 +25,7 @@ module SparkApi
         end
 
         def create!(arguments = {})
-          results = connection.post self.class.path, {
-            resource_pluralized => [ attributes ]
-          }.merge(params_for_save), arguments
-
+          results = connection.post self.class.path, post_data.merge(params_for_save), arguments
           update_resource_identifiers(results.first)
           reset_dirty
           params_for_save.clear
@@ -80,6 +77,11 @@ module SparkApi
 
         def params_for_save
           @params_for_save ||= {}
+        end
+
+        # can be overridden
+        def post_data
+          { resource_pluralized => [ attributes ] }
         end
 
         private 

@@ -16,8 +16,8 @@ module SparkApi
         false
       end
 
-
       private
+
       def create_method(name, &block)
         self.class.__send__( :define_method, name, &block )
       end
@@ -28,27 +28,31 @@ module SparkApi
         @associations[type] << name
       end
 
+      def init_has_many_associations(name, options = {})
+        self.class.__send__(:attr_accessor, name)
+        klass = options[:class]
 
-       def init_has_many_associations(name, options = {})
-         self.class.__send__(:attr_accessor, name)
+        create_method(name.to_sym) do |opts = {}|
+          associated_objects = instance_variable_get("@#{name}")
+          base_path = "/#{self.class.element_name}/#{self.attributes['Id']}"
 
-          create_method(name.to_sym) {
-            associated_objects = instance_variable_get( "@" + name )
-
-            if associated_objects.nil?
-              if self.persisted?
-                id = self.attributes['Id']
-                resource = self.class.element_name
-                subresource = name.gsub('_', '')
-                subresource_class = options[:subresource_class]
-                associated_objects = instance_variable_set( "@" + name, subresource_class.collect(connection.get("/#{resource}/#{id}/#{subresource}")))
-              else
-                associated_objects = instance_variable_set( "@" + name, [])
-              end
+          if associated_objects.nil?
+            associated_objects = []
+            if self.persisted?
+              associated_objects = klass.collect(connection.get("#{base_path}/#{klass.element_name}", opts))
             end
-            associated_objects
-         }
-       end
+            associated_objects = instance_variable_set("@#{name}", associated_objects)
+          end
+
+          singleton = class << associated_objects; self; end
+          singleton.send(:define_method, :find) do |id, opts = {}|
+            resp = SparkApi.client.get("#{base_path}/#{klass.element_name}/#{id}", opts)
+            klass.new(resp.first)
+          end
+
+          associated_objects
+        end
+      end
 
     end
   end

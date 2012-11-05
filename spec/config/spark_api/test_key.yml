@@ -3,6 +3,11 @@ development:
   api_secret:  't3sts3cr3t'
   endpoint:    'https://developers.sparkapi.com'
 
+test:
+  api_key:     'demo_key'
+  api_secret:  't3sts3cr3t'
+  endpoint:    'https://developers.sparkapi.com'
+
 production:
   api_key:     'prod_demo_key'
   api_secret:  'prod_t3sts3cr3t'

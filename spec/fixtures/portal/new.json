@@ -1,0 +1,7 @@
+{
+    "D": {
+        "DisplayName": "GreatPortal",
+        "Enabled": true,              
+        "RequiredFields": ["Address", "Phone"]
+    }
+}

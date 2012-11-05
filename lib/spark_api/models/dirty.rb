@@ -51,7 +51,7 @@ module SparkApi
 
       # hash with changed attributes and their new values
       def dirty_attributes
-        changed.inject({}) { |h, k| h[k] = attributes[k]; h }
+        changed.inject({}) { |h, k| h[k] = attributes[k.to_s]; h }
       end
 
       private

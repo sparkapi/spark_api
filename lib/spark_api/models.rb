@@ -31,6 +31,7 @@ require 'spark_api/models/virtual_tour'
 require 'spark_api/models/vow_account'
 require 'spark_api/models/rental_calendar'
 require 'spark_api/models/subscription'
+require 'spark_api/models/portal'
 
 module SparkApi
   module Models

@@ -8,8 +8,8 @@ module SparkApi
       self.element_name="contacts"
 
       def initialize(attributes={})
-        has_many :saved_searches, :subresource_class => SavedSearch
-        has_many :listing_carts, :subresource_class => ListingCart
+        has_many :saved_searches, :class => SavedSearch
+        has_many :listing_carts, :class => ListingCart
 
         super(attributes)
       end
@@ -26,6 +26,10 @@ module SparkApi
         new(connection.get('/my/contact', arguments).first)
       end
 
+      def subscriptions
+        @subscriptions ||= Subscription.get(:_filter => "RecipientId Eq '#{self.attributes['Id']}'")
+      end
+            
       def self.export(arguments={})
         collect(connection.get("/contacts/export", arguments))
       end
@@ -37,7 +41,6 @@ module SparkApi
       def vow_account(arguments={})
         VowAccount.new(connection.get("/contacts/#{self.Id}/portal", arguments).first)
       end
-
 
       # Notify the agent of contact creation via a Spark notification.
       def notify?; params_for_save[:Notify] == true end
