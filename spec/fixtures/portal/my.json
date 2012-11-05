@@ -1,0 +1,15 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [{
+            "ResourceUri": "/v1/portal/20100912153422758914000000",
+            "Id": "20100912153422758914000000",
+            "OwnerId": "20110000000000000000000001",
+            "ModificationTimestamp": "2011-11-18T16:35:43",
+            "Name": "greatportal",
+            "DisplayName": "GreatPortal",
+            "Enabled": true,
+            "RequiredFields": ["Address", "Phone"]
+        }]
+    }
+}
