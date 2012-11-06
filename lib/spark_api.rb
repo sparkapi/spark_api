@@ -3,6 +3,7 @@ require 'logger'
 require 'multi_json'
 
 require 'spark_api/version'
+require 'spark_api/errors'
 require 'spark_api/configuration'
 require 'spark_api/multi_client'
 require 'spark_api/authentication'

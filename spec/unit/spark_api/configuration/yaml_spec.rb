@@ -8,11 +8,12 @@ describe SparkApi::Configuration::YamlConfig, "Yaml Config"  do
       subject.api_env.should eq("development")
       subject.load_file(api_file)
       subject.oauth2?.should eq(false)
+      subject.ssl_verify?.should eq(false)
       subject.api_key.should eq("demo_key")
       subject.api_secret.should eq("t3sts3cr3t")
       subject.endpoint.should eq("https://developers.sparkapi.com")
       subject.name.should eq("test_key")
-      subject.client_keys.keys.should =~ [:api_key, :api_secret, :endpoint]
+      subject.client_keys.keys.should =~ [:api_key, :api_secret, :endpoint, :ssl_verify]
       subject.oauth2_keys.keys.should eq([])
     end
     it "should load a configured api key for production" do
