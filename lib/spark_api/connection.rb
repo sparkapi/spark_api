@@ -12,7 +12,7 @@ module SparkApi
         :headers => headers
       }
       if(force_ssl || self.ssl)
-        opts[:ssl] = {:verify => false }
+        opts[:ssl] = {:verify => false } unless self.ssl_verify
         opts[:url] = @endpoint.sub /^http:/, "https:"
       else 
         opts[:url] = @endpoint.sub /^https:/, "http:"

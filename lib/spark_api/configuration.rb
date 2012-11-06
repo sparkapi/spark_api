@@ -5,7 +5,7 @@ module SparkApi
     
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
-      :user_agent, :version, :ssl, :oauth2_provider, :authentication_mode, 
+      :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode, 
       :auth_endpoint, :callback].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
@@ -29,6 +29,7 @@ module SparkApi
     DEFAULT_VERSION = 'v1'
     DEFAULT_USER_AGENT = "Spark API Ruby Gem #{VERSION}"
     DEFAULT_SSL = true
+    DEFAULT_SSL_VERIFY = true
     DEFAULT_OAUTH2 = nil
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
@@ -59,6 +60,7 @@ module SparkApi
       self.oauth2_provider = DEFAULT_OAUTH2
       self.user_agent  = DEFAULT_USER_AGENT
       self.ssl         = DEFAULT_SSL
+      self.ssl_verify  = DEFAULT_SSL_VERIFY
       self.version     = DEFAULT_VERSION
       self
     end

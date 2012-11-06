@@ -6,6 +6,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.api_key.should be_nil
       SparkApi.api_secret.should be_nil
       SparkApi.version.should match("v1")
+      SparkApi.ssl_verify.should be_true
       SparkApi.auth_endpoint.should match("sparkplatform.com/openid")
       SparkApi.endpoint.should match("api.sparkapi.com")
       SparkApi.user_agent.should match(/Spark API Ruby Gem .*/)
@@ -29,6 +30,22 @@ describe SparkApi::Client, "Client config"  do
       client.endpoint.should match("http://api.wade.dev.fbsdata.com")
       client.version.should match("v1")
     end
+    
+    it "should allow unverified ssl certificates when verification is off" do
+      client = SparkApi::Client.new(:auth_endpoint => "https://login.wade.dev.fbsdata.com",
+                                    :endpoint => "https://api.wade.dev.fbsdata.com",
+                                    :ssl_verify => false)
+      client.ssl_verify.should be_false
+      client.connection.ssl.should eq({:verify=>false})
+    end
+
+    it "should allow restrict ssl certificates when verification is on" do
+      client = SparkApi::Client.new(:auth_endpoint => "https://login.wade.dev.fbsdata.com",
+                                    :endpoint => "https://api.wade.dev.fbsdata.com",
+                                    :ssl_verify => true)
+      client.ssl_verify.should be_true
+      client.connection.ssl.should eq({})
+    end
   end
 
   describe "oauth2 instance configuration" do
@@ -40,7 +57,7 @@ describe SparkApi::Client, "Client config"  do
                            :endpoint => "http://api.wade.dev.fbsdata.com",
                            :authentication_mode => SparkApi::Authentication::OAuth2)
     end
-
+    
     it "should convert the configuration to oauth2 when specified" do
       oauth2_client.oauthify!
       oauth2_client.oauth2_provider.should be_a(SparkApi::Authentication::SimpleProvider)

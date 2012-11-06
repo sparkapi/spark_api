@@ -1,4 +1,5 @@
 development:
+  ssl_verify:  false
   api_key:     'demo_key'
   api_secret:  't3sts3cr3t'
   endpoint:    'https://developers.sparkapi.com'

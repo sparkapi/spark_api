@@ -26,10 +26,15 @@ module SparkApi
       def oauth2?
         return oauth2 == true
       end
+
+      def ssl_verify?
+        return ssl_verify == true
+      end
       
       def name
         @name
       end
+      
       def api_env
         if env.include? "SPARK_API_ENV"
           env["SPARK_API_ENV"]
