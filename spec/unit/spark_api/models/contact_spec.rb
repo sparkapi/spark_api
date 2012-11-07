@@ -196,14 +196,6 @@ describe Contact do
       vow_account.persisted?.should be_true
     end
 
-    on_post_it "should create a consumer account" do
-
-    end
-
-    on_put_it "should update a consumer account" do
-
-    end
-
   end
 
 
