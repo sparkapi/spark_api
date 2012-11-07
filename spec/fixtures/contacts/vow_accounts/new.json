@@ -1,0 +1,12 @@
+{
+  "D":{
+    "LoginName":"Johnny Everyman",
+    "Password":"MyPassw0rd",
+    "Settings":{
+      "Enabled":"true"
+    },
+    "Locale":{
+      "Language":"en"
+    }
+  }
+}

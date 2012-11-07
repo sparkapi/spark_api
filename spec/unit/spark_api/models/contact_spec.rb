@@ -10,6 +10,15 @@ describe Contact do
     Contact.should respond_to(:my)
   end
 
+  it "should get a contact's subscriptions" do
+    s = stub_api_get("/subscriptions", "subscriptions/get.json", {
+      :_filter => "RecipientId Eq '20101230223226074201000000'"
+    })
+    contact = Contact.new(:Id => "20101230223226074201000000")
+    contact.subscriptions
+    s.should have_been_requested
+  end
+
   context "/contacts", :support do
     on_get_it "should get all my contacts" do
       stub_api_get("/contacts", 'contacts/contacts.json')
@@ -104,5 +113,91 @@ describe Contact do
       contacts.first.Tags[0].should eq("IDX Lead")
     end
   end
+
+  context "/contact/export", :support do
+    on_get_it "should get all contacts belonging to the current user" do
+      stub_api_get("/contacts/export", 'contacts/contacts.json')
+      Contact.should respond_to(:export)
+      contacts = Contact.export
+      contacts.should be_an(Array)
+      contacts.length.should eq(3)
+    end
+
+  end
+
+  context "/contact/export/all", :support do
+    on_get_it "should get all contacts belonging to the current user" do
+      stub_api_get("/contacts/export/all", 'contacts/contacts.json')
+      Contact.should respond_to(:export_all)
+      contacts = Contact.export_all
+      contacts.should be_an(Array)
+      contacts.length.should eq(3)
+    end
+
+  end
+
+  context "/contacts/<contact_id>/savedsearches", :support do
+    on_get_it "should get all the saved searches belonging to the customer" do
+      stub_api_get("/my/contact", 'contacts/my.json')
+      contact = Contact.my
+      stub_api_get("/contacts/#{contact.Id}/savedsearches", 'saved_searches/get.json')
+      contact.should respond_to(:saved_searches)
+      saved_searches = contact.saved_searches
+      saved_searches.should be_an(Array)
+      saved_searches.length.should eq(2)
+    end
+
+    on_post_it "should create the new saved searches" do
+      stub_api_get("/my/contact", 'contacts/my.json')
+      contact = Contact.my
+      stub_api_get("/contacts/#{contact.Id}/savedsearches", 'contacts/saved_searches/get.json')
+      contact.saved_searches_will_change!
+      contact.saved_searches << SavedSearch.new({ :Name => "A new search name here", :Filter => "City eq 'Test 1'" })
+      contact.saved_searches << SavedSearch.new({ :Name => "A new search name here", :Filter => "City eq 'Test 1'" })
+      contact.saved_searches.length.should eq(4)
+      stub_api_post("/contacts/#{contact.Id}/savedsearches", "contacts/saved_searches/new.json", "saved_searches/post.json")
+      contact.save.should be true
+    end
+
+  end
+
+  context "/contacts/<contact_id>/listingcarts", :support do
+     on_get_it "should get all the listing carts belonging to the customer" do
+       stub_api_get("/my/contact", 'contacts/my.json')
+       contact = Contact.my
+       stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
+       contact.should respond_to(:listing_carts)
+       saved_searches = contact.listing_carts
+       saved_searches.should be_an(Array)
+       saved_searches.length.should eq(2)
+     end
+
+     on_post_it "should create the new listing carts" do
+       stub_api_get("/my/contact", 'contacts/my.json')
+       contact = Contact.my
+       stub_api_get("/contacts/#{contact.Id}/listingcarts", 'contacts/listing_carts/get.json')
+       contact.listing_carts_will_change!
+       contact.listing_carts << ListingCart.new({:Name => "LC A", :ListingIds => ['20081118213437693901000000']})
+       contact.listing_carts << ListingCart.new({:Name => "LC B", :ListingIds => ['20081118213437693901000000']})
+       contact.listing_carts << ListingCart.new({:Name => "LC C", :ListingIds => ['20081118213437693901000000','20081118213437693901000000']})
+       contact.listing_carts.length.should eq(5)
+       stub_api_post("/contacts/#{contact.Id}/listingcarts", "contacts/listing_carts/new.json", "listing_carts/post.json")
+       contact.save.should be true
+     end
+
+  end
+
+  context  "/contacts/<contact_id>/portal", :support do
+    on_get_it "should return account information for the current user/contact?" do
+      stub_api_get("/my/contact", 'contacts/my.json')
+      contact = Contact.my
+      stub_api_get("/contacts/#{contact.Id}/portal", 'contacts/vow_accounts/get.json')
+      vow_account = contact.vow_account
+      vow_account.persisted?.should be_true
+    end
+
+  end
+
+
 
 end
