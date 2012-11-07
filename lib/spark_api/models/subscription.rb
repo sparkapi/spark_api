@@ -13,7 +13,6 @@ module SparkApi
         return {} unless persisted?
         results = connection.get("#{self.class.path}/#{@attributes["Id"]}/subscribers")
         @attributes['RecipientIds'] = results.first['RecipientIds']
-        results
       end
 
       # subscribe/unsubscribe contact (private role)
