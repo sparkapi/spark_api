@@ -11,4 +11,5 @@ SparkApi.configure do |config|
                           ) 
   config.authentication_mode = SparkApi::Authentication::OAuth2
   config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
+  config.ssl_verify = ! (ENV["NO_VERIFY"].downcase=='true') if ENV["NO_VERIFY"]
 end
