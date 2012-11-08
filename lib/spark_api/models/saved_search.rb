@@ -18,10 +18,9 @@ module SparkApi
 
       # list contacts (private role)
       def contacts
-        return {} unless persisted?
-        results = connection.get("#{self.class.path}/#{@attributes["Id"]}/subscribers")
-        @attributes['RecipientIds'] = results.first['RecipientIds']
-        results
+        return [] unless persisted?
+        results = connection.get("#{self.class.path}/#{@attributes["Id"]}")
+        @attributes['ContactIds'] = results.first['ContactIds']
       end
 
       # attach/detach contact (private role)
@@ -32,7 +31,7 @@ module SparkApi
           self.errors = []
           contact_id = contact.is_a?(Contact) ? contact.Id : contact
           begin
-            connection.send(method, "#{self.class.path}/#{@attributes["Id"]}/subscribers/#{contact_id}")
+            connection.send(method, "#{self.class.path}/#{@attributes["Id"]}/contacts/#{contact_id}")
           rescue BadResourceRequest, NotFound => e
             self.errors << { :code => e.code, :message => e.message }
             SparkApi.logger.error("Failed to #{action} contact #{contact}: #{e.message}")
@@ -43,12 +42,12 @@ module SparkApi
         end
       end
 
-
       private
 
       def resource_pluralized; "SavedSearches" end
 
       def update_contacts(method, contact_id)
+        @attributes['ContactIds'] = [] if @attributes['ContactIds'].nil?
         case method
         when :attach
           @attributes['ContactIds'] << contact_id
