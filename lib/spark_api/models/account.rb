@@ -39,7 +39,15 @@ module SparkApi
       def primary_img(typ)
         if @images.is_a?(Array)
           matches = @images.select {|i| i.Type == typ}
-          matches.sort {|a,b| a.Name <=> b.Name }.first
+          matches.sort do |a,b| 
+            if a.Name.nil? && !b.Name.nil?
+              1
+            elsif b.Name.nil? && !a.Name.nil?
+              -1
+            else
+              a.Name.to_s <=> b.Name.to_s
+            end 
+          end.first
         else
           nil
         end

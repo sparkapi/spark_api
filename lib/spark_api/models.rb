@@ -1,3 +1,4 @@
+require 'spark_api/models/associations'
 require 'spark_api/models/dirty'
 require 'spark_api/models/base'
 require 'spark_api/models/constraint'
@@ -29,6 +30,7 @@ require 'spark_api/models/video'
 require 'spark_api/models/virtual_tour'
 require 'spark_api/models/rental_calendar'
 require 'spark_api/models/subscription'
+require 'spark_api/models/portal'
 
 module SparkApi
   module Models

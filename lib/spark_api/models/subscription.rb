@@ -10,10 +10,9 @@ module SparkApi
 
       # list subscribers (private role)
       def subscribers
-        return {} unless persisted?
+        return [] unless persisted?
         results = connection.get("#{self.class.path}/#{@attributes["Id"]}/subscribers")
         @attributes['RecipientIds'] = results.first['RecipientIds']
-        results
       end
 
       # subscribe/unsubscribe contact (private role)
@@ -38,6 +37,7 @@ module SparkApi
       private
 
       def update_recipients(method, contact_id)
+        @attributes['RecipientIds'] = [] if @attributes['RecipientIds'].nil?
         case method
         when :subscribe
           @attributes['RecipientIds'] << contact_id

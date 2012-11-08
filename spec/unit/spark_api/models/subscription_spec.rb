@@ -68,9 +68,18 @@ describe Subscription do
       resource.RecipientIds.size.should eq(0)
     end
 
+    it "should initialize RecipientIds as an array if nil" do
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", nil, 'subscriptions/subscribe.json')
+      resource = subject.class.find(id)
+      resource.RecipientIds = nil
+      resource.subscribe(Contact.new({ :Id => "20101230223226074306000000" }))
+      resource.RecipientIds.size.should eq(1)
+    end
+
   end
 
-  context "/subscriptions/:id", :support do
+  context "/subscriptions/<id>", :support do
 
     on_get_it "should get a subscription" do
       stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
@@ -92,6 +101,17 @@ describe Subscription do
       resource.delete
     end
 
+  end
+
+  context "/subscriptions/<id>/subscribers" do
+    on_get_it "should return a list of recipients" do
+      stub_api_get("/subscriptions/20101230223226074204000000/subscribers", "subscriptions/subscribers.json")
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+
+      subscription = subject.class.find(id)
+      subscribers = subscription.subscribers
+      subscribers.should be_an(Array)
+    end
   end
 
 end
