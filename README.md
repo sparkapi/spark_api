@@ -5,7 +5,9 @@ A Ruby wrapper for the Spark REST API. Loosely based on ActiveResource to provid
 
 Documentation
 -------------
-For further client documentation, please consult our [wiki](wiki)
+
+For further client documentation, please consult our [wiki](wiki).
+
 For full information on the API, see [http://sparkplatform.com/docs/overview/api](http://sparkplatform.com/docs/overview/api)
 
 

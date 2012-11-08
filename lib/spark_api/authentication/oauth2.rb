@@ -148,12 +148,16 @@ module SparkApi
       end
       
       def to_json(*a)
+        to_hash.to_json(*a)
+      end
+      
+      def to_hash
         hash = {}
         SESSION_ATTRIBUTES.each do |k|
           value = self.send(k)
           hash[k.to_s] = value unless value.nil?
         end
-        hash.to_json(*a)
+        hash 
       end
     end
     
