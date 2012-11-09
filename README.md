@@ -27,10 +27,23 @@ Usage Examples
 
 
 #### Interactive Console
-Included in the gem is an interactive spark_api console to interact with the api in a manner similar to the rails console. Below is a brief example of interacting with the console
+Included in the gem is an interactive spark_api console to interact with the api in a manner similar to the rails console. Below is a brief example of interacting with the console:
 
     > spark_api --api_key MY_SPARK_API_KEY --api_secret MY_SPARK_API_SECRET
     SparkApi> SparkApi.client.get '/my/account'
+
+Using OAuth2 requires different arguments, and is a bit more complicated as it requires a step for logging in through the browser to gain access to the access code for a client_id. 
+
+    > bundle exec spark_api --oauth2 --client_id my_oauth2_client_id --client_secret my_oauth2_client_secret 
+    Loading spark_api gem...
+    SparkApi:001:0> Account.my.Name
+    Missing OAuth2 session, redirecting...
+    Please visit https://sparkplatform.com/oauth2?client_id=my_oauth2_client_id&response_type=code&redirect_uri=https%3A%2F%2Fsparkplatform.com%2Foauth2%2Fcallback, login as a user, and paste the authorization code here:
+    Authorization code?
+    9zsrc7jk7m4x7r4kers8n6sp5
+    "Demo User"
+    SparkApi:002:0> Account.my.UserType
+    "Member"
 
 You can also provide other options from the command line, see "spark_api -h" for more information.
 

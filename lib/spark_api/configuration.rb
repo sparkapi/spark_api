@@ -27,7 +27,7 @@ module SparkApi
     DEFAULT_ENDPOINT = 'https://api.sparkapi.com'
     DEFAULT_REDIRECT_URI = "https://sparkplatform.com/oauth2/callback"
     DEFAULT_AUTH_ENDPOINT = 'https://sparkplatform.com/openid'  # Ignored for Spark API Auth
-    DEFAULT_AUTH_ENDPOINT = 'https://sparkplatform.com/oauth2'
+    DEFAULT_AUTHORIZATION_URI = 'https://sparkplatform.com/oauth2'
     DEFAULT_VERSION = 'v1'
     DEFAULT_ACCESS_URI = "#{DEFAULT_ENDPOINT}/#{DEFAULT_VERSION}/oauth2/grant"
     DEFAULT_USER_AGENT = "Spark API Ruby Gem #{VERSION}"

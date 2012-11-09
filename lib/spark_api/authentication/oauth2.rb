@@ -228,7 +228,7 @@ module SparkApi
       require 'spark_api/authentication/oauth2_impl/grant_type_refresh'
       require 'spark_api/authentication/oauth2_impl/grant_type_code'
       require 'spark_api/authentication/oauth2_impl/grant_type_password'
-      require 'spark_api/authentication/oauth2_impl/password_provider'
+      require 'spark_api/authentication/oauth2_impl/cli_provider'
       require 'spark_api/authentication/oauth2_impl/simple_provider'
       require 'spark_api/authentication/oauth2_impl/single_session_provider'
       

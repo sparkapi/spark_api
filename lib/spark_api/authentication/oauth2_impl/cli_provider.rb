@@ -3,7 +3,7 @@ require "highline/import"
 module SparkApi
   module Authentication
     module OAuth2Impl
-      class PasswordProvider < SparkApi::Authentication::BaseOAuth2Provider
+      class CLIProvider < SparkApi::Authentication::BaseOAuth2Provider
         SESSION_FILE = '.spark_api_oauth2'
         
         def initialize(credentials)
