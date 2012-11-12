@@ -7,7 +7,7 @@ module SparkApi
       extend Paginate
       include Dirty
 
-      attr_accessor :attributes, :errors
+      attr_accessor :attributes, :errors, :parent
 
       # Name of the resource as related to the path name
       def self.element_name
@@ -26,11 +26,23 @@ module SparkApi
         @prefix = prefix
       end
 
+      def resource_uri
+        self.ResourceUri.sub(/^\/#{SparkApi.client.version}/, "") if persisted?
+      end
+
       def self.path
         "#{prefix}#{element_name}"
       end
       def path
-        self.class.path
+        if self.persisted?
+          resource_uri.sub(/\/[0-9]{26}$/, "")
+        else
+          if @parent
+            "#{@parent.class.path}/#{@parent.Id}#{self.class.path}"
+          else
+            self.class.path
+          end
+        end
       end
 
       def self.connection

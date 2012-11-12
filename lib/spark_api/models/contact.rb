@@ -48,8 +48,11 @@ module SparkApi
       end
 
       def vow_account(arguments={})
+        return @vow_account if @vow_account
         begin
-          VowAccount.new(@attributes['Id'], connection.get("/contacts/#{self.Id}/portal", arguments).first)
+          @vow_account = VowAccount.new(connection.get("/contacts/#{self.Id}/portal", arguments).first)
+          @vow_account.parent = self
+          @vow_account
         rescue NotFound
           nil
         end

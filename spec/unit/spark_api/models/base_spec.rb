@@ -10,18 +10,33 @@ class MyDefaultModel < Base
 end
 
 describe MyExampleModel, "Example model" do
+
   before(:each) do
     stub_auth_request
     stub_api_get("/test/example", 'base.json')
     @model = MyExampleModel.first
   end
+
   it "should be persisted" do
     @model.persisted?.should eq(true)
   end
+
   it "should not be persisted" do
     @new_model = MyExampleModel.new()
     @new_model.persisted?.should eq(false)
   end
+
+  it "should parse and return ResourceUri without v1" do
+    @model.resource_uri.should eq("/some/place/20101230223226074201000000")
+  end
+
+  it "should parse and return the correct path for a persisted resource" do
+    @model.path.should eq("/some/place")
+  end
+
+  it "should return the correct path for a singular resource" do
+  end
+
 end
 
 describe Base, "Base model" do

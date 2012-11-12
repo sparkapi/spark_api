@@ -5,16 +5,13 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
-      def initialize(contact_id, attributes={})
-        @contact_id = contact_id
+      self.element_name = "portal"
+
+      def initialize(attributes={})
         super(attributes)
       end
 
       def singular?; true end
-
-      def path
-        "/contacts/#{@contact_id}/portal"
-      end
 
       def enabled?
         (@attributes['Settings'].class == Hash) && @attributes['Settings']['Enabled'] == 'true'

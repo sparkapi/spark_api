@@ -29,9 +29,8 @@ module SparkApi
         end
 
         def update!(arguments = {})
-          return true unless changed?
-          update_path = self.singular? ? self.path : "#{self.path}/#{self.Id}"
-          connection.put update_path, dirty_attributes, arguments
+          return true unless changed? && persisted?
+          connection.put resource_uri, dirty_attributes, arguments
           reset_dirty
           params_for_save.clear
           true
