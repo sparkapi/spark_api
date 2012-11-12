@@ -25,7 +25,8 @@ module SparkApi
         end
 
         def create!(arguments = {})
-          results = connection.post self.class.path, post_data.merge(params_for_save), arguments
+          save_path = self.singular? ? self.save_path : self.class.path
+          results = connection.post save_path, post_data.merge(params_for_save), arguments
           update_resource_identifiers(results.first)
           reset_dirty
           params_for_save.clear
@@ -34,7 +35,8 @@ module SparkApi
 
         def update!(arguments = {})
           return true unless changed?
-          connection.put "#{self.class.path}/#{self.Id}", dirty_attributes, arguments
+          save_path = self.singular? ? self.save_path : "#{self.class.path}/#{self.Id}"
+          connection.put save_path, dirty_attributes, arguments
           reset_dirty
           params_for_save.clear
           true

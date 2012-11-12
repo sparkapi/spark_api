@@ -185,7 +185,18 @@ describe Contact do
        contact.save.should be true
      end
 
-    end
+  end
+
+  context "/contacts/<contact_id>/portal", :support do
+     on_get_it "should return account information for the current user/contact?" do
+       stub_api_get("/my/contact", 'contacts/my.json')
+       contact = Contact.my
+       stub_api_get("/contacts/#{contact.Id}/portal", 'contacts/vow_accounts/get.json')
+       vow_account = contact.vow_account
+       vow_account.persisted?.should be_true
+     end
+
+   end
 
 
 
