@@ -6,15 +6,13 @@ module SparkApi
               Concerns::Destroyable
 
       def initialize(contact_id, attributes={})
-          @contact_id = contact_id
-          super(attributes)
+        @contact_id = contact_id
+        super(attributes)
       end
 
-      def singular?
-        true
-      end
+      def singular?; true end
 
-      def save_path
+      def path
         "/contacts/#{@contact_id}/portal"
       end
 
@@ -23,26 +21,25 @@ module SparkApi
       end
 
       def enable
-        change_setting 'Enabled', 'true'
+        change_setting :Enabled, 'true'
         save
       end
 
       def disable
-        change_setting 'Enabled', 'false'
+        change_setting :Enabled, 'false'
         save
       end
 
       def change_password(new_password)
-        @attributes['Password'] = new_password
         attribute_will_change! 'Password'
+        @attributes['Password'] = new_password
         save
       end
 
       def change_setting(key, val)
         attribute_will_change! "Settings"
-
         @attributes['Settings'] = {} if @attributes['Settings'].nil? || @attributes['Settings'] != Hash
-        @attributes['Settings'][key] = val
+        @attributes['Settings'][key.to_s] = val
       end
 
       def post_data; attributes end

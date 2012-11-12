@@ -25,10 +25,6 @@ module SparkApi
       def self.my(arguments={})
         new(connection.get('/my/contact', arguments).first)
       end
-
-      def subscriptions
-        @subscriptions ||= Subscription.get(:_filter => "RecipientId Eq '#{self.attributes['Id']}'")
-      end
             
       def self.export(arguments={})
         collect(connection.get("/contacts/export", arguments))
@@ -38,18 +34,22 @@ module SparkApi
         collect(connection.get("/contacts/export/all", arguments))
       end
 
-      def vow_account(arguments={})
-        begin
-        VowAccount.new(self.Id, connection.get("/contacts/#{self.Id}/portal", arguments).first)
-        rescue NotFound
-          nil
-        end
-      end
-
       # Notify the agent of contact creation via a Spark notification.
       def notify?; params_for_save[:Notify] == true end
       def notify=(notify_me)
         params_for_save[:Notify] = notify_me
+      end
+
+      def subscriptions
+        @subscriptions ||= Subscription.get(:_filter => "RecipientId Eq '#{self.attributes['Id']}'")
+      end
+
+      def vow_account(arguments={})
+        begin
+          VowAccount.new(@attributes['Id'], connection.get("/contacts/#{self.Id}/portal", arguments).first)
+        rescue NotFound
+          nil
+        end
       end
       
     end

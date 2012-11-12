@@ -19,13 +19,6 @@ module SparkApi
         @element_name = name
       end
 
-      def self.plural
-        @plural ||= true
-      end
-      def self.plural=(_plural)
-        @plural = _plural
-      end
-
       # Resource path prefix, prepended to the url
       def self.prefix
         @prefix ||= "/"
@@ -33,8 +26,12 @@ module SparkApi
       def self.prefix=(prefix)
         @prefix = prefix
       end
+
       def self.path
         "#{prefix}#{element_name}"
+      end
+      def path
+        self.class.path
       end
 
       def self.connection
@@ -69,9 +66,7 @@ module SparkApi
       end
 
       # Classes that override this to return true must implement save_path() method
-      def singular?
-        false
-      end
+      def singular?; false end
 
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
