@@ -6,7 +6,6 @@ module SparkApi
     class Base
       extend Paginate
       include Dirty
-      include Associations
 
       attr_accessor :attributes, :errors
 
@@ -80,10 +79,9 @@ module SparkApi
             raise NoMethodError unless attributes.include?($`)
             attributes[$`] ? true : false
           when "_will_change!"
-            attribute_will_change!($`) if attributes.include?($`)
-            associations_will_change!($`) if includes_association?($`)
-            raise NoMethodError unless (attributes.include?($`) || includes_association?($`))
-          end
+            raise NoMethodError unless attributes.include?($`)
+            attribute_will_change!($`)
+          end 
         else
           return attributes[method_name] if attributes.include?(method_name)
           super # GTFO
@@ -101,7 +99,7 @@ module SparkApi
           elsif method_name =~ /(\?)$/
             attributes.include?($`)
           elsif method_name =~ /(\w*)_will_change!$/
-            attributes.include?($1) || includes_association?($1)
+            attributes.include?($1)
           else
             attributes.include?(method_name)
           end
@@ -114,13 +112,7 @@ module SparkApi
       end
 
       def persisted?;
-        persisted = !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
-         persisted = persisted && !destroyed? if respond_to? :destroyed?
-        persisted
-      end
-
-      def new?
-        !persisted?
+        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
       end
 
       protected

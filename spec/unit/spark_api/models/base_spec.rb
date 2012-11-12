@@ -48,7 +48,7 @@ describe Base, "Base model" do
         MyExampleModel.get.length.should == 2
       end
       it "should get first result" do
-        MyExampleModel.first.Id.should == "1"
+        MyExampleModel.first.Id.should == 1
       end
     end
   end
