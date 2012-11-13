@@ -17,10 +17,7 @@ module SparkApi
           false
         end
         def destroy!(arguments = {})
-          if persisted?
-            delete_path = self.singular? ? self.path : "#{self.path}/#{self.Id}"
-            connection.delete(delete_path, arguments) if persisted?
-          end
+          connection.delete(resource_uri, arguments) if persisted?
           @destroyed = true
           true
         end

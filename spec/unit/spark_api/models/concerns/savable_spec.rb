@@ -40,7 +40,7 @@ describe Concerns::Savable, "Model" do
     stub_api_get("/test/example", 'base.json')
     @model = MyExampleModel.first
     @model.Name = "new name"
-    s = stub_api_put("/test/example/1", @model.dirty_attributes)
+    s = stub_api_put("/some/place/20101230223226074201000000", @model.dirty_attributes)
     @model.save.should eq(true)
     @model.persisted?.should eq(true)
     s.should have_been_requested

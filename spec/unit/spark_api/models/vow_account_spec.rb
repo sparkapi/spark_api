@@ -12,12 +12,13 @@ describe VowAccount do
   context "/contacts/<contact_id>/portal" do
     on_post_it "should create a consumer account" do
       s = stub_api_post("/contacts/20090928182824338901000000/portal", "contacts/vow_accounts/new.json", "contacts/vow_accounts/post.json")
-      vow = VowAccount.new("20090928182824338901000000", {
+      vow = VowAccount.new({
           :LoginName => "Johnny Everyman",
           :Password => "MyPassw0rd",
           :Settings => {:Enabled => "true"},
           :Locale => {:Language => "en"}
       })
+      vow.parent = Contact.new(:Id => "20090928182824338901000000")
       vow.save
       s.should have_been_requested
     end
