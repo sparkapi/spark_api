@@ -34,7 +34,15 @@ describe MyExampleModel, "Example model" do
     @model.path.should eq("/some/place")
   end
 
-  it "should return the correct path for a singular resource" do
+  it "should parse and return the correct path" do
+    @model = MyExampleModel.new
+    @model.path.should eq("/test/example")
+  end
+
+  it "should parse and return the correct path for resource with a parent" do
+    @model = MyExampleModel.new
+    @model.parent = Contact.new(Id: "20101230223226074201000000")
+    @model.path.should eq("/contacts/20101230223226074201000000/test/example")
   end
 
 end
