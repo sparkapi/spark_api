@@ -47,6 +47,16 @@ module SparkApi
         @subscriptions ||= Subscription.get(:_filter => "RecipientId Eq '#{self.attributes['Id']}'")
       end
 
+      def comments
+        @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments"))
+      end
+      def comment(body)
+        comment = Comment.new({ :Comment => body })
+        comment.parent = self
+        comment.save
+        comment
+      end
+
       def vow_account(arguments={})
         return @vow_account if @vow_account
         begin

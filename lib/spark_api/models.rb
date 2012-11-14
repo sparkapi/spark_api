@@ -31,6 +31,7 @@ require 'spark_api/models/vow_account'
 require 'spark_api/models/rental_calendar'
 require 'spark_api/models/subscription'
 require 'spark_api/models/portal'
+require 'spark_api/models/comment'
 
 module SparkApi
   module Models
