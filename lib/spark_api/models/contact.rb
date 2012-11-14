@@ -5,8 +5,6 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
-      attr_accessor :saved_searches, :listing_carts
-
       self.element_name="contacts"
 
       def self.by_tag(tag_name, arguments={})
@@ -40,7 +38,7 @@ module SparkApi
       end
 
       def listing_carts
-        @listing_carts ||= SavedSearch.collect(connection.get("/contacts/#{self.Id}/listingcarts"))
+        @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts"))
       end
 
       def subscriptions
