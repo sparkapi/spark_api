@@ -13,7 +13,8 @@ module SparkApi
       # Requirements for password grant type
       :username, :password,
       # Requirements for single session keys
-      :access_token
+      :access_token,
+      :sparkbar_uri
     ]
       
     require File.expand_path('../configuration/yaml', __FILE__)

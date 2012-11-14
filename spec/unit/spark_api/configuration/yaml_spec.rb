@@ -48,7 +48,7 @@ describe SparkApi::Configuration::YamlConfig, "Yaml Config"  do
       subject.oauth2_provider.should eq("SparkApi::TestOAuth2Provider")
       subject.name.should eq("test_oauth")
       subject.client_keys.keys.should =~ [:endpoint, :oauth2_provider]
-      subject.oauth2_keys.keys.should =~ [:authorization_uri, :client_id, :access_uri, :client_secret, :redirect_uri]
+      subject.oauth2_keys.keys.should =~ [:authorization_uri, :client_id, :access_uri, :client_secret, :redirect_uri, :sparkbar_uri]
     end
     it "should load a configured api key for production" do
       subject.stub(:env){ {"SPARK_API_ENV" => "production"} }
