@@ -247,7 +247,7 @@ describe "password authentication" do
 end
 describe SparkApi::Authentication::OAuth2Impl  do
   it "should load a provider" do
-    example = "SparkApi::Authentication::OAuth2Impl::PasswordProvider"
+    example = "SparkApi::Authentication::OAuth2Impl::CLIProvider"
     SparkApi::Authentication::OAuth2Impl.load_provider(example,{}).class.to_s.should eq(example)
     prefix = "::#{example}"
     SparkApi::Authentication::OAuth2Impl.load_provider(prefix,{}).class.to_s.should eq(example)

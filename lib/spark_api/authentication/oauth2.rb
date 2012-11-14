@@ -148,12 +148,16 @@ module SparkApi
       end
       
       def to_json(*a)
+        to_hash.to_json(*a)
+      end
+      
+      def to_hash
         hash = {}
         SESSION_ATTRIBUTES.each do |k|
           value = self.send(k)
           hash[k.to_s] = value unless value.nil?
         end
-        hash.to_json(*a)
+        hash 
       end
     end
     
@@ -224,7 +228,7 @@ module SparkApi
       require 'spark_api/authentication/oauth2_impl/grant_type_refresh'
       require 'spark_api/authentication/oauth2_impl/grant_type_code'
       require 'spark_api/authentication/oauth2_impl/grant_type_password'
-      require 'spark_api/authentication/oauth2_impl/password_provider'
+      require 'spark_api/authentication/oauth2_impl/cli_provider'
       require 'spark_api/authentication/oauth2_impl/simple_provider'
       require 'spark_api/authentication/oauth2_impl/single_session_provider'
       
