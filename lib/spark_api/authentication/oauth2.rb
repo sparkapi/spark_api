@@ -68,19 +68,42 @@ module SparkApi
         }
         "#{@provider.authorization_uri}?#{build_url_parameters(params)}"
       end
-            
+      
+      # Create a sparkbar token based on the current user's access token
+      def sparkbar_token()
+        raise ClientError, "OAuth2Provider must configure the sparkbar_uri to use sparkbar tokens" if provider.sparkbar_uri.nil?
+        SparkApi.logger.debug("[sparkbar] create token to #{provider.sparkbar_uri}")
+        uri = URI.parse(provider.sparkbar_uri)
+        request_path = "#{uri.path}"
+        
+        SparkApi.logger.info("[sparkbar] create token to #{request_path}, #{session.access_token.inspect}")
+        response = sparkbar_connection("#{uri.scheme}://#{uri.host}").post(request_path, "access_token=#{session.access_token}").body
+        token = response["token"]
+        SparkApi.logger.debug("[sparkbar] New token created #{token}")
+        token
+      end
+      
       protected
+      
+      attr_reader :provider, :client
       
       def auth_header
         {"Authorization"=> "OAuth #{session.access_token}"}
       end
       
-      def provider
-        @provider
-      end
-      def client
-        @client
-      end
+      # Faraday handle to the sparkbar
+      def sparkbar_connection(endpoint)
+        opts = {
+          :headers => client.headers
+        }
+        opts[:headers].delete(:content_type)
+        opts[:ssl] = {:verify => false } unless @client.ssl_verify
+        opts[:url] = endpoint       
+        conn = Faraday::Connection.new(opts) do |conn|
+          conn.response :sparkbar_impl
+          conn.adapter Faraday.default_adapter
+        end
+      end        
 
     end
 

@@ -4,7 +4,10 @@ require './spec/oauth2_helper'
 describe SparkApi::Authentication::OAuth2  do
   before(:all) { SparkApi.reset } # dump api user stuff from other tests
   let(:provider) { TestOAuth2Provider.new() }
-  let(:client) { SparkApi::Client.new({:authentication_mode => SparkApi::Authentication::OAuth2,:oauth2_provider => provider}) }
+  let(:client) { SparkApi::Client.new({
+    :authentication_mode => SparkApi::Authentication::OAuth2,
+    :oauth2_provider => provider,
+    :sparkbar_uri => "https://test.sparkplatform.com/appbar/authorize"}) }
   subject {client.authenticator }  
   # Make sure the client boostraps the right plugin based on configuration.
   describe "plugin" do
@@ -51,7 +54,6 @@ describe SparkApi::Authentication::OAuth2  do
     end
   end
 
-
   describe "logout" do
     let(:session) { mock_oauth_session }
     it "should logout when there is an active session" do
@@ -95,6 +97,24 @@ describe SparkApi::Authentication::OAuth2  do
           }', 
           :status=>201)
       subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status.should eq(201)
+    end
+  end
+  
+  describe "sparkbar_token" do
+    let(:session) { mock_oauth_session }
+    it "should fetch a sparkbar token" do
+      c = stub_request(:post, "https://test.sparkplatform.com/appbar/authorize").
+        with(:body => "access_token=#{session.access_token}").
+        to_return(:body => '{"token":"sp4rkb4rt0k3n"}')
+      subject.session = session
+      subject.sparkbar_token.should eq("sp4rkb4rt0k3n")
+    end
+    it "should raise an error on missing sparkbar token" do
+      c = stub_request(:post, "https://test.sparkplatform.com/appbar/authorize").
+        with(:body => "access_token=#{session.access_token}").
+        to_return(:body => '{"foo":"bar"}')
+      subject.session = session
+      expect {subject.sparkbar_token }.to raise_error(SparkApi::ClientError)
     end
   end
 
