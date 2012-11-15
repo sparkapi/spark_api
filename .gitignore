@@ -4,6 +4,7 @@ log/
 .DEV*
 spec/reports/
 .bundle/ruby
+.bundle/jruby
 coverage
 bundle
 vendor/cache/
