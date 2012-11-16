@@ -18,6 +18,9 @@ module SparkApi
         :no_verify => "NO_VERIFY",
         # OAUTH2 Options
         :access_uri  => "ACCESS_URI",
+        :authorization_uri => "AUTHORIZATION_URI",
+        :redirect_uri => "REDIRECT_URI",
+        :code => "CODE",
         :username=> "USERNAME",
         :password=> "PASSWORD",
         :client_id=> "CLIENT_ID",
@@ -54,6 +57,9 @@ module SparkApi
           :endpoint          => ENV[OPTIONS_ENV[:endpoint]],
           # OAUTH2 Options
           :access_uri  => ENV[OPTIONS_ENV[:access_uri]],
+          :authorization_uri  => ENV[OPTIONS_ENV[:authorization_uri]],
+          :redirect_uri  => ENV[OPTIONS_ENV[:redirect_uri]],
+          :code  => ENV[OPTIONS_ENV[:code]],
           :username=> ENV[OPTIONS_ENV[:username]],
           :password=> ENV[OPTIONS_ENV[:password]],
           :client_id=> ENV[OPTIONS_ENV[:client_id]],
@@ -79,15 +85,15 @@ module SparkApi
             Options are:
           BANNER
           opts.separator ""
+          opts.on("-e","--endpoint ENDPOINT",
+                  "URI of the API.",
+                  "Default: ENV['#{OPTIONS_ENV[:endpoint]}'] or #{SparkApi::Configuration::DEFAULT_ENDPOINT}") { |arg| cli_options[:endpoint] = arg }
+
+          # OAUTH2
           opts.on("-o","--oauth2",
                   "Run the API using OAuth2 credentials.  The client defaults to using the Spark API authentication mode for access. ",
                   "See http://sparkplatform.com/docs/authentication/authentication for more information on authentication types.",
                   "Default: false") { |arg| cli_options[:oauth2] = arg }
-          opts.on("-e","--endpoint ENDPOINT",
-                  "URI of the API.",
-                  "Default: ENV['#{OPTIONS_ENV[:endpoint]}']") { |arg| cli_options[:endpoint] = arg }
-
-          # OAUTH2
           opts.on("--client_id CLIENT_ID",
                   "OAuth2 client id",
                   "Default: ENV['#{OPTIONS_ENV[:client_id]}']") { |arg| cli_options[:client_id] = arg }
@@ -101,9 +107,17 @@ module SparkApi
                   "OAuth2 password",
                   "Default: ENV['#{OPTIONS_ENV[:password]}']") { |arg| cli_options[:password] = arg }
           opts.on("--access_uri ACCESS_URI",
-                  "OAuth2 path for granting access to the application",
-                  "Default: ENV['#{OPTIONS_ENV[:access_uri]}']") { |arg| cli_options[:access_uri] = arg }
-                    
+                  "OAuth2 path for granting access to the application using one of the supported grant types.",
+                  "Default: ENV['#{OPTIONS_ENV[:access_uri]}'] or #{SparkApi::Configuration::DEFAULT_ACCESS_URI}") { |arg| cli_options[:access_uri] = arg }
+          opts.on("--redirect_uri REDIRECT_URI",
+                  "OAuth2 application redirect for the client id. This needs to match whatever value is saved for the application's client_id",
+                  "Default: ENV['#{OPTIONS_ENV[:redirect_uri]}'] or #{SparkApi::Configuration::DEFAULT_REDIRECT_URI}") { |arg| cli_options[:redirect_uri] = arg }
+          opts.on("--authorization_uri AUTHORIZATION_URI",
+                  "OAuth2 authorization endpoint for a user. This is where the user should go to sign in and authorize client id.",
+                  "Default: ENV['#{OPTIONS_ENV[:authorization_uri]}'] or #{SparkApi::Configuration::DEFAULT_AUTH_ENDPOINT}") { |arg| cli_options[:authorization_uri] = arg }
+          opts.on("--code CODE",
+                  "OAuth2 authorization code used for granting application access to the API for a user") { |arg| cli_options[:code] = arg }
+          
           # API AUTH
           opts.on("--api_key API_KEY",
                   "Authentication key for running the api using the default api authentication",
@@ -114,7 +128,8 @@ module SparkApi
           opts.on("--api_user API_USER",
                   "ID of the Spark user to run the client as.",
                   "Default: ENV['#{OPTIONS_ENV[:api_user]}']") { |arg| cli_options[:api_user] = arg }
-                    
+          
+          # General           
           opts.on("-f", "--file FILE",
                   "Load configuration for yaml file.") { |arg| file_options = parse_file_options(arg) }
           opts.on("--no_verify",

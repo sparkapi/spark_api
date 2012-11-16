@@ -5,7 +5,7 @@ module SparkApi
   module Configuration
     class YamlConfig
       KEY_CONFIGURATIONS = VALID_OPTION_KEYS  + [:oauth2] + OAUTH2_KEYS  
-      DEFAULT_OAUTH2_PROVIDER = "SparkApi::Authentication::OAuth2Impl::PasswordProvider"
+      DEFAULT_OAUTH2_PROVIDER = "SparkApi::Authentication::OAuth2Impl::CLIProvider"
       attr_accessor *KEY_CONFIGURATIONS
       attr_reader :client_keys, :oauth2_keys, :provider
       

@@ -45,3 +45,34 @@ include SparkApi::Models
 def c
   SparkApi.client
 end
+
+# Straight up HTTP functions y'all!!!
+
+def get(path, options={})
+  c.get(path, options)
+end
+
+def post(path, body = nil, options={})
+  c.post(path, body, options)
+end
+
+def put(path, body = nil, options={})
+  c.put(path, body, options)
+end
+
+def delete(path, options={})
+  c.delete(path, options)
+end
+
+# Handy session persistence
+def save_oauth2_session! session_alias = "default"
+  
+rescue => e
+  puts "Unable to save the oauth2 session: #{e.message}"
+end  
+
+def load_oauth2_session session_alias = "default"
+  c.oauth2_provider.session = ""
+rescue => e
+  puts "Unable to find a saved oauth2 session: #{e.message}"
+end

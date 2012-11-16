@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'yajl-ruby', '~> 1.1.0'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
+  s.add_dependency 'highline', '>= 1.0'
 
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
