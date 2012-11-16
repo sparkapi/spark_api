@@ -5,7 +5,10 @@
             { 
               "ResourceUri": "/v1/savedsearches/20100815220615294367000000",
               "Id":  "20100815220615294367000000",
-              "Name": "Search name here" 
+              "Name": "Search name here",
+              "ContactIds": [
+                "20100815220615294367000000"
+              ]
             },
             { 
               "ResourceUri": "/v1/savedsearches/20100615220615292711000000",
