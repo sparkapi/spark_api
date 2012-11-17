@@ -45,6 +45,11 @@ module SparkApi
           response.expires_in = provider.session_timeout if response.expires_in.nil?
           SparkApi.logger.debug("[oauth2] New session created #{response}")
           response
+        rescue Faraday::Error::ConnectionFailed => e
+          if @client.ssl_verify && e.message =~ /certificate verify failed/
+            SparkApi.logger.error(SparkApi::Errors.ssl_verification_error)
+          end
+          raise e
         end
                 
         def needs_refreshing?
@@ -66,9 +71,9 @@ module SparkApi
           opts = {
             :headers => @client.headers
           }
-          opts[:ssl] = {:verify => false }
+          
+          opts[:ssl] = {:verify => false } unless @client.ssl_verify
           opts[:url] = endpoint       
-          Faraday.register_middleware :response, :faraday_middleware => FaradayMiddleware
           conn = Faraday::Connection.new(opts) do |conn|
             conn.response :oauth2_impl
             conn.adapter Faraday.default_adapter

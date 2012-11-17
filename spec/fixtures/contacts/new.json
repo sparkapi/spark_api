@@ -5,7 +5,6 @@
 				"DisplayName": "Contact Four",
 				"PrimaryEmail": "contact4@fbsdata.com"
 			}
-		],
-		"Notify": false
+		]
 	}
 }

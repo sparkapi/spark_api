@@ -1,7 +1,9 @@
+require 'spark_api/models/dirty'
 require 'spark_api/models/base'
 require 'spark_api/models/constraint'
 require 'spark_api/models/finders'
 require 'spark_api/models/subresource'
+require 'spark_api/models/concerns'
 
 require 'spark_api/models/account'
 require 'spark_api/models/connect_prefs'
@@ -26,6 +28,7 @@ require 'spark_api/models/tour_of_home'
 require 'spark_api/models/video'
 require 'spark_api/models/virtual_tour'
 require 'spark_api/models/rental_calendar'
+require 'spark_api/models/subscription'
 
 module SparkApi
   module Models

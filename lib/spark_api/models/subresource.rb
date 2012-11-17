@@ -25,6 +25,7 @@ module SparkApi
 
             begin
               datetime = DateTime.strptime(formatted_date, '%m/%d/%YT%l:%M %P')
+              dst_offset = 0
             rescue => ex
               ; # Do nothing; doesn't matter
             end
@@ -35,6 +36,7 @@ module SparkApi
                 begin
                   datetime = DateTime.strptime(formatted_date, format)
                   datetime = datetime.new_offset DateTime.now.offset
+                  dst_offset = Time.now.dst? ? 0 : 1
                   break
                 rescue => ex
                   next
@@ -46,9 +48,11 @@ module SparkApi
             unless datetime
               raise ArgumentError.new('invalid date')
             end
+            
+            
 
             attributes[time] = Time.local(datetime.year, datetime.month, datetime.day,
-                                          datetime.hour, datetime.min, datetime.sec)
+                                          datetime.hour + dst_offset, datetime.min, datetime.sec)
           end
           attributes['Date'] = date
         end

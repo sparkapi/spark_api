@@ -24,7 +24,7 @@ module SparkApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   SparkApi::ClientError or subclass if the request failed.
-    def post(path, body={}, options={})
+    def post(path, body = nil, options={})
       request(:post, path, body, options)
     end
 
@@ -37,7 +37,7 @@ module SparkApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   SparkApi::ClientError or subclass if the request failed.
-    def put(path, body={}, options={})
+    def put(path, body = nil, options={})
       request(:put, path, body, options)
     end
 
@@ -64,13 +64,13 @@ module SparkApi
       begin
         request_opts = {}
         request_opts.merge!(options)
-        post_data = body.nil? ? nil : {"D" => body }.to_json
         request_path = "/#{version}#{path}"
         start_time = Time.now
         SparkApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
-        if post_data.nil?
+        if [:get, :delete, :head].include?(method.to_sym)
           response = authenticator.request(method, request_path, nil, request_opts)
         else
+          post_data = process_request_body(body)
           SparkApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
           response = authenticator.request(method, request_path, post_data, request_opts)
         end
@@ -89,6 +89,19 @@ module SparkApi
         raise
       end
       response.body
+    rescue Faraday::Error::ConnectionFailed => e
+      if self.ssl_verify && e.message =~ /certificate verify failed/
+        SparkApi.logger.error(SparkApi::Errors.ssl_verification_error)
+      end
+      raise e
+    end
+    
+    def process_request_body(body)
+      if body.is_a?(Hash)
+        body.empty? ? "{}" : {"D" => body }.to_json
+      else
+        body
+      end
     end
     
   end

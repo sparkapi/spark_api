@@ -14,8 +14,8 @@ SparkApi.configure do |config|
   config.api_key      = "YOUR_CLIENT_ID"
   config.api_secret   = "YOUR_CLIENT_SECRET"
   config.callback     = "YOUR_REDIRECT_URI"
-  config.auth_endpoint = "https://developers.sparkplatform.com/openid"
-  config.endpoint   = 'https://developers.sparkapi.com'
+  config.auth_endpoint = "https://sparkplatform.com/openid"
+  config.endpoint   = 'https://sparkapi.com'
 end
 
 client = SparkApi.client
@@ -24,7 +24,7 @@ client = SparkApi.client
 # Step 1:
 # To get your code to post to /v1/oauth2/grant, send the end user to this URI, replacing the all-capped strings with
 # the CGI-escaped credentials for your key:
-# https://developers.sparkplatform.com/oauth2?response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI
+# https://sparkplatform.com/oauth2?response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI
 # When the user has finished, they will land at:
 # YOUR_REDIRECT_URI?code=CODE.
 puts "Go here and log in to get your code: #{client.authenticator.authorization_url}"

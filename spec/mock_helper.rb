@@ -32,15 +32,19 @@ def stub_api_delete(service_path, stub_fixture="success.json", opts={})
   log_stub(s)
 end
 def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
-  body_hash = MultiJson.load(fixture(body).read)
-  body_str = MultiJson.dump(body_hash)
+  if body.is_a?(Hash)
+    body = { :D => body } unless body.empty? 
+  elsif !body.nil?
+    body = MultiJson.load(fixture(body).read)
+  end
+  body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
   s=stub_request(:post, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
       with(:query => {
         :ApiSig => sig        
         }.merge(params),
-        :body => body_str
+        :body => body
       )
   if(block_given?)
     yield s
@@ -50,15 +54,19 @@ def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
   log_stub(s)
 end
 def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
-  body_hash = MultiJson.load(fixture(body).read)
-  body_str = MultiJson.dump(body_hash)
+  if body.is_a? Hash
+    body = { :D => body }
+  elsif !body.nil?
+    body = MultiJson.load(fixture(body).read)
+  end
+  body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
   s=stub_request(:put, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
       with(:query => {
         :ApiSig => sig        
         }.merge(params),
-        :body => body_str
+        :body => body
       )
   if(block_given?)
     yield s

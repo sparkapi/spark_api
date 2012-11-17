@@ -43,6 +43,7 @@ module SparkApi
         escaped_path = URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
+        options.merge!(:ApiUser => "#{@client.api_user}") unless @client.api_user.nil?
         parameter_string = options.size > 0 ? "?#{build_url_parameters(options)}" : ""
         request_path = "#{escaped_path}#{parameter_string}"
         SparkApi.logger.debug("Request: #{request_path}")
@@ -67,19 +68,42 @@ module SparkApi
         }
         "#{@provider.authorization_uri}?#{build_url_parameters(params)}"
       end
-            
+      
+      # Create a sparkbar token based on the current user's access token
+      def sparkbar_token()
+        raise ClientError, "OAuth2Provider must configure the sparkbar_uri to use sparkbar tokens" if provider.sparkbar_uri.nil?
+        SparkApi.logger.debug("[sparkbar] create token to #{provider.sparkbar_uri}")
+        uri = URI.parse(provider.sparkbar_uri)
+        request_path = "#{uri.path}"
+        
+        SparkApi.logger.info("[sparkbar] create token to #{request_path}, #{session.access_token.inspect}")
+        response = sparkbar_connection("#{uri.scheme}://#{uri.host}").post(request_path, "access_token=#{session.access_token}").body
+        token = response["token"]
+        SparkApi.logger.debug("[sparkbar] New token created #{token}")
+        token
+      end
+      
       protected
+      
+      attr_reader :provider, :client
       
       def auth_header
         {"Authorization"=> "OAuth #{session.access_token}"}
       end
       
-      def provider
-        @provider
-      end
-      def client
-        @client
-      end
+      # Faraday handle to the sparkbar
+      def sparkbar_connection(endpoint)
+        opts = {
+          :headers => client.headers
+        }
+        opts[:headers].delete(:content_type)
+        opts[:ssl] = {:verify => false } unless @client.ssl_verify
+        opts[:url] = endpoint       
+        conn = Faraday::Connection.new(opts) do |conn|
+          conn.response :sparkbar_impl
+          conn.adapter Faraday.default_adapter
+        end
+      end        
 
     end
 
@@ -142,16 +166,21 @@ module SparkApi
       end
       #  Is the user session token expired?
       def expired?
+        return false if @expires_in.nil?
         @start_time + Rational(@expires_in - @refresh_timeout, 86400) < DateTime.now
       end
       
       def to_json(*a)
+        to_hash.to_json(*a)
+      end
+      
+      def to_hash
         hash = {}
         SESSION_ATTRIBUTES.each do |k|
           value = self.send(k)
           hash[k.to_s] = value unless value.nil?
         end
-        hash.to_json(*a)
+        hash 
       end
     end
     
@@ -222,8 +251,9 @@ module SparkApi
       require 'spark_api/authentication/oauth2_impl/grant_type_refresh'
       require 'spark_api/authentication/oauth2_impl/grant_type_code'
       require 'spark_api/authentication/oauth2_impl/grant_type_password'
-      require 'spark_api/authentication/oauth2_impl/password_provider'
+      require 'spark_api/authentication/oauth2_impl/cli_provider'
       require 'spark_api/authentication/oauth2_impl/simple_provider'
+      require 'spark_api/authentication/oauth2_impl/single_session_provider'
       
       # Loads a provider class from a string
       def self.load_provider(string, args={})
