@@ -51,6 +51,19 @@ describe Listing do
           'Date'=>"10/01/2010",
           'StartTime'=>"09:00:00-07:00",
           'EndTime'=>"12:00:00-07:00"
+        }],
+        "TourOfHomes" => [{
+                "AdditionalInfo" => [
+                    {"Hosted By" => "Mr. Agent"}, 
+                    {"Hosted Phone" => "111-222-3333"}, 
+                    {"Area" => "North Fargo"}
+                ], 
+                "Comments" => "First listing tour", 
+                "Date" => "05/14/2012", 
+                "Id" => "20120509194700383011000000", 
+                "ResourceUri" => "/vX/listings/20000612234839640464000000/tourofhomes/20120509194700383011000000", 
+                "StartTime" => "12:00 PM", 
+                "EndTime" => "5:00 PM"
         }]
       },
       "Id"=>"20080619000032866372000000"
@@ -326,6 +339,19 @@ describe Listing do
         l.length.should == 1
       end
     end
+
+    context "/listings/tourofhomes", :support do
+      on_get_it "should return tours of homes" do
+        s = stub_api_get('/listings/tourofhomes', 'listings/tour_of_homes_search.json')
+
+        listings = Listing.tour_of_homes
+        
+        listings.should be_an(Array)
+        listings.count.should eq(2)
+
+      end
+    end
+
   end
 
   after(:each) do
