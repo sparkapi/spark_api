@@ -34,6 +34,10 @@ describe Subscription do
       @subscription.persisted?.should eq(true)
     end
 
+  end
+
+  context "/subscriptions/<id>" do
+
     it "should subscribe a contact by id" do
       stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
       stub_api_put("/subscriptions/#{id}/subscribers/20101230223226074306000000", nil, 'subscriptions/subscribe.json')
@@ -79,7 +83,7 @@ describe Subscription do
 
   end
 
-  context "/subscriptions/:id", :support do
+  context "/subscriptions/<id>", :support do
 
     on_get_it "should get a subscription" do
       stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
@@ -99,6 +103,24 @@ describe Subscription do
       stub_api_delete("/subscriptions/#{id}", 'generic_delete.json')
       resource = subject.class.find(id)
       resource.delete
+    end
+
+  end
+
+  context "/subscriptions/<id>/subscribers" do
+
+    on_get_it "should return a list of recipients" do
+      stub_api_get("/subscriptions/#{id}", "subscriptions/get.json")
+      stub_api_get("/subscriptions/20101230223226074204000000/subscribers", "subscriptions/subscribers.json")
+
+      subscription = subject.class.find(id)
+      subscribers = subscription.subscribers
+      subscribers.should be_an(Array)
+    end
+
+    it "should return an empty array if model isn't persisted" do
+      subscription = Subscription.new
+      subscription.subscribers.should be_an(Array)
     end
 
   end
