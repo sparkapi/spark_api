@@ -6,6 +6,7 @@ require 'spark_api/models/subresource'
 require 'spark_api/models/concerns'
 
 require 'spark_api/models/account'
+require 'spark_api/models/activity'
 require 'spark_api/models/connect_prefs'
 require 'spark_api/models/contact'
 require 'spark_api/models/comment'
