@@ -97,8 +97,8 @@ module SparkApi
     end
     
     def process_request_body(body)
-      if body.is_a?(Hash) && !body.empty?
-        {"D" => body }.to_json
+      if body.is_a?(Hash)
+        body.empty? ? "{}" : {"D" => body }.to_json
       else
         body
       end

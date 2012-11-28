@@ -13,7 +13,8 @@ module SparkApi
       # Requirements for password grant type
       :username, :password,
       # Requirements for single session keys
-      :access_token
+      :access_token,
+      :sparkbar_uri
     ]
       
     require File.expand_path('../configuration/yaml', __FILE__)
@@ -25,8 +26,11 @@ module SparkApi
     DEFAULT_API_SECRET = nil
     DEFAULT_API_USER = nil
     DEFAULT_ENDPOINT = 'https://api.sparkapi.com'
+    DEFAULT_REDIRECT_URI = "https://sparkplatform.com/oauth2/callback"
     DEFAULT_AUTH_ENDPOINT = 'https://sparkplatform.com/openid'  # Ignored for Spark API Auth
+    DEFAULT_AUTHORIZATION_URI = 'https://sparkplatform.com/oauth2'
     DEFAULT_VERSION = 'v1'
+    DEFAULT_ACCESS_URI = "#{DEFAULT_ENDPOINT}/#{DEFAULT_VERSION}/oauth2/grant"
     DEFAULT_USER_AGENT = "Spark API Ruby Gem #{VERSION}"
     DEFAULT_SSL = true
     DEFAULT_SSL_VERIFY = true

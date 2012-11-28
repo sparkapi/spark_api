@@ -5,6 +5,7 @@ development:
   redirect_uri:      'http://localhost/oauth2/callback'
   client_id:         'developmentid124nj4qu3pua'
   client_secret:     'developmentsecret4orkp29f'
+  sparkbar_uri:      'https://dev.sparkplatform.com/appbar/authorize'
   endpoint:          'https://developers.sparkapi.com'
   oauth2_provider:   'SparkApi::TestOAuth2Provider'
 
@@ -25,5 +26,6 @@ production:
   redirect_uri:      'http://localhost/oauth2/callback'
   client_id:         'production1id124nj4qu3pua'
   client_secret:     'productionsecret4orkp29fv'
+  sparkbar_uri:      'https://sparkplatform.com/appbar/authorize'
   endpoint:          'https://api.sparkapi.com'
 

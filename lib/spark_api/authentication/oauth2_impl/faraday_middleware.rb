@@ -35,6 +35,34 @@ module SparkApi
 
       end
       Faraday.register_middleware :response, :oauth2_impl => FaradayMiddleware
+      
+      #==OAuth2 Faraday response middleware
+      # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
+      class SparkbarFaradayMiddleware < Faraday::Response::Middleware
+  
+        def initialize(app)
+          super(app)
+        end
+  
+        def on_complete(env)
+          body = MultiJson.decode(env[:body])
+          SparkApi.logger.debug("[sparkbar] Response Body: #{body.inspect}")
+          unless body.is_a?(Hash)
+            raise InvalidResponse, "The server response could not be understood"
+          end
+          case env[:status]
+          when 200..299
+            SparkApi.logger.debug("[sparkbar] Success!")
+            if body.include?("token")
+              env[:body] = body
+              return
+            end
+          end
+          raise ClientError, {:message => "Unable to process sparkbar token #{body.inspect}", :code =>0, :status => env[:status]}
+        end
+  
+      end
+      Faraday.register_middleware :response, :sparkbar_impl => SparkbarFaradayMiddleware
 
     end
   end
