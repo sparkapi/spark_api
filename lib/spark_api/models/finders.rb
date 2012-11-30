@@ -11,9 +11,13 @@ module SparkApi
           when :all   then find_every(options)
           when :first then find_every(options).first
           when :last  then find_every(options).last
-          when :one   then find_one(options)
+          when :one   then find_every(options.merge(:_limit => 1)).first
           else             find_single(scope, options)
         end
+      end
+
+      def find_one(*arguments)
+        find(:one, *arguments)
       end
       
       def first(*arguments)
@@ -28,10 +32,6 @@ module SparkApi
 
       def find_every(options)
         collect(connection.get("/#{element_name}", options))
-      end
-
-      def find_one(options)
-        raise NotImplementedError # TODO um... what?
       end
 
       def find_single(scope, options)
