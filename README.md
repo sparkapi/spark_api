@@ -65,6 +65,11 @@ The client also provides ActiveModelesque interface for working with the api res
     # Top list price: $199999.99
     puts Account.find(:first, :_filter => "UserType Eq 'Member' And Name Eq 'John*'").Name
     # John Doe
+    
+
+JSON Parsing
+--------------
+By default, this gem uses the pure ruby json gem for parsing API responses for cross platform compatibility. Projects that include the yajl-ruby gem will see noticeable speed improvements when installed.
 
 
 Authentication Types
