@@ -1,0 +1,95 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/listings/20060725224713296297000000",
+                "StandardFields": {
+                    "StreetNumber": "7298",
+                    "Longitude": "-116.3237",
+                    "City": "Bonners Ferry",
+                    "ListingId": "06-9395",
+                    "PublicRemarks": "Afforadable home in town close to hospital,yet quiet country like setting. Good views. Must see",
+                    "BuildingAreaTotal": "924.0",
+                    "YearBuilt": 1977,
+                    "StreetName": "BIRCH",
+                    "ListPrice": "50000.0",
+                    "PostalCode": "83805",
+                    "Latitude": "48.7001",
+                    "BathsThreeQuarter": null,
+                    "BathsFull": null,
+                    "BathsTotal": "1.0",
+                    "StateOrProvince": "ID",
+                    "PropertyType": "A",
+                    "StreetAdditionalInfo": null,
+                    "StreetDirPrefix": null,
+                    "BedsTotal": 3,
+                    "StreetDirSuffix": null,
+                    "ListingKey": "20060725224713296297000000",
+                    "ListOfficeName": "Century 21 On The Lake",
+                    "BathsHalf": null,
+                    "ModificationTimestamp": "2010-11-22T20:47:21Z",
+                    "CountyOrParish": "Boundary"
+                },
+                "TourOfHomes": [{
+                    "AdditionalInfo": [
+                        {"Hosted By": "Mr. Agent"}, 
+                        {"Hosted Phone": "111-222-3333"}, 
+                        {"Area": "North Fargo"}
+                    ], 
+                    "Comments": "First listing tour", 
+                    "Date": "05/14/2012", 
+                    "Id": "20120509194700383011000000", 
+                    "ResourceUri": "/vX/listings/20000612234839640464000000/tourofhomes/20120509194700383011000000", 
+                    "StartTime": "12:00 PM", 
+                    "EndTime": "5:00 PM"
+                }],
+                "Id": "20060725224713296297000000"
+            },
+            {
+                "ResourceUri": "/v1/listings/20060725224713296972000000",
+                "StandardFields": {
+                    "StreetNumber": "7294",
+                    "Longitude": "-116.3237",
+                    "City": "Bonners Ferry",
+                    "ListingId": "06-9396",
+                    "PublicRemarks": "Afforadable home in town close to hospital,yet quiet country like setting. Good views. Must see",
+                    "BuildingAreaTotal": "924.0",
+                    "YearBuilt": 1977,
+                    "StreetName": "BIRCH",
+                    "ListPrice": "50000.0",
+                    "PostalCode": "83805",
+                    "Latitude": "48.7041",
+                    "BathsThreeQuarter": null,
+                    "BathsFull": null,
+                    "BathsTotal": "1.0",
+                    "StateOrProvince": "ID",
+                    "PropertyType": "A",
+                    "StreetAdditionalInfo": null,
+                    "StreetDirPrefix": null,
+                    "BedsTotal": 3,
+                    "StreetDirSuffix": null,
+                    "ListingKey": "20060725224713296972000000",
+                    "ListOfficeName": "Century 21 On The Lake",
+                    "BathsHalf": null,
+                    "ModificationTimestamp": "2010-11-22T20:47:21Z",
+                    "CountyOrParish": "Boundary"
+                },
+                "TourOfHomes": [{
+                    "AdditionalInfo": [
+                        {"Hosted By": "Mr. Agent"}, 
+                        {"Hosted Phone": "111-222-3333"}, 
+                        {"Area": "North Fargo"}
+                    ], 
+                    "Comments": "First listing tour", 
+                    "Date": "05/14/2012", 
+                    "Id": "20120509194700383011000000", 
+                    "ResourceUri": "/vX/listings/20000612234839640464000000/tourofhomes/20120509194700383011000000", 
+                    "StartTime": "12:00 PM", 
+                    "EndTime": "5:00 PM"
+                }],
+                "Id": "20060725224713296972000000"
+            }
+        ],
+        "Success": true
+    }
+}
