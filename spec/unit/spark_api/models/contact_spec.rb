@@ -10,13 +10,27 @@ describe Contact do
     Contact.should respond_to(:my)
   end
 
-  it "should get a contact's subscriptions" do
-    s = stub_api_get("/subscriptions", "subscriptions/get.json", {
-      :_filter => "RecipientId Eq '20101230223226074201000000'"
-    })
-    contact = Contact.new(:Id => "20101230223226074201000000")
-    contact.subscriptions
-    s.should have_been_requested
+  context "/subscriptions" do
+
+    subject { Contact.new(:Id => "20101230223226074201000000") }
+
+    it "should get a contact's subscriptions" do
+      s = stub_api_get("/subscriptions", "subscriptions/get.json", {
+        :_filter => "RecipientId Eq '20101230223226074201000000'"
+      })
+      subject.subscriptions
+      s.should have_been_requested
+    end
+
+    it "should pass any arguments as parameters" do
+      s = stub_api_get("/subscriptions", "subscriptions/get.json", {
+        :_filter => "RecipientId Eq '20101230223226074201000000'",
+        :a_test_argument => "just a test"
+      })
+      subject.subscriptions(:a_test_argument => "just a test")
+      s.should have_been_requested
+    end
+
   end
 
   context "/contacts", :support do
@@ -131,27 +145,45 @@ describe Contact do
     let(:contact_id) { "20090928182824338901000000" }
 
     context "/savedsearches", :support do
-      on_get_it "should get all the saved searches belonging to the customer" do
+
+      subject(:contact) do
         stub_api_get("/my/contact", 'contacts/my.json')
         contact = Contact.my
+      end
+
+      on_get_it "should get all the saved searches belonging to the customer" do
         stub_api_get("/contacts/#{contact.Id}/savedsearches", 'saved_searches/get.json')
-        contact.should respond_to(:saved_searches)
         saved_searches = contact.saved_searches
         saved_searches.should be_an(Array)
         saved_searches.length.should eq(2)
       end
+
+      it "should pass any arguments as parameters" do
+        stub_api_get("/contacts/#{contact.Id}/savedsearches", 'saved_searches/get.json', :_pagination => 1)
+        saved_searches = contact.saved_searches(:_pagination => 1)
+      end
+
     end
 
     context "/listingcarts", :support do
-      on_get_it "should get all the listing carts belonging to the customer" do
+
+      subject(:contact) do
         stub_api_get("/my/contact", 'contacts/my.json')
-        contact = Contact.my
+        Contact.my
+      end
+
+      on_get_it "should get all the listing carts belonging to the customer" do
         stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
-        contact.should respond_to(:listing_carts)
         saved_searches = contact.listing_carts
         saved_searches.should be_an(Array)
         saved_searches.length.should eq(2)
       end
+
+      it "should pass any arguments as parameters" do
+        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json', :test_argument => "yay")
+        saved_searches = contact.listing_carts(:test_argument => "yay")
+      end
+
     end
 
     context "/portal", :support do

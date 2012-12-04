@@ -33,20 +33,20 @@ module SparkApi
         params_for_save[:Notify] = notify_me
       end
 
-      def saved_searches
-        @saved_searches ||= SavedSearch.collect(connection.get("/contacts/#{self.Id}/savedsearches"))
+      def saved_searches(arguments = {})
+        @saved_searches ||= SavedSearch.collect(connection.get("/contacts/#{self.Id}/savedsearches", arguments))
       end
 
-      def listing_carts
-        @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts"))
+      def listing_carts(arguments = {})
+        @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts", arguments))
       end
 
-      def subscriptions
-        @subscriptions ||= Subscription.get(:_filter => "RecipientId Eq '#{self.attributes['Id']}'")
+      def subscriptions(arguments = {})
+        @subscriptions ||= Subscription.get(arguments.merge(:_filter => "RecipientId Eq '#{self.attributes['Id']}'"))
       end
 
-      def comments
-        @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments"))
+      def comments(arguments = {})
+        @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments", arguments))
       end
       def comment(body)
         comment = Comment.new({ :Comment => body })
