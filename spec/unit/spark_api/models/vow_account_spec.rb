@@ -23,6 +23,14 @@ describe VowAccount do
       s.should have_been_requested
     end
 
+    on_post_it "should create an empty consumer account" do
+      s = stub_api_post("/contacts/20090928182824338901000000/portal", nil, "contacts/vow_accounts/post.json")
+      vow = VowAccount.new
+      vow.parent = Contact.new(:Id => "20090928182824338901000000")
+      vow.save
+      s.should have_been_requested
+    end
+
     on_put_it "should update a consumer account details" do
       @vow_account.LoginName
       @vow_account.LoginName = "Johnny Newman"
