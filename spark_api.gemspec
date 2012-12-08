@@ -32,7 +32,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday', '~> 0.8.1'
   s.add_dependency 'multi_json', '~> 1.0'
   s.add_dependency 'json', '~> 1.7'
-  s.add_dependency 'yajl-ruby', '~> 1.1.0'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
   s.add_dependency 'highline', '>= 1.0'
@@ -40,8 +39,8 @@ Gem::Specification.new do |s|
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
   s.add_development_dependency 'rspec', '~> 2.11.0'
-  s.add_development_dependency 'webmock', '1.7.5'
-  s.add_development_dependency 'typhoeus', '~> 0.2.4'
+  s.add_development_dependency 'webmock', '~> 1.9'
+  s.add_development_dependency 'typhoeus', '~> 0.3'
   s.add_development_dependency 'ci_reporter', '~> 1.7.0'
   s.add_development_dependency 'rcov', '~> 0.9.9'
   s.add_development_dependency 'flexmls_gems', '~> 0.2.5'

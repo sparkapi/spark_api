@@ -3,7 +3,7 @@ require './spec/spec_helper'
 describe SparkApi do
 
   it "should use 'yajl-ruby' for parsing json" do
-    MultiJson.engine.should eq(MultiJson::Adapters::Yajl)
+    MultiJson.engine.should eq(MultiJson::Adapters::Yajl) unless jruby?
   end
 
   it "should load the version" do

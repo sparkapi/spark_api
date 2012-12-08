@@ -1,7 +1,12 @@
 module SparkApi
   module Configuration
 
-    MultiJson.engine = "yajl"
+    begin
+      require 'yajl'
+      MultiJson.engine = "yajl"
+    rescue LoadError => e
+      # Using pure ruby JSON parser
+    end
     
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
