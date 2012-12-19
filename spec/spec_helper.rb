@@ -46,3 +46,7 @@ RSpec.configure do |config|
   config.alias_example_to :on_delete_it, :method => 'DELETE'
   config.before(:all) { reset_config }
 end
+
+def jruby? 
+  RUBY_PLATFORM == "java"
+end

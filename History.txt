@@ -1,3 +1,4 @@
+* yajl is no longer a dependency. To use it, make sure the gem is installed.
 == v1.2.0 2012-11-14
 * SSL verification enabled by default
 * Sparkbar token access support
