@@ -56,6 +56,49 @@ describe SavedSearch do
       resource.delete
     end
 
+    it "should attach a contact by id" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_put("/#{subject.class.element_name}/#{id}/contacts/20101230223226074306000000", nil, "success.json")
+      resource = subject.class.find(id)
+      resource.attach("20101230223226074306000000")
+      resource.ContactIds.size.should eq(2)
+      resource.ContactIds.any? { |c| c == "20101230223226074306000000" }.should eq(true)
+    end
+
+    it "should detach a contact by id" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_delete("/#{subject.class.element_name}/#{id}/contacts/20100815220615294367000000", "generic_delete.json")
+      resource = subject.class.find(id)
+      resource.detach("20100815220615294367000000")
+      resource.ContactIds.size.should eq(0)
+    end
+
+    it "should attach a contact by Contact object" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_put("/#{subject.class.element_name}/#{id}/contacts/20101230223226074306000000", nil, "success.json")
+      resource = subject.class.find(id)
+      resource.attach(Contact.new({ :Id => "20101230223226074306000000" }))
+      resource.ContactIds.size.should eq(2)
+      resource.ContactIds.any? { |c| c == "20101230223226074306000000" }.should eq(true)
+    end
+
+    it "should detach a contact by Contact object" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_delete("/#{subject.class.element_name}/#{id}/contacts/20100815220615294367000000", "generic_delete.json")
+      resource = subject.class.find(id)
+      resource.detach(Contact.new({:Id => "20100815220615294367000000" }))
+      resource.ContactIds.size.should eq(0)
+    end
+    
+    it "should initialize ContactIds as an array if nil" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_delete("/#{subject.class.element_name}/#{id}/contacts/20100815220615294367000000", "generic_delete.json")
+      resource = subject.class.find(id)
+      resource.ContactIds = nil
+      resource.detach(Contact.new({:Id => "20100815220615294367000000" }))
+      resource.ContactIds.size.should eq(0)
+    end
+
   end
 
   context "/provided/savedsearches", :support do
@@ -65,6 +108,23 @@ describe SavedSearch do
       resources.should be_an(Array)
       resources.length.should eq(2)
       resources.first.Id.should eq(id)
+    end
+  end
+
+  context "/savedsearches/<id>/contacts" do
+
+    on_get_it "should return a list of contacts" do
+      stub_api_get("/savedsearches/#{id}", "saved_searches/get.json")
+      stub_api_get("/savedsearches/20101230223226074204000000", "subscriptions/get.json")
+
+      resource = subject.class.find(id)
+      contacts = resource.contacts
+      contacts.should be_an(Array)
+    end
+
+    it "should return an empty array if model isn't persisted" do
+      resource = SavedSearch.new
+      resource.contacts.should be_an(Array)
     end
   end
 

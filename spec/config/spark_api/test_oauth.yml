@@ -8,6 +8,16 @@ development:
   sparkbar_uri:      'https://dev.sparkplatform.com/appbar/authorize'
   endpoint:          'https://developers.sparkapi.com'
   oauth2_provider:   'SparkApi::TestOAuth2Provider'
+
+test:
+  oauth2:            true
+  authorization_uri: 'https://developers.sparkplatform.com/oauth2'
+  access_uri:        'https://developers.sparkapi.com/v1/oauth2/grant'
+  redirect_uri:      'http://localhost/oauth2/callback'
+  client_id:         'developmentid124nj4qu3pua'
+  client_secret:     'developmentsecret4orkp29f'
+  endpoint:          'https://developers.sparkapi.com'
+  oauth2_provider:   'SparkApi::TestOAuth2Provider'
   
 production:
   oauth2:            true
