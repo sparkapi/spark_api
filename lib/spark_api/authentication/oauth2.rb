@@ -159,7 +159,7 @@ module SparkApi
         @scope = options["scope"]
         @refresh_token = options["refresh_token"]
         @start_time = options.fetch("start_time", DateTime.now)
-        @refresh_timeout = options.fetch("refresh_timeout",3600)
+        @refresh_timeout = options.fetch("refresh_timeout", 43200)
         if @start_time.is_a? String
           @start_time = DateTime.parse(@start_time)
         end
