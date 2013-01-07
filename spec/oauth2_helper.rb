@@ -25,7 +25,7 @@ class TestOAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
     nil
   end
   
-  def session_timeout; 7200; end
+  def session_timeout; 57600; end
   
 end
 

@@ -23,7 +23,7 @@ describe SparkApi::Authentication::OAuth2  do
         ).
         to_return(:body => fixture("oauth2/access.json"), :status=>200)
       subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
-      subject.authenticate.expires_in.should eq(7200)
+      subject.authenticate.expires_in.should eq(57600)
     end
     
     it "should raise an error when api credentials are invalid" do
@@ -246,7 +246,7 @@ describe SparkApi::Authentication::BaseOAuth2Provider  do
     describe TestOAuth2Provider do
       subject { TestOAuth2Provider.new }
       it "should be able to override the session timeout" do
-        subject.session_timeout.should eq(7200)
+        subject.session_timeout.should eq(57600)
       end
     end
   end
