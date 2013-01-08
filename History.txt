@@ -1,4 +1,4 @@
-== v1.2.1 2013-01-08
+== v1.3.0 2013-01-08
 * yajl is no longer a dependency. To use it, make sure the gem is installed.
 * JRuby support finalized
 * Increased default OAuthSession timeout to 12 hours
