@@ -10,29 +10,6 @@ describe Contact do
     Contact.should respond_to(:my)
   end
 
-  context "/subscriptions" do
-
-    subject { Contact.new(:Id => "20101230223226074201000000") }
-
-    it "should get a contact's subscriptions" do
-      s = stub_api_get("/subscriptions", "subscriptions/get.json", {
-        :_filter => "RecipientId Eq '20101230223226074201000000'"
-      })
-      subject.subscriptions
-      s.should have_been_requested
-    end
-
-    it "should pass any arguments as parameters" do
-      s = stub_api_get("/subscriptions", "subscriptions/get.json", {
-        :_filter => "RecipientId Eq '20101230223226074201000000'",
-        :a_test_argument => "just a test"
-      })
-      subject.subscriptions(:a_test_argument => "just a test")
-      s.should have_been_requested
-    end
-
-  end
-
   context "/contacts", :support do
 
     on_get_it "should get all my contacts" do

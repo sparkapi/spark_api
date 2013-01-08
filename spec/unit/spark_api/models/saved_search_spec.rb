@@ -115,7 +115,7 @@ describe SavedSearch do
 
     on_get_it "should return a list of contacts" do
       stub_api_get("/savedsearches/#{id}", "saved_searches/get.json")
-      stub_api_get("/savedsearches/20101230223226074204000000", "subscriptions/get.json")
+      stub_api_get("/savedsearches/20101230223226074204000000", "saved_searches/get.json")
 
       resource = subject.class.find(id)
       contacts = resource.contacts

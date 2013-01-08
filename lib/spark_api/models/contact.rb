@@ -41,10 +41,6 @@ module SparkApi
         @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts", arguments))
       end
 
-      def subscriptions(arguments = {})
-        @subscriptions ||= Subscription.get(arguments.merge(:_filter => "RecipientId Eq '#{self.attributes['Id']}'"))
-      end
-
       def comments(arguments = {})
         @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments", arguments))
       end
