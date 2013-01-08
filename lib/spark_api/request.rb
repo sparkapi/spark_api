@@ -1,8 +1,12 @@
+require 'spark_api/request/parallel'
+
 require 'cgi'
 
 module SparkApi
   # HTTP request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
   module Request
+    include Parallel
+
     # Perform an HTTP GET request
     # 
     # * path - Path of an api resource, excluding version and endpoint (domain) information
