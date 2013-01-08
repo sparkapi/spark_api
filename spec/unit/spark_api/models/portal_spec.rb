@@ -23,9 +23,9 @@ describe Portal do
     it "should create a portal for the current user" do
       stub_api_post("/portal", "portal/new.json", "portal/post.json")
       portal = Portal.new({
-        :DisplayName => "GreatPortal",
-        :Enabled => true,
-        :RequiredFields => [ "Address", "Phone" ]
+        "DisplayName" => "GreatPortal",
+        "Enabled" => true,
+        "RequiredFields" => [ "Address", "Phone" ]
       })
       portal.save
     end
