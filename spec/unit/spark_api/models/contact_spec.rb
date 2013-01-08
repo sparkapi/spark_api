@@ -11,6 +11,7 @@ describe Contact do
   end
 
   context "/contacts", :support do
+
     on_get_it "should get all my contacts" do
       stub_api_get("/contacts", 'contacts/contacts.json')
       contacts = Contact.get
@@ -72,6 +73,149 @@ describe Contact do
         expect{ c.save }.to raise_error(SparkApi::ClientError){ |e| e.status.should == 500 }
       end
     end
+
+    context "/tags", :support do
+      on_get_it "should get all my Tags" do
+        stub_api_get("/contacts/tags", 'contacts/tags.json')
+        tags = Contact.tags
+        tags.should be_an(Array)
+        tags.length.should eq(4)
+        tags.first["Tag"].should eq("Current Buyers")
+      end
+    end
+
+    context "/tags/<tag_name>", :support do
+      on_get_it "should get all contacts with Tag <tag_name>" do
+        stub_api_get("/contacts/tags/IDX%20Lead", 'contacts/contacts.json')
+        contacts = Contact.by_tag("IDX Lead")
+        contacts.should be_an(Array)
+        contacts.length.should eq(3)
+        contacts.first.Id.should eq("20101230223226074201000000")
+        contacts.first.Tags[0].should eq("IDX Lead")
+      end
+    end
+
+    context "/export", :support do
+      on_get_it "should get all contacts belonging to the current user" do
+        stub_api_get("/contacts/export", 'contacts/contacts.json')
+        Contact.should respond_to(:export)
+        contacts = Contact.export
+        contacts.should be_an(Array)
+        contacts.length.should eq(3)
+      end
+    end
+
+    context "/export/all", :support do
+      on_get_it "should get all contacts belonging to the current user" do
+        stub_api_get("/contacts/export/all", 'contacts/contacts.json')
+        Contact.should respond_to(:export_all)
+        contacts = Contact.export_all
+        contacts.should be_an(Array)
+        contacts.length.should eq(3)
+      end
+    end
+
+  end
+
+  context "/contacts/<contact_id>" do
+
+    let(:contact_id) { "20090928182824338901000000" }
+
+    context "/savedsearches", :support do
+
+      subject(:contact) do
+        stub_api_get("/my/contact", 'contacts/my.json')
+        contact = Contact.my
+      end
+
+      on_get_it "should get all the saved searches belonging to the customer" do
+        stub_api_get("/contacts/#{contact.Id}/savedsearches", 'saved_searches/get.json')
+        saved_searches = contact.saved_searches
+        saved_searches.should be_an(Array)
+        saved_searches.length.should eq(2)
+      end
+
+      it "should pass any arguments as parameters" do
+        stub_api_get("/contacts/#{contact.Id}/savedsearches", 'saved_searches/get.json', :_pagination => 1)
+        saved_searches = contact.saved_searches(:_pagination => 1)
+      end
+
+    end
+
+    context "/listingcarts", :support do
+
+      subject(:contact) do
+        stub_api_get("/my/contact", 'contacts/my.json')
+        Contact.my
+      end
+
+      on_get_it "should get all the listing carts belonging to the customer" do
+        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
+        saved_searches = contact.listing_carts
+        saved_searches.should be_an(Array)
+        saved_searches.length.should eq(2)
+      end
+
+      it "should pass any arguments as parameters" do
+        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json', :test_argument => "yay")
+        saved_searches = contact.listing_carts(:test_argument => "yay")
+      end
+
+    end
+
+    context "/portal", :support do
+      on_get_it "should return account information for the current user/contact?" do
+        stub_api_get("/my/contact", 'contacts/my.json')
+        contact = Contact.my
+        stub_api_get("/contacts/#{contact.Id}/portal", 'contacts/vow_accounts/get.json')
+        vow_account = contact.vow_account
+        vow_account.persisted?.should be_true
+      end
+    end
+
+    context "/comments" do
+
+      it "should get all of a contact's comments" do
+        s = stub_api_get("/contacts/#{contact_id}/comments", "comments/get.json")
+        comments = Contact.new(:Id => contact_id).comments
+        comments.size.should eq(2)
+        s.should have_been_requested
+      end
+
+      it "should create a new contact comment" do
+        s = stub_api_post("/contacts/#{contact_id}/comments", "comments/new.json", "comments/post.json")
+        comment = Comment.new(:Comment => "This is a comment.")
+        comment.parent = Contact.new(:Id => contact_id)
+        comment.save.should be(true)
+        comment.Id.should eq("20121114100201798092000005")
+        s.should have_been_requested
+      end
+
+      it "should create a new contact comment using helper method" do
+        stub_api_get("/my/contact", 'contacts/my.json')
+        s = stub_api_post("/contacts/#{contact_id}/comments", "comments/new.json", "comments/post.json")
+        contact = Contact.my
+        comment = contact.comment "This is a comment."
+        comment.should be_a(Comment)
+        s.should have_been_requested
+      end
+
+    end
+
+    context "/comments/<id>" do
+
+      let(:id) { "20121128133936712557000097" }
+
+      on_delete_it "should remove a comment" do
+        stub_api_get("/contacts/#{contact_id}/comments", "comments/get.json")
+        s = stub_api_delete("/activities/20121128132106172132000004/comments/#{id}", "success.json")
+        comment = Contact.new(:Id => contact_id).comments.first
+        comment.destroy.should eq(true)
+        s.should have_been_requested
+      end
+
+    end
+
   end
 
   context "/my/contact", :support do
@@ -81,27 +225,6 @@ describe Contact do
       contact.should be_a(Contact)
       contact.Id.should == '20090928182824338901000000'
       contact.DisplayName.should == 'BH FOO'
-    end
-  end
-
-  context "/contact/tags", :support do
-    on_get_it "should get all my Tags" do
-      stub_api_get("/contacts/tags", 'contacts/tags.json')
-      tags = Contact.tags
-      tags.should be_an(Array)
-      tags.length.should eq(4)
-      tags.first["Tag"].should eq("Current Buyers")
-    end
-  end
-
-  context "/contact/tags/<tag_name>", :support do
-    on_get_it "should get all contacts with Tag <tag_name>" do
-      stub_api_get("/contacts/tags/IDX%20Lead", 'contacts/contacts.json')
-      contacts = Contact.by_tag("IDX Lead")
-      contacts.should be_an(Array)
-      contacts.length.should eq(3)
-      contacts.first.Id.should eq("20101230223226074201000000")
-      contacts.first.Tags[0].should eq("IDX Lead")
     end
   end
 

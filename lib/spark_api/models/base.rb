@@ -7,14 +7,13 @@ module SparkApi
       extend Paginate
       include Dirty
 
-      attr_accessor :attributes, :errors
+      attr_accessor :attributes, :errors, :parent
 
       # Name of the resource as related to the path name
       def self.element_name
         # TODO I'd love to pull in active model at this point to provide default naming
         @element_name ||= "resource"
       end
-
       def self.element_name=(name)
         @element_name = name
       end
@@ -26,8 +25,24 @@ module SparkApi
       def self.prefix=(prefix)
         @prefix = prefix
       end
+
+      def resource_uri
+        self.ResourceUri.sub(/^\/#{SparkApi.client.version}/, "") if persisted?
+      end
+
       def self.path
         "#{prefix}#{element_name}"
+      end
+      def path
+        if self.persisted?
+          resource_uri.sub(/\/[0-9]{26}$/, "")
+        else
+          if @parent
+            "#{@parent.class.path}/#{@parent.Id}#{self.class.path}"
+          else
+            self.class.path
+          end
+        end
       end
 
       def self.connection
@@ -61,6 +76,11 @@ module SparkApi
         connection.get(path, options.merge({:_pagination=>"count"}))
       end
 
+      # update/create hash (can be overridden)
+      def post_data
+        { resource_pluralized => [ attributes ] }
+      end
+
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
 
@@ -82,7 +102,7 @@ module SparkApi
         end
       end
 
-      def respond_to?(method_symbol, include_private=false)
+      def respond_to?(method_symbol)
         if super
           return true
         else
@@ -105,8 +125,8 @@ module SparkApi
         uri[/\/.*\/(.+)$/, 1]
       end
 
-      def persisted?
-        !(@attributes['Id'].nil? && @attributes['ResourceUri'].nil?)
+      def persisted?;
+        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
       end
 
       protected
