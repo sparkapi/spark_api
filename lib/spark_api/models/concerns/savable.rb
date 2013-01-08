@@ -40,11 +40,6 @@ module SparkApi
           @params_for_save ||= {}
         end
 
-        # can be overridden
-        def post_data
-          { resource_pluralized => [ attributes ] }
-        end
-
         private 
 
         def update_resource_identifiers(result)

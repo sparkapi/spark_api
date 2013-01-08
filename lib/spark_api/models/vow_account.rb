@@ -11,8 +11,6 @@ module SparkApi
         super(attributes)
       end
 
-      def singular?; true end
-
       def enabled?
         (@attributes['Settings'].class == Hash) && @attributes['Settings']['Enabled'] == 'true'
       end

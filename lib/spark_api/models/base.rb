@@ -76,8 +76,10 @@ module SparkApi
         connection.get(path, options.merge({:_pagination=>"count"}))
       end
 
-      # Classes that override this to return true must implement save_path() method
-      def singular?; false end
+      # update/create hash (can be overridden)
+      def post_data
+        { resource_pluralized => [ attributes ] }
+      end
 
       def method_missing(method_symbol, *arguments)
         method_name = method_symbol.to_s
