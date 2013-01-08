@@ -41,7 +41,7 @@ describe MyExampleModel, "Example model" do
 
   it "should parse and return the correct path for resource with a parent" do
     @model = MyExampleModel.new
-    @model.parent = Contact.new(Id: "20101230223226074201000000")
+    @model.parent = Contact.new({ :Id => "20101230223226074201000000" })
     @model.path.should eq("/contacts/20101230223226074201000000/test/example")
   end
 
