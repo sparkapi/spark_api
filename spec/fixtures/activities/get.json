@@ -1,0 +1,22 @@
+{
+    "D": {
+        "Results": [
+            {
+                "Id":"20121128132106172132000004",
+                "ResourceUri":"/v1/activities/20121128132106172132000004",
+                "ActivityId":null,
+                "CreatedTimestamp":"2012-11-28T13:21:06Z",
+                "ActivityResourceUri":"/v1/contacts/20121102143633121730000000/comments",
+                "ActivityType":"ContactComment"
+            },
+            {
+                "Id":"20121128132106172132000005",
+                "ResourceUri":"/v1/activities/20121128132106172132000005",
+                "ActivityId":null,
+                "CreatedTimestamp":"2012-11-28T13:21:06Z",
+                "ActivityResourceUri":"/v1/contacts/20121102143633121730000000/comments",
+                "ActivityType":"ContactComment"
+            }
+        ]
+    }
+}

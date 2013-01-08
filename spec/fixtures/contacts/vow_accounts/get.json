@@ -1,0 +1,15 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [{
+            "ResourceUri": "/v1/contacts/20090928182824338901000000/portal",
+            "Id": "20060412165917817933000000",
+            "OwnerId": "20090410349683017933000000",
+            "LoginName": "dave",
+            "LastLogin": "2012-03-07T20:09:37Z",
+            "Locale": {
+              "Language": "en"
+            }
+        }]
+    }
+}
