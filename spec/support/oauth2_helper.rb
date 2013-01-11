@@ -7,6 +7,7 @@ class TestOAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
     @redirect_uri = "https://exampleapp.fbsdata.com/oauth-callback"
     @client_id="example-id"
     @client_secret="example-password"    
+    @sparkbar_uri = "https://test.sparkplatform.com/appbar/authorize"
     @session_cache = {}
   end
   
@@ -24,7 +25,7 @@ class TestOAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
     nil
   end
   
-  def session_timeout; 7200; end
+  def session_timeout; 57600; end
   
 end
 
@@ -56,6 +57,7 @@ class TestCLIOAuth2Provider < SparkApi::Authentication::BaseOAuth2Provider
     nil
   end
   def session_timeout; 60; end
+    
 end
 
 

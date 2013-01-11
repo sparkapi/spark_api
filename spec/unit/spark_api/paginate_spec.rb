@@ -31,7 +31,6 @@ end
 
 
 describe SparkApi::PaginateResponse do
-
   describe "paginate_response" do
     subject { PaginateResponseTester.new } 
     it "should give me the first page" do
@@ -128,7 +127,7 @@ describe SparkApi::Paginate do
   
   # non unit-y real world test of paginations with listings
   context "paginating listings" do
-    before do
+    before(:each) do
       stub_auth_request
     end
 

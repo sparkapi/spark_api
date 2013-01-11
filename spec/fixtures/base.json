@@ -2,11 +2,13 @@
             "Success": true, 
             "Results": [{
               "Id": 1,
+              "ResourceUri": "/v1/some/place/20101230223226074201000000",
               "Name": "My Example", 
               "Test": true
             },
             {
               "Id": 2, 
+              "ResourceUri": "/v1/some/place/20101230223226074204000000",
               "Name": "My Example2", 
               "Test": false
             }]}

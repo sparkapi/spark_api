@@ -1,17 +1,25 @@
 module SparkApi
   module Configuration
 
-    MultiJson.engine = "yajl"
+    begin
+      require 'yajl'
+      MultiJson.engine = "yajl"
+    rescue LoadError => e
+      # Using pure ruby JSON parser
+    end
     
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
-      :user_agent, :version, :ssl, :oauth2_provider, :authentication_mode, 
+      :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode, 
       :auth_endpoint, :callback].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
       :redirect_uri,  
       # Requirements for password grant type
-      :username, :password
+      :username, :password,
+      # Requirements for single session keys
+      :access_token,
+      :sparkbar_uri
     ]
       
     require File.expand_path('../configuration/yaml', __FILE__)
@@ -23,10 +31,14 @@ module SparkApi
     DEFAULT_API_SECRET = nil
     DEFAULT_API_USER = nil
     DEFAULT_ENDPOINT = 'https://api.sparkapi.com'
+    DEFAULT_REDIRECT_URI = "https://sparkplatform.com/oauth2/callback"
     DEFAULT_AUTH_ENDPOINT = 'https://sparkplatform.com/openid'  # Ignored for Spark API Auth
+    DEFAULT_AUTHORIZATION_URI = 'https://sparkplatform.com/oauth2'
     DEFAULT_VERSION = 'v1'
+    DEFAULT_ACCESS_URI = "#{DEFAULT_ENDPOINT}/#{DEFAULT_VERSION}/oauth2/grant"
     DEFAULT_USER_AGENT = "Spark API Ruby Gem #{VERSION}"
     DEFAULT_SSL = true
+    DEFAULT_SSL_VERIFY = true
     DEFAULT_OAUTH2 = nil
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
@@ -57,6 +69,7 @@ module SparkApi
       self.oauth2_provider = DEFAULT_OAUTH2
       self.user_agent  = DEFAULT_USER_AGENT
       self.ssl         = DEFAULT_SSL
+      self.ssl_verify  = DEFAULT_SSL_VERIFY
       self.version     = DEFAULT_VERSION
       self
     end

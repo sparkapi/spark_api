@@ -1,7 +1,4 @@
 
-require 'openssl'
-require 'faraday'
-require 'yajl'
 require 'date'
 
 require 'spark_api/authentication/base_auth'

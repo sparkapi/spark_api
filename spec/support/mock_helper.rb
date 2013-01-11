@@ -3,6 +3,7 @@ RSpec.configure do |config|
 end
 
 $test_client = SparkApi::Client.new({:api_key=>"", :api_secret=>""})
+
 def stub_api_get(service_path, stub_fixture="success.json", opts={})
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params)
@@ -32,15 +33,19 @@ def stub_api_delete(service_path, stub_fixture="success.json", opts={})
   log_stub(s)
 end
 def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
-  body_hash = MultiJson.load(fixture(body).read)
-  body_str = MultiJson.dump(body_hash)
+  if body.is_a?(Hash)
+    body = { :D => body } unless body.empty? 
+  elsif !body.nil?
+    body = MultiJson.load(fixture(body).read)
+  end
+  body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
   s=stub_request(:post, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
       with(:query => {
         :ApiSig => sig        
         }.merge(params),
-        :body => body_str
+        :body => body
       )
   if(block_given?)
     yield s
@@ -50,15 +55,19 @@ def stub_api_post(service_path, body, stub_fixture="success.json", opts={})
   log_stub(s)
 end
 def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
-  body_hash = MultiJson.load(fixture(body).read)
-  body_str = MultiJson.dump(body_hash)
+  if body.is_a? Hash
+    body = { :D => body }
+  elsif !body.nil?
+    body = MultiJson.load(fixture(body).read)
+  end
+  body_str = body.nil? ? body : MultiJson.dump(body)
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params, body_str)
-  s=stub_request(:put, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
-      with(:query => {
-        :ApiSig => sig        
+  full_path = "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}"
+  s=stub_request(:put, full_path).with(:query => {
+        :ApiSig => sig
         }.merge(params),
-        :body => body_str
+        :body => body
       )
   if(block_given?)
     yield s
@@ -70,6 +79,7 @@ end
 
 def log_stub(s)
   SparkApi.logger.debug("Stubbed Request: #{s.inspect} \n\n")
+  return s
 end
 
 def mock_session()
@@ -113,12 +123,12 @@ def test_connection(stubs)
 end
 
 def stub_auth_request()
-  stub_request(:post, "https://api.sparkapi.com/#{SparkApi.version}/session").
+  stub_request(:post, "#{SparkApi.endpoint}/#{SparkApi.version}/session").
               with(:query => {:ApiKey => "", :ApiSig => "806737984ab19be2fd08ba36030549ac"}).
               to_return(:body => fixture("session.json"))
 end
 
 def fixture(file)
-  File.new(File.expand_path("../fixtures", __FILE__) + '/' + file)
+  File.new(File.expand_path("../../fixtures", __FILE__) + '/' + file)
 end
 

@@ -9,8 +9,46 @@ end
 class MyDefaultModel < Base
 end
 
+describe MyExampleModel, "Example model" do
+
+  before(:each) do
+    stub_auth_request
+    stub_api_get("/test/example", 'base.json')
+    @model = MyExampleModel.first
+  end
+
+  it "should be persisted" do
+    @model.persisted?.should eq(true)
+  end
+
+  it "should not be persisted" do
+    @new_model = MyExampleModel.new()
+    @new_model.persisted?.should eq(false)
+  end
+
+  it "should parse and return ResourceUri without v1" do
+    @model.resource_uri.should eq("/some/place/20101230223226074201000000")
+  end
+
+  it "should parse and return the correct path for a persisted resource" do
+    @model.path.should eq("/some/place")
+  end
+
+  it "should parse and return the correct path" do
+    @model = MyExampleModel.new
+    @model.path.should eq("/test/example")
+  end
+
+  it "should parse and return the correct path for resource with a parent" do
+    @model = MyExampleModel.new
+    @model.parent = Contact.new({ :Id => "20101230223226074201000000" })
+    @model.path.should eq("/contacts/20101230223226074201000000/test/example")
+  end
+
+end
 
 describe Base, "Base model" do
+
   describe "class methods" do
     it "should set the element name" do
       MyExampleModel.element_name.should eq("example")
@@ -69,6 +107,10 @@ describe Base, "Base model" do
       @model.Name?.should satisfy { |p| [true, false].include?(p) }
     end
 
+    it "should return a boolean for whether or not a model is persisted through the api" do
+      @model.persisted?.should satisfy { |p| [true, false].include?(p) }
+    end
+
     it "should raise an Error for a predicate for a non-existant attribute" do
       lambda { @model.Nonsense? }.should raise_error(NoMethodError)
     end
@@ -99,6 +141,14 @@ describe Base, "Base model" do
 
     it "should respond_to methods inherited from parent classes" do
       @model.should respond_to(:freeze)
+    end
+
+    it "should respond_to a will_change! method for an existing attribute" do
+      @model.should respond_to(:Name_will_change!)
+    end
+
+    it "should not respond_to a will_change! method for a non-existant attribute" do
+      @model.should_not respond_to(:Nonsense_will_change!)
     end
 
   end

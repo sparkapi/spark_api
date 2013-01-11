@@ -1,3 +1,29 @@
+== v1.3.0 2013-01-08
+* yajl is no longer a dependency. To use it, make sure the gem is installed.
+* JRuby support finalized
+* Increased default OAuthSession timeout to 12 hours
+* New API Support:
+  * field ordering service
+  * attaching/detaching contacts to saved searches, 
+  * agent portal administration
+  * contact commenting
+  * contact export, export all
+  * contact vow accounts
+  * activity stream retrieval
+== v1.2.0 2012-11-14
+* SSL verification enabled by default
+* Sparkbar token access support
+* Fixed oauth2 CLI usage
+* Model behaviors for CRUD operations
+* Dirty module to help manage dirty attributes for updating a model
+* Removed nonsensical "all" method for finder models
+* ApiUser support for OAuth2 flow
+* Subscriptions models
+* Single session OAuth2 support
+* Update RecipientIds attribute on subscribe/unsubscribe
+* Restrict API wrapped json post data for hashes that have content
+* Fix sorting on nils in accounts model
+* Pluralize module
 == v1.1.0 2012-08-07
 * Upgraded faraday and other gems, cleand up the middleware
 == v1.0.4 2012-07-26

@@ -86,6 +86,10 @@ module SparkApi
         nearby_args = {:_lat => latitude, :_lon => longitude}.merge(arguments)
         collect(connection.get("/listings/nearby", nearby_args))
       end
+
+      def self.tour_of_homes(arguments={})
+        collect(connection.get("/listings/tourofhomes", arguments))
+      end
       
       def tour_of_homes(arguments={})
         @tour_of_homes ||= TourOfHome.find_by_listing_key(self.Id, arguments)
