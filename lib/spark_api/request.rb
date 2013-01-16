@@ -61,28 +61,25 @@ module SparkApi
 
     # Perform an HTTP request (no data)
     def request(method, path, body, options)
-      unless authenticated?
-        authenticate
-      end
+      authenticate unless authenticated?
+
+      request_path = "/#{version}#{path}"
+      request_opts = options
       attempts = 0
+      start_time = Time.now
+
+      post_data = nil
+      unless [:get, :delete, :head].include?(method.to_sym)
+        post_data = process_request_body(body)
+      end
+
       begin
-        request_opts = {}
-        request_opts.merge!(options)
-        request_path = "/#{version}#{path}"
-        start_time = Time.now
-        SparkApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
-        if [:get, :delete, :head].include?(method.to_sym)
-          response = authenticator.request(method, request_path, nil, request_opts)
-        else
-          post_data = process_request_body(body)
-          SparkApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
-          response = authenticator.request(method, request_path, post_data, request_opts)
-        end
-        request_time = Time.now - start_time
-        SparkApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}")
+        pre_log_request method, request_path
+        response = authenticator.request(method, request_path, post_data, request_opts)
+        post_log_request method, request_path, start_time
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
-          unless (attempts +=1) > 1
+          if (attempts += 1) <= 1
             SparkApi.logger.debug("Retrying authentication")
             authenticate
             retry
@@ -92,12 +89,32 @@ module SparkApi
         SparkApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
         raise
       end
-      response.body
+
+      process_response response
+
     rescue Faraday::Error::ConnectionFailed => e
       if self.ssl_verify && e.message =~ /certificate verify failed/
         SparkApi.logger.error(SparkApi::Errors.ssl_verification_error)
       end
       raise e
+    end
+
+    def pre_log_request(method, request_path)
+      SparkApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
+      if ![:get, :delete, :head].include?(method.to_sym)
+        SparkApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
+      end
+    end
+
+    def post_log_request(method, request_path, start_time)
+      description = "Api: #{method.to_s.upcase} #{request_path}"
+
+      if connection.in_parallel?
+        SparkApi.logger.info("  #{description}")
+      else
+        request_time = Time.now - start_time
+        SparkApi.logger.info("[#{(request_time * 1000).to_i}ms] #{description}")
+      end
     end
     
     def process_request_body(body)
@@ -105,6 +122,15 @@ module SparkApi
         body.empty? ? nil : {"D" => body }.to_json
       else
         body
+      end
+    end
+
+    def process_response(response)
+      if connection.in_parallel?
+        @parallel_responses << response
+        response
+      else
+        response.body
       end
     end
     

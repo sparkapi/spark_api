@@ -19,24 +19,31 @@ module SparkApi
       unless body.is_a?(Hash) && body.key?("D")
         raise InvalidResponse, "The server response could not be understood"
       end
-      response = ApiResponse.new body
-      paging = response.pagination
+      api_response = ApiResponse.new body
+      paging = api_response.pagination
       if paging.nil?
-        results = response
+        results = api_response
       else
         q = CGI.parse(env[:url].query)
         if q.key?("_pagination") && q["_pagination"].first == "count"
           results = paging['TotalRows']
         else
-          results = paginate_response(response, paging)
+          results = paginate_response(api_response, paging)
         end
       end
-      case env[:status]
+      raise_any_errors(env[:status], api_response) unless SparkApi.client.connection.in_parallel?
+      env[:body] = results
+    end
+
+    private
+
+    def raise_any_errors(status, api_response)
+      case status
       when 400
-        hash = {:message => response.message, :code => response.code, :status => env[:status]}
+        hash = {:message => api_response.message, :code => api_response.code, :status => env[:status]}
 
         # constraint violation
-        if response.code == 1053
+        if api_response.code == 1053
           details = body['D']['Details']
           hash[:details] = details
         end
@@ -46,21 +53,20 @@ module SparkApi
         # OAuth2 implementations and wouldn't hurt to log.
         auth_header_error = env[:request_headers]["WWW-Authenticate"]
         SparkApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
-        raise PermissionDenied, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise PermissionDenied, {:message => api_response.message, :code => api_response.code, :status => status}
       when 404
-        raise NotFound, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise NotFound, {:message => api_response.message, :code => api_response.code, :status => status}
       when 405
-        raise NotAllowed, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise NotAllowed, {:message => api_response.message, :code => api_response.code, :status => status}
       when 409
-        raise BadResourceRequest, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise BadResourceRequest, {:message => api_response.message, :code => api_response.code, :status => status}
       when 500
-        raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise ClientError, {:message => api_response.message, :code => api_response.code, :status => status}
       when 200..299
         SparkApi.logger.debug("Success!")
       else 
-        raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise ClientError, {:message => api_response.message, :code => api_response.code, :status => status}
       end
-      env[:body] = results
     end
     
   end
