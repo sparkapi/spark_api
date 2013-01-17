@@ -31,23 +31,24 @@ module SparkApi
           results = paginate_response(api_response, paging)
         end
       end
-      raise_any_errors(env[:status], api_response) unless SparkApi.client.connection.in_parallel?
+      raise_any_errors(env, body, api_response) unless SparkApi.client.connection.in_parallel?
       env[:body] = results
     end
 
     private
 
-    def raise_any_errors(status, api_response)
+    def raise_any_errors(env, body, api_response)
+      status = env[:status]
       case status
       when 400
-        hash = {:message => api_response.message, :code => api_response.code, :status => env[:status]}
+        hash = {:message => api_response.message, :code => api_response.code, :status => status}
 
         # constraint violation
         if api_response.code == 1053
           details = body['D']['Details']
           hash[:details] = details
         end
-        raise BadResourceRequest,hash
+        raise BadResourceRequest, hash
       when 401
         # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
         # OAuth2 implementations and wouldn't hurt to log.

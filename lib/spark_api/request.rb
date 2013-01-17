@@ -74,7 +74,7 @@ module SparkApi
       end
 
       begin
-        pre_log_request method, request_path
+        pre_log_request method, request_path, post_data
         response = authenticator.request(method, request_path, post_data, request_opts)
         post_log_request method, request_path, start_time
       rescue PermissionDenied => e
@@ -99,7 +99,7 @@ module SparkApi
       raise e
     end
 
-    def pre_log_request(method, request_path)
+    def pre_log_request(method, request_path, post_data)
       SparkApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
       if ![:get, :delete, :head].include?(method.to_sym)
         SparkApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
