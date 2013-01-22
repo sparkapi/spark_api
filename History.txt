@@ -1,4 +1,4 @@
-* Add support for making requests in parallel. Expirimental!
+* Add support for making requests in parallel. Experimental!
 == v1.3.0 2013-01-08
 * yajl is no longer a dependency. To use it, make sure the gem is installed.
 * JRuby support finalized
