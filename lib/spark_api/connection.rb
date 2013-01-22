@@ -20,13 +20,13 @@ module SparkApi
         opts[:url] = @endpoint.sub /^https:/, "http:"
       end
 
-      conn = Faraday.new(opts) do |builder|
+      @connection = Faraday.new(opts) do |builder|
         builder.response :spark_api
         #builder.adapter Faraday.default_adapter
         builder.use Faraday::Adapter::Typhoeus
       end
-      SparkApi.logger.debug("Connection: #{conn.inspect}")
-      @connection = conn
+      SparkApi.logger.debug("Connection: #{@connection.inspect}")
+      @connection
     end
     
     # HTTP request headers for client requests

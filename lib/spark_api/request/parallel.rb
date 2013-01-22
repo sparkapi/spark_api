@@ -16,8 +16,6 @@ module SparkApi
         total_time = ((Time.now - start_time) * 1000).to_i
         SparkApi.logger.info "[#{total_time}ms] Total for (#{@parallel_responses.size}) parallel requests"
         @parallel_responses
-      ensure
-        @parallel_responses.clear
       end
 
     end
