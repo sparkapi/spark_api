@@ -32,7 +32,11 @@ module SparkApi
           contact_id = contact.is_a?(Contact) ? contact.Id : contact
           begin
             connection.send(method, "#{self.class.path}/#{@attributes["Id"]}/contacts/#{contact_id}")
-          rescue BadResourceRequest, NotFound => e
+          rescue BadResourceRequest => e
+            self.errors << { :code => e.code, :message => e.message }
+            SparkApi.logger.warn("Failed to #{action} contact #{contact}: #{e.message}")
+            return false
+          rescue NotFound => e
             self.errors << { :code => e.code, :message => e.message }
             SparkApi.logger.error("Failed to #{action} contact #{contact}: #{e.message}")
             return false
