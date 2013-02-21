@@ -22,7 +22,7 @@ module SparkApi
 
         def create!(arguments = {})
           results = connection.post self.path, post_data.merge(params_for_save), arguments
-          update_resource_identifiers(results.first)
+          update_attributes(results.first)
           reset_dirty
           params_for_save.clear
           true
@@ -42,9 +42,10 @@ module SparkApi
 
         private 
 
-        def update_resource_identifiers(result)
-          attributes['ResourceUri'] = result['ResourceUri']
+        def update_attributes(result)
           attributes['Id'] = result['Id'] ? result['Id'] : parse_id(result['ResourceUri'])
+          result.delete('Id')
+          attributes.merge! result
         end
 
         # can be overridden
