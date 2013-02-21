@@ -10,7 +10,7 @@ module SparkApi
             return save!(arguments)
           rescue BadResourceRequest => e
             self.errors << {:code => e.code, :message => e.message}
-            SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
+            SparkApi.logger.warn("Failed to save resource #{self}: #{e.message}")
           rescue NotFound => e
             SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
           end

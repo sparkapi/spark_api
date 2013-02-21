@@ -57,7 +57,10 @@ module SparkApi
         self.errors = [] # clear the errors hash
         begin
           return save!(arguments)
-        rescue NotFound, BadResourceRequest => e
+        rescue BadResourceRequest => e
+          self.errors << { :code => e.code, :message => e.message }
+          SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
+        rescue NotFound => e
           self.errors << {:code => e.code, :message => e.message}
           SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
