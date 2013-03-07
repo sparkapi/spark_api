@@ -37,6 +37,10 @@ module SparkApi
         @saved_searches ||= SavedSearch.collect(connection.get("/contacts/#{self.Id}/savedsearches", arguments))
       end
 
+      def provided_searches(arguments = {})
+        @provided_searches ||= SavedSearch.collect(connection.get("/contacts/#{self.Id}/provided/savedsearches", arguments))
+      end
+
       def listing_carts(arguments = {})
         @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts", arguments))
       end

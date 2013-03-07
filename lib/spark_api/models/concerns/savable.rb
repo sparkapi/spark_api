@@ -36,8 +36,14 @@ module SparkApi
           true
         end
 
+        # extra params to be passed when saving
         def params_for_save
           @params_for_save ||= {}
+        end
+
+        # update/create hash (can be overridden)
+        def post_data
+          { resource_pluralized => [ attributes ] }
         end
 
         private 

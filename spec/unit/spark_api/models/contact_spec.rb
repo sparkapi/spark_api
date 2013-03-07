@@ -117,11 +117,11 @@ describe Contact do
 
   end
 
-  context "/contacts/<contact_id>" do
+  context "/contacts/<contact_id>", :support do
 
     let(:contact_id) { "20090928182824338901000000" }
 
-    context "/savedsearches", :support do
+    context "/savedsearches" do
 
       subject(:contact) do
         stub_api_get("/my/contact", 'contacts/my.json')
@@ -138,6 +138,27 @@ describe Contact do
       it "should pass any arguments as parameters" do
         stub_api_get("/contacts/#{contact.Id}/savedsearches", 'saved_searches/get.json', :_pagination => 1)
         saved_searches = contact.saved_searches(:_pagination => 1)
+      end
+
+    end
+
+    context "/provided/savedsearches", :support do
+
+      subject(:contact) do
+        stub_api_get("/my/contact", 'contacts/my.json')
+        contact = Contact.my
+      end
+
+      on_get_it "should get all the provided searches belonging to the customer" do
+        stub_api_get("/contacts/#{contact.Id}/provided/savedsearches", 'saved_searches/get.json')
+        saved_searches = contact.provided_searches
+        saved_searches.should be_an(Array)
+        saved_searches.length.should eq(2)
+      end
+
+      it "should pass any arguments as parameters" do
+        stub_api_get("/contacts/#{contact.Id}/provided/savedsearches", 'saved_searches/get.json', :_pagination => 1)
+        saved_searches = contact.provided_searches(:_pagination => 1)
       end
 
     end
@@ -173,7 +194,7 @@ describe Contact do
       end
     end
 
-    context "/comments" do
+    context "/comments", :support do
 
       it "should get all of a contact's comments" do
         s = stub_api_get("/contacts/#{contact_id}/comments", "comments/get.json")
@@ -202,7 +223,7 @@ describe Contact do
 
     end
 
-    context "/comments/<id>" do
+    context "/comments/<id>", :support do
 
       let(:id) { "20121128133936712557000097" }
 
