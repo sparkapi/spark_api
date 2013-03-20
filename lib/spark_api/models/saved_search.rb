@@ -27,7 +27,6 @@ module SparkApi
       [:attach, :detach].each do |action|
         method = (action == :attach ? :put : :delete)
         define_method(action) do |contact|
-          return false unless persisted?
           self.errors = []
           contact_id = contact.is_a?(Contact) ? contact.Id : contact
           begin
