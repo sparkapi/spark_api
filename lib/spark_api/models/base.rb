@@ -60,7 +60,8 @@ module SparkApi
 
       def load(attributes, options = {})
         attributes.each do |key,val|
-          write_attribute key, val, options
+          attribute_will_change!(key) unless options[:clean]
+          @attributes[key.to_s] = val
         end
       end
 
@@ -126,10 +127,10 @@ module SparkApi
 
       protected
 
-      def write_attribute(attribute, value, options = {})
+      def write_attribute(attribute, value)
         attribute = attribute.to_s
         unless attributes[attribute] == value
-          attribute_will_change!(attribute) unless options[:clean]
+          attribute_will_change!(attribute)
           attributes[attribute] = value
         end
       end
