@@ -44,8 +44,9 @@ module SparkApi
       end
 
       def attribute_will_change!(attr)
+        attr = attr.to_s
         begin
-          value = @attributes[attr.to_s]
+          value = @attributes[attr]
           value = value.duplicable? ? value.clone : value
         rescue TypeError, NoMethodError; end
 
