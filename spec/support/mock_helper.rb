@@ -5,6 +5,7 @@ end
 $test_client = SparkApi::Client.new({:api_key=>"", :api_secret=>""})
 
 def stub_api_get(service_path, stub_fixture="success.json", opts={})
+  status = opts.delete(:status) || 200
   params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
   sig = $test_client.authenticator.sign_token("/#{SparkApi.version}#{service_path}", params)
   s=stub_request(:get, "#{SparkApi.endpoint}/#{SparkApi.version}#{service_path}").
@@ -14,7 +15,7 @@ def stub_api_get(service_path, stub_fixture="success.json", opts={})
   if(block_given?)
     yield s
   else
-    s.to_return(:body => fixture(stub_fixture))
+    s.to_return(:body => fixture(stub_fixture), :status => status)
   end
   log_stub(s)
 end

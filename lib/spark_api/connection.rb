@@ -5,9 +5,11 @@ module SparkApi
   # =Connection
   # Mixin module for handling http connection information
   module Connection
+
     # Main connection object for running requests.  Bootstraps the Faraday abstraction layer with 
     # our client configuration.
     def connection(force_ssl = false)
+      return @connection if @connection && !@connection.nil?
       opts = {
         :headers => headers
       }
@@ -18,12 +20,13 @@ module SparkApi
         opts[:url] = @endpoint.sub /^https:/, "http:"
       end
 
-      conn = Faraday.new(opts) do |conn|
-        conn.response :spark_api
-        conn.adapter Faraday.default_adapter
+      @connection = Faraday.new(opts) do |builder|
+        builder.response :spark_api
+        #builder.adapter Faraday.default_adapter
+        builder.use Faraday::Adapter::Typhoeus
       end
-      SparkApi.logger.debug("Connection: #{conn.inspect}")
-      conn
+      SparkApi.logger.debug("Connection: #{@connection.inspect}")
+      @connection
     end
     
     # HTTP request headers for client requests
