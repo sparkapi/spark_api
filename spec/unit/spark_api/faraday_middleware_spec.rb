@@ -1,4 +1,5 @@
 require './spec/spec_helper'
+require 'zlib'
 
 # Test out the faraday connection stack.
 describe SparkApi do
@@ -83,7 +84,54 @@ describe SparkApi do
       response.success.should eq(true)
       response.results.length.should be > 0 
     end
-    
+
+  end
+
+  describe "#decompress_body" do
+    let(:middleware) do
+      SparkApi::FaradayMiddleware.new(SparkApi)
+    end
+
+    it "should leave the body along if content-encoding not set" do
+      env = {
+        :body => "UNCOMPRESSED",
+        :response_headers => {}
+      }
+
+      middleware.decompress_body(env).should eq("UNCOMPRESSED")
+    end
+
+    it "should unzip gzipped data" do
+      bod = "OUTPUT BODY"
+
+      out = StringIO.new
+      gz = Zlib::GzipWriter.new(out)
+      gz.write bod
+      gz.close
+
+      env = {
+        :body => out.string,
+        :response_headers => {
+          'content-encoding' => 'gzip'
+        }
+      }
+
+      middleware.decompress_body(env).should eq(bod)
+    end
+
+    it "should inflate deflated data" do
+      bod = "INFLATED BODY"
+      deflated_bod = Zlib::Deflate.deflate(bod)
+
+      env = {
+        :body => deflated_bod,
+        :response_headers => {
+          'content-encoding' => 'deflate'
+        }
+      }
+
+      middleware.decompress_body(env).should eq(bod)
+    end
   end
   
 end

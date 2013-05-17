@@ -18,6 +18,10 @@ module SparkApi
         opts[:url] = @endpoint.sub /^https:/, "http:"
       end
 
+      if self.compress
+        opts[:headers]["Accept-Encoding"] = 'gzip, deflate'
+      end
+
       conn = Faraday.new(opts) do |conn|
         conn.response :spark_api
         conn.adapter Faraday.default_adapter
