@@ -178,6 +178,17 @@ describe SparkApi::Client, "Client config"  do
           'Content-Type'=>'application/json'
         })
     end
+
+    it "should not set gzip header by default" do
+      c = SparkApi::Client.new(:endpoint => "https://sparkapi.com") 
+      c.connection.headers["Accept-Encoding"].should be_nil
+    end
+
+    it "should set gzip header if compress option is set" do
+      c = SparkApi::Client.new(:endpoint => "https://api.sparkapi.com", 
+        :compress => true) 
+      c.connection.headers["Accept-Encoding"].should eq("gzip, deflate")
+    end
     
   end
 
