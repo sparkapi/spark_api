@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{A library for interacting with the Spark web services.}
   s.description = %q{The spark_api gem handles most of the boilerplate for communicating with the Spark API rest services, including authentication and request parsing.}
 
-  s.required_rubygems_version = "~> 1.8"
+  s.required_rubygems_version = ">= 1.8"
   s.rubyforge_project         = "spark_api"
 
   s.extra_rdoc_files = [
@@ -38,13 +38,14 @@ Gem::Specification.new do |s|
 
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
-  s.add_development_dependency 'rspec', '~> 2.11.0'
+  s.add_development_dependency 'rspec', '~> 2.12.0'
   s.add_development_dependency 'webmock', '~> 1.9'
   s.add_development_dependency 'typhoeus', '~> 0.3'
   s.add_development_dependency 'ci_reporter', '~> 1.7.0'
   s.add_development_dependency 'rcov', '~> 0.9.9'
   s.add_development_dependency 'flexmls_gems', '~> 0.2.5'
   s.add_development_dependency 'guard-rspec'
-  s.add_development_dependency 'rb-fsevent', '~> 0.9.1'
+  s.add_development_dependency 'rb-readline'
+  s.add_development_dependency 'rb-fsevent'
 end
 

@@ -25,7 +25,7 @@ module SparkApi
 
       # hash with changed attributes and their new values
       def dirty_attributes
-        changed.inject({}) { |h, k| h[k] = attributes[k]; h }
+        changed.inject({}) { |h, k| h[k] = attributes[k.to_s]; h }
       end
 
       private
@@ -44,8 +44,9 @@ module SparkApi
       end
 
       def attribute_will_change!(attr)
+        attr = attr.to_s
         begin
-          value = @attributes[attr.to_s]
+          value = @attributes[attr]
           value = value.duplicable? ? value.clone : value
         rescue TypeError, NoMethodError; end
 

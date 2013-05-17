@@ -19,7 +19,7 @@ describe Concerns::Destroyable, "Destroyable Concern" do
   end
 
   it "should be destroyable" do
-    stub_api_delete("/test/example/1")
+    stub_api_delete("/some/place/20101230223226074201000000")
     @model = MyExampleModel.first
     @model.destroy
     @model.destroyed?.should eq(true)

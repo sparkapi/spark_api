@@ -1,0 +1,22 @@
+{
+  "D": {
+     "Success": true,
+     "Results": [
+         {
+           "A": [
+             {
+                "Contract Information": [
+                   {
+                       "Field": "23Patios",
+                       "Label": "Book Section",
+                       "Domain": "CustomFields",
+                       "Detail": true
+                   }
+                ]
+             }
+           ],
+          "B": [ ]
+         }
+       ]
+  }
+}

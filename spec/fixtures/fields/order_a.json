@@ -1,0 +1,39 @@
+{
+  "D": {
+     "Success": true,
+     "Results": [
+         {
+           "Contract Information": [
+              {
+                  "Field": "23Patios",
+                  "Label": "Book Section",
+                  "Domain": "CustomFields",
+                  "Detail": true
+              },
+              {
+                  "Field": "ListPrice",
+                  "Label": "List Price",
+                  "Domain": "StandardFields",
+                  "Detail": false
+              }
+           ]
+        },
+        {
+           "General Property Description": [
+              {
+                  "Field": "24Patios",
+                  "Label": "Street Number",
+                  "Domain": "CustomFields",
+                  "Detail": true
+              },
+              {
+                  "Field": "MlsStatus",
+                  "Label": "Total Square Feet",
+                  "Domain": "StandardFields",
+                  "Detail": false
+              }
+           ]
+        }
+       ]
+  }
+}

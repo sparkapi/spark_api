@@ -1,5 +1,5 @@
-require './spec/spec_helper'
-require './spec/oauth2_helper'
+require 'spec_helper'
+require 'support/oauth2_helper'
 
 describe SparkApi::Authentication::OAuth2Impl::SparkbarFaradayMiddleware do
   subject { SparkApi::Authentication::OAuth2Impl::SparkbarFaradayMiddleware.new("test") }

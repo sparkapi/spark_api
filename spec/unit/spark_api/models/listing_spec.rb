@@ -132,10 +132,9 @@ describe Listing do
 
     context "/listings", :support do
       on_get_it "should return listings" do
-        filter_string = "PostalCode Eq '83805'"
-        stub_api_get('/listings', 'listings/multiple.json', {:_filter => filter_string})
+        stub_api_get('/listings', 'listings/multiple.json', {:_filter => "PostalCode Eq '83805'"})
 
-        listings = Listing.find(:all, :_filter => filter_string)
+        listings = Listing.find(:all, :_filter => "PostalCode Eq '83805'")
         listings.should be_an(Array)
         listings.count.should eq(2)
       end

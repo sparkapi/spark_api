@@ -1,4 +1,15 @@
+== v1.3.0 2013-01-08
 * yajl is no longer a dependency. To use it, make sure the gem is installed.
+* JRuby support finalized
+* Increased default OAuthSession timeout to 12 hours
+* New API Support:
+  * field ordering service
+  * attaching/detaching contacts to saved searches, 
+  * agent portal administration
+  * contact commenting
+  * contact export, export all
+  * contact vow accounts
+  * activity stream retrieval
 == v1.2.0 2012-11-14
 * SSL verification enabled by default
 * Sparkbar token access support

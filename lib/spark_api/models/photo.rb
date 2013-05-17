@@ -26,7 +26,9 @@ module SparkApi
       def save(arguments={})
         begin
           return save!(arguments)
-        rescue NotFound, BadResourceRequest => e
+        rescue BadResourceRequest => e
+          SparkApi.logger.warn("Failed to save resource #{self}: #{e.message}")
+        rescue NotFound => e
           SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
         end
         false
