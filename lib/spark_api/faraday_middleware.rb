@@ -1,5 +1,6 @@
 require 'faraday'
 require 'cgi'
+require 'zlib'
 
 module SparkApi
   #=Spark API Faraday middleware
@@ -14,6 +15,9 @@ module SparkApi
     # Handles pretty much all the api response parsing and error handling.  All responses that
     # indicate a failure will raise a SparkApi::ClientError exception
     def on_complete(env)
+
+      env[:body] = decompress_body(env)
+
       body = MultiJson.decode(env[:body])
       SparkApi.logger.debug("Response Body: #{body.inspect}")
       unless body.is_a?(Hash) && body.key?("D")
@@ -61,6 +65,18 @@ module SparkApi
         raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
       end
       env[:body] = results
+    end
+
+    def decompress_body(env)
+      encoding = env[:response_headers]['content-encoding'].to_s.downcase
+
+      if encoding == 'gzip'
+        env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body])).read
+      elsif encoding == 'deflate'
+        env[:body] = Zlib::Inflate.inflate(env[:body])
+      end
+
+      env[:body]
     end
     
   end
