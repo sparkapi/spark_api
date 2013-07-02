@@ -27,6 +27,10 @@ module SparkApi
         find(:last, *arguments)
       end
 
+      def self.default(options = {})
+        new(connection.get("/#{self.element_name}/default", options).first)
+      end
+
       private
 
       def self.find_every(options)
