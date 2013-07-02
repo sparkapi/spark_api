@@ -1,0 +1,16 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            {
+                "ResourceUri": "/v1/idxlinks/20130610145525941067000000",
+                "LinkType":"QuickSearch",
+                "LinkId":"zq1fkiw4d3f",
+                "Uri":"http://link.dev.fbsdata.com/zq1fkiw4d3f,1",
+                "ResourceUri":"/v1/idxlinks/20130610145525941067000000",
+                "Name":"1 - Residential",
+                "Id":"20130610145525941067000000"
+            }
+        ]
+    }
+}
