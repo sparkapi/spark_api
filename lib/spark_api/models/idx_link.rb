@@ -28,7 +28,8 @@ module SparkApi
       end
 
       def self.default(options = {})
-        new(connection.get("/#{self.element_name}/default", options).first)
+        response = connection.get("/#{self.element_name}/default", options).first
+        response.nil? ? nil : new(response)
       end
 
       private
