@@ -66,7 +66,6 @@ module SparkApi
         request_opts.merge!(options)
         request_path = "/#{version}#{path}"
         start_time = Time.now
-        SparkApi.logger.debug("#{method.to_s.upcase} Request:  #{request_path}")
         if [:get, :delete, :head].include?(method.to_sym)
           response = authenticator.request(method, request_path, nil, request_opts)
         else
@@ -75,7 +74,7 @@ module SparkApi
           response = authenticator.request(method, request_path, post_data, request_opts)
         end
         request_time = Time.now - start_time
-        SparkApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}")
+        SparkApi.logger.debug("[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}")
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1
