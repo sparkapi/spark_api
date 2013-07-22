@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
     "README.md"
   ]
 
+  s.license = 'Apache 2.0'
+
   s.files              = Dir["{History.txt,LICENSE,Rakefile,README.md,VERSION}", "{bin,lib,script}/**/*"]
   s.test_files         = Dir["spec/{fixtures,unit}/**/*", "spec/*.rb"]
   s.executables        = ["spark_api"]
