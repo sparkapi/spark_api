@@ -24,6 +24,7 @@ module SparkApi
 
       conn = Faraday.new(opts) do |conn|
         conn.response :spark_api
+        conn.options[:timeout] = self.timeout
         conn.adapter Faraday.default_adapter
       end
       SparkApi.logger.debug("Connection: #{conn.inspect}")
