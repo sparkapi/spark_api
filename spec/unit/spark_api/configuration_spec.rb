@@ -12,6 +12,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.user_agent.should match(/Spark API Ruby Gem .*/)
       SparkApi.api_key = "my_api_key"
       SparkApi.api_key.should match("my_api_key")
+      SparkApi.timeout.should eq(5)
     end
   end
 
@@ -21,7 +22,8 @@ describe SparkApi::Client, "Client config"  do
                                     :api_secret => "TopSecret", 
                                     :api_user => "1234",
                                     :auth_endpoint => "https://login.wade.dev.fbsdata.com",
-                                    :endpoint => "http://api.wade.dev.fbsdata.com")
+                                    :endpoint => "http://api.wade.dev.fbsdata.com",
+                                    :timeout => 15)
  
       client.api_key.should match("key_of_wade")
       client.api_secret.should match("TopSecret")
@@ -29,6 +31,7 @@ describe SparkApi::Client, "Client config"  do
       client.auth_endpoint.should match("https://login.wade.dev.fbsdata.com")
       client.endpoint.should match("http://api.wade.dev.fbsdata.com")
       client.version.should match("v1")
+      client.timeout.should eq(15)
     end
     
     it "should allow unverified ssl certificates when verification is off" do
@@ -90,6 +93,7 @@ describe SparkApi::Client, "Client config"  do
         config.version = "veleventy"
         config.endpoint = "test.api.sparkapi.com"
         config.user_agent = "my useragent"
+        config.timeout = 15
       end
 
       SparkApi.api_key.should match("my_key")
@@ -99,6 +103,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.endpoint.should match("test.api.sparkapi.com")
       SparkApi.user_agent.should match("my useragent")
       SparkApi.oauth2_enabled?().should be_false
+      SparkApi.timeout.should eq(15)
     end
 
     it "should correctly set up the client for oauth2" do
@@ -180,16 +185,26 @@ describe SparkApi::Client, "Client config"  do
     end
 
     it "should not set gzip header by default" do
-      c = SparkApi::Client.new(:endpoint => "https://sparkapi.com") 
+      c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
       c.connection.headers["Accept-Encoding"].should be_nil
     end
 
     it "should set gzip header if compress option is set" do
-      c = SparkApi::Client.new(:endpoint => "https://api.sparkapi.com", 
+      c = SparkApi::Client.new(:endpoint => "https://api.sparkapi.com",
         :compress => true) 
       c.connection.headers["Accept-Encoding"].should eq("gzip, deflate")
     end
-    
+
+    it "should set default timeout of 5 seconds" do
+      c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
+      c.connection.options[:timeout].should eq(5)
+    end
+
+    it "should set alternate timeout if specified" do
+      c = SparkApi::Client.new(:endpoint => "https://sparkapi.com",
+        :timeout => 15)
+      c.connection.options[:timeout].should eq(15)
+    end
   end
 
 end
