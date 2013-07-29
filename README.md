@@ -90,8 +90,3 @@ Read more about Spark Platform's combined flow <a href="http://sparkplatform.com
 Authorization mode the separates application and user authentication.  This mode requires the end user to be redirected to Spark Platform's auth endpoint.  See "script/oauth2_example.rb" for an example.
 
 Read more about Spark Platform's OAuth 2 flow <a href="http://sparkplatform.com/docs/authentication/oauth2_authentication">here</a>.
-
-#### [OpenId Authentication](/sparkapi/spark_api/wiki/OpenId-Only-Authentication)
-There is also the option to only access a user's Spark Platform identity without accessing any data (e.g. listings, contacts, etc.).  In circumstances where you ONLY with to authenticate users through the Spark Platform, but do not have a use case to access any of their data, consider the OpenId authentication flow in lieu of API Authentication or the Combined flow.
-
-Read more about Spark Platform's OpenId flow <a href="http://sparkplatform.com/docs/authentication/openid_authentication">here</a>.
