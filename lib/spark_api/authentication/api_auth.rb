@@ -66,9 +66,11 @@ module SparkApi
         request_opts = {
           :AuthToken => @session.auth_token
         }
-        unless @client.api_user.nil?
+
+        unless (@client.api_user.nil? || options[:ApiUser])
           request_opts.merge!(:ApiUser => "#{@client.api_user}")
         end
+
         request_opts.merge!(options)
         sig = sign_token(escaped_path, request_opts, body)
         request_path = "#{escaped_path}?#{build_url_parameters({"ApiSig"=>sig}.merge(request_opts))}"
