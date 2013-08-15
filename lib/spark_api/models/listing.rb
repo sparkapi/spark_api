@@ -178,6 +178,21 @@ module SparkApi
         end
         true
       end
+
+      def reorder_photos(arguments={})
+        begin
+          return reorder_photos!(arguments)
+        rescue BadResourceRequest => e
+          SparkApi.logger.warn("Failed to save resource #{self}: #{e.message}")
+        rescue NotFound => e
+          SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
+        end
+        false
+      end
+      def reorder_photos!(arguments={})
+        results = connection.put "#{self.class.path}/#{self.Id}/photos", arguments
+        true
+      end
       
       def editable?(editable_settings = [])
         settings = Array(editable_settings)
