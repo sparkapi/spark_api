@@ -87,6 +87,19 @@ describe Photo do
         subject.delete
       end
     end
+
+    describe "/listings/<listing_id>/photos/<photo_id>/versions/current", :support do
+      before(:each) do
+        stub_auth_request
+      end
+
+      on_put_it "should restore a previous version of the photo" do
+        stub_api_put('/listings/1234/photos/20110826220032167405000000/versions/current', 'listings/photos/rollback.json')
+        subject.Id = "20110826220032167405000000"
+        subject.rollback(1)
+      end
+
+    end
   end
 
 end
