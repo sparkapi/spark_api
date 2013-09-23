@@ -53,6 +53,11 @@ module SparkApi
       def delete(args={})
         connection.delete("#{update_path}/#{self.Id}", args)
       end
+
+      def rollback(version)
+        payload = {"Version" => version}
+        connection.put "#{update_path}/#{self.Id}/versions/current", payload
+      end
       
       def exists?
         @attributes.include?("Id")
