@@ -1,0 +1,58 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/searchtemplates/quicksearches/20120717212004874996000000",
+                "Id": "20130717212004874996000000",
+                "Name": "My Quick Search",
+                "OwnerId": "20000426173054342350000000",
+                "MlsId": "20000426143505724628000000",
+                "Inheritable": true,
+                "Inherited": false,
+                "ViewId": "20130717211827902622000000",
+                "PropertyTypes": [
+                    "A"
+                ],
+                "Fields": [
+                    {
+                        "Domain": "StandardFields",
+                        "GroupField": null,
+                        "Field": "ListPrice"
+                    },
+                    {
+                        "Domain": "CustomFields",
+                        "GroupField": "Amenities",
+                        "Field": "# Ceiling Fans"
+                    }
+                ],
+                "ModificationTimestamp": "2013-07-09T15:31:47Z"
+            },
+            {
+                "ResourceUri": "/v1/searchtemplates/quicksearches/20120717212004874996000001",
+                "Id": "20130717212004874996000001",
+                "Name": "My Quick Search 2",
+                "OwnerId": "20000426173054342350000000",
+                "MlsId": "20000426143505724628000000",
+                "Inheritable": true,
+                "Inherited": false,
+                "ViewId": "20130717211827902622000000",
+                "PropertyTypes": [
+                    "A"
+                ],
+                "Fields": [
+                    {
+                        "Domain": "StandardFields",
+                        "GroupField": null,
+                        "Field": "ListPrice"
+                    },
+                    {
+                        "Domain": "CustomFields",
+                        "GroupField": "Amenities",
+                        "Field": "# Ceiling Fans"
+                    }
+                ],
+                "ModificationTimestamp": "2013-07-09T15:31:47Z"
+            }
+        ]
+    }
+}
