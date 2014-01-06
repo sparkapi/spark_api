@@ -111,6 +111,14 @@ describe SavedSearch do
     end
   end
 
+  context "/savedsearches/tags/:tag", :support do
+    on_get_it "should get tagged SavedSearches" do
+      stub_api_get("/#{subject.class.element_name}/tags/Favorite", 'saved_searches/get.json')
+      resources = subject.class.tagged("Favorite")
+      resources.should be_an(Array)
+    end
+  end
+
   context "/savedsearches/<id>/contacts" do
 
     on_get_it "should return a list of contacts" do

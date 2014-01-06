@@ -16,6 +16,10 @@ module SparkApi
         end
       end
 
+      def self.tagged(tag, arguments={})
+        collect(connection.get("/#{self.element_name}/tags/#{tag}", arguments))
+      end
+
       # list contacts (private role)
       def contacts
         return [] unless persisted?
