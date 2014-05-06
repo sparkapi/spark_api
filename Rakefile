@@ -1,9 +1,19 @@
 require "rubygems"
 
 require 'rubygems/user_interaction'
-require 'flexmls_gems/tasks'
-require 'flexmls_gems/tasks/spec'
-require 'flexmls_gems/tasks/rdoc'
+
+begin
+  require "rcov"
+  require 'flexmls_gems/tasks'
+  require 'flexmls_gems/tasks/spec'
+rescue LoadError => e
+  require "rspec"
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new do |t|
+    t.rspec_opts = ["-c", "-f progress"]
+    t.pattern = 'spec/**/*_spec.rb'
+  end
+end
 
 desc "Run all the tests"
 task :default => :spec
