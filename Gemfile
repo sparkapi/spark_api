@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 
 # Refer to the flexmls_api.gemspec or Rakefile for dependency information
 gemspec :development_group => :test
