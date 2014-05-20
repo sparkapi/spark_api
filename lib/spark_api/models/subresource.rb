@@ -36,7 +36,8 @@ module SparkApi
                 begin
                   datetime = DateTime.strptime(formatted_date, format)
                   datetime = datetime.new_offset DateTime.now.offset
-                  dst_offset = Time.now.dst? ? 0 : 1
+                  now = Time.now
+                  dst_offset = now.dst? || now.zone == 'UTC' ? 0 : 1
                   break
                 rescue => ex
                   next
