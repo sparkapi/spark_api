@@ -10,9 +10,6 @@ module SparkApi
       def ViewId=(id)
         attributes["ViewId"] = id
       end
-      def ReportId=(id)
-        attributes["ReportId"] = id
-      end
       
       def save(arguments={})
         begin
@@ -27,7 +24,10 @@ module SparkApi
       def save!(arguments={})
         results = connection.post self.class.path, attributes, arguments
         result = results.first
+        attributes['Id'] = result['Id']
+        attributes['Mode'] = result['Mode']
         attributes['ResourceUri'] = result['ResourceUri']
+        attributes['SharedUri'] = result['SharedUri']
         true
       end
     end

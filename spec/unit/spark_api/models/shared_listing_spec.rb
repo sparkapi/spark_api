@@ -16,7 +16,10 @@ describe SharedListing do
       subject.ListingIds = ["20110224152431857619000000","20110125122333785431000000"]
       subject.ViewId = "20080125122333787615000000"
       subject.save.should be(true)
-      subject.ResourceUri.should eq("http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Tucson-AZ-85719")
+      subject.Id.should eq("15Ar")
+      subject.Mode.should eq("Public")
+      subject.ResourceUri.should eq("/v1/sharedlistings/15Ar")
+      subject.SharedUri.should eq("http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Tucson-AZ-85719")
     end
 
     on_post_it "should fail creating" do
@@ -37,6 +40,7 @@ describe SharedListing do
 
       shared = SharedListing.find(shared_id)
       shared.should respond_to('SharedUri')
+      shared.should respond_to('Mode')
       shared.Mode.should eq('Public')
       shared.ListingIds.should be_an(Array)
     end

@@ -3,7 +3,10 @@
         "Success": true,
         "Results": [
             {
-                "ResourceUri":  "http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Tucson-AZ-85719"
+                "ResourceUri":  "/v1/sharedlistings/15Ar",
+                "SharedUri":  "http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Tucson-AZ-85719",
+                "Mode": "Public",
+                "Id": "15Ar"
             }
         ]
     }
