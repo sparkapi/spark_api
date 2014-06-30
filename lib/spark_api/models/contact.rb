@@ -18,7 +18,7 @@ module SparkApi
       def self.my(arguments={})
         new(connection.get('/my/contact', arguments).first)
       end
-            
+
       def self.export(arguments={})
         collect(connection.get("/contacts/export", arguments))
       end
@@ -65,7 +65,7 @@ module SparkApi
           nil
         end
       end
-      
+
     end
   end
 end

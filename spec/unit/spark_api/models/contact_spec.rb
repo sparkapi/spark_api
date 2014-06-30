@@ -172,16 +172,15 @@ describe Contact do
 
       on_get_it "should get all the listing carts belonging to the customer" do
         stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
-        saved_searches = contact.listing_carts
-        saved_searches.should be_an(Array)
-        saved_searches.length.should eq(2)
+        listing_carts = contact.listing_carts
+        listing_carts.should be_an(Array)
+        listing_carts.length.should eq(2)
       end
 
       it "should pass any arguments as parameters" do
         stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json', :test_argument => "yay")
-        saved_searches = contact.listing_carts(:test_argument => "yay")
+        contact.listing_carts(:test_argument => "yay")
       end
-
     end
 
     context "/portal", :support do
