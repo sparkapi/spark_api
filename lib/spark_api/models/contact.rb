@@ -18,7 +18,7 @@ module SparkApi
       def self.my(arguments={})
         new(connection.get('/my/contact', arguments).first)
       end
-            
+
       def self.export(arguments={})
         collect(connection.get("/contacts/export", arguments))
       end
@@ -45,6 +45,23 @@ module SparkApi
         @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts", arguments))
       end
 
+      def add_portal_cart_listings(cart_name, listing_ids)
+        listing_ids =
+            if listing_ids.is_a? String
+              [listing_ids]
+            elsif listing_ids.is_a? Array
+              listing_ids
+            else
+              raise TypeError
+            end
+
+        portal_cart = listing_carts.find {|cart| cart.Name == cart_name}
+
+        if portal_cart
+          connection.post("/contacts/#{self.Id}/listingcarts/#{portal_cart.Id}", :ListingIds => listing_ids)
+        end
+      end
+
       def comments(arguments = {})
         @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments", arguments))
       end
@@ -65,7 +82,7 @@ module SparkApi
           nil
         end
       end
-      
+
     end
   end
 end

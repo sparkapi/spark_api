@@ -172,16 +172,27 @@ describe Contact do
 
       on_get_it "should get all the listing carts belonging to the customer" do
         stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
-        saved_searches = contact.listing_carts
-        saved_searches.should be_an(Array)
-        saved_searches.length.should eq(2)
+        listing_carts = contact.listing_carts
+        listing_carts.should be_an(Array)
+        listing_carts.length.should eq(2)
       end
 
+      # This test doesn't seem to actually do anything.
+      # Also, the .get method doesn't seem to anything with any parameters passed in.
       it "should pass any arguments as parameters" do
         stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json', :test_argument => "yay")
-        saved_searches = contact.listing_carts(:test_argument => "yay")
+        listing_carts = contact.listing_carts(:test_argument => "yay")
       end
+    end
 
+    context "/portal/listingcarts", :support do
+      on_post_it "should add the listings to the portal cart" do
+        stub_api_get("/my/contact", 'contacts/my.json')
+        contact = Contact.my
+        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
+        stub_api_post("/contacts/#{contact.Id}/listingcarts/20100912153422758914000000", "listing_carts/add_portal_cart_listings_post.json", "listing_carts/add_portal_cart_listings.json")
+        result = contact.add_portal_cart_listings("My Listing Cart", "20110621133454434543000000")
+      end
     end
 
     context "/portal", :support do
