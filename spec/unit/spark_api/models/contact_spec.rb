@@ -177,21 +177,28 @@ describe Contact do
         listing_carts.length.should eq(2)
       end
 
-      # This test doesn't seem to actually do anything.
-      # Also, the .get method doesn't seem to anything with any parameters passed in.
       it "should pass any arguments as parameters" do
         stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json', :test_argument => "yay")
-        listing_carts = contact.listing_carts(:test_argument => "yay")
+        contact.listing_carts(:test_argument => "yay")
       end
     end
 
     context "/portal/listingcarts", :support do
-      on_post_it "should add the listings to the portal cart" do
+      subject(:contact) do
         stub_api_get("/my/contact", 'contacts/my.json')
-        contact = Contact.my
-        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_cart.json')
+        Contact.my
+      end
+
+      on_post_it "should add the listings to the portal cart" do
+        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_portal_cart.json')
         stub_api_post("/contacts/#{contact.Id}/listingcarts/20100912153422758914000000", "listing_carts/add_portal_cart_listings_post.json", "listing_carts/add_portal_cart_listings.json")
-        result = contact.add_portal_cart_listings("My Listing Cart", "20110621133454434543000000")
+        contact.add_portal_cart_listings("My Listing Cart", "20110621133454434543000000")
+      end
+
+      on_post_it "should create the portal cart and add the listings to it" do
+        stub_api_get("/contacts/#{contact.Id}/listingcarts", 'listing_carts/listing_portal_cart.json')
+        stub_api_post("/contacts/#{contact.Id}/listingcarts", 'listing_carts/new_portal_cart.json', 'listing_carts/post_portal_cart.json')
+        contact.add_portal_cart_listings("Non-existent Portal Cart", "20110112234857732941000000")
       end
     end
 

@@ -1,11 +1,16 @@
 module SparkApi
   module Models
-    class ListingCart < Base 
+    class ListingCart < Base
       extend Finders
       include Concerns::Savable,
               Concerns::Destroyable
 
       self.element_name="listingcarts"
+
+      def initialize(attributes={})
+        @contact_id = attributes.delete(:contact_id) if attributes[:contact_id]
+        super(attributes)
+      end
 
       def ListingIds=(listing_ids)
         attributes["ListingIds"] = Array(listing_ids)
@@ -14,9 +19,17 @@ module SparkApi
         attributes["Name"] = name
       end
 
+      def path
+        if @contact_id
+          "/contacts/#{@contact_id}/listingcarts"
+        else
+          super
+        end
+      end
+
       def add_listing(listing)
-        id = listing.respond_to?(:Id) ? listing.Id : listing.to_s
-        results = connection.post("#{self.class.path}/#{self.Id}", {"ListingIds" => [ listing ]})
+        ids = listing.respond_to?(:Id) ? listing.Id : listing
+        results = connection.post("#{self.resource_uri}", {"ListingIds" => Array(ids)})
         self.ListingCount = results.first["ListingCount"]
       end
 

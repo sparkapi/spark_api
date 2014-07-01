@@ -46,19 +46,14 @@ module SparkApi
       end
 
       def add_portal_cart_listings(cart_name, listing_ids)
-        listing_ids =
-            if listing_ids.is_a? String
-              [listing_ids]
-            elsif listing_ids.is_a? Array
-              listing_ids
-            else
-              raise TypeError
-            end
-
+        listing_ids = Array(listing_ids)
         portal_cart = listing_carts.find {|cart| cart.Name == cart_name}
 
         if portal_cart
-          connection.post("/contacts/#{self.Id}/listingcarts/#{portal_cart.Id}", :ListingIds => listing_ids)
+          listing_ids.each {|listing| portal_cart.add_listing(listing)}
+        else
+          cart = ListingCart.new(:contact_id => self.Id, :Name => cart_name, :ListingIds => listing_ids)
+          @listing_carts << cart if cart.save
         end
       end
 
