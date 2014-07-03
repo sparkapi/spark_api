@@ -45,18 +45,6 @@ module SparkApi
         @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts", arguments))
       end
 
-      def add_portal_cart_listings(cart_name, listing_ids)
-        listing_ids = Array(listing_ids)
-        portal_cart = listing_carts.find {|cart| cart.Name == cart_name}
-
-        if portal_cart
-          listing_ids.each {|listing| portal_cart.add_listing(listing)}
-        else
-          cart = ListingCart.new(:contact_id => self.Id, :Name => cart_name, :ListingIds => listing_ids)
-          @listing_carts << cart if cart.save
-        end
-      end
-
       def comments(arguments = {})
         @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments", arguments))
       end
