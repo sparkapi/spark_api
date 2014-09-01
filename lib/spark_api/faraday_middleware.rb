@@ -61,7 +61,7 @@ module SparkApi
         raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
       when 200..299
         SparkApi.logger.debug { "Success!" }
-      else 
+      else
         raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
       end
       env[:body] = results
