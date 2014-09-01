@@ -7,22 +7,30 @@ module SparkApi
       @success
     end
   end
-  
+
   # Nice and handy class wrapper for the api response hash
   class ApiResponse < ::Array
     include SparkApi::Response
+    ROOT_KEY       = 'D'
+    MESSAGE_KEY    = 'Message'
+    CODE_KEY       = 'Code'
+    RESULTS_KEY    = 'Results'
+    SUCCESS_KEY    = 'Success'
+    PAGINATION_KEY = 'Pagination'
+    DETAILS_KEY    = 'Details'
+
     def initialize(d)
       begin
-        hash = d["D"]
+        hash = d[ROOT_KEY]
         if hash.nil? || hash.empty?
-          raise InvalidResponse, "The server response could not be understood"
+          raise InvalidResponse, 'The server response could not be understood'
         end
-        self.message    = hash["Message"]
-        self.code       = hash["Code"]
-        self.results    = Array(hash["Results"])
-        self.success    = hash["Success"]
-        self.pagination = hash["Pagination"]
-        self.details    = hash["Details"] || []
+        self.message    = hash[MESSAGE_KEY]
+        self.code       = hash[CODE_KEY]
+        self.results    = Array(hash[RESULTS_KEY])
+        self.success    = hash[SUCCESS_KEY]
+        self.pagination = hash[PAGINATION_KEY]
+        self.details    = hash[DETAILS_KEY] || []
         super(results)
       rescue Exception => e
         SparkApi.logger.error "Unable to understand the response! #{d}"

@@ -5,11 +5,11 @@ module SparkApi
       self.element_name = 'videos'
 
       def branded?
-        attributes['Type'] == 'branded'
+        resource_type == 'branded'
       end
 
       def unbranded?
-        attributes['Type'] == 'unbranded'
+        resource_type == 'unbranded'
       end
     end
   end

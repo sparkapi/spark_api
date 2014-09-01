@@ -2,15 +2,15 @@ module SparkApi
   module Models
     class VirtualTour < Base
       extend Subresource
-      self.element_name="virtualtours"
-      
+      self.element_name = 'virtualtours'
 
-      def branded? 
-        attributes["Type"] == "branded"
+
+      def branded?
+        resource_type == 'branded'
       end
 
       def unbranded?
-        attributes["Type"] == "unbranded"
+        resource_type == 'unbranded'
       end
 
     end

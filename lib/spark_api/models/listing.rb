@@ -1,12 +1,29 @@
 module SparkApi
   module Models
-    class Listing < Base 
+    class Listing < Base
       extend Finders
       attr_accessor :photos, :videos, :virtual_tours, :documents, :open_houses, :tour_of_homes, :rental_calendars
       attr_accessor :constraints
-      self.element_name="listings"
-      DATA_MASK = "********"
-      WRITEABLE_FIELDS = ["ListPrice", "ExpirationDate"]
+      self.element_name='listings'
+      DATA_MASK        = '********'
+      WRITEABLE_FIELDS = %w(ListPrice ExpirationDate)
+
+      STANDARD_FIELDS_KEY = 'StandardFields'
+      RENTAL_CALENDAR_KEY = 'RentalCalendar'
+      PHOTOS_KEY          = 'Photos'
+      VIDEOS_KEY          = 'Videos'
+      VIRTUAL_TOURS_KEY   = 'VirtualTours'
+      DOCUMENTS_KEY       = 'Documents'
+      OPEN_HOUSES_KEY     = 'OpenHouses'
+      TOUR_OF_HOMES_KEY   = 'TourOfHomes'
+
+      PERMISSIONS_KEY                  = 'Permissions'
+      EDITABLE_PERMISSIONS_KEY         = 'Editable'
+      EDITABLE_SETTINGS_PERMISSION_KEY = 'EditableSettings'
+      EXPIRATION_DATE_KEY              = 'ExpirationDate'
+
+      STREET_ADDRESS_SEPARATOR = ' '
+      BLANK_STR = ''
 
       def initialize(attributes={})
         @photos = []
@@ -18,57 +35,61 @@ module SparkApi
         @tour_of_homes = []
         @open_houses = []
 
-        if attributes.has_key?('StandardFields')
-          pics, vids, tours, docs, ohouses, tourhomes = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents', 'OpenHouses', 'TourOfHomes')
+        standard_fields = attributes[STANDARD_FIELDS_KEY]
+
+        if standard_fields
+          pics, vids, tours, docs, ohouses, tourhomes = standard_fields.values_at(
+              PHOTOS_KEY, VIDEOS_KEY, VIRTUAL_TOURS_KEY, DOCUMENTS_KEY, OPEN_HOUSES_KEY, TOUR_OF_HOMES_KEY
+          )
         end
 
-        if attributes.has_key?('RentalCalendar')
-          rentalcalendars = attributes['RentalCalendar']
+        if attributes.has_key?(RENTAL_CALENDAR_KEY)
+          rentalcalendars = attributes[RENTAL_CALENDAR_KEY]
         end
 
         if pics != nil
           setup_attribute(@photos, pics, Photo)
-          attributes['StandardFields'].delete('Photos')
+          standard_fields.delete(PHOTOS_KEY)
         end
 
         if vids != nil
           setup_attribute(@videos, vids, Video)
-          attributes['StandardFields'].delete('Videos')
+          standard_fields.delete(VIDEOS_KEY)
         end
 
         if tours != nil
           setup_attribute(@virtual_tours, tours, VirtualTour)
-          attributes['StandardFields'].delete('VirtualTours')
+          standard_fields.delete(VIRTUAL_TOURS_KEY)
         end
 
         if docs != nil
           setup_attribute(@documents, docs, Document)
-          attributes['StandardFields'].delete('Documents')
+          standard_fields.delete(DOCUMENTS_KEY)
         end
 
         if ohouses != nil
           setup_attribute(@open_houses, ohouses, OpenHouse)
-          attributes['StandardFields'].delete('OpenHouses')
+          standard_fields.delete(OPEN_HOUSES_KEY)
         end
 
         if tourhomes != nil
           setup_attribute(@tour_of_homes, tourhomes, TourOfHome)
-          attributes['StandardFields'].delete('TourOfHomes')
+          standard_fields.delete(TOUR_OF_HOMES_KEY)
         end
 
         if rentalcalendars != nil
           setup_attribute(@rental_calendars, rentalcalendars, RentalCalendar)
-          attributes.delete('RentalCalendar')
+          attributes.delete(RENTAL_CALENDAR_KEY)
         end
 
         super(attributes)
       end
 
-      def self.find_by_cart_id(cart_id, options={}) 
+      def self.find_by_cart_id(cart_id, options={})
         query = {:_filter => "ListingCart Eq '#{cart_id}'"}
-        find(:all, options.merge(query)) 
+        find(:all, options.merge(query))
       end
-      
+
       def self.my(arguments={})
         collect(connection.get("/my/listings", arguments))
       end
@@ -80,7 +101,7 @@ module SparkApi
       def self.company(arguments={})
         collect(connection.get("/company/listings", arguments))
       end
-      
+
       def self.nearby(latitude, longitude, arguments={})
         nearby_args = {:_lat => latitude, :_lon => longitude}.merge(arguments)
         collect(connection.get("/listings/nearby", nearby_args))
@@ -89,7 +110,7 @@ module SparkApi
       def self.tour_of_homes(arguments={})
         collect(connection.get("/listings/tourofhomes", arguments))
       end
-      
+
       def tour_of_homes(arguments={})
         @tour_of_homes ||= TourOfHome.find_by_listing_key(self.Id, arguments)
         return @tour_of_homes unless @tour_of_homes.nil?
@@ -99,7 +120,6 @@ module SparkApi
         @rental_calendars ||= RentalCalendar.find_by_listing_key(self.Id, arguments)
         return @rental_calendars unless @rental_calendars.nil?
       end
-
 
       def open_houses(arguments={})
         @open_houses ||= OpenHouse.find_by_listing_key(self.Id, arguments)
@@ -129,17 +149,24 @@ module SparkApi
       end
 
       def street_address
-        "#{self.StreetNumber} #{self.StreetDirPrefix} #{self.StreetName} #{self.StreetSuffix} #{self.StreetDirSuffix} #{self.StreetAdditionalInfo}".delete(DATA_MASK).strip().gsub(/\s{2,}/, ' ')
+        street_address_entries = [
+          self.StreetNumber, self.StreetDirPrefix, self.StreetName, self.StreetSuffix,
+          self.StreetDirSuffix, self.StreetAdditionalInfo
+        ] - [DATA_MASK, BLANK_STR]
+        street_address = street_address_entries.join(STREET_ADDRESS_SEPARATOR)
+        street_address.strip().gsub(/\s{2,}/, STREET_ADDRESS_SEPARATOR)
       end
 
       def region_address
-        "#{self.City}, #{self.StateOrProvince} #{self.PostalCode}".delete(DATA_MASK).strip().gsub(/^,\s/, '').gsub(/,$/, '')
+        "#{self.City}, #{self.StateOrProvince} #{self.PostalCode}".
+          delete(DATA_MASK).strip().gsub(/^,\s/, BLANK_STR).gsub(/,$/, BLANK_STR)
       end
 
       def full_address
-        "#{self.street_address}, #{self.region_address}".strip().gsub(/^,\s/, '').gsub(/,$/, '')
+        "#{self.street_address}, #{self.region_address}".
+          strip().gsub(/^,\s/, BLANK_STR).gsub(/,$/, BLANK_STR)
       end
-      
+
       def save(arguments={})
         self.errors = []
         begin
@@ -188,31 +215,32 @@ module SparkApi
         false
       end
       def reorder_photos!(arguments={})
-        results = connection.put "#{self.class.path}/#{self.Id}/photos", arguments
+        connection.put "#{self.class.path}/#{self.Id}/photos", arguments
         true
       end
-      
+
       def editable?(editable_settings = [])
-        settings = Array(editable_settings)
-        editable = attributes.include?("Permissions") && self.Permissions["Editable"] == true
-        if editable
-          settings.each{ |setting| editable = false unless self.Permissions["EditableSettings"][setting.to_s] == true }
+        editable = attributes.include?(PERMISSIONS_KEY) &&
+          self.Permissions[EDITABLE_PERMISSIONS_KEY] == true
+
+        editable && Array(editable_settings).all? do |setting|
+          self.Permissions[EDITABLE_SETTINGS_PERMISSION_KEY][setting.to_s] == true
         end
-        editable
       end
 
       def ExpirationDate
-        attributes["ExpirationDate"]
+        attributes[EXPIRATION_DATE_KEY]
       end
+
       def ExpirationDate=(value)
-        write_attribute("ExpirationDate", value)
+        write_attribute(EXPIRATION_DATE_KEY, value)
       end
 
       def respond_to?(method_symbol, include_all=false)
         if super
           true
         else
-          attributes['StandardFields'].include?(method_symbol.to_s) rescue false
+          standard_fields.include?(method_symbol.to_s) rescue false
         end
       end
 
@@ -229,12 +257,16 @@ module SparkApi
             # TODO figure out a nice way to present setters for the standard fields
           when "?"
             attributes[$`]
-          end  
-        else 
+          end
+        else
           return attributes[method_name] if attributes.include?(method_name)
-          return @attributes['StandardFields'][method_name] if attributes['StandardFields'].include?(method_name)
+          return standard_fields[method_name] if standard_fields.include?(method_name)
           super # GTFO
         end
+      end
+
+      def standard_fields
+        @standard_fields ||= attributes[STANDARD_FIELDS_KEY]
       end
 
       def build_hash(keys)
