@@ -193,16 +193,13 @@ describe SparkApi do
       end
 
       it "should give me BigDecimal results for large floating point numbers" do
-        MultiJson.default_adapter.should eq(:yajl) unless jruby?
+        MultiJson.default_adapter.should eq(:oj) unless jruby?
         result = subject.get('/listings/1000')[0]
-        result["StandardFields"]["BuildingAreaTotal"].should be_a(Float)
-        pending("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
-          result["StandardFields"]["BuildingAreaTotal"].should be_a(BigDecimal)
-          number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
-          number.to_s.should eq(BigDecimal.new("0.000000000000000000000000001").to_s)
-          number = BigDecimal.new(result["StandardFields"]["ListPrice"].to_s)
-          number.to_s.should eq(BigDecimal.new("9999999999999999999999999.99").to_s)
-        end
+        result["StandardFields"]["BuildingAreaTotal"].should be_a(BigDecimal)
+        number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
+        number.to_s.should eq(BigDecimal.new("0.000000000000000000000000001").to_s)
+        number = BigDecimal.new(result["StandardFields"]["ListPrice"].to_s)
+        number.to_s.should eq(BigDecimal.new("9999999999999999999999999.99").to_s)
       end
       
     end

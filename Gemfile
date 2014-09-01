@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec :development_group => :test
 
 platforms :ruby do
-  gem 'yajl-ruby'
+  gem 'oj'
 end
 
 platforms :jruby do
