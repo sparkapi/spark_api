@@ -97,6 +97,28 @@ describe Listing do
     it "should return full address" do
       @listing.full_address.should eq("100 Someone's St, Fargo, ND 55320")
     end
+
+    it "should provide shortcut methods to standard fields" do
+      @listing.StreetName.should eq("Someone's")
+      @listing.YearBuilt.should eq(nil)
+      @listing.BuildingAreaTotal.should eq("1321.0")
+      @listing.PublicRemarks.should eq(nil)
+      @listing.PostalCode.should eq("55320")
+      @listing.ListPrice.should eq("100000.0")
+    end
+
+    it "should report that it responds to shortcut methods to standard fields" do
+      @listing.should respond_to(:StreetName)
+      @listing.should respond_to(:YearBuilt)
+      @listing.should respond_to(:BuildingAreaTotal)
+      @listing.should respond_to(:PublicRemarks)
+      @listing.should respond_to(:PostalCode)
+      @listing.should respond_to(:ListPrice)
+
+      @listing.should_not respond_to(:BogusField)
+      @listing.StandardFields['BogusField'] = 'bogus'
+      @listing.should respond_to(:BogusField)
+    end
   end
 
   describe "class methods" do
