@@ -209,7 +209,14 @@ module SparkApi
       def ExpirationDate=(value)
         write_attribute("ExpirationDate", value)
       end
-      
+
+      def respond_to?(method_symbol, include_all=false)
+        if super
+          true
+        else
+          attributes['StandardFields'].include?(method_symbol.to_s) rescue false
+        end
+      end
       
       private
 
