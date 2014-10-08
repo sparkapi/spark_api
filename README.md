@@ -22,6 +22,7 @@ Usage Examples
 
 ```ruby
 SparkApi.configure do |config|
+  require 'spark_api'
   config.endpoint   = 'https://sparkapi.com'
   # Using Spark API Authentication, refer to the Authentication documentation for OAuth2
   config.api_key    = 'MY_SPARK_API_KEY'

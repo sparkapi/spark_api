@@ -13,10 +13,10 @@ module SparkApi
       end
 
       def ListingIds=(listing_ids)
-        attributes["ListingIds"] = Array(listing_ids)
+        write_attribute("ListingIds", Array(listing_ids))
       end
       def Name=(name)
-        attributes["Name"] = name
+        write_attribute("Name", name)
       end
 
       def path
