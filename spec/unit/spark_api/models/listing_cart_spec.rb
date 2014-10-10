@@ -43,14 +43,24 @@ describe ListingCart do
       resource.ListingCount.should eq(10)
     end
 
-    on_put_it "should save a listing cart" do
+    on_put_it "should save a listing cart Name" do
       stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
       resource = subject.class.get.first
-      stub_api_put("/#{subject.class.element_name}/#{resource.Id}", 'listing_carts/new.json', 'success.json')
+      stub_api_put("/#{subject.class.element_name}/#{resource.Id}", 'listing_carts/put_name.json', 'success.json')
       resource.Name = "My Cart's Name"
+      resource.changed?.should be(true)
+      resource.save.should be(true)
+      resource.ResourceUri.should eq("/v1/listingcarts/20100912153422758914000000")
+    end
+
+    on_put_it "should save a listing cart ListingIds" do
+      stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
+      resource = subject.class.get.first
+      stub_api_put("/#{subject.class.element_name}/#{resource.Id}", 'listing_carts/put_ids.json', 'success.json')
       resource.ListingIds = ['20110112234857732941000000',
                              '20110302120238448431000000',
                              '20110510011212354751000000']
+      resource.changed?.should be(true)
       resource.save.should be(true)
       resource.ResourceUri.should eq("/v1/listingcarts/20100912153422758914000000")
     end

@@ -21,6 +21,7 @@ Usage Examples
 ------------------------
 
 ```ruby
+require 'spark_api'
 SparkApi.configure do |config|
   config.endpoint   = 'https://sparkapi.com'
   # Using Spark API Authentication, refer to the Authentication documentation for OAuth2
