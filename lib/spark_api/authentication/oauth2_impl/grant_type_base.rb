@@ -17,7 +17,7 @@ module SparkApi
           else
             raise ClientError, "Unsupported grant type [#{provider.grant_type}]"
           end
-          SparkApi.logger.debug("[oauth2] setup #{granter.class.name}")
+          SparkApi.logger.debug { "[oauth2] setup #{granter.class.name}" }
           granter
         end
         
@@ -38,16 +38,16 @@ module SparkApi
         protected
 
         def create_session(token_params)
-          SparkApi.logger.debug("[oauth2] create_session to #{provider.access_uri} params #{token_params}")
+          SparkApi.logger.debug { "[oauth2] create_session to #{provider.access_uri} params #{token_params}" }
           uri = URI.parse(provider.access_uri)
           request_path = "#{uri.path}"
           response = oauth_access_connection("#{uri.scheme}://#{uri.host}").post(request_path, "#{token_params}").body
           response.expires_in = provider.session_timeout if response.expires_in.nil?
-          SparkApi.logger.debug("[oauth2] New session created #{response}")
+          SparkApi.logger.debug { "[oauth2] New session created #{response}" }
           response
         rescue Faraday::Error::ConnectionFailed => e
           if @client.ssl_verify && e.message =~ /certificate verify failed/
-            SparkApi.logger.error(SparkApi::Errors.ssl_verification_error)
+            SparkApi.logger.error { SparkApi::Errors.ssl_verification_error }
           end
           raise e
         end

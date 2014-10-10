@@ -14,22 +14,22 @@ module SparkApi
 
         def on_complete(env)
           body = MultiJson.decode(env[:body])
-          SparkApi.logger.debug("[oauth2] Response Body: #{body.inspect}")
+          SparkApi.logger.debug { "[oauth2] Response Body: #{body.inspect}" }
           unless body.is_a?(Hash)
             raise InvalidResponse, "The server response could not be understood"
           end
           case env[:status]
           when 200..299
-            SparkApi.logger.debug("[oauth2] Success!")
+            SparkApi.logger.debug{ "[oauth2] Success!" }
             session = OAuthSession.new(body)
           else 
             # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
             # OAuth2 implementations and wouldn't hurt to log.
             auth_header_error = env[:request_headers]["WWW-Authenticate"]
-            SparkApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
+            SparkApi.logger.warn { "Authentication error #{auth_header_error}" } unless auth_header_error.nil?
             raise ClientError, {:message => body["error"], :code =>0, :status => env[:status]}
           end
-          SparkApi.logger.debug("[oauth2] Session=#{session.inspect}")
+          SparkApi.logger.debug { "[oauth2] Session=#{session.inspect}" }
           env[:body] = session
         end
 
@@ -46,13 +46,13 @@ module SparkApi
   
         def on_complete(env)
           body = MultiJson.decode(env[:body])
-          SparkApi.logger.debug("[sparkbar] Response Body: #{body.inspect}")
+          SparkApi.logger.debug{ "[sparkbar] Response Body: #{body.inspect}" }
           unless body.is_a?(Hash)
             raise InvalidResponse, "The server response could not be understood"
           end
           case env[:status]
           when 200..299
-            SparkApi.logger.debug("[sparkbar] Success!")
+            SparkApi.logger.debug{ "[sparkbar] Success!" }
             if body.include?("token")
               env[:body] = body
               return

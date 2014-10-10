@@ -43,7 +43,7 @@ module SparkApi
     end
     
     def activate_client_from_config(symbol)
-      SparkApi.logger.debug("Loading multiclient [#{symbol.to_s}] from config")
+      SparkApi.logger.debug { "Loading multiclient [#{symbol.to_s}] from config" }
       yaml = YamlConfig.build(symbol.to_s)
       if(yaml.oauth2?)
         Client.new(yaml.client_keys.merge({

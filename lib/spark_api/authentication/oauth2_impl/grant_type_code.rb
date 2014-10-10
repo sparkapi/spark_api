@@ -10,7 +10,7 @@ module SparkApi
         end
         def authenticate
           if(provider.code.nil?)
-            SparkApi.logger.debug("[oauth2] No authoriztion code present. Redirecting to #{authorization_url}.")
+            SparkApi.logger.debug { "[oauth2] No authoriztion code present. Redirecting to #{authorization_url}." }
             provider.redirect(authorization_url)
           end
           if needs_refreshing?
@@ -21,12 +21,12 @@ module SparkApi
         end
         
         def refresh()
-          SparkApi.logger.debug("[oauth2] Refresh oauth session.")
+          SparkApi.logger.debug { "[oauth2] Refresh oauth session." }
           refresher = GrantTypeRefresh.new(client,provider,session)
           refresher.params = {"redirect_uri" => @provider.redirect_uri}
           refresher.authenticate
         rescue ClientError => e
-          SparkApi.logger.info("[oauth2] Refreshing token failed, the library will try and authenticate from scratch: #{e.message}")
+          SparkApi.logger.info { "[oauth2] Refreshing token failed, the library will try and authenticate from scratch: #{e.message}" }
           nil
         end
 

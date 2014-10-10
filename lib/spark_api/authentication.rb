@@ -22,8 +22,8 @@ module SparkApi
       start_time = Time.now
       request_time = Time.now - start_time
       new_session = @authenticator.authenticate
-      SparkApi.logger.info("[#{(request_time * 1000).to_i}ms]")
-      SparkApi.logger.debug("Session: #{new_session.inspect}")
+      SparkApi.logger.info { "[#{(request_time * 1000).to_i}ms]" }
+      SparkApi.logger.debug { "Session: #{new_session.inspect}" }
       new_session
     end
 
@@ -34,7 +34,7 @@ module SparkApi
     
     # Delete the current session
     def logout
-      SparkApi.logger.info("Logging out.")
+      SparkApi.logger.info { "Logging out." }
       @authenticator.logout
     end
 

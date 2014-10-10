@@ -12,7 +12,7 @@ module SparkApi
         def authenticate
           new_session = nil
           unless @session.refresh_token.nil?
-            SparkApi.logger.debug("[oauth2] Refreshing authentication to #{provider.access_uri} using [#{session.refresh_token}]")
+            SparkApi.logger.debug { "[oauth2] Refreshing authentication to #{provider.access_uri} using [#{session.refresh_token}]" }
             new_session = create_session(token_params)
           end
           new_session 

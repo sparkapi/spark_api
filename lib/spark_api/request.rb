@@ -70,27 +70,27 @@ module SparkApi
           response = authenticator.request(method, request_path, nil, request_opts)
         else
           post_data = process_request_body(body)
-          SparkApi.logger.debug("#{method.to_s.upcase} Data:   #{post_data}")
+          SparkApi.logger.debug { "#{method.to_s.upcase} Data:   #{post_data}" }
           response = authenticator.request(method, request_path, post_data, request_opts)
         end
         request_time = Time.now - start_time
-        SparkApi.logger.debug("[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}")
+        SparkApi.logger.debug { "[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}" }
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1
-            SparkApi.logger.debug("Retrying authentication")
+            SparkApi.logger.debug { "Retrying authentication" }
             authenticate
             retry
           end
         end
         # No luck authenticating... KABOOM!
-        SparkApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
+        SparkApi.logger.error { "Authentication failed or server is sending us expired tokens, nothing we can do here." }
         raise
       end
       response.body
     rescue Faraday::Error::ConnectionFailed => e
       if self.ssl_verify && e.message =~ /certificate verify failed/
-        SparkApi.logger.error(SparkApi::Errors.ssl_verification_error)
+        SparkApi.logger.error { SparkApi::Errors.ssl_verification_error }
       end
       raise e
     end
