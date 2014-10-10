@@ -111,7 +111,6 @@ module SparkApi
         Note.build_subclass.tap do |note|
           note.prefix = "/listings/#{self.ListingKey}"
           note.element_name = "/my/notes"
-          SparkApi.logger.info("Note.path: #{note.path}")
         end
       end
 
@@ -148,7 +147,6 @@ module SparkApi
           return save!(arguments)
         rescue BadResourceRequest => e
           self.errors << {:code => e.code, :message => e.message}
-          SparkApi.logger.debug("BHDEBUG: #{e.inspect}")
           if e.code == 1053
             @constraints = []
             e.details.each do |detail|
@@ -157,16 +155,16 @@ module SparkApi
               end
             end
           end
-          SparkApi.logger.warn("Failed to save resource #{self}: #{e.message}")
+          SparkApi.logger.warn { "Failed to save resource #{self}: #{e.message}" }
         rescue NotFound => e
-          SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
+          SparkApi.logger.error { "Failed to save resource #{self}: #{e.message}" }
         end
         false
       end
       def save!(arguments={})
         writable_changed_keys = changed & WRITEABLE_FIELDS
         if writable_changed_keys.empty?
-          SparkApi.logger.warn("No supported listing change detected")
+          SparkApi.logger.warn { "No supported listing change detected" }
         else
           results = connection.put "#{self.class.path}/#{self.Id}", build_hash(writable_changed_keys), arguments
           @contstraints = []
@@ -183,9 +181,9 @@ module SparkApi
         begin
           return reorder_photos!(arguments)
         rescue BadResourceRequest => e
-          SparkApi.logger.warn("Failed to save resource #{self}: #{e.message}")
+          SparkApi.logger.warn { "Failed to save resource #{self}: #{e.message}" }
         rescue NotFound => e
-          SparkApi.logger.error("Failed to save resource #{self}: #{e.message}")
+          SparkApi.logger.error { "Failed to save resource #{self}: #{e.message}" }
         end
         false
       end

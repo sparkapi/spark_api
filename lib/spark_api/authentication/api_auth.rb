@@ -17,15 +17,15 @@ module SparkApi
       
       def authenticate
         sig = sign("#{@client.api_secret}ApiKey#{@client.api_key}")
-        SparkApi.logger.debug("Authenticating to #{@client.endpoint}")
+        SparkApi.logger.debug { "Authenticating to #{@client.endpoint}" }
         start_time = Time.now
         request_path = "/#{@client.version}/session?ApiKey=#{@client.api_key}&ApiSig=#{sig}"
         resp = @client.connection(true).post request_path, ""
         request_time = Time.now - start_time
-        SparkApi.logger.info("[#{(request_time * 1000).to_i}ms] Api: POST #{request_path}")
-        SparkApi.logger.debug("Authentication Response: #{resp.inspect}")
+        SparkApi.logger.info { "[#{(request_time * 1000).to_i}ms] Api: POST #{request_path}" }
+        SparkApi.logger.debug { "Authentication Response: #{resp.inspect}" }
         @session = Session.new(resp.body.results.first)
-        SparkApi.logger.debug("Authentication: #{@session.inspect}")
+        SparkApi.logger.debug { "Authentication: #{@session.inspect}" }
         @session
       end
       
@@ -74,11 +74,11 @@ module SparkApi
         request_opts.merge!(options)
         sig = sign_token(escaped_path, request_opts, body)
         request_path = "#{escaped_path}?#{build_url_parameters({"ApiSig"=>sig}.merge(request_opts))}"
-        SparkApi.logger.debug("Request: #{request_path}")
+        SparkApi.logger.debug { "Request: #{request_path}" }
         if body.nil?
           response = @client.connection.send(method, request_path)
         else
-          SparkApi.logger.debug("Data: #{body}")
+          SparkApi.logger.debug { "Data: #{body}" }
           response = @client.connection.send(method, request_path, body)
         end
         response

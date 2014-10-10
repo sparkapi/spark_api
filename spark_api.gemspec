@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
 
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
-  s.add_development_dependency 'rspec', '~> 2.12.0'
+  s.add_development_dependency 'rspec', '~> 2.14.0'
   s.add_development_dependency 'webmock', '~> 1.9'
   s.add_development_dependency 'typhoeus', '~> 0.3'
   s.add_development_dependency 'ci_reporter', '~> 1.7.0'

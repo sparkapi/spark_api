@@ -19,7 +19,7 @@ module SparkApi
       env[:body] = decompress_body(env)
 
       body = MultiJson.decode(env[:body])
-      SparkApi.logger.debug("Response Body: #{body.inspect}")
+      SparkApi.logger.debug{ "Response Body: #{body.inspect}" }
       unless body.is_a?(Hash) && body.key?("D")
         raise InvalidResponse, "The server response could not be understood"
       end
@@ -60,7 +60,7 @@ module SparkApi
       when 500
         raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
       when 200..299
-        SparkApi.logger.debug("Success!")
+        SparkApi.logger.debug { "Success!" }
       else 
         raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
       end

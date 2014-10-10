@@ -50,11 +50,11 @@ module SparkApi
 
         parameter_string = options.size > 0 ? "?#{build_url_parameters(options)}" : ""
         request_path = "#{escaped_path}#{parameter_string}"
-        SparkApi.logger.debug("Request: #{request_path}")
+        SparkApi.logger.debug { "Request: #{request_path}" }
         if body.nil?
           response = connection.send(method, request_path)
         else
-          SparkApi.logger.debug("Data: #{body}")
+          SparkApi.logger.debug { "Data: #{body}" }
           response = connection.send(method, request_path, body)
         end
         response
@@ -76,14 +76,14 @@ module SparkApi
       # Create a sparkbar token based on the current user's access token
       def sparkbar_token()
         raise ClientError, "OAuth2Provider must configure the sparkbar_uri to use sparkbar tokens" if provider.sparkbar_uri.nil?
-        SparkApi.logger.debug("[sparkbar] create token to #{provider.sparkbar_uri}")
+        SparkApi.logger.debug { "[sparkbar] create token to #{provider.sparkbar_uri}" }
         uri = URI.parse(provider.sparkbar_uri)
         request_path = "#{uri.path}"
         
-        SparkApi.logger.info("[sparkbar] create token to #{request_path}, #{session.access_token.inspect}")
+        SparkApi.logger.info { "[sparkbar] create token to #{request_path}, #{session.access_token.inspect}" }
         response = sparkbar_connection("#{uri.scheme}://#{uri.host}").post(request_path, "access_token=#{session.access_token}").body
         token = response["token"]
-        SparkApi.logger.debug("[sparkbar] New token created #{token}")
+        SparkApi.logger.debug { "[sparkbar] New token created #{token}" }
         token
       end
       
