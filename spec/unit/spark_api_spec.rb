@@ -20,5 +20,13 @@ describe SparkApi do
     subject.client.should_not eq(c1)
   end
 
+  it "should let me override the default logger" do
+    subject.logger.level.should eq(Logger::DEBUG) # default overridden in spec_helper
+
+    subject.logger = Logger.new('/dev/null')
+    subject.logger.level = Logger::WARN
+
+    SparkApi.logger.level.should eq(Logger::WARN)
+  end
 end
 

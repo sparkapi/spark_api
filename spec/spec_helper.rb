@@ -14,7 +14,6 @@ require 'spark_api'
 
 FileUtils.mkdir 'log' unless File.exists? 'log'
 
-# TODO, really we should change the library to support configuration without overriding
 module SparkApi
   def self.logger
     if @logger.nil?

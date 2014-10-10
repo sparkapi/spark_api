@@ -29,6 +29,10 @@ module SparkApi
     end
     @logger
   end
+
+  def self.logger= logger
+    @logger = logger
+  end
   #:nocov:
 
   def self.client(opts={})
