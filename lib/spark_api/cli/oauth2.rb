@@ -18,7 +18,7 @@ SparkApi.configure do |config|
   end
   config.authentication_mode = SparkApi::Authentication::OAuth2
   config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
-  config.ssl_verify = ! (ENV["NO_VERIFY"].downcase=='true') if ENV["NO_VERIFY"]
+  config.ssl_verify = ENV["SSL_VERIFY"].downcase != 'false' if ENV["SSL_VERIFY"]
 end
 
 # Enables saving and loading serialized oauth2 sessions for the system user. 
