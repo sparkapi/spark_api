@@ -15,7 +15,7 @@ module SparkApi
     class ConsoleCLI
       OPTIONS_ENV = {
         :endpoint => "API_ENDPOINT",
-        :no_verify => "NO_VERIFY",
+        :ssl_verify => "SSL_VERIFY",
         # OAUTH2 Options
         :access_uri  => "ACCESS_URI",
         :authorization_uri => "AUTHORIZATION_URI",
@@ -68,7 +68,7 @@ module SparkApi
           :api_key => ENV[OPTIONS_ENV[:api_key]], 
           :api_secret => ENV[OPTIONS_ENV[:api_secret]],
           :api_user => ENV[OPTIONS_ENV[:api_user]],
-          :no_verify => ENV.fetch(OPTIONS_ENV[:no_verify], false),
+          :ssl_verify => ENV.fetch(OPTIONS_ENV[:ssl_verify], true),
           :console => ENV[OPTIONS_ENV[:console]]
         }
         cli_options = {}
@@ -133,7 +133,7 @@ module SparkApi
           opts.on("-f", "--file FILE",
                   "Load configuration for yaml file.") { |arg| file_options = parse_file_options(arg) }
           opts.on("--no_verify",
-                  "Disable SSL Certificate verification. This is useful for development servers.") { |arg| cli_options[:no_verify] = arg }
+                  "Disable SSL Certificate verification. This is useful for development servers.") { |arg| cli_options[:ssl_verify] = !arg }
           opts.on("-d", "--debug",
                   "Show detailed request logging information.") { |arg| cli_options[:debug] = arg }
           opts.on("-v", "--version",
@@ -146,7 +146,7 @@ module SparkApi
         options = env_options.merge(file_options.merge(cli_options))
         return options
       end
-      
+
       def self.setup_api_auth
         " -r #{File.dirname(__FILE__) + '/../../lib/spark_api/cli/api_auth.rb'}"
       end
