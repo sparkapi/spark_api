@@ -15,53 +15,52 @@ module SparkApi
         @rental_calendars = []
         @documents = []
         @constraints = []
-        #@tour_of_homes = []
-        
+        @tour_of_homes = []
+        @open_houses = []
+
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs, ohouses, tourhomes = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents', 'OpenHouses', 'TourOfHomes')
         end
-        
+
         if attributes.has_key?('RentalCalendar')
           rentalcalendars = attributes['RentalCalendar']
         end
-        
+
         if pics != nil
-          pics.collect { |pic| @photos.push(Photo.new(pic)) } 
+          setup_attribute(@photos, pics, Photo)
           attributes['StandardFields'].delete('Photos')
         end
-        
+
         if vids != nil
-          vids.collect { |vid| @videos.push(Video.new(vid)) } 
+          setup_attribute(@videos, vids, Video)
           attributes['StandardFields'].delete('Videos')
         end
 
         if tours != nil
-          tours.collect { |tour| @virtual_tours.push(VirtualTour.new(tour)) }
+          setup_attribute(@virtual_tours, tours, VirtualTour)
           attributes['StandardFields'].delete('VirtualTours')
         end
 
         if docs != nil
-          docs.collect { |doc| @documents.push(Document.new(doc)) }
+          setup_attribute(@documents, docs, Document)
           attributes['StandardFields'].delete('Documents')
         end
-        
+
         if ohouses != nil
-          @open_houses = []
-          ohouses.collect { |ohouse| @open_houses.push(OpenHouse.new(ohouse)) }
+          setup_attribute(@open_houses, ohouses, OpenHouse)
           attributes['StandardFields'].delete('OpenHouses')
         end
-        
+
         if tourhomes != nil
-          @tour_of_homes = []
-          tourhomes.collect { |tourhome| @tour_of_homes.push(TourOfHome.new(tourhome)) }
+          setup_attribute(@tour_of_homes, tourhomes, TourOfHome)
           attributes['StandardFields'].delete('TourOfHomes')
         end
-        
+
         if rentalcalendars != nil
-          rentalcalendars.collect { |rentalcalendar| @rental_calendars.push(RentalCalendar.new(rentalcalendar)) }
+          setup_attribute(@rental_calendars, rentalcalendars, RentalCalendar)
           attributes.delete('RentalCalendar')
-        end        
-        
+        end
+
         super(attributes)
       end
 
@@ -106,7 +105,7 @@ module SparkApi
         @open_houses ||= OpenHouse.find_by_listing_key(self.Id, arguments)
         return @open_houses unless @open_houses.nil?
       end
-      
+
       def my_notes
         Note.build_subclass.tap do |note|
           note.prefix = "/listings/#{self.ListingKey}"
@@ -161,6 +160,7 @@ module SparkApi
         end
         false
       end
+
       def save!(arguments={})
         writable_changed_keys = changed & WRITEABLE_FIELDS
         if writable_changed_keys.empty?
@@ -200,7 +200,7 @@ module SparkApi
         end
         editable
       end
-      
+
       def ExpirationDate
         attributes["ExpirationDate"]
       end
@@ -215,7 +215,7 @@ module SparkApi
           attributes['StandardFields'].include?(method_symbol.to_s) rescue false
         end
       end
-      
+
       private
 
       # TODO trim this down so we're only overriding the StandardFields access
@@ -236,7 +236,7 @@ module SparkApi
           super # GTFO
         end
       end
-      
+
       def build_hash(keys)
         hash = {}
         keys.each do |key|
@@ -244,7 +244,15 @@ module SparkApi
         end
         hash
       end
-      
+
+      # Determine if passed a model or hash and push instance of Klass onto attributes array
+      def setup_attribute(attributes, collection, klass)
+        collection.collect do |c|
+          attribute = (c.instance_of? klass) ? c : klass.new(c)
+          attributes.push(attribute)
+        end
+      end
+
     end
   end
 end
