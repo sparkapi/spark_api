@@ -16,3 +16,4 @@ tmp/*
 .buildpath
 .project
 *.swp
+dev.sh

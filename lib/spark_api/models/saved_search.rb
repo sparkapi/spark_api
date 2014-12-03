@@ -49,6 +49,29 @@ module SparkApi
         end
       end
 
+      def can_have_newsfeed?
+
+        standard_fields = %w(BathsTotal BedsTotal City CountyOrParish ListPrice Location MlsStatus PostalCode PropertyType RoomsTotal State)
+
+        number_of_filters = 0
+
+        standard_fields.each do |field|
+          number_of_filters += 1 if self.Filter.include? field
+        end
+        
+        number_of_filters >= 3
+
+      end
+
+      def has_newsfeed?
+        if self.respond_to? "NewsFeedSubscriptionSummary"
+          self.NewsFeedSubscriptionSummary['ActiveSubscription']
+        else
+          saved_search = SavedSearch.find( self.Id, {"_expand" => "NewsFeedSubscriptionSummary"})
+          saved_search.NewsFeedSubscriptionSummary['ActiveSubscription']
+        end
+      end
+
       private
 
       def resource_pluralized; "SavedSearches" end

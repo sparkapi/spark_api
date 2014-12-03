@@ -136,4 +136,44 @@ describe SavedSearch do
     end
   end
 
+  describe "can_have_newsfeed?" do
+
+    it "should return false without at least three filter parameters" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      resource = subject.class.find(id)
+      resource.Filter = "City Eq 'Moorhead' And MlsStatus Eq 'Active'"
+      resource.can_have_newsfeed?.should == false
+
+    end
+
+    it "should return true with three filter parameters" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      resource = subject.class.find(id)
+      resource.Filter = "City Eq 'Moorhead' And MlsStatus Eq 'Active' And PropertyType Eq 'A'"
+      resource.can_have_newsfeed?.should == true
+    end
+
+  end
+
+  describe "has_newsfeed?" do
+
+    it "should return true if the search already has a newsfeed" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_newsfeed.json',
+        { "_expand" => "NewsFeedSubscriptionSummary" } )
+      resource = subject.class.find(id)
+      resource.has_newsfeed?.should == true
+
+    end
+
+    it "should return false if the search doesn't already has a newsfeed" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/without_newsfeed.json',
+        { "_expand" => "NewsFeedSubscriptionSummary" } )
+      resource = subject.class.find(id)
+      resource.has_newsfeed?.should == false
+    end
+
+  end
+
 end
