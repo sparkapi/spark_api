@@ -61,7 +61,7 @@ module SparkApi
 
       def rotate(direction)
         payload = { 'Photos' => [ {'Rotate' => direction }] }
-        connection.put "#{self.update_path}", payload
+        connection.put "#{self.update_path}/#{self.Id}", payload
       end
 
       def exists?
