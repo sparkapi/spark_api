@@ -78,7 +78,7 @@ def stub_api_put(service_path, body, stub_fixture="success.json", opts={})
 end
 
 def log_stub(s)
-  SparkApi.logger.debug("Stubbed Request: #{s.inspect} \n\n")
+  SparkApi.logger.debug { "Stubbed Request: #{s.inspect} \n\n" }
   return s
 end
 

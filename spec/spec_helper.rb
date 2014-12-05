@@ -16,11 +16,16 @@ FileUtils.mkdir 'log' unless File.exists? 'log'
 
 module SparkApi
   def self.logger
-    if @logger.nil?
-      @logger = Logger.new('log/test.log')
-      @logger.level = Logger::DEBUG
+    @logger ||= begin
+      if ENV['DEBUG']
+        FileUtils.mkdir 'log' unless File.exists? 'log'
+        Logger.new('log/test.log')
+      else
+        logger       = Logger.new(STDOUT)
+        logger.level = Logger::FATAL
+        logger
+      end
     end
-    @logger
   end
 end
 
@@ -35,7 +40,9 @@ end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # # in spec/support/ and its subdirectories.
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+Dir[File.expand_path(File.join(File.dirname(__FILE__), 'support', '**', '*.rb'))].each do |f|
+  require f
+end
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -46,6 +53,6 @@ RSpec.configure do |config|
   config.before(:all) { reset_config }
 end
 
-def jruby? 
+def jruby?
   RUBY_PLATFORM == "java"
 end

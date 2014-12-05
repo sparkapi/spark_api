@@ -2,8 +2,8 @@ module SparkApi
   module Configuration
 
     begin
-      require 'yajl'
-      MultiJson.engine = "yajl"
+      require 'oj'
+      MultiJson.engine = :oj
     rescue LoadError => e
       # Using pure ruby JSON parser
     end

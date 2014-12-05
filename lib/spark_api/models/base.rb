@@ -9,10 +9,14 @@ module SparkApi
 
       attr_accessor :attributes, :errors, :parent
 
+      ID_KEY = 'Id'
+      RESOURCE_URI_KEY = 'ResourceUri'
+      TYPE_KEY = 'Type'
+
       # Name of the resource as related to the path name
       def self.element_name
         # TODO I'd love to pull in active model at this point to provide default naming
-        @element_name ||= "resource"
+        @element_name ||= 'resource'
       end
       def self.element_name=(name)
         @element_name = name
@@ -20,14 +24,14 @@ module SparkApi
 
       # Resource path prefix, prepended to the url
       def self.prefix
-        @prefix ||= "/"
+        @prefix ||= '/'
       end
       def self.prefix=(prefix)
         @prefix = prefix
       end
 
       def resource_uri
-        self.ResourceUri.sub(/^\/#{SparkApi.client.version}/, "") if persisted?
+        self.ResourceUri.sub(/^\/#{SparkApi.client.version}/, '') if persisted?
       end
 
       def self.path
@@ -122,10 +126,14 @@ module SparkApi
       end
 
       def persisted?;
-        !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
+        !@attributes[ID_KEY].nil? && !@attributes[RESOURCE_URI_KEY].nil?
       end
 
       protected
+
+      def resource_type
+        attributes[TYPE_KEY]
+      end
 
       def write_attribute(attribute, value)
         attribute = attribute.to_s
