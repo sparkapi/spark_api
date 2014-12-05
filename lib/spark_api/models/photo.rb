@@ -5,11 +5,11 @@ module SparkApi
     class Photo < Base
       extend Subresource
       self.element_name = "photos"
-      
+
       attr_accessor :update_path
-      
+
       EDITABLE_FIELDS = [:Picture, :FileName, :Name, :Caption, :Primary]
-      
+
       def initialize(opts={})
         defaulted_opts = {}
         EDITABLE_FIELDS.each do |k|
@@ -19,10 +19,10 @@ module SparkApi
         super(opts.merge(defaulted_opts))
       end
 
-      def primary? 
-        @attributes["Primary"] == true 
+      def primary?
+        @attributes["Primary"] == true
       end
-      
+
       def save(arguments={})
         begin
           return save!(arguments)
@@ -44,12 +44,12 @@ module SparkApi
         load(result)
         true
       end
-      
+
       def load_picture(file_name)
         self.Picture = Base64.encode64(File.open(file_name, 'rb').read).gsub(/\n/, '')
         self.FileName = File.basename(file_name)
       end
-      
+
       def delete(args={})
         connection.delete("#{update_path}/#{self.Id}", args)
       end
@@ -58,15 +58,24 @@ module SparkApi
         payload = {"Version" => version}
         connection.put "#{update_path}/#{self.Id}/versions/current", payload
       end
-      
+
+      def rotate(direction)
+        unless [:clockwise, :counterclockwise].include? direction.to_sym
+          SparkApi.logger.error("Photo rotate failed. '#{direction}' is not supported.")
+          return false
+        end
+        payload = { 'Photos' => [{'Rotate' => direction.to_s }] }
+        connection.put "#{self.update_path}/#{self.Id}", payload
+      end
+
       def exists?
         @attributes.include?("Id")
       end
-      
+
       private
-      
+
       def build_photo_hash
-        results_hash = {} 
+        results_hash = {}
         EDITABLE_FIELDS.each do |k|
           key = k.to_s
           results_hash[key] = @attributes[key] unless @attributes[key].nil?
