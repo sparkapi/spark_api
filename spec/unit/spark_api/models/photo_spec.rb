@@ -84,7 +84,13 @@ describe Photo do
       on_put_it "should rotate a photo" do
         stub_api_put('/listings/1234/photos/20110826220032167405000000', 'listings/photos/rotate.json', 'success.json')
         subject.Id = "20110826220032167405000000"
-        subject.rotate('clockwise')
+        subject.rotate!('clockwise')
+      end
+
+      on_put_it "should raise an exception for an invalid rotate parameter" do
+        stub_api_put('/listings/1234/photos/20110826220032167405000000', 'listings/photos/rotate.json', 'success.json')
+        subject.Id = "20110826220032167405000000"
+        expect { subject.rotate!('left') }.to raise_error(ArgumentError)
       end
 
       on_delete_it "should delete a photo" do

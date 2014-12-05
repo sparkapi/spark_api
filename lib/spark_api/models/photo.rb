@@ -59,8 +59,12 @@ module SparkApi
         connection.put "#{update_path}/#{self.Id}/versions/current", payload
       end
 
-      def rotate(direction)
-        payload = { 'Photos' => [ {'Rotate' => direction }] }
+
+      def rotate!(direction)
+        unless [:clockwise, :counterclockwise].include? direction.to_sym
+          raise ArgumentError, "Photo rotate failed. '#{direction}' is not supported."
+        end
+        payload = { 'Photos' => [{'Rotate' => direction.to_s }] }
         connection.put "#{self.update_path}/#{self.Id}", payload
       end
 
