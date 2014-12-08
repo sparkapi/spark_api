@@ -49,6 +49,17 @@ module SparkApi
         end
       end
 
+      # This section is on hold until https://jira.fbsdata.com/browse/API-2766 has been completed.
+      # 
+      # return the newsfeed attached to this saved search
+      # def newsfeeds
+      #   Newsfeed.find(:all, :_filter => "Subscription.Id Eq '#{@attributes["Id"]}'")
+      # end
+
+      # def newsfeed_for(user)
+      #   self.newsfeeds.select { |feed| feed.OwnerId == user.Id } 
+      # end
+
       def can_have_newsfeed?
 
         standard_fields = %w(BathsTotal BedsTotal City CountyOrParish ListPrice Location MlsStatus PostalCode PropertyType RoomsTotal State)
