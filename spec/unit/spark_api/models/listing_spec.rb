@@ -11,6 +11,7 @@ describe Listing do
         "City"=>"Fargo",
         "Longitude"=>"",
         "StreetName"=>"Someone's",
+        "UnparsedFirstLineAddress"=>"100 Someone's St",
         "YearBuilt"=>nil,
         "BuildingAreaTotal"=>"1321.0",
         "PublicRemarks"=>nil,
