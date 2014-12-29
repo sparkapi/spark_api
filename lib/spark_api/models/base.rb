@@ -125,6 +125,10 @@ module SparkApi
         !@attributes['Id'].nil? && !@attributes['ResourceUri'].nil?
       end
 
+      def to_param
+        attributes['Id']
+      end
+
       protected
 
       def write_attribute(attribute, value)

@@ -1,6 +1,7 @@
 module SparkApi
   module Models
     class Message < Base
+      extend Finders
       self.element_name="messages"
       
       def save(arguments={})
