@@ -128,8 +128,8 @@ module SparkApi
         end
       end
 
-      def street_address
-        self.UnparsedFirstLineAddress
+      def street_address        
+        self.UnparsedFirstLineAddress.delete(DATA_MASK).strip().gsub(/\s{2,}/, ' ')
       end
 
       def region_address

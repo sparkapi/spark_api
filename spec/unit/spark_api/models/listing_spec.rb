@@ -91,6 +91,11 @@ describe Listing do
       @listing.street_address.should eq("100 Someone's St")
     end
 
+    it "should remove masks from the street address" do
+      @listing.StandardFields["UnparsedFirstLineAddress"] = "********"
+      @listing.street_address.should eq("")
+    end
+
     it "should return the regional address" do
       @listing.region_address.should eq("Fargo, ND 55320")
     end
