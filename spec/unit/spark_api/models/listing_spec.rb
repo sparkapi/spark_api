@@ -87,13 +87,22 @@ describe Listing do
       @listing.should_not respond_to(:Videos)
     end
 
-    it "should return street address" do
-      @listing.street_address.should eq("100 Someone's St")
-    end
+    describe '.street_address' do
+      it 'should return the street address' do
+        @listing.street_address.should eq("100 Someone's St")
+      end
 
-    it "should remove masks from the street address" do
-      @listing.StandardFields["UnparsedFirstLineAddress"] = "********"
-      @listing.street_address.should eq("")
+      it 'should remove data masks' do
+        @listing.StandardFields["UnparsedFirstLineAddress"] = "********"
+        @listing.street_address.should eq("")
+      end
+
+      it 'should handle a missing unparsed first line address' do
+        [nil, '', ' '].each do |current|
+          @listing.StandardFields['UnparsedFirstLineAddress'] = current
+          @listing.street_address.should eq('')
+        end
+      end
     end
 
     it "should return the regional address" do
