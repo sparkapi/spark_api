@@ -94,7 +94,7 @@ module SparkApi
           end 
         else
           return attributes[method_name] if attributes.include?(method_name)
-          super # GTFO
+          super
         end
       end
 

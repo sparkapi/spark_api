@@ -6,7 +6,14 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
+      attr_accessor :newsfeeds
+
       self.element_name="savedsearches"
+
+      def initialize(attributes={})
+        @newsfeeds = nil
+        super(attributes)
+      end
 
       def self.provided()
         Class.new(self).tap do |provided|
@@ -49,16 +56,14 @@ module SparkApi
         end
       end
 
-      # This section is on hold until https://jira.fbsdata.com/browse/API-2766 has been completed.
-      # 
-      # return the newsfeed attached to this saved search
-      # def newsfeeds
-      #   Newsfeed.find(:all, :_filter => "Subscription.Id Eq '#{@attributes["Id"]}'")
-      # end
-
-      # def newsfeed_for(user)
-      #   self.newsfeeds.select { |feed| feed.OwnerId == user.Id } 
-      # end
+      def newsfeeds
+        if @newsfeeds.nil?
+          response = SparkApi.client.get("/savedsearches/#{@attributes["Id"]}", _expand: "NewsFeeds").first["NewsFeeds"]
+              # the response from the api is just a bunch of hashes, but we can turn them into Newsfeed instances
+          @newsfeeds = response.map { |hash| Newsfeed.new(hash) }
+        end
+        @newsfeeds
+      end
 
       def can_have_newsfeed?
 

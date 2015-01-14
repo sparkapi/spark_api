@@ -233,7 +233,7 @@ module SparkApi
         else 
           return attributes[method_name] if attributes.include?(method_name)
           return @attributes['StandardFields'][method_name] if attributes['StandardFields'].include?(method_name)
-          super # GTFO
+          super
         end
       end
 

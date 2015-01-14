@@ -31,11 +31,11 @@ module SparkApi
       private
 
       def find_every(options)
-        collect(connection.get("/#{element_name}", options))
+        collect(connection.get("#{path}", options))
       end
 
       def find_single(scope, options)
-        resp = connection.get("/#{element_name}/#{scope}", options)
+        resp = connection.get("#{path}/#{scope}", options)
         new(resp.first)
       end
             

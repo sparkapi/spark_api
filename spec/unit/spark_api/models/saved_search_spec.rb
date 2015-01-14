@@ -176,4 +176,17 @@ describe SavedSearch do
 
   end
 
+  describe "newsfeed" do
+
+    it "should return the newsfeed for the saved search" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_newsfeed.json',
+        { "_expand" => "NewsFeeds" } )      
+
+      resource = subject.class.find(id)
+      resource.newsfeeds.should be_an(Array)
+    end
+  end
+
 end
