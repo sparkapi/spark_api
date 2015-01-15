@@ -3,7 +3,7 @@ require 'rspec/core/formatters/documentation_formatter'
 # Formatter to support documenting currently-implemented API paths and
 # methods. This borrows heavily from the standard
 # DocumentationFormatter, but excludes example groups not related
-# tagged with :support. It also formats examples withe a :method tag
+# tagged with :support. It also formats examples with a :method tag
 # with the HTTP method and path ahead of the example description.
 class ApiSupportFormatter < RSpec::Core::Formatters::DocumentationFormatter
 

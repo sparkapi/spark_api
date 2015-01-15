@@ -45,6 +45,10 @@ module SparkApi
         @listing_carts ||= ListingCart.collect(connection.get("/contacts/#{self.Id}/listingcarts", arguments))
       end
 
+      def messages(arguments = {})
+        @messages ||= Message.collect(connection.get("/contacts/#{self.Id}/messages", arguments))
+      end
+
       def comments(arguments = {})
         @comments ||= Comment.collect(connection.get("/contacts/#{self.Id}/comments", arguments))
       end
@@ -65,6 +69,8 @@ module SparkApi
           nil
         end
       end
+
+
 
     end
   end
