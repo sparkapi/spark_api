@@ -19,6 +19,9 @@ module SparkApi
         Class.new(self).tap do |provided|
           provided.element_name = '/savedsearches'
           provided.prefix = '/provided'
+          def is_provided_search?
+            true
+          end
           SparkApi.logger.info("#{self.name}.path: #{provided.path}")
         end
       end
@@ -56,6 +59,11 @@ module SparkApi
         end
       end
 
+      def listings(args = {})
+        arguments = {:_filter => self.Filter}.merge(args)
+        @listings ||= Listing.collect(connection.get("/listings", arguments))
+      end
+
       def newsfeeds
         if @newsfeeds.nil?
           response = SparkApi.client.get("/savedsearches/#{@attributes["Id"]}", _expand: "NewsFeeds").first["NewsFeeds"]
@@ -65,7 +73,13 @@ module SparkApi
         @newsfeeds
       end
 
+      def is_provided_search?
+        false
+      end
+
       def can_have_newsfeed?
+
+        return false if is_provided_search? 
 
         standard_fields = %w(BathsTotal BedsTotal City CountyOrParish ListPrice Location MlsStatus PostalCode PropertyType RoomsTotal State)
 
