@@ -6,6 +6,7 @@ module SparkApi
 
       def find(*arguments)
         scope = arguments.slice!(0)
+        raise ArgumentError, "argument can't be nil" if scope.nil?
         options = arguments.slice!(0) || {}
         case scope
           when :all   then find_every(options)
