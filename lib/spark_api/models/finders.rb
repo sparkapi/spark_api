@@ -8,6 +8,7 @@ module SparkApi
         scope = arguments.slice!(0)
         options = arguments.slice!(0) || {}
         case scope
+          when nil    then raise ArgumentError, "Argument for find() can't be nil"
           when :all   then find_every(options)
           when :first then find_every(options).first
           when :last  then find_every(options).last

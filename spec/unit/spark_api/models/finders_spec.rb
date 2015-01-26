@@ -32,4 +32,21 @@ describe Finders, "Finders model" do
     resource.Id.should eq(1)
   end
 
+  describe "find" do
+
+    it "should throw an error if no argument is passed" do
+      stub_api_get("/my_resource/", 'finders.json')
+      lambda {
+        MyResource.find()
+      }.should raise_error(ArgumentError)
+    end
+
+    it "should throw an error when the first argument is nil" do
+      stub_api_get("/my_resource/", 'finders.json', {:_limit => 1})
+      lambda {
+        MyResource.find(nil, {:_limit => 1})
+      }.should raise_error(ArgumentError)
+    end
+
+  end
 end
