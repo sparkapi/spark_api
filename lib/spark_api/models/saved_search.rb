@@ -81,6 +81,8 @@ module SparkApi
 
         return false if is_provided_search? 
 
+        # Newsfeed restriction criteria for saved searches:
+        # http://alpha.sparkplatform.com/docs/api_services/newsfeed/restrictions#criteria
         standard_fields = %w(BathsTotal BedsTotal City CountyOrParish ListPrice Location MlsStatus PostalCode PropertyType RoomsTotal State)
 
         number_of_filters = 0
@@ -93,12 +95,21 @@ module SparkApi
 
       end
 
-      def has_newsfeed?
+      def has_active_newsfeed?
         if self.respond_to? "NewsFeedSubscriptionSummary"
           self.NewsFeedSubscriptionSummary['ActiveSubscription']
         else
           saved_search = SavedSearch.find( self.Id, {"_expand" => "NewsFeedSubscriptionSummary"})
           saved_search.NewsFeedSubscriptionSummary['ActiveSubscription']
+        end
+      end
+
+      def has_inactive_newsfeed?
+        if self.respond_to? "NewsFeedSubscriptionSummary"
+          !self.NewsFeedSubscriptionSummary['ActiveSubscription']
+        else
+          saved_search = SavedSearch.find( self.Id, {"_expand" => "NewsFeedSubscriptionSummary"})
+          !saved_search.NewsFeedSubscriptionSummary['ActiveSubscription']
         end
       end
 
