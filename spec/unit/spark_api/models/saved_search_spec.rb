@@ -138,42 +138,45 @@ describe SavedSearch do
 
   describe "can_have_newsfeed?" do
 
+    it "should return false for a provided search" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      resource = subject.class.find(id)
+      resource.stub(:is_provided_search?) { true }
+      resource.can_have_newsfeed?.should == false
+    end
+
     it "should return false without at least three filter parameters" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
       resource.Filter = "City Eq 'Moorhead' And MlsStatus Eq 'Active'"
       resource.can_have_newsfeed?.should == false
-
     end
 
     it "should return true with three filter parameters" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
-      resource.Filter = "City Eq 'Moorhead' And MlsStatus Eq 'Active' And PropertyType Eq 'A'"
+      resource.stub(:is_provided_search?) { false }
       resource.can_have_newsfeed?.should == true
     end
 
   end
 
-  describe "has_newsfeed?" do
-
+  describe "has_active_newsfeed?" do
     it "should return true if the search already has a newsfeed" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_newsfeed.json',
         { "_expand" => "NewsFeedSubscriptionSummary" } )
-      resource = subject.class.find(id)
-      resource.has_newsfeed?.should == true
-
+      subject.class.find(id).has_active_newsfeed?.should == true
     end
+  end
 
-    it "should return false if the search doesn't already has a newsfeed" do
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/without_newsfeed.json',
+  describe "has_inactive_newsfeed?" do
+    it "should return true if the search has an inactive newsfeed" do
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_inactive_newsfeed.json')
+      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_inactive_newsfeed.json',
         { "_expand" => "NewsFeedSubscriptionSummary" } )
-      resource = subject.class.find(id)
-      resource.has_newsfeed?.should == false
+      subject.class.find(id).has_inactive_newsfeed?.should == true
     end
-
   end
 
   describe "newsfeed" do
