@@ -22,6 +22,9 @@ module SparkApi
           def is_provided_search?
             true
           end
+          def newsfeeds
+            []
+          end
           SparkApi.logger.info("#{self.name}.path: #{provided.path}")
         end
       end
@@ -80,6 +83,7 @@ module SparkApi
       def can_have_newsfeed?
 
         return false if is_provided_search? 
+        return true  if has_active_newsfeed? || has_inactive_newsfeed?
 
         # Newsfeed restriction criteria for saved searches:
         # http://alpha.sparkplatform.com/docs/api_services/newsfeed/restrictions#criteria
@@ -96,6 +100,8 @@ module SparkApi
       end
 
       def has_active_newsfeed?
+        return false if is_provided_search? 
+
         if self.respond_to? "NewsFeedSubscriptionSummary"
           self.NewsFeedSubscriptionSummary['ActiveSubscription']
         else
@@ -105,6 +111,8 @@ module SparkApi
       end
 
       def has_inactive_newsfeed?
+        return false if is_provided_search? 
+       
         if self.respond_to? "NewsFeedSubscriptionSummary"
           !self.NewsFeedSubscriptionSummary['ActiveSubscription']
         else
