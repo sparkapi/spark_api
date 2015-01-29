@@ -3,12 +3,9 @@ module SparkApi
     class Newsfeed < Base 
       
       extend Finders
+      include Concerns::Savable
 
       self.element_name = 'newsfeeds'
-
-      def update!(arguments={})
-        connection.put( "/newsfeeds/#{self.Id}", arguments ).first
-      end
 
     end
   end
