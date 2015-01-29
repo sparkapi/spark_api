@@ -141,14 +141,14 @@ describe SavedSearch do
     it "should return false for a provided search" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { true }
+      resource.stub(:provided_search?) { true }
       resource.can_have_newsfeed?.should == false
     end
 
     it "should return false without at least three filter parameters" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { false }
+      resource.stub(:provided_search?) { false }
       resource.stub(:has_active_newsfeed?) { false }
       resource.stub(:has_inactive_newsfeed?) { false }
       resource.Filter = "City Eq 'Moorhead' And MlsStatus Eq 'Active'"
@@ -158,7 +158,7 @@ describe SavedSearch do
     it "should return true with three filter parameters" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { false }
+      resource.stub(:provided_search?) { false }
       resource.stub(:has_active_newsfeed?) { false }
       resource.stub(:has_inactive_newsfeed?) { false }
       resource.can_have_newsfeed?.should == true
@@ -172,14 +172,14 @@ describe SavedSearch do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_newsfeed.json',
         { "_expand" => "NewsFeedSubscriptionSummary" } )
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { false }
+      resource.stub(:provided_search?) { false }
       resource.has_active_newsfeed?.should == true
     end
 
     it "should return false for a provided search" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { true }
+      resource.stub(:provided_search?) { true }
       resource.has_active_newsfeed?.should == false
     end
   end
@@ -190,14 +190,14 @@ describe SavedSearch do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_inactive_newsfeed.json',
         { "_expand" => "NewsFeedSubscriptionSummary" } )
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { false }
+      resource.stub(:provided_search?) { false }
       resource.has_inactive_newsfeed?.should == true
     end
 
     it "should return false for a provided search" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_inactive_newsfeed.json')
       resource = subject.class.find(id)
-      resource.stub(:is_provided_search?) { true }
+      resource.stub(:provided_search?) { true }
       resource.has_inactive_newsfeed?.should == false
     end
   end

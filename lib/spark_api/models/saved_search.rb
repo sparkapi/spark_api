@@ -19,7 +19,7 @@ module SparkApi
         Class.new(self).tap do |provided|
           provided.element_name = '/savedsearches'
           provided.prefix = '/provided'
-          def is_provided_search?
+          def provided_search?
             true
           end
           def newsfeeds
@@ -76,13 +76,13 @@ module SparkApi
         @newsfeeds
       end
 
-      def is_provided_search?
+      def provided_search?
         false
       end
 
       def can_have_newsfeed?
 
-        return false if is_provided_search? 
+        return false if provided_search? 
         return true  if has_active_newsfeed? || has_inactive_newsfeed?
 
         # Newsfeed restriction criteria for saved searches:
@@ -100,7 +100,7 @@ module SparkApi
       end
 
       def has_active_newsfeed?
-        return false if is_provided_search? 
+        return false if provided_search? 
 
         if self.respond_to? "NewsFeedSubscriptionSummary"
           self.NewsFeedSubscriptionSummary['ActiveSubscription']
@@ -111,7 +111,7 @@ module SparkApi
       end
 
       def has_inactive_newsfeed?
-        return false if is_provided_search? 
+        return false if provided_search? 
        
         if self.respond_to? "NewsFeedSubscriptionSummary"
           !self.NewsFeedSubscriptionSummary['ActiveSubscription']
