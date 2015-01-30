@@ -6,6 +6,7 @@
               "ResourceUri": "/v1/savedsearches/20100815220615294367000000",
               "Id":  "20100815220615294367000000",
               "Name": "Search name here",
+              "Filter": "City Eq 'Moorhead' And MlsStatus Eq 'Active' And PropertyType Eq 'A'",
               "ContactIds": [
                 "20100815220615294367000000"
               ]

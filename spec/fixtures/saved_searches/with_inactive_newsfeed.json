@@ -1,0 +1,35 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            { 
+              "ResourceUri": "/v1/savedsearches/20100815220615294367000000",
+              "Id":  "20100815220615294367000000",
+              "Name": "Search name here",
+              "ContactIds": [
+                "20100815220615294367000000"
+              ],
+              "NewsFeedSubscriptionSummary": {
+                "ActiveSubscription": false
+              },
+              "NewsFeeds": [
+                {
+                  "ResourceUri": "/v1/newsfeeds/20141203082619076323088319",
+                  "Name": "My Very Special Newsfeed",
+                  "OwnerId": "20000426143505724628000000",
+                  "ProspectLinkId": "",
+                  "CreatedTimestamp": "2014-12-03T08:26:19Z",
+                  "Id": "20141203082619076323088319",
+                  "Active": "false",
+                  "ModificationTimestamp": "2014-12-03T08:26:19Z",
+                  "ExpirationDate": "2015-03-03",
+                  "Curated": "false",
+                  "NotificationMethods": ["Email"],
+                  "LastEventTimestamp": "",
+                  "Type": "SavedSearch"
+                }
+              ]
+            }
+        ]
+    }
+}
