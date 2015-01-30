@@ -14,11 +14,16 @@ module SparkApi
         end
         false
       end
+
       def save!(arguments={})
         results = connection.post self.class.path, {"Messages" => [ attributes ]}, arguments
         true
       end
-      
+
+      def replies(arguments = {})
+        @replies = Message.collect(connection.get("#{self.class.path}/#{self.Id}/replies", arguments))
+      end
+
     end
   end
 end

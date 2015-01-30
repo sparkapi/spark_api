@@ -18,7 +18,11 @@ describe Message do
   end
 
   context "/messages", :support do
-    on_get_it "should get all my messages"
+    on_get_it "should get all my messages" do
+      stub_api_get("/messages", 'messages/get.json')
+      messages = Message.find(:all)
+      messages.size.should == 2
+    end
 
     on_post_it "should save a new message" do
       stub_api_post("/messages", 'messages/new.json', 'messages/post.json')
@@ -42,6 +46,20 @@ describe Message do
   end
 
   context "/messages/<message_id>", :support do
-    on_get_it "should get a single message"
+    on_get_it "should get a single message" do
+      subject.attributes["Id"] = "20110353423434130982000000"
+      stub_api_get("/messages/#{subject.Id}", "messages/get.json")
+      subject.should be_a(Message)
+    end
   end
+
+  context "/messages/<message_id>/replies", :support do
+    on_get_it "should get all the replies" do
+      subject.attributes["Id"] = "20110353423434130982000000"
+      stub_api_get("/messages/#{subject.Id}/replies", "messages/get.json")
+      subject.replies.size.should == 2
+    end
+
+  end
+
 end
