@@ -80,6 +80,6 @@ module SparkApi
     end
     
   end
-  Faraday.register_middleware :response, :spark_api => FaradayMiddleware
+  Faraday::Response.register_middleware :spark_api => FaradayMiddleware
 
 end

@@ -39,7 +39,7 @@ describe SparkApi::Client, "Client config"  do
                                     :endpoint => "https://api.wade.dev.fbsdata.com",
                                     :ssl_verify => false)
       client.ssl_verify.should be_false
-      client.connection.ssl.should eq({:verify=>false})
+      client.connection.ssl.verify.should be_false
     end
 
     it "should allow restrict ssl certificates when verification is on" do
@@ -47,7 +47,7 @@ describe SparkApi::Client, "Client config"  do
                                     :endpoint => "https://api.wade.dev.fbsdata.com",
                                     :ssl_verify => true)
       client.ssl_verify.should be_true
-      client.connection.ssl.should eq({})
+      client.connection.ssl.should be_empty
     end
   end
 
