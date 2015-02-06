@@ -1,0 +1,5 @@
+v1.3.23
+ - remove ruby 1.9 hash syntax
+
+v1.3.22
+ - Upgrade Faraday to 0.9

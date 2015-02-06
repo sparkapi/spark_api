@@ -34,7 +34,7 @@ module SparkApi
         end
 
       end
-      Faraday.register_middleware :response, :oauth2_impl => FaradayMiddleware
+      Faraday::Response.register_middleware :oauth2_impl => FaradayMiddleware
       
       #==OAuth2 Faraday response middleware
       # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
@@ -62,7 +62,7 @@ module SparkApi
         end
   
       end
-      Faraday.register_middleware :response, :sparkbar_impl => SparkbarFaradayMiddleware
+      Faraday::Response.register_middleware :sparkbar_impl => SparkbarFaradayMiddleware
 
     end
   end
