@@ -69,7 +69,7 @@ module SparkApi
 
       def newsfeeds
         if @newsfeeds.nil?
-          response = SparkApi.client.get("/savedsearches/#{@attributes["Id"]}", _expand: "NewsFeeds").first["NewsFeeds"]
+          response = SparkApi.client.get("/savedsearches/#{@attributes["Id"]}", :_expand => "NewsFeeds").first["NewsFeeds"]
               # the response from the api is just a bunch of hashes, but we can turn them into Newsfeed instances
           @newsfeeds = response.map { |hash| Newsfeed.new(hash) }
         end
