@@ -56,7 +56,7 @@ describe Message do
   context "/messages/<message_id>/replies", :support do
     on_get_it "should get all the replies" do
       subject.attributes["Id"] = "20110353423434130982000000"
-      stub_api_get("/messages/#{subject.Id}/replies", "messages/get.json")
+      stub_api_get("/messages/#{subject.Id}/replies", "messages/get.json", :_expand => 'Body, Sender')
       subject.replies.size.should == 2
     end
 

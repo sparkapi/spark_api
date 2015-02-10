@@ -20,8 +20,9 @@ module SparkApi
         true
       end
 
-      def replies(arguments = {})
-        @replies = Message.collect(connection.get("#{self.class.path}/#{self.Id}/replies", arguments))
+      def replies(args = {})
+        arguments = {:_expand => "Body, Sender"}.merge(args)
+        Message.collect(connection.get("#{self.class.path}/#{self.Id}/replies", arguments))
       end
 
     end

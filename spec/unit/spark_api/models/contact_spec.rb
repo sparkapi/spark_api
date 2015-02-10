@@ -241,7 +241,7 @@ describe Contact do
       it "should get all of a contact's messages" do
         s = stub_api_get("/contacts/#{contact_id}/messages", "messages/get.json")
         messages = Contact.new(:Id => contact_id).messages
-        messages.size.should eq(1)
+        messages.size.should eq(2)
         s.should have_been_requested
       end
     end
