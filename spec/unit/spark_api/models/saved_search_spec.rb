@@ -99,6 +99,27 @@ describe SavedSearch do
       resource.ContactIds.size.should eq(0)
     end
 
+    describe "listings" do
+
+      it "should return the searches listings" do
+        stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+        stub_api_get("/listings", 'listings/multiple.json', 
+          {:_filter => "City Eq 'Moorhead' And MlsStatus Eq 'Active' And PropertyType Eq 'A'"})
+        listings = subject.class.find(id).listings
+        listings.should be_an(Array)
+        listings[0].should be_a(Listing)
+      end
+      
+      it "should include the permissive parameter for provided searches" do
+        stub_api_get("/provided/savedsearches/#{id}", 'saved_searches/get.json')
+        resource = subject.class.provided.find(id)
+        expect(SparkApi.client).to receive(:get).with("/listings", 
+          {:_filter => resource.Filter, :RequestMode => 'permissive'})
+        resource.listings
+      end
+
+    end
+
   end
 
   context "/provided/savedsearches", :support do
@@ -139,18 +160,14 @@ describe SavedSearch do
   describe "can_have_newsfeed?" do
 
     it "should return false for a provided search" do
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
-      resource = subject.class.find(id)
-      resource.stub(:provided_search?) { true }
+      stub_api_get("/provided/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      resource = subject.class.provided.find(id)
       resource.can_have_newsfeed?.should == false
     end
 
     it "should return false without at least three filter parameters" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
       resource = subject.class.find(id)
-      resource.stub(:provided_search?) { false }
-      resource.stub(:has_active_newsfeed?) { false }
-      resource.stub(:has_inactive_newsfeed?) { false }
       resource.Filter = "City Eq 'Moorhead' And MlsStatus Eq 'Active'"
       resource.can_have_newsfeed?.should == false
     end
@@ -177,9 +194,8 @@ describe SavedSearch do
     end
 
     it "should return false for a provided search" do
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
-      resource = subject.class.find(id)
-      resource.stub(:provided_search?) { true }
+      stub_api_get("/provided/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+      resource = subject.class.provided.find(id)
       resource.has_active_newsfeed?.should == false
     end
   end
@@ -195,9 +211,8 @@ describe SavedSearch do
     end
 
     it "should return false for a provided search" do
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/with_inactive_newsfeed.json')
-      resource = subject.class.find(id)
-      resource.stub(:provided_search?) { true }
+      stub_api_get("/provided/#{subject.class.element_name}/#{id}", 'saved_searches/with_inactive_newsfeed.json')
+      resource = subject.class.provided.find(id)
       resource.has_inactive_newsfeed?.should == false
     end
   end
