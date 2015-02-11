@@ -117,6 +117,14 @@ describe SavedSearch do
           {:_filter => resource.Filter, :RequestMode => 'permissive'})
         resource.listings
       end
+      
+      it "should not include the permissive parameter for saved searches" do
+        stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
+        resource = subject.class.find(id)
+        resource.stub(:provided_search?) { false }
+        expect(SparkApi.client).to receive(:get).with("/listings", {:_filter => resource.Filter})
+        resource.listings
+      end
 
     end
 
