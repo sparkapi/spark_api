@@ -63,8 +63,9 @@ module SparkApi
       end
 
       def listings(args = {})
-        arguments = {:_filter => self.Filter}.merge(args)
-        @listings ||= Listing.collect(connection.get("/listings", arguments))
+        arguments = {:_filter => self.Filter}
+        arguments.merge!(:RequestMode => 'permissive') if provided_search?
+        @listings ||= Listing.collect(connection.get("/listings", arguments.merge(args)))
       end
 
       def newsfeeds
