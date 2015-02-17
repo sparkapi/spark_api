@@ -1,3 +1,7 @@
+v1.3.24
+ - added replies method and finders to message class
+ - added to_param method to base class
+
 v1.3.23
  - remove ruby 1.9 hash syntax
 

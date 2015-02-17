@@ -66,8 +66,6 @@ module SparkApi
         end
       end
 
-
-
     end
   end
 end
