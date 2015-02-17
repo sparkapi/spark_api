@@ -1,0 +1,83 @@
+{
+  "D": {
+    "Success": true,
+    "Results": [
+      {
+        "Id": "20110353423434130982000000",
+        "ResourceUri": "/v1/messages/20110353423434130982000000",
+        "Type": "ShowingRequest",
+        "SenderId": "20110112234857732941000000",
+        "Sender": {
+          "Id": "20110112234857732941000000",
+          "ResourceUri": "/v1/accounts/20110112234857732941000000",
+          "UserType": "Member",
+          "Name": "Joe Realtor",
+          "OfficeId": "20100113238853732842000000",
+          "Office": "Joe's Realty",
+          "CompanyId": null,
+          "Company": null
+        },
+        "RecipientIds": ["20120212334957232744000000"],
+        "Recipients": [{
+          "Id": "20120212334957232744000000",
+          "ResourceUri": "/v1/accounts/20120212334957232744000000",
+          "UserType": "Member",
+          "Name": "Sue Realtor",
+          "OfficeId": "20100113238853732842000000",
+          "Office": "Joe's Realty",
+          "CompanyId": null,
+          "Company": null
+        }],
+        "ThreadInfo": {
+          "HasReplies": true,
+          "UnreadInThread": true
+        },
+        "Subject": "Showing Request For 123 Main St, MLS # 12-345",
+        "Body": "A showing is requested for ...",
+        "ListingId": "20110112234857732941000000",
+        "ReplyToId": null,
+        "RecipientIds": "20130212233857332441000000",
+        "CreatedTimestamp": "2013-06-11T11:00:00",
+        "ModificationTimestamp": "2013-06-11T11:00:00"
+      },
+      {
+        "Id": "20110353423434130982000000",
+        "ResourceUri": "/v1/messages/20110353423434130982000000",
+        "Type": "ShowingRequest",
+        "SenderId": "20110112234857732941000000",
+        "Sender": {
+          "Id": "20110112234857732941000000",
+          "ResourceUri": "/v1/accounts/20110112234857732941000000",
+          "UserType": "Member",
+          "Name": "Joe Realtor",
+          "OfficeId": "20100113238853732842000000",
+          "Office": "Joe's Realty",
+          "CompanyId": null,
+          "Company": null
+        },
+        "RecipientIds": ["20120212334957232744000000"],
+        "Recipients": [{
+          "Id": "20120212334957232744000000",
+          "ResourceUri": "/v1/accounts/20120212334957232744000000",
+          "UserType": "Member",
+          "Name": "Sue Realtor",
+          "OfficeId": "20100113238853732842000000",
+          "Office": "Joe's Realty",
+          "CompanyId": null,
+          "Company": null
+        }],
+        "ThreadInfo": {
+          "HasReplies": true,
+          "UnreadInThread": true
+        },
+        "Subject": "Showing Request For 123 Main St, MLS # 12-345",
+        "Body": "A showing is requested for ...",
+        "ListingId": "20110112234857732941000000",
+        "ReplyToId": null,
+        "RecipientIds": "20130212233857332441000000",
+        "CreatedTimestamp": "2013-06-11T11:00:00",
+        "ModificationTimestamp": "2013-06-11T11:00:00"
+      }
+    ]
+  }
+}
