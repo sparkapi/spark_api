@@ -104,7 +104,7 @@ describe SavedSearch do
       it "should return the searches listings" do
         stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
         stub_api_get("/listings", 'listings/multiple.json', 
-          {:_filter => "City Eq 'Moorhead' And MlsStatus Eq 'Active' And PropertyType Eq 'A'"})
+          {:_filter => "SavedSearch Eq '#{id}'"})
         listings = subject.class.find(id).listings
         listings.should be_an(Array)
         listings[0].should be_a(Listing)
@@ -114,7 +114,7 @@ describe SavedSearch do
         stub_api_get("/provided/savedsearches/#{id}", 'saved_searches/get.json')
         resource = subject.class.provided.find(id)
         expect(SparkApi.client).to receive(:get).with("/listings", 
-          {:_filter => resource.Filter, :RequestMode => 'permissive'})
+          {:_filter => "SavedSearch Eq '#{id}'", :RequestMode => 'permissive'})
         resource.listings
       end
       
@@ -122,7 +122,7 @@ describe SavedSearch do
         stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
         resource = subject.class.find(id)
         resource.stub(:provided_search?) { false }
-        expect(SparkApi.client).to receive(:get).with("/listings", {:_filter => resource.Filter})
+        expect(SparkApi.client).to receive(:get).with("/listings", {:_filter => "SavedSearch Eq '#{id}'"})
         resource.listings
       end
 
