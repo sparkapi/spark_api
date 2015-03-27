@@ -8,6 +8,11 @@ module SparkApi
 
       attr_accessor :newsfeeds
 
+      # Newsfeed restriction criteria for saved searches:
+      # http://alpha.sparkplatform.com/docs/api_services/newsfeed/restrictions#criteria
+      QUALIFYING_FIELDS_FOR_NEWSFEED = %w(BathsTotal BedsTotal City CountyOrParish ListPrice Location MlsStatus 
+        PostalCode PropertyType RoomsTotal State)
+
       self.element_name="savedsearches"
 
       def initialize(attributes={})
@@ -74,24 +79,13 @@ module SparkApi
         false
       end
 
-      def self.qualifying_fields_for_newsfeed
-        # Newsfeed restriction criteria for saved searches:
-        # http://alpha.sparkplatform.com/docs/api_services/newsfeed/restrictions#criteria
-        %w(BathsTotal BedsTotal City CountyOrParish ListPrice Location MlsStatus PostalCode PropertyType 
-          RoomsTotal State)
-      end
-
-      def qualifying_fields_for_newsfeed
-        self.class.qualifying_fields_for_newsfeed
-      end
-
       def can_have_newsfeed?
 
         return true  if has_active_newsfeed? || has_inactive_newsfeed?
 
         number_of_filters = 0
 
-        self.class.qualifying_fields_for_newsfeed.each do |field|
+        QUALIFYING_FIELDS_FOR_NEWSFEED.each do |field|
           number_of_filters += 1 if self.Filter.include? field
         end
         

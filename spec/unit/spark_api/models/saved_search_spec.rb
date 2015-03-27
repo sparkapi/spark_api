@@ -238,9 +238,9 @@ describe SavedSearch do
     end
   end
 
-  describe "qualifying_fields_for_newsfeed" do
+  describe "QUALIFYING_FIELDS_FOR_NEWSFEED" do
     it "should return an array" do
-      subject.class.qualifying_fields_for_newsfeed.should be_an(Array)
+      subject.class::QUALIFYING_FIELDS_FOR_NEWSFEED.should be_an(Array)
     end
   end
   
