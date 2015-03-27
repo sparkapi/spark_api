@@ -1,6 +1,9 @@
 module SparkApi
   module Models
     class IdxLink < Base
+
+      extend Finders
+      
       self.element_name="idxlinks"
       
       LINK_TYPES = ["QuickSearch", "SavedSearch", "MyListings", "Roster"]
@@ -33,14 +36,6 @@ module SparkApi
       end
 
       private
-
-      def self.find_every(options)
-        raise NotImplementedError # TODO
-      end
-
-      def self.find_one(options)
-        raise NotImplementedError # TODO
-      end
 
       def self.find_single(scope, options)
         resp = SparkApi.client.get("/idxlinks/#{scope}", options)

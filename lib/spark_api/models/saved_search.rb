@@ -63,7 +63,7 @@ module SparkApi
       end
 
       def listings(args = {})
-        arguments = {:_filter => self.Filter}
+        arguments = {:_filter => "SavedSearch Eq '#{self.Id}'"}
         arguments.merge!(:RequestMode => 'permissive') if provided_search?
         @listings ||= Listing.collect(connection.get("/listings", arguments.merge(args)))
       end
