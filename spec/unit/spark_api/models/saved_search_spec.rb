@@ -165,6 +165,18 @@ describe SavedSearch do
     end
   end
 
+  describe "favorite?" do
+    it "should return true if the search has been tagged as a favorite" do
+      search = SavedSearch.new(Tags: ["Favorites"])
+      search.should be_favorite
+    end
+
+    it "should return false if the search has not been tagged as a favorite" do
+      search = SavedSearch.new
+      search.should_not be_favorite
+    end
+  end
+
   describe "can_have_newsfeed?" do
 
     it "should return false without at least three filter parameters" do
