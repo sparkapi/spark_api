@@ -35,6 +35,10 @@ module SparkApi
         collect(connection.get("/#{self.element_name}/tags/#{tag}", arguments))
       end
 
+      def favorite?
+        @attributes["Tags"] && @attributes["Tags"].include?( "Favorites")
+      end
+
       # list contacts (private role)
       def contacts
         return [] unless persisted?

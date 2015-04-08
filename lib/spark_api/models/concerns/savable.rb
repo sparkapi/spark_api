@@ -22,10 +22,15 @@ module SparkApi
 
         def create!(arguments = {})
           results = connection.post self.path, post_data.merge(params_for_save), arguments
-          update_attributes(results.first)
+          update_attributes_after_create(results.first)
           reset_dirty
           params_for_save.clear
           true
+        end
+
+        def update_attributes(attrs = {})
+          attrs.each{|k,v| public_send(:"#{k}=", v)}
+          save!
         end
 
         def update!(arguments = {})
@@ -48,7 +53,7 @@ module SparkApi
 
         private 
 
-        def update_attributes(result)
+        def update_attributes_after_create(result)
           attributes['Id'] = result['Id'] ? result['Id'] : parse_id(result['ResourceUri'])
           result.delete('Id')
           attributes.merge! result
