@@ -10,7 +10,7 @@
               "ContactIds": [
                 "20100815220615294367000000"
               ],
-              "Provided": false
+              "Provided": true
             },
             { 
               "ResourceUri": "/v1/savedsearches/20100615220615292711000000",
