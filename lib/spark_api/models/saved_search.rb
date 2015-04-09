@@ -24,9 +24,6 @@ module SparkApi
         Class.new(self).tap do |provided|
           provided.element_name = '/savedsearches'
           provided.prefix = '/provided'
-          def provided_search?
-            true
-          end
           SparkApi.logger.info("#{self.name}.path: #{provided.path}")
         end
       end
@@ -70,17 +67,13 @@ module SparkApi
 
       def listings(args = {})
         arguments = {:_filter => "SavedSearch Eq '#{self.Id}'"}
-        arguments.merge!(:RequestMode => 'permissive') if provided_search?
+        arguments.merge!(:RequestMode => 'permissive') if Provided?
         @listings ||= Listing.collect(connection.get("/listings", arguments.merge(args)))
       end
 
       def newsfeeds
         Newsfeed.collect(connection.get("#{self.class.path}/#{@attributes["Id"]}", 
           :_expand => "NewsFeeds").first["NewsFeeds"])
-      end
-
-      def provided_search?
-        false
       end
 
       def can_have_newsfeed?
