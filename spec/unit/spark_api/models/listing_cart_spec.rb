@@ -133,4 +133,44 @@ describe ListingCart do
     end
   end
 
+  describe "#listings" do 
+    it "should return the listings in the cart" do 
+      resource = subject.class.new Id: 5, ListingIds: ["1234"]
+      stub_api_get("/#{subject.class.element_name}/#{resource.Id}/listings", 'listings/multiple.json', 
+        :_filter => resource.filter)
+      resource.listings.should be_a(Array)
+      resource.listings.first.should be_a(Listing)
+    end
+
+    it "should return an empty array if there aren't any listings" do 
+      resource = subject.class.new Id: 5
+      resource.listings.should be_a(Array)
+      resource.listings.count.should === 0
+    end
+  end
+
+  describe "filter" do
+    it "should return a filter string for the cart" do
+      resource = subject.class.new Id: 5
+      resource.filter.should eq("ListingCart Eq '5'")
+    end
+  end
+
+  describe "#deletable?" do
+    it "should return true for private custom carts" do
+      resource = subject.class.new
+      expect(resource.deletable?).to be_true
+    end
+    
+    it "should return true for custom vow carts" do
+      resource = subject.class.new PortalCartType: "Custom"
+      expect(resource.deletable?).to be_true
+    end
+
+    it "should return false for vow carts" do
+      resource = subject.class.new PortalCartType: "Favorites"
+      expect(resource.deletable?).to be_false
+    end
+  end
+
 end
