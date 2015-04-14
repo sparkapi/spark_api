@@ -15,6 +15,7 @@ module SparkApi
       def ListingIds=(listing_ids)
         write_attribute("ListingIds", Array(listing_ids))
       end
+
       def Name=(name)
         write_attribute("Name", name)
       end
@@ -25,6 +26,16 @@ module SparkApi
         else
           super
         end
+      end
+
+      def filter
+        "ListingCart Eq '#{self.Id}'"
+      end
+
+      def listings(args = {})
+        return [] if attributes["ListingIds"].nil?
+        arguments = {:_filter => self.filter}.merge(args)
+        Listing.collect(connection.get("/listingcarts/#{self.Id}/listings", arguments))
       end
 
       def add_listing(listing)
@@ -50,6 +61,10 @@ module SparkApi
 
       def self.portal(arguments={})
           collect(connection.get("/#{self.element_name}/portal", arguments))
+      end
+
+      def deletable?
+        !attributes.has_key?("PortalCartType") || self.PortalCartType == "Custom"
       end
 
     end
