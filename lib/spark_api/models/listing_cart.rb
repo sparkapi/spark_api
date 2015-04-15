@@ -20,7 +20,7 @@ module SparkApi
         write_attribute("Name", name)
       end
 
-      def path
+      def self.path
         if @contact_id
           "/contacts/#{@contact_id}/listingcarts"
         else
@@ -35,7 +35,7 @@ module SparkApi
       def listings(args = {})
         return [] if attributes["ListingIds"].nil?
         arguments = {:_filter => self.filter}.merge(args)
-        Listing.collect(connection.get("/listingcarts/#{self.Id}/listings", arguments))
+        Listing.collect(connection.get("#{self.path}/#{self.Id}/listings", arguments))
       end
 
       def add_listing(listing)
