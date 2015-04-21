@@ -136,8 +136,7 @@ describe ListingCart do
   describe "#listings" do 
     it "should return the listings in the cart" do 
       resource = subject.class.new Id: 5, ListingIds: ["1234"]
-      stub_api_get("/#{subject.class.element_name}/#{resource.Id}/listings", 'listings/multiple.json', 
-        :_filter => resource.filter)
+      stub_api_get("/#{subject.class.element_name}/#{resource.Id}/listings", 'listings/multiple.json')
       resource.listings.should be_a(Array)
       resource.listings.first.should be_a(Listing)
     end

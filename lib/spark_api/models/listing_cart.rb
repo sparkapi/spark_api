@@ -34,8 +34,7 @@ module SparkApi
 
       def listings(args = {})
         return [] if attributes["ListingIds"].nil?
-        arguments = {:_filter => self.filter}.merge(args)
-        Listing.collect(connection.get("#{self.path}/#{self.Id}/listings", arguments))
+        Listing.collect(connection.get("#{self.path}/#{self.Id}/listings", args))
       end
 
       def add_listing(listing)
