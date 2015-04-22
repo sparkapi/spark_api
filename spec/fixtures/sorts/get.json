@@ -1,0 +1,31 @@
+{
+    "D": {
+        "Results": [
+            {
+                "ResourceUri": "/v1/searchtemplates/sorts/20120717212004874996000000",
+                "Id": "20130717212004874996000000",
+                "Name": "My Custom Listing Sort",
+                "OwnerId": "20000426173054342350000000",
+                "MlsId": "20000426143505724628000000",
+                "Inheritable": true,
+                "Inherited": false,
+                "Fields": [
+                    {
+                        "Domain": "StandardFields",
+                        "GroupField": null,
+                        "Field": "ListPrice",
+                        "SortType": "Ascending"
+                    },
+                    {
+                        "Domain": "StandardFields",
+                        "GroupField": null,
+                        "Field": "MlsStatus",
+                        "SortType": "Descending"
+                    }
+                ],
+                "ModificationTimestamp": "2013-07-09T15:31:47Z"
+            }
+        ],
+        "Success": true
+    }
+}
