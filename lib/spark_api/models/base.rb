@@ -129,6 +129,19 @@ module SparkApi
         attributes['Id']
       end
 
+      def to_partial_path
+        "#{underscore(resource_pluralized)}/#{underscore(self.class.name.split('::').last)}"
+      end
+
+      # can be overridden
+      def resource_pluralized
+        resource = self.class.name.split('::').last
+        unless resource.split('').last == "s"
+          resource = resource + "s"
+        end
+        resource
+      end
+
       protected
 
       def write_attribute(attribute, value)
@@ -137,6 +150,16 @@ module SparkApi
           attribute_will_change!(attribute)
           attributes[attribute] = value
         end
+      end
+
+      private
+
+      def underscore(string)
+        string.to_s.gsub(/::/, '/').
+        gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+        gsub(/([a-z\d])([A-Z])/,'\1_\2').
+        tr("-", "_").
+        downcase
       end
 
     end

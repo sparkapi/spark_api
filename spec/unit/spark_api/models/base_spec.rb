@@ -1,9 +1,13 @@
 require './spec/spec_helper'
 
 # Sample resource models for testing the base class
-class MyExampleModel < Base
-  self.element_name = "example"
-  self.prefix = "/test/"
+module SparkApi
+  module Models
+    class MyExampleModel < Base
+      self.element_name = "example"
+      self.prefix = "/test/"
+    end
+  end
 end
 
 class MyDefaultModel < Base
@@ -151,6 +155,13 @@ describe Base, "Base model" do
       @model.should_not respond_to(:Nonsense_will_change!)
     end
 
+  end
+
+  describe "to_partial_path" do
+    it "should return the partial path" do
+      model = MyExampleModel.new()
+      model.to_partial_path.should eq("my_example_models/my_example_model")
+    end
   end
 
 end

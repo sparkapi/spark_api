@@ -59,15 +59,6 @@ module SparkApi
           attributes.merge! result
         end
 
-        # can be overridden
-        def resource_pluralized
-          resource = self.class.name.split('::').last
-          unless resource.split('').last == "s"
-            resource = resource + "s"
-          end
-          resource
-        end
-
       end
 
     end
