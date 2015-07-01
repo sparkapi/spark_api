@@ -191,7 +191,26 @@ module SparkApi
         results = connection.put "#{self.class.path}/#{self.Id}/photos", arguments
         true
       end
-      
+
+      def reorder_photo(photo_id, index)
+        unless Integer(index)
+          raise ArgumentError, "Photo reorder failed. '#{index}' is not a number."
+        end
+
+        begin
+          return reorder_photo!(photo_id, index)
+        rescue BadResourceRequest => e
+          SparkApi.logger.warn { "Failed to save resource #{self}: #{e.message}" }
+        rescue NotFound => e
+          SparkApi.logger.error { "Failed to save resource #{self}: #{e.message}" }
+        end
+        false
+      end
+      def reorder_photo!(photo_id, index)
+        connection.put "#{self.class.path}/#{self.Id}/photos/#{photo_id}", "Photos" => [{"Order"=>index}]
+        true
+      end
+
       def editable?(editable_settings = [])
         settings = Array(editable_settings)
         editable = attributes.include?("Permissions") && self.Permissions["Editable"] == true
