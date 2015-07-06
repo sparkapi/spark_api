@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+script/bootstrap
+
+
+export COVERAGE=on              # build rcov report when running tests
+export CI_REPORTS=test/reports  # output JUnit reports to std location
+
+echo "==> Running tests..."
+bundle exec rake ci:setup:rspec spec

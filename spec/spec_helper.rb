@@ -1,5 +1,15 @@
-require "rubygems"
+if ENV['COVERAGE'] == "on"
+  require 'simplecov'
+  require 'simplecov-rcov'
+  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+  SimpleCov.start do
+    add_filter '/vendor'
+    add_filter '/spec'
+    add_filter '/test'
+  end
+end
 
+require "rubygems"
 require "rspec"
 require 'rspec/autorun'
 require 'webmock/rspec'
