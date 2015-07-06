@@ -45,8 +45,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'typhoeus', '~> 0.3'
   s.add_development_dependency 'ci_reporter', '~> 1.7.0'
   s.add_development_dependency 'rcov', '~> 0.9.9'
-  s.add_development_dependency 'flexmls_gems', '~> 0.2.5'
   s.add_development_dependency 'rb-readline'
   s.add_development_dependency 'rb-fsevent'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'simplecov-rcov'
 end
 

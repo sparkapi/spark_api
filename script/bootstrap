@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+ruby -v
+echo "==> Installing gems..."
+bundle check --path vendor/bundle 2>&1 > /dev/null || {
+  bundle install  --quiet --path vendor/bundle
+}

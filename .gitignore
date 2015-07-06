@@ -3,6 +3,7 @@ log/
 ._*
 .DEV*
 spec/reports/
+test/reports
 .bundle/ruby
 .bundle/jruby
 coverage

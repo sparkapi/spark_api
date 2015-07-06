@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+rm -rf pkg/*
+bundle exec rake build
+gem push pkg/*.gem --key rubygems_production_key
