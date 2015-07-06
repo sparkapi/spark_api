@@ -251,6 +251,23 @@ describe Listing do
         l.errors.size.should eq(1)
       end
 
+      on_put_it "should reorder a photo" do
+        list_id = "20060725224713296297000000"
+        stub_api_get("/listings/#{list_id}", 'listings/with_photos.json')
+        stub_api_put("/listings/#{list_id}/photos/20110826220032167405000000", 'listings/put_reorder_photo.json', 'listings/reorder_photo.json')
+        l = Listing.find(list_id)
+        l.reorder_photo("20110826220032167405000000", "2")
+        l.photos.size.should eq(5)
+      end
+
+      on_put_it "should raise an exception when an index is not an Integer" do
+        list_id = "20060725224713296297000000"
+        stub_api_get("/listings/#{list_id}", 'listings/with_photos.json')
+        stub_api_put("/listings/#{list_id}/photos/2011082622003216740500000", 'listings/put_reorder_photo.json', 'listings/reorder_photo.json')
+        l = Listing.find(list_id)
+        expect{ l.reorder_photo("2011082622003216740500000", "asdf") }.to raise_error(ArgumentError)
+      end
+
       context "with pagination" do
         # This is really a bogus call, but we should make sure our
         # pagination collection impl still behaves sanely
