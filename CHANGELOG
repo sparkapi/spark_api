@@ -1,3 +1,6 @@
+v1.3.25
+ - added reorder_photo method to the listing class
+
 v1.3.24
  - added replies method and finders to message class
  - added to_param method to base class
