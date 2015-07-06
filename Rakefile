@@ -4,6 +4,7 @@ require 'rubygems/user_interaction'
 require 'rspec'
 require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
+require 'bundler/gem_tasks'
 
 RSpec::Core::RakeTask.new do |t|
     t.rspec_opts = ["-c", "-f progress"]

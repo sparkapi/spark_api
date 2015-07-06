@@ -3,4 +3,4 @@ set -e
 
 rm -rf pkg/*
 bundle exec rake build
-gem push pkg/* --host http://gems.flexmls.com
+gem push pkg/*.gem --key rubygems_production_key
