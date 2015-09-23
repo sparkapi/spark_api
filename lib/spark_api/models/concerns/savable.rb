@@ -28,8 +28,8 @@ module SparkApi
           true
         end
 
-        def update_attributes(attrs = {})
-          attrs.each{|k,v| public_send(:"#{k}=", v)}
+        def update_attributes(attrs = {}, options = {})
+          load(attrs, options)
           save!
         end
 

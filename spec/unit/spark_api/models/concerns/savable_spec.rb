@@ -74,4 +74,14 @@ describe Concerns::Savable, "Model" do
     s.should have_been_requested
   end
 
+  describe "update_attributes" do
+    it "loads the attributes" do
+      model = MyExampleModel.new
+      new_attributes = {Name: "My Name"}
+      expect(model).to receive(:load).with(new_attributes, {})
+      expect(model).to receive(:save!)
+      model.update_attributes(new_attributes)
+    end
+  end
+
 end
