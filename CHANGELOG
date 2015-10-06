@@ -1,3 +1,6 @@
+v1.3.26
+ - fixed update_attributes method
+
 v1.3.25
  - added reorder_photo method to the listing class
 
