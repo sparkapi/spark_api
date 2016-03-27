@@ -2,3 +2,9 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.1.6
+
+# Try to work around a travisCI quirk
+# see https://git.io/vVf62 for more
+before_install:
+  - gem update --system
+  - gem update bundler
