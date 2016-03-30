@@ -54,6 +54,7 @@ RSpec.configure do |config|
   config.alias_example_to :on_post_it, :method => 'POST'
   config.alias_example_to :on_delete_it, :method => 'DELETE'
   config.before(:all) { reset_config }
+  config.color_enabled = true
 end
 
 def jruby? 

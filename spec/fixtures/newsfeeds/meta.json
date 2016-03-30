@@ -1,0 +1,131 @@
+{
+  "D": {
+    "Results": [
+      {
+        "Events": ["New", "PriceChange", "Sold", "OpenHouse", "Pending", "BackOnMarket", "Extension", "StatusChange", "Recommended", "Shared", "Seeded"],
+        "Subscriptions": {
+          "SavedSearches": {
+            "CoreStandardFields": {
+                      "MlsStatus": {
+                  "ResourceUri": "/v1/standardfields/MlsStatus",
+                   "MlsVisible": ["A", "I", "J", "K", "N"],
+                   "Searchable": true,
+                      "HasList": true,
+                  "MaxListSize": 7,
+                         "Type": "Character",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Status"
+              },
+                   "PropertyType": {
+                  "ResourceUri": "/v1/standardfields/PropertyType",
+                   "MlsVisible": ["A", "I", "J", "K", "N"],
+                   "Searchable": true,
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Character",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Property Type"
+              },
+                     "PostalCode": {
+                  "ResourceUri": "/v1/standardfields/PostalCode",
+                   "MlsVisible": ["A", "I", "J", "K", "N"],
+                   "Searchable": true,
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Character",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Postal Code"
+              },
+                      "ListPrice": {
+                  "ResourceUri": "/v1/standardfields/ListPrice",
+                   "MlsVisible": ["A", "I", "J", "K"],
+                   "Searchable": true,
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Decimal",
+                  "MultiSelect": false,
+                     "Currency": true,
+                "FieldCategory": "Main",
+                        "Label": "List Price"
+              },
+                      "BedsTotal": {
+                  "ResourceUri": "/v1/standardfields/BedsTotal",
+                   "MlsVisible": ["A", "K", "N"],
+                   "Searchable": true,
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Integer",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Total Bedrooms"
+              },
+                      "YearBuilt": {
+                  "ResourceUri": "/v1/standardfields/YearBuilt",
+                   "MlsVisible": ["A", "I", "K", "N"],
+                   "Searchable": true,
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Integer",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Year Built"
+              },
+              "BuildingAreaTotal": {
+                  "ResourceUri": "/v1/standardfields/BuildingAreaTotal",
+                   "MlsVisible": ["A", "I", "K", "N"], 
+                   "Searchable": true, 
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Decimal",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Total SqFt."
+              },
+                "PropertySubType": {
+                  "ResourceUri": "/v1/standardfields/PropertySubType",
+                   "MlsVisible": ["A", "I", "J", "K", "N"],
+                   "Searchable": true,
+                      "HasList": true,
+                  "MaxListSize": 9,
+                         "Type": "Character",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Sub Type"
+              },
+                "SubdivisionName": {
+                  "ResourceUri": "/v1/standardfields/SubdivisionName",
+                   "MlsVisible": ["A", "I", "J", "K", "N"],
+                   "Searchable": true,
+                      "HasList": false,
+                  "MaxListSize": 0,
+                         "Type": "Character",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Subdivision"
+              },
+                   "MLSAreaMinor": {
+                  "ResourceUri": "/v1/standardfields/MLSAreaMinor",
+                   "MlsVisible": ["A", "I", "J", "K", "N"],
+                   "Searchable": true,
+                      "HasList": true,
+                  "MaxListSize": 51,
+                         "Type": "Character",
+                  "MultiSelect": false,
+                "FieldCategory": "Main",
+                        "Label": "Map Area"
+              }
+            },
+              "CoreSearchFields": [
+              "Location"
+            ],
+             "MinimumCoreFields": 3
+          }
+        }
+      }
+    ],
+    "Success": true
+  }
+}
