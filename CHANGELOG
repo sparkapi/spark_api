@@ -1,3 +1,7 @@
+v1.3.27
+ - added NewsFeedMeta model
+ - updated SavedSearch to use NewsFeedMeta when figuring out if the search qualifies for a news feed
+ 
 v1.3.26
  - fixed update_attributes method
 
