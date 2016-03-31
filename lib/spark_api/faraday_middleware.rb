@@ -15,7 +15,6 @@ module SparkApi
     # Handles pretty much all the api response parsing and error handling.  All responses that
     # indicate a failure will raise a SparkApi::ClientError exception
     def on_complete(env)
-
       env[:body] = decompress_body(env)
 
       body = MultiJson.decode(env[:body])
@@ -25,6 +24,7 @@ module SparkApi
       end
       response = ApiResponse.new body
       paging = response.pagination
+
       if paging.nil?
         results = response
       else
@@ -35,34 +35,40 @@ module SparkApi
           results = paginate_response(response, paging)
         end
       end
+
+      error_hash = {
+        :request_path => env[:url],
+        :message => response.message,
+        :code => response.code,
+        :status => env[:status]
+      }
+
       case env[:status]
       when 400
-        hash = {:message => response.message, :code => response.code, :status => env[:status]}
-
         # constraint violation
         if response.code == 1053
           details = body['D']['Details']
-          hash[:details] = details
+          error_hash[:details] = details
         end
-        raise BadResourceRequest,hash
+        raise BadResourceRequest, error_hash
       when 401
         # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
         # OAuth2 implementations and wouldn't hurt to log.
         auth_header_error = env[:request_headers]["WWW-Authenticate"]
         SparkApi.logger.warn("Authentication error #{auth_header_error}") unless auth_header_error.nil?
-        raise PermissionDenied, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise PermissionDenied, error_hash
       when 404
-        raise NotFound, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise NotFound, error_hash
       when 405
-        raise NotAllowed, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise NotAllowed, error_hash
       when 409
-        raise BadResourceRequest, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise BadResourceRequest, error_hash
       when 500
-        raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise ClientError, error_hash
       when 200..299
         SparkApi.logger.debug { "Success!" }
       else 
-        raise ClientError, {:message => response.message, :code => response.code, :status => env[:status]}
+        raise ClientError, error_hash
       end
       env[:body] = results
     end
