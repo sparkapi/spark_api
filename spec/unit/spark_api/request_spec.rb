@@ -2,7 +2,7 @@ require './spec/spec_helper'
 
 describe SparkApi do
   describe SparkApi::ClientError do
-    subject { SparkApi::ClientError.new({:message=>"OMG FAIL", :code=>1234, :status=>500}) }
+    subject { SparkApi::ClientError.new({:message=>"OMG FAIL", :code=>1234, :status=>500, :request_path => '/v1/foo'}) }
     it "should print a helpful to_s" do
       subject.to_s.should == "OMG FAIL"
       subject.message.should == "OMG FAIL"
@@ -13,6 +13,11 @@ describe SparkApi do
     it "should have an http status" do
       subject.status.should == 500
     end
+
+    it "should have a request_path" do
+      subject.request_path.should == '/v1/foo'
+    end
+
     it "should raise and exception with attached message" do
       expect { raise subject.class, {:message=>"My Message", :code=>1000, :status=>404}}.to raise_error(SparkApi::ClientError)  do |e| 
         e.message.should == "My Message" 
@@ -339,12 +344,19 @@ describe SparkApi do
         r
       end
       it "should fail horribly on a get" do
-        expect { subject.get('/system')}.to raise_error(SparkApi::PermissionDenied){ |e| e.code.should == SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED }
+        expect { subject.get('/system')}.to raise_error(SparkApi::PermissionDenied) do |e| 
+          e.code.should == SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED
+          e.request_path.should == '/system'
+        end
         subject.reauthenticated.should == 2
+
       end
       it "should fail horribly on a post" do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
-        expect { subject.post('/contacts', data)}.to raise_error(SparkApi::PermissionDenied){ |e| e.code.should == SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED }
+        expect { subject.post('/contacts', data)}.to raise_error(SparkApi::PermissionDenied) do |e| 
+          e.code.should == SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED
+          e.request_path.should == '/contacts'
+        end
         subject.reauthenticated.should == 2
       end
     end

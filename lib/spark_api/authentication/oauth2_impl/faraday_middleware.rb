@@ -27,7 +27,7 @@ module SparkApi
             # OAuth2 implementations and wouldn't hurt to log.
             auth_header_error = env[:request_headers]["WWW-Authenticate"]
             SparkApi.logger.warn { "Authentication error #{auth_header_error}" } unless auth_header_error.nil?
-            raise ClientError, {:message => body["error"], :code =>0, :status => env[:status]}
+            raise ClientError, {:message => body["error"], :code =>0, :status => env[:status], :request_path => env[:url]}
           end
           SparkApi.logger.debug { "[oauth2] Session=#{session.inspect}" }
           env[:body] = session
@@ -58,7 +58,7 @@ module SparkApi
               return
             end
           end
-          raise ClientError, {:message => "Unable to process sparkbar token #{body.inspect}", :code =>0, :status => env[:status]}
+          raise ClientError, {:message => "Unable to process sparkbar token #{body.inspect}", :code =>0, :status => env[:status], :request_path => env[:url]}
         end
   
       end
