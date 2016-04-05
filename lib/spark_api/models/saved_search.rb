@@ -6,14 +6,8 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
-      attr_accessor :newsfeeds
 
       self.element_name="savedsearches"
-
-      def initialize(attributes={})
-        @newsfeeds = nil
-        super(attributes)
-      end
 
       def self.provided()
         Class.new(self).tap do |provided|
@@ -67,22 +61,12 @@ module SparkApi
       end
 
       def newsfeeds
-        Newsfeed.collect(connection.get("#{self.class.path}/#{@attributes["Id"]}", 
-          :_expand => "NewsFeeds").first["NewsFeeds"])
-      end
-
-      def can_have_newsfeed?
-
-        return true  if has_active_newsfeed? || has_inactive_newsfeed?
-
-        number_of_filters = 0
-
-        news_feed_meta.core_fields.each do |field|
-          number_of_filters += 1 if self.Filter.include? field
-        end
-        
-        number_of_filters >= news_feed_meta.minimum_core_fields
-
+        @newsfeeds ||=  if attributes.key?("NewsFeeds")
+                          Newsfeed.collect(attributes["NewsFeeds"])
+                        else
+                          Newsfeed.collect(connection.get("#{self.class.path}/#{@attributes["Id"]}", 
+                            :_expand => "NewsFeeds").first["NewsFeeds"])
+                        end
       end
 
       def has_active_newsfeed?
@@ -117,10 +101,6 @@ module SparkApi
         when :detach
           @attributes['ContactIds'].delete contact_id
         end
-      end
-
-      def news_feed_meta
-        @news_feed_meta ||= NewsFeedMeta.new
       end
 
     end

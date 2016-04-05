@@ -176,32 +176,6 @@ describe SavedSearch do
     end
   end
 
-  describe "can_have_newsfeed?" do
-
-    before do
-      stub_api_get("/newsfeeds/meta", "newsfeeds/meta.json")
-    end
-
-    it "should return false without at least three filter parameters" do
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
-      resource = subject.class.find(id)
-      resource.stub(:has_active_newsfeed?) { false }
-      resource.stub(:has_inactive_newsfeed?) { false }
-      resource.Filter = "MlsStatus Eq 'Active' And PropertyType Eq 'A'"
-      resource.can_have_newsfeed?.should == false
-    end
-
-    it "should return true with three filter parameters" do
-      stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
-      resource = subject.class.find(id)
-      resource.stub(:has_active_newsfeed?) { false }
-      resource.stub(:has_inactive_newsfeed?) { false }
-      resource.Filter = "MlsStatus Eq 'Active' And PropertyType Eq 'A' And ListPrice Eq 1000000"
-      resource.can_have_newsfeed?.should == true
-    end
-
-  end
-
   describe "has_active_newsfeed?" do
     it "should return true if the search already has a newsfeed" do
       stub_api_get("/#{subject.class.element_name}/#{id}", 'saved_searches/get.json')
