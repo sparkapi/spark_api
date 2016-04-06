@@ -1,3 +1,6 @@
+v1.4.0
+ - removed NewsFeedMeta and can_have_newsfeed? from SavedSearch
+
 v1.3.28
  - add request_path attribute to ClientError class
 
