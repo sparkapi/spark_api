@@ -9,7 +9,7 @@ module SparkApi
       end
 
       def core_field_names
-        fields = data['Subscriptions']['SavedSearches']['CoreSearchFields']
+        fields = data['Subscriptions']['SavedSearches']['CoreSearchFields'].dup
 
         data['Subscriptions']['SavedSearches']['CoreStandardFields'].each do |field|
           fields << field[1]['Label']
@@ -19,7 +19,7 @@ module SparkApi
       end
 
       def core_fields
-        fields = data['Subscriptions']['SavedSearches']['CoreSearchFields']
+        fields = data['Subscriptions']['SavedSearches']['CoreSearchFields'].dup
 
         data['Subscriptions']['SavedSearches']['CoreStandardFields'].each do |field|
           fields << field.first

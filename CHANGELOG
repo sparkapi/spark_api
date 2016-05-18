@@ -1,3 +1,6 @@
+v1.4.1
+ - Fixed bug in NewsFeedMeta core_fields and core_field_names. Calling either of those methods modified the data array when it should have only been reading the array. Later calls to these methods were then incorrect.
+
 v1.4.0
  - removed NewsFeedMeta and can_have_newsfeed? from SavedSearch
 
