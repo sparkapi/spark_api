@@ -37,7 +37,9 @@ module SparkApi
 
       def find_single(scope, options)
         resp = connection.get("#{path}/#{scope}", options)
-        new(resp.first)
+        unless resp.first.nil?
+          new(resp.first)
+        end
       end
             
     end

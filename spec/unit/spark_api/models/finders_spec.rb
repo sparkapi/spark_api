@@ -48,5 +48,15 @@ describe Finders, "Finders model" do
       }.should raise_error(ArgumentError)
     end
 
+    context "when finding a single resource" do
+
+      it "returns nil when no results are found" do
+        stub_api_get("/my_resource/no_results", 'no_results.json')
+        expect(MyResource.find('no_results')).to be nil
+      end
+
+    end
+
   end
+  
 end
