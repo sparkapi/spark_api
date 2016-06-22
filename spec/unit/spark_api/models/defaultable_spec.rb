@@ -40,6 +40,11 @@ describe Defaultable do
       allow(TestClass).to receive(:connection).and_return(connection)
       TestClass.find('5', foo: true)
     end
+
+    it "returns nil when the original find method returns nil" do
+      allow(TestClass).to receive(:original_find).and_return(nil)
+      expect(TestClass.find(TestClass::DEFAULT_ID)).to be nil
+    end
     
   end
 

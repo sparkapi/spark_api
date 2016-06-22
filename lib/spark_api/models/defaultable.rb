@@ -24,7 +24,7 @@ module SparkApi
 
         def find(*arguments)
           result = original_find(*arguments)
-          if arguments.first == DEFAULT_ID
+          if arguments.first == DEFAULT_ID && result != nil
             result.Id = DEFAULT_ID if result.Id.nil?
           end
           result
