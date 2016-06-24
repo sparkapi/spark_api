@@ -14,24 +14,33 @@ describe Defaultable do
 
   describe 'default' do
 
-    it 'calls find' do
-      expect(TestClass).to receive(:find).with('default', {})
-      TestClass.default
+    it 'returns an instance of the class' do
+      allow(TestClass).to receive(:connection).and_return(double(get: [{Name: 'foo'}]))
+      expect(TestClass.default).to be_a TestClass
+    end
+
+    it 'returns nil when there are no results' do
+      allow(TestClass).to receive(:connection).and_return(double(get: []))
+      expect(TestClass.default).to be nil
+    end
+
+    it "assigns the default id to the instance if it doesn't have an id" do
+      allow(TestClass).to receive(:connection).and_return(double(get: [{Name: 'foo'}]))
+      expect(TestClass.default.Id).to eq TestClass::DEFAULT_ID
+    end
+
+    it "doesn't override the id if one is present" do
+      allow(TestClass).to receive(:connection).and_return(double(get: [{Id: '5', Name: 'foo'}]))
+      expect(TestClass.default.Id).to eq '5'
     end
     
   end
   
   describe 'find' do
 
-    it "adds the id 'default'" do
-      allow(TestClass).to receive(:connection).and_return(double(get: [{Id: nil, Name: 'foo'}]))
-      default = TestClass.find(TestClass::DEFAULT_ID)
-      expect(default.Id).to eq 'default'
-    end
-
-    it "doesn't override the id if one is present" do
-      allow(TestClass).to receive(:connection).and_return(double(get: [{Id: '5', Name: 'foo'}]))
-      expect(TestClass.find(TestClass::DEFAULT_ID).Id).to eq '5'
+    it "calls 'default' when given the default id" do
+      expect(TestClass).to receive(:default)
+      TestClass.find(TestClass::DEFAULT_ID)
     end
 
     it "calls Finders.find when given a normal id" do
@@ -39,11 +48,6 @@ describe Defaultable do
       expect(connection).to receive(:get).with("/testclass/5", {foo: true}).and_return([{}])
       allow(TestClass).to receive(:connection).and_return(connection)
       TestClass.find('5', foo: true)
-    end
-
-    it "returns nil when the original find method returns nil" do
-      allow(TestClass).to receive(:original_find).and_return(nil)
-      expect(TestClass.find(TestClass::DEFAULT_ID)).to be nil
     end
     
   end
