@@ -21,7 +21,7 @@ module SparkApi
         def default(options = {})
           response = connection.get("/#{element_name}/default", options).first
           unless response.nil?
-            response[:Id] = DEFAULT_ID if response[:Id].nil?
+            response["Id"] = DEFAULT_ID if response["Id"].nil?
             new(response)
           end
         end

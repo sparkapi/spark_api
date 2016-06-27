@@ -15,7 +15,7 @@ describe Defaultable do
   describe 'default' do
 
     it 'returns an instance of the class' do
-      allow(TestClass).to receive(:connection).and_return(double(get: [{Name: 'foo'}]))
+      allow(TestClass).to receive(:connection).and_return(double(get: [{"Name" => 'foo'}]))
       expect(TestClass.default).to be_a TestClass
     end
 
@@ -25,12 +25,12 @@ describe Defaultable do
     end
 
     it "assigns the default id to the instance if it doesn't have an id" do
-      allow(TestClass).to receive(:connection).and_return(double(get: [{Name: 'foo'}]))
+      allow(TestClass).to receive(:connection).and_return(double(get: [{"Name" => 'foo'}]))
       expect(TestClass.default.Id).to eq TestClass::DEFAULT_ID
     end
 
     it "doesn't override the id if one is present" do
-      allow(TestClass).to receive(:connection).and_return(double(get: [{Id: '5', Name: 'foo'}]))
+      allow(TestClass).to receive(:connection).and_return(double(get: [{"Id" => '5', "Name" => 'foo'}]))
       expect(TestClass.default.Id).to eq '5'
     end
     
