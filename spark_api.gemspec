@@ -48,5 +48,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rb-fsevent'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'simplecov-rcov'
+  s.add_development_dependency 'listen', '~> 3.0.8' # for guard-rspec with ruby 1.9.3
+  s.add_development_dependency 'guard-rspec'
 end
 

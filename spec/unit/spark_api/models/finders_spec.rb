@@ -49,4 +49,5 @@ describe Finders, "Finders model" do
     end
 
   end
+
 end

@@ -19,15 +19,19 @@ module SparkApi
       module ClassMethods
 
         def default(options = {})
-          find(DEFAULT_ID, options)
+          response = connection.get("/#{element_name}/default", options).first
+          unless response.nil?
+            response[:Id] = DEFAULT_ID if response[:Id].nil?
+            new(response)
+          end
         end
 
         def find(*arguments)
-          result = original_find(*arguments)
           if arguments.first == DEFAULT_ID
-            result.Id = DEFAULT_ID if result.Id.nil?
+            default
+          else
+            original_find(*arguments)
           end
-          result
         end
 
       end
