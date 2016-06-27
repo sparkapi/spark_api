@@ -1,3 +1,6 @@
+v1.4.4
+  - Fixed symbol hash key bug in Defaultable
+
 v1.4.3
  - Change Finders and Defaultable to handle an api response of an empty array when finding a single resource.
 
