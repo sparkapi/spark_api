@@ -28,7 +28,8 @@ module SparkApi
 
         def find(*arguments)
           if arguments.first == DEFAULT_ID
-            default
+            options = arguments.slice!(1) || {}
+            default(options)
           else
             original_find(*arguments)
           end
