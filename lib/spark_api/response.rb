@@ -1,7 +1,7 @@
 module SparkApi
   # API Response interface
   module Response
-    ATTRIBUTES = [:code, :message, :results, :success, :pagination, :details]
+    ATTRIBUTES = [:code, :message, :results, :success, :pagination, :details, :d]
     attr_accessor *ATTRIBUTES
     def success?
       @success
@@ -13,16 +13,16 @@ module SparkApi
     include SparkApi::Response
     def initialize(d)
       begin
-        hash = d["D"]
-        if hash.nil? || hash.empty?
+        self.d = d["D"]
+        if self.d.nil? || self.d.empty?
           raise InvalidResponse, "The server response could not be understood"
         end
-        self.message    = hash["Message"]
-        self.code       = hash["Code"]
-        self.results    = Array(hash["Results"])
-        self.success    = hash["Success"]
-        self.pagination = hash["Pagination"]
-        self.details    = hash["Details"] || []
+        self.message    = self.d["Message"]
+        self.code       = self.d["Code"]
+        self.results    = Array(self.d["Results"])
+        self.success    = self.d["Success"]
+        self.pagination = self.d["Pagination"]
+        self.details    = self.d["Details"] || []
         super(results)
       rescue Exception => e
         SparkApi.logger.error "Unable to understand the response! #{d}"
