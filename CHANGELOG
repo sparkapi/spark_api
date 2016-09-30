@@ -1,3 +1,6 @@
+v1.4.7
+ - store 'D' attribute in responses
+ 
 v1.4.6
  - Added Idx model
  
