@@ -37,11 +37,15 @@ module SparkApi
         Listing.collect(connection.get("#{self.path}/#{self.Id}/listings", args))
       end
 
-      def add_listing(listing)
-        ids = listing.respond_to?(:Id) ? listing.Id : listing
-        results = connection.post("#{self.resource_uri}", {"ListingIds" => Array(ids)})
+      def add_listings(listings)
+        ids = Array(listings).map do |listing|
+          listing.respond_to?(:Id) ? listing.Id : listing
+        end
+        results = connection.post("#{self.resource_uri}", {"ListingIds" => ids})
         self.ListingCount = results.first["ListingCount"]
       end
+
+      alias_method :add_listing, :add_listings
 
       def remove_listing(listing)
         id = listing.respond_to?(:Id) ? listing.Id : listing.to_s
