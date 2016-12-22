@@ -235,6 +235,10 @@ module SparkApi
         end
       end
 
+      def batch_photo_delete(photoIds, args={})
+        connection.delete "#{self.class.path}/#{self.Id}/photos/#{photoIds}", args
+      end
+
       private
 
       # TODO trim this down so we're only overriding the StandardFields access
