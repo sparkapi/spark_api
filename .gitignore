@@ -17,3 +17,4 @@ tmp/*
 .buildpath
 .project
 *.swp
+.bundle
