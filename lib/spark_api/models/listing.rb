@@ -236,7 +236,7 @@ module SparkApi
       end
 
       def batch_photo_delete(photoIds, args={})
-        connection.delete "#{self.class.path}/#{self.Id}/photos/#{photoIds}", args
+        connection.delete "#{self.class.path}/#{self.Id}/photos/#{photoIds.join(',')}", args
       end
 
       private
