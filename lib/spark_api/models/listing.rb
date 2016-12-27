@@ -188,7 +188,7 @@ module SparkApi
         false
       end
       def reorder_photos!(arguments={})
-        results = connection.put "#{self.class.path}/#{self.Id}/photos", arguments
+        results = connection.put subresource_path("photos"), arguments
         true
       end
 
@@ -207,7 +207,7 @@ module SparkApi
         false
       end
       def reorder_photo!(photo_id, index)
-        connection.put "#{self.class.path}/#{self.Id}/photos/#{photo_id}", "Photos" => [{"Order"=>index}]
+        connection.put subresource_path("photos") + "#{photo_id}", "Photos" => [{"Order"=>index}]
         true
       end
 
@@ -236,7 +236,7 @@ module SparkApi
       end
 
       def delete_photos!(photoIds, args={})
-        connection.delete "#{self.class.path}/#{self.Id}/photos/#{photoIds}", args
+        connection.delete subresource_path("photos") + "#{photoIds}", args
         true
       end
 
@@ -290,6 +290,10 @@ module SparkApi
           attribute = (c.instance_of? klass) ? c : klass.new(c)
           attributes.push(attribute)
         end
+      end
+
+      def subresource_path(subresource)
+        return "#{self.class.path}/#{self.Id}/#{subresource}/"
       end
 
     end
