@@ -1,3 +1,6 @@
+v1.4.8
+ - added ListingCart#add_listings
+
 v1.4.7
  - store 'D' attribute in responses
  
