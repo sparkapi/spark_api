@@ -235,8 +235,23 @@ module SparkApi
         end
       end
 
-      def batch_photo_delete(photoIds, args={})
+      def batch_photo_delete!(photoIds, args={})
         connection.delete "#{self.class.path}/#{self.Id}/photos/#{photoIds}", args
+      end
+
+      def batch_photo_delete(photoIds, args={})
+        unless photoIds.is_a? String
+          raise ArgumentError, "Batch photo delete failed. '#{photoIds}' is not a string."
+        end
+
+        begin
+          return batch_photo_delete!(photoIds, args)
+        rescue BadResourceRequest => e
+          SparkApi.logger.warn { "Failed to delete photos from resource #{self}: #{e.message}" }
+        rescue NotFound => e
+          SparkApi.loggewr.error { "FAiled to delete photos from resource #{self}: #{e.message}" }
+        end
+        false
       end
 
       private
