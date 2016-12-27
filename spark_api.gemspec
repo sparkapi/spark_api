@@ -38,6 +38,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
   s.add_dependency 'highline', '>= 1.0'
 
+  # spark_api doesn't use public_suffix directly. spark_api uses Webmock, which 
+  # uses addressable, which uses public_suffix. Bundler has suddenly started 
+  # trying to install public_suffix 2.0.4, which requires Ruby 2. When spark_api 
+  # starts to require Ruby 2, this dependency can be removed.
+  s.add_dependency 'public_suffix', '~> 1.4.6'
+
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'  
   s.add_development_dependency 'rspec', '~> 2.14.0'
