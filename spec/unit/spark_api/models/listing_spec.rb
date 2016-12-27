@@ -359,7 +359,7 @@ describe Listing do
           photo_id1 = l.photos[0].Id
           photo_id2 = l.photos[1].Id
           stub_api_delete("/listings/#{list_id}/photos/#{photo_id1},#{photo_id2}", 'success.json')
-          l.batch_photo_delete(photo_id1 + "," + photo_id2)
+          l.delete_photos(photo_id1 + "," + photo_id2).should be(true)
         end
       end
     end
