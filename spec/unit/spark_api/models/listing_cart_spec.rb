@@ -76,6 +76,17 @@ describe ListingCart do
       resource.ListingCount.should eq(11)
     end
 
+    on_post_it "should add multiple listings to a cart" do
+      listing_ids = ["20110621133454434543000000", "20110621133454434543000001"]
+      stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
+      resource = subject.class.get.first
+      resource.Id.should eq("20100912153422758914000000")
+      stub_api_post("/#{subject.class.element_name}/#{resource.Id}",'listing_carts/add_listings_post.json', 'listing_carts/add_listings.json')
+      resource.ListingCount.should eq(10)
+      resource.add_listings(listing_ids)
+      resource.ListingCount.should eq(12)
+    end
+
     on_delete_it "should delete a listing cart" do
       stub_api_get("/#{subject.class.element_name}", 'listing_carts/listing_cart.json')
       resource = subject.class.get.first
