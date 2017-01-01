@@ -1,3 +1,6 @@
+v1.4.9
+ - add AccountReport and AccountRoster models
+
 v1.4.8
  - added ListingCart#add_listings
 
