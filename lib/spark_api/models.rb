@@ -7,6 +7,8 @@ require 'spark_api/models/subresource'
 require 'spark_api/models/concerns'
 
 require 'spark_api/models/account'
+require 'spark_api/models/account_report'
+require 'spark_api/models/account_roster'
 require 'spark_api/models/activity'
 require 'spark_api/models/connect_prefs'
 require 'spark_api/models/contact'
