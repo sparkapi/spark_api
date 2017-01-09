@@ -11,4 +11,9 @@ describe EmailLink do
     end    
   end  
 
+  describe 'listing_search_role' do
+    it 'returns a symbol' do
+      expect(EmailLink.new().listing_search_role).to eq(:public)
+    end
+  end
 end

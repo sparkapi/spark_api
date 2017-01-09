@@ -99,4 +99,10 @@ describe SharedLink do
     end
   end
 
+  describe 'listing_search_role' do
+    it 'returns a symbol' do
+      expect(SharedLink.new({"Mode" => "Idx"}).listing_search_role).to eq(:idx)
+      expect(SharedLink.new({"Mode" => "Public"}).listing_search_role).to eq(:public)
+    end
+  end
 end
