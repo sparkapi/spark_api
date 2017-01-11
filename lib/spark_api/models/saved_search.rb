@@ -3,9 +3,9 @@ module SparkApi
 
     class SavedSearch < Base 
       extend Finders
-      include Concerns::Savable,
+      include Concerns::AsContact,
+              Concerns::Savable,
               Concerns::Destroyable
-
 
       self.element_name="savedsearches"
 
@@ -87,6 +87,10 @@ module SparkApi
             {"_expand" => "NewsFeedSubscriptionSummary, NewsFeeds"}).first
           search["NewsFeeds"].any? && !search["NewsFeedSubscriptionSummary"]["ActiveSubscription"]
         end
+      end
+
+      def listing_search_role
+        :public if path =~ /contact/
       end
 
       private

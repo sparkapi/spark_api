@@ -37,6 +37,9 @@ module SparkApi
         result = connection.put "#{self.path}/#{ids.join(',')}", {'Read' => true}, arguments
       end
 
+      def listing_search_role
+        :public
+      end
     end
   end
 end

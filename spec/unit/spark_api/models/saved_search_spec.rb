@@ -222,5 +222,18 @@ describe SavedSearch do
       resource.newsfeeds.should be_an(Array)
     end
   end
+
+  describe "listing_search_role" do
+    it "specifics public when accessed on behalf of a contact" do
+      search = SavedSearch.new({"Id" => "2"*26})
+      search.as_contact('5')
+      expect(search.listing_search_role).to eq(:public)
+    end
+
+    it "is nil when not accessed on behalf of a contact" do
+      search = SavedSearch.new({"Id" => "2"*26})
+      expect(search.listing_search_role).to be_nil
+    end
+  end
   
 end
