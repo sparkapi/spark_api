@@ -225,8 +225,9 @@ describe SavedSearch do
 
   describe "listing_search_role" do
     it "specifics public when accessed on behalf of a contact" do
+      contact = Contact.new({"Id" => "5"})
       search = SavedSearch.new({"Id" => "2"*26})
-      search.as_contact('5')
+      search.parent = contact
       expect(search.listing_search_role).to eq(:public)
     end
 

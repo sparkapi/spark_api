@@ -3,8 +3,7 @@ module SparkApi
 
     class SavedSearch < Base 
       extend Finders
-      include Concerns::AsContact,
-              Concerns::Savable,
+      include Concerns::Savable,
               Concerns::Destroyable
 
       self.element_name="savedsearches"
