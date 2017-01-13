@@ -1,3 +1,7 @@
+v1.4.12
+- updated 'delete_photos' in SparkApi::Models::Listing to return the response from the API instead of a boolean value.
+v1.4.11
+- add 'delete_photos' to SparkApi::Models::Listing to enable deleting a batch of photos.
 v1.4.10
  - add `id` method to SparkApi::Models::Base as a more familiar alias of `Id`
  - add SharedLink and EmailLink models, extracted from FBS internal code
