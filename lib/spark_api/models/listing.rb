@@ -188,7 +188,7 @@ module SparkApi
         false
       end
       def reorder_photos!(arguments={})
-        results = connection.put "#{self.class.path}/#{self.Id}/photos", arguments
+        results = connection.put subresource_path("photos"), arguments
         true
       end
 
@@ -207,7 +207,7 @@ module SparkApi
         false
       end
       def reorder_photo!(photo_id, index)
-        connection.put "#{self.class.path}/#{self.Id}/photos/#{photo_id}", "Photos" => [{"Order"=>index}]
+        connection.put subresource_path("photos") + "/#{photo_id}", "Photos" => [{"Order"=>index}]
         true
       end
 
@@ -233,6 +233,26 @@ module SparkApi
         else
           attributes['StandardFields'].include?(method_symbol.to_s) rescue false
         end
+      end
+
+      def delete_photos!(photoIds, args={})
+        connection.delete subresource_path("photos") + "/#{photoIds}", args
+        true
+      end
+
+      def delete_photos(photoIds, args={})
+        unless photoIds.is_a? String
+          raise ArgumentError, "Batch photo delete failed. '#{photoIds}' is not a string."
+        end
+
+        begin
+          return delete_photos!(photoIds, args)
+        rescue BadResourceRequest => e
+          SparkApi.logger.warn { "Failed to delete photos from resource #{self}: #{e.message}" }
+        rescue NotFound => e
+          SparkApi.logger.error { "Failed to delete photos from resource #{self}: #{e.message}" }
+        end
+        false
       end
 
       private
@@ -270,6 +290,10 @@ module SparkApi
           attribute = (c.instance_of? klass) ? c : klass.new(c)
           attributes.push(attribute)
         end
+      end
+
+      def subresource_path(subresource)
+        "#{self.class.path}/#{self.Id}/#{subresource}"
       end
 
     end

@@ -351,6 +351,16 @@ describe Listing do
           l.editable?(:PriceChange).should eq(true)
           l.editable?(:Photos).should eq(false)
         end
+
+        on_delete_it "should bulk delete listing photos" do
+          list_id = "20060725224713296297000000"
+          stub_api_get("/listings/#{list_id}", 'listings/with_photos.json', { :_expand => "Photos" })
+          l = Listing.find(list_id, :_expand => "Photos")
+          photo_id1 = l.photos[0].Id
+          photo_id2 = l.photos[1].Id
+          stub_api_delete("/listings/#{list_id}/photos/#{photo_id1},#{photo_id2}", 'success.json')
+          l.delete_photos(photo_id1 + "," + photo_id2).should be(true)
+        end
       end
     end
 
