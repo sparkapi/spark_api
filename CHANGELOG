@@ -1,3 +1,10 @@
+v1.4.10
+ - add `id` method to SparkApi::Models::Base as a more familiar alias of `Id`
+ - add SharedLink and EmailLink models, extracted from FBS internal code
+
+v1.4.9
+ - add AccountReport and AccountRoster models
+
 v1.4.8
  - added ListingCart#add_listings
 

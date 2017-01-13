@@ -6,7 +6,6 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
-
       self.element_name="savedsearches"
 
       def self.provided()
@@ -87,6 +86,10 @@ module SparkApi
             {"_expand" => "NewsFeedSubscriptionSummary, NewsFeeds"}).first
           search["NewsFeeds"].any? && !search["NewsFeedSubscriptionSummary"]["ActiveSubscription"]
         end
+      end
+
+      def listing_search_role
+        :public if path =~ /contact/
       end
 
       private

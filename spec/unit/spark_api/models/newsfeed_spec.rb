@@ -15,7 +15,5 @@ describe Newsfeed do
       @newsfeed.update!(:Active => false)
       expect(@newsfeed.Active) == false
     end
-
   end
-
 end
