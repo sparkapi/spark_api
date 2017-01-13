@@ -237,7 +237,6 @@ module SparkApi
 
       def delete_photos!(photoIds, args={})
         connection.delete subresource_path("photos") + "/#{photoIds}", args
-        true
       end
 
       def delete_photos(photoIds, args={})
