@@ -9,6 +9,11 @@ module SparkApi
 
       attr_accessor :attributes, :errors, :parent
 
+      # More familiar accessor for our Spark API Id method
+      def id
+        self.Id
+      end
+
       # Name of the resource as related to the path name
       def self.element_name
         # TODO I'd love to pull in active model at this point to provide default naming

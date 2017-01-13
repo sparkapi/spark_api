@@ -76,6 +76,7 @@ describe Base, "Base model" do
       end
       it "should get first result" do
         MyExampleModel.first.Id.should == 1
+        MyExampleModel.first.Id.should eq(MyExampleModel.first.id)
       end
     end
   end
