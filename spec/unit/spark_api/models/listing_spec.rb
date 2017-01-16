@@ -358,8 +358,8 @@ describe Listing do
           l = Listing.find(list_id, :_expand => "Photos")
           photo_id1 = l.photos[0].Id
           photo_id2 = l.photos[1].Id
-          stub_api_delete("/listings/#{list_id}/photos/#{photo_id1},#{photo_id2}", 'success.json')
-          l.delete_photos(photo_id1 + "," + photo_id2).should be(true)
+          stub_api_delete("/listings/#{list_id}/photos/#{photo_id1},#{photo_id2}", 'listings/photos/index.json')
+          l.delete_photos(photo_id1 + "," + photo_id2).should_not be_empty
         end
       end
     end
