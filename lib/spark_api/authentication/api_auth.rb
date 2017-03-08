@@ -19,7 +19,7 @@ module SparkApi
         sig = sign("#{@client.api_secret}ApiKey#{@client.api_key}")
         SparkApi.logger.debug { "Authenticating to #{@client.endpoint}" }
         start_time = Time.now
-        request_path = "/#{@client.version}/session?ApiKey=#{@client.api_key}&ApiSig=#{sig}"
+        request_path = "#{SparkApi::Configuration::DEFAULT_SESSION_PATH}?ApiKey=#{@client.api_key}&ApiSig=#{sig}"
         resp = @client.connection(true).post request_path, ""
         request_time = Time.now - start_time
         SparkApi.logger.info { "[#{(request_time * 1000).to_i}ms] Api: POST #{request_path}" }
