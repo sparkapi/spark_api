@@ -43,7 +43,7 @@ module SparkApi
     DEFAULT_OAUTH2 = nil
     DEFAULT_COMPRESS = false
     DEFAULT_TIMEOUT = 5 # seconds
-    DEFAULT_MIDDLEWARE = :spark_api
+    DEFAULT_MIDDLEWARE = 'spark_api'
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
 
@@ -77,7 +77,7 @@ module SparkApi
       self.version     = DEFAULT_VERSION
       self.compress    = DEFAULT_COMPRESS
       self.timeout     = DEFAULT_TIMEOUT
-      self.middleware  = DEFAULT_MIDDLEWARE
+      self.middleware = DEFAULT_MIDDLEWARE
       self
     end
   end

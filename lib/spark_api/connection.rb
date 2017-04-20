@@ -23,7 +23,7 @@ module SparkApi
       end
 
       conn = Faraday.new(opts) do |conn|
-        conn.response self.middleware
+        conn.response self.middleware.to_sym
         conn.options[:timeout] = self.timeout
         conn.adapter Faraday.default_adapter
       end
