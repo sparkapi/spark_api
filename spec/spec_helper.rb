@@ -48,6 +48,10 @@ end
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
 RSpec.configure do |config|
+  
+  config.include WebMock::API
+  config.include StubApiRequests
+
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.alias_example_to :on_get_it, :method => 'GET'
   config.alias_example_to :on_put_it, :method => 'PUT'
