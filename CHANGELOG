@@ -1,3 +1,6 @@
+v1.4.14
+ - fixed duplicate requests in NewsFeedMeta
+
 v1.4.13
  - added SystemInfoSearch model
 
