@@ -31,7 +31,11 @@ module SparkApi
       private
 
       def data
-        @data ||= connection.get(self.path).first
+        if attributes.empty?
+          @data ||= connection.get(self.path).first
+        else
+          attributes
+        end
       end
 
     end

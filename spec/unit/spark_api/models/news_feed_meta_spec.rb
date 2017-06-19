@@ -10,6 +10,14 @@ describe NewsFeedMeta do
     stub_api_get("/newsfeeds/meta", "newsfeeds/meta.json")
   end
 
+  describe 'fetching data' do
+    it "only makes one api request" do
+      news_feed_meta = NewsFeedMeta.get.first
+      news_feed_meta.minimum_core_fields
+      expect_api_request(:get, "/newsfeeds/meta").to have_been_made.once
+    end
+  end
+
   describe 'minimum_core_fields' do
     it 'returns the minimum number of required fields' do
       expect(news_feed_meta.minimum_core_fields).to eq 3
