@@ -65,7 +65,7 @@ module SparkApi
       begin
         request_opts = {}
         request_opts.merge!(options)
-        request_path = if middleware.to_sym == :reso_api
+        request_path = if middleware && middleware.to_sym == :reso_api
                          "/Reso/OData#{path}"
                        else
                          "/#{version}#{path}"
