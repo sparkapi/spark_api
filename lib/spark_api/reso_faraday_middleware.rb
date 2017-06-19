@@ -6,15 +6,22 @@ module SparkApi
     def on_complete(env)
 
       body = decompress_body(env)
-      body = MultiJson.decode(body)
 
-      if body["D"]
-        puts "D contains #{body['D'].inspect}"
-        super(env)
-        return
+      begin
+        body = MultiJson.decode(body)
+
+        if body["D"]
+          super(env)
+          return
+        end
+
+        env[:body] = body
+      rescue MultiJson::ParseError => e
+        # We will allow the client to choose their XML parser, but should do
+        # some minor format verification
+        raise e if body.strip[/\A<\?xml/].nil?
       end
 
-      env[:body] = body
     end
 
   end
