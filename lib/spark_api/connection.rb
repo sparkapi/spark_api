@@ -23,7 +23,7 @@ module SparkApi
       end
 
       conn = Faraday.new(opts) do |conn|
-        conn.response :spark_api
+        conn.response self.middleware.to_sym
         conn.options[:timeout] = self.timeout
         conn.adapter Faraday.default_adapter
       end
@@ -33,9 +33,25 @@ module SparkApi
     
     # HTTP request headers for client requests
     def headers
+      if self.middleware.to_sym == :reso_api
+        reso_headers
+      else
+        spark_headers
+      end
+    end
+
+    def spark_headers
       {
         :accept => 'application/json',
         :content_type => 'application/json',
+        :user_agent => Configuration::DEFAULT_USER_AGENT,
+        Configuration::X_SPARK_API_USER_AGENT => user_agent
+      }
+    end
+
+    def reso_headers
+      {
+        :accept => 'application/json, application/xml',
         :user_agent => Configuration::DEFAULT_USER_AGENT,
         Configuration::X_SPARK_API_USER_AGENT => user_agent
       }

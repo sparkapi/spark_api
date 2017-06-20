@@ -11,7 +11,7 @@ module SparkApi
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
       :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode, 
-      :auth_endpoint, :callback, :compress, :timeout].freeze
+      :auth_endpoint, :callback, :compress, :timeout, :middleware].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
       :redirect_uri,  
@@ -36,12 +36,14 @@ module SparkApi
     DEFAULT_AUTHORIZATION_URI = 'https://sparkplatform.com/oauth2'
     DEFAULT_VERSION = 'v1'
     DEFAULT_ACCESS_URI = "#{DEFAULT_ENDPOINT}/#{DEFAULT_VERSION}/oauth2/grant"
+    DEFAULT_SESSION_PATH = "/#{DEFAULT_VERSION}/session"
     DEFAULT_USER_AGENT = "Spark API Ruby Gem #{VERSION}"
     DEFAULT_SSL = true
     DEFAULT_SSL_VERIFY = true
     DEFAULT_OAUTH2 = nil
     DEFAULT_COMPRESS = false
     DEFAULT_TIMEOUT = 5 # seconds
+    DEFAULT_MIDDLEWARE = 'spark_api'
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
 
@@ -75,6 +77,7 @@ module SparkApi
       self.version     = DEFAULT_VERSION
       self.compress    = DEFAULT_COMPRESS
       self.timeout     = DEFAULT_TIMEOUT
+      self.middleware = DEFAULT_MIDDLEWARE
       self
     end
   end

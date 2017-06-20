@@ -65,7 +65,11 @@ module SparkApi
       begin
         request_opts = {}
         request_opts.merge!(options)
-        request_path = "/#{version}#{path}"
+        request_path = if middleware && middleware.to_sym == :reso_api
+                         "/Reso/OData#{path}"
+                       else
+                         "/#{version}#{path}"
+                       end
         start_time = Time.now
         if [:get, :delete, :head].include?(method.to_sym)
           response = authenticator.request(method, request_path, nil, request_opts)

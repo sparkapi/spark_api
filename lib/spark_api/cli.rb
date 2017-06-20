@@ -31,6 +31,7 @@ module SparkApi
         :api_user => "API_USER",
         # OTHER
         :debug=> "DEBUG",
+        :middleware => "SPARK_MIDDLEWARE",
         :console => "SPARK_API_CONSOLE"  # not a public option, meant to distinguish bin/spark_api and script/console
       }
       
@@ -69,7 +70,8 @@ module SparkApi
           :api_secret => ENV[OPTIONS_ENV[:api_secret]],
           :api_user => ENV[OPTIONS_ENV[:api_user]],
           :ssl_verify => ENV.fetch(OPTIONS_ENV[:ssl_verify], true),
-          :console => ENV[OPTIONS_ENV[:console]]
+          :console => ENV[OPTIONS_ENV[:console]],
+          :middleware => ENV[OPTIONS_ENV[:middleware]]
         }
         cli_options = {}
         file_options = {}
@@ -128,7 +130,10 @@ module SparkApi
           opts.on("--api_user API_USER",
                   "ID of the Spark user to run the client as.",
                   "Default: ENV['#{OPTIONS_ENV[:api_user]}']") { |arg| cli_options[:api_user] = arg }
-          
+          opts.on("--middleware SPARK_MIDDLEWARE",
+                  "spark_api for accessing spark, reso_api for accessing reso adapter",
+                  "Default: spark_api") { |arg| cli_options[:middleware] = arg }
+
           # General           
           opts.on("-f", "--file FILE",
                   "Load configuration for yaml file.") { |arg| file_options = parse_file_options(arg) }

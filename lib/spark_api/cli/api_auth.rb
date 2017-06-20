@@ -6,4 +6,5 @@ SparkApi.configure do |config|
   config.api_user = ENV["API_USER"] if ENV["API_USER"]
   config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
   config.ssl_verify = ENV["SSL_VERIFY"].downcase != 'false' if ENV["SSL_VERIFY"]
+  config.middleware = ENV["SPARK_MIDDLEWARE"]  if ENV["SPARK_MIDDLEWARE"]
 end
