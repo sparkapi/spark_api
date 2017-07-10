@@ -1,3 +1,6 @@
+v1.4.15
+ - Add OData support
+
 v1.4.14
  - fixed duplicate requests in NewsFeedMeta
 
