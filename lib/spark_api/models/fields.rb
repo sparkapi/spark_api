@@ -7,6 +7,10 @@ module SparkApi
         connection.get("#{self.path}/order#{"/"+property_type unless property_type.nil?}", arguments)
       end
 
+      def self.settings
+        connection.get("#{self.path}/order/settings")
+      end
+
     end
   end
 end
