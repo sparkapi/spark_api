@@ -1,3 +1,6 @@
+v1.4.16
+ - Added method for /fields/order/settings to Fields class
+
 v1.4.15
  - Add OData support
 
