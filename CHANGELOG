@@ -1,3 +1,6 @@
+v1.4.16
+ - use '/flexmls/listings' for PUT
+
 v1.4.15
  - Add OData support
 
