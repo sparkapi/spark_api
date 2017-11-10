@@ -197,7 +197,7 @@ describe Listing do
       on_put_it "should save a listing that has modified ListPrice" do
         list_id = "20060725224713296297000000"
         stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
-        stub_api_put("/listings/#{list_id}", 'listings/put.json', 'success.json')
+        stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json', 'success.json')
         l = Listing.find(list_id)
         l.ListPrice = 10000.0
         l.save.should be(true)
@@ -206,7 +206,7 @@ describe Listing do
       on_put_it "should save a listing that has modified ExpirationDate" do
         list_id = "20060725224713296297000000"
         stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
-        stub_api_put("/listings/#{list_id}", 'listings/put_expiration_date.json', 'success.json')
+        stub_api_put("/flexmls/listings/#{list_id}", 'listings/put_expiration_date.json', 'success.json')
         l = Listing.find(list_id)
         l.ExpirationDate = "2011-10-04"
         l.save.should be(true)
@@ -215,7 +215,7 @@ describe Listing do
       it "should not save a listing that does not exist", :method => 'PUT' do
         list_id = "20060725224713296297000000"
         stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
-        stub_api_put("/listings/lolwut", 'listings/put.json') do |request|
+        stub_api_put("/flexmls/listings/lolwut", 'listings/put.json') do |request|
           request.to_return(:status => 400, :body => fixture('errors/failure.json'))
         end
         l = Listing.find(list_id)
@@ -228,7 +228,7 @@ describe Listing do
       on_put_it "should save a listing with constraints" do
         list_id = "20060725224713296297000000"
         stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
-        stub_api_put("/listings/#{list_id}", 'listings/put.json', 'listings/constraints.json')
+        stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json', 'listings/constraints.json')
         l = Listing.find(list_id)
         l.ListPrice = 10000.0
         l.save.should be(true)
@@ -239,7 +239,7 @@ describe Listing do
       on_put_it "should fail saving a listing with constraints and provide the constraints" do
         list_id = "20060725224713296297000000"
         stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
-        stub_api_put("/listings/#{list_id}", 'listings/put.json') do |request|
+        stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json') do |request|
           request.to_return(:status => 400, :body => fixture('errors/failure_with_constraint.json'))
         end
 
@@ -274,7 +274,7 @@ describe Listing do
         on_put_it "should save a listing with constraints" do
           list_id = "20060725224713296297000000"
           stub_api_get("/listings/#{list_id}", 'listings/no_subresources.json')
-          stub_api_put("/listings/#{list_id}", 'listings/put.json', 'listings/constraints_with_pagination.json', :_pagination => '1')
+          stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json', 'listings/constraints_with_pagination.json', :_pagination => '1')
           l = Listing.find(list_id)
           l.ListPrice = 10000.0
           l.save(:_pagination => '1').should be(true)
