@@ -1,5 +1,8 @@
-v1.4.16
+v1.4.17
  - use '/flexmls/listings' for PUT
+
+v1.4.16
+ - Added method for /fields/order/settings to Fields class
 
 v1.4.15
  - Add OData support
