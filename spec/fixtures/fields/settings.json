@@ -1,0 +1,21 @@
+{
+  "D": {
+     "Success": true,
+     "Results": [
+      {
+        "ShowingInstructions": [
+          {
+            "Domain": "StandardFields",
+            "Field": "ListOfficePhone",
+            "GroupField": null
+          },
+          {
+            "Domain": "CustomFields",
+            "Field": "Vacant",
+            "GroupField": "Property Access"
+          }
+        ]
+      }
+    ]
+  }
+}

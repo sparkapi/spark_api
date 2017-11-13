@@ -52,5 +52,25 @@ describe Fields do
     end
   end
 
+  context "/fields/order/settings", :support do
+    on_get_it "returns the field order settings" do
+      Fields.should respond_to(:settings)
+
+      # stub request
+      stub_api_get('/fields/order/settings','fields/settings.json')
+
+      # request
+      settings = subject.class.settings
+
+      # a standard array of results
+      settings.should be_an(Array)
+      settings.length.should eq(1)
+
+      # make sure ShowingInstructions is present
+      settings.first.should have_key("ShowingInstructions")
+      settings.first["ShowingInstructions"].should be_an(Array)
+    end
+  end
+
 
 end
