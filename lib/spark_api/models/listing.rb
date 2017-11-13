@@ -166,7 +166,7 @@ module SparkApi
         if writable_changed_keys.empty?
           SparkApi.logger.warn { "No supported listing change detected" }
         else
-          results = connection.put "#{self.class.path}/#{self.Id}", build_hash(writable_changed_keys), arguments
+          results = connection.put "/flexmls#{self.class.path}/#{self.Id}", build_hash(writable_changed_keys), arguments
           @contstraints = []
           results.details.each do |detail|
             detail.each_pair do |k,v|
