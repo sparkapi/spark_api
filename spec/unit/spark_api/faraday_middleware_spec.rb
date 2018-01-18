@@ -48,6 +48,13 @@ describe SparkApi do
             "Code": "0000"
           }}'] 
         }
+        stub.get('/badresourcerequest') { [409, {}, '{"D": {
+            "Message": "FlexmlsApiResponse::Errors::Errors", 
+            "Code": 1053, 
+            "Success": false, 
+            "Errors": "Some errors and stuff."
+          }}'] 
+        }
         stub.get('/invalidjson') { [200, {}, '{"OMG": "THIS IS NOT THE API JSON THAT I KNOW AND <3!!!"}'] }
         stub.get('/garbage') { [200, {}, 'THIS IS TOTAL GARBAGE!'] }
       end
@@ -83,6 +90,12 @@ describe SparkApi do
       response = @connection.get('/system').body
       response.success.should eq(true)
       response.results.length.should be > 0 
+    end
+
+    it "should include the errors in the response" do
+      expect { @connection.get('/badresourcerequest')}.to raise_error(SparkApi::BadResourceRequest){ |e| 
+        e.errors.should == "Some errors and stuff."
+      }
     end
 
   end
