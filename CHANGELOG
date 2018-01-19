@@ -1,3 +1,6 @@
+v1.4.18
+ - include the errors from the response in the instance of ClientErrors
+
 v1.4.17
  - use '/flexmls/listings' for PUT
 

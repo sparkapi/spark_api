@@ -40,7 +40,8 @@ module SparkApi
         :request_path => env[:url],
         :message => response.message,
         :code => response.code,
-        :status => env[:status]
+        :status => env[:status],
+        :errors => body['D']['Errors']
       }
 
       case env[:status]
