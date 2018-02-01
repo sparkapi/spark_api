@@ -1,7 +1,7 @@
 module SparkApi
   # API Response interface
   module Response
-    ATTRIBUTES = [:code, :message, :results, :success, :pagination, :details, :d]
+    ATTRIBUTES = [:code, :message, :results, :success, :pagination, :details, :d, :errors, :sparkql_errors]
     attr_accessor *ATTRIBUTES
     def success?
       @success
@@ -23,6 +23,8 @@ module SparkApi
         self.success    = self.d["Success"]
         self.pagination = self.d["Pagination"]
         self.details    = self.d["Details"] || []
+        self.errors     = self.d["Errors"]
+        self.sparkql_errors = self.d['SparkQLErrors']
         super(results)
       rescue Exception => e
         SparkApi.logger.error "Unable to understand the response! #{d}"

@@ -1,3 +1,8 @@
+v1.4.19
+ - create SparkQLErrors attribute for SparkApi::Response and populate when present
+ - create Errors attribute for SparkApi::Response and populate when present
+ - create SparkApi::Request option `full_response` that allows methods to return object instead of body only.
+
 v1.4.18
  - include the errors from the response in the instance of ClientErrors
 
