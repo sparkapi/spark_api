@@ -92,7 +92,12 @@ module SparkApi
         SparkApi.logger.error { "Authentication failed or server is sending us expired tokens, nothing we can do here." }
         raise
       end
-      response.body
+
+      if options[:full_response]
+        return response
+      else
+        return response.body
+      end
     rescue Faraday::Error::ConnectionFailed => e
       if self.ssl_verify && e.message =~ /certificate verify failed/
         SparkApi.logger.error { SparkApi::Errors.ssl_verification_error }

@@ -57,6 +57,20 @@ describe SparkApi do
       r.success?.should be(false)
       r.message.should be == "I am a failure."
     end
+    it "should have SparkQLErrors when present" do
+      err = {"Token" => "ExpirationDate", "Status" => "Dropped"}
+      r = SparkApi::ApiResponse.new({"D"=>{"Success" => false, "Message" => "I am a failure from .",
+        "SparkQLErrors" => [err]
+      }})
+      r.sparkql_errors.first.should eq(err)
+    end
+    it "should have Errors when present" do
+      err = {"Type" => "InvalidAttribute", "Attribute" => "DisplayName", "Message" => "DisplayName is wrong."}
+      r = SparkApi::ApiResponse.new({"D"=>{"Success" => false, "Message" => "I am a failure from .",
+        "Errors" => [err]
+      }})
+      r.errors.first.should eq(err)
+    end
   end
   
   describe SparkApi::Request do
@@ -195,6 +209,13 @@ describe SparkApi do
       it "post data should support non json data" do
         # Other MISC requests
         subject.post('/stringdata', 'I am a lonely String!').success?.should == true
+      end
+
+      it "should allow response object to be returned instead of body" do
+        r = subject.get('/system', { full_response: true })
+
+        r.is_a?(Faraday::Response).should be(true)
+        r.status.should eq(200)
       end
 
       it "should give me BigDecimal results for large floating point numbers" do
