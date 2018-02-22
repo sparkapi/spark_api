@@ -14,15 +14,32 @@ describe Concerns::Destroyable, "Destroyable Concern" do
     @model = MyExampleModel.first
   end
 
-  it "should not be destroyed" do
-    @model.destroyed?.should eq(false)
+  describe 'destroyed?' do
+    
+    it "should not be destroyed" do
+      @model.destroyed?.should eq(false)
+    end
   end
 
-  it "should be destroyable" do
-    stub_api_delete("/some/place/20101230223226074201000000")
-    @model = MyExampleModel.first
-    @model.destroy
-    @model.destroyed?.should eq(true)
+  describe 'destroy' do
+
+    it "should be destroyable" do
+      stub_api_delete("/some/place/20101230223226074201000000")
+      @model = MyExampleModel.first
+      @model.destroy
+      @model.destroyed?.should eq(true)
+    end
+
+  end
+
+  describe 'destroy class method' do
+
+    it "allows you to destroy with only the id" do
+      stub_api_delete("/test/example/20101230223226074201000000")
+      MyExampleModel.destroy('20101230223226074201000000')
+      expect_api_request(:delete, "/test/example/20101230223226074201000000").to have_been_made.once
+    end
+
   end
 
 end
