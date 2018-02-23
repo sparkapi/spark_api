@@ -4,6 +4,19 @@ module SparkApi
 
       module Destroyable
 
+        def self.included(base)
+          base.extend(ClassMethods)
+        end
+
+        module ClassMethods
+
+          def destroy(id, arguments = {})
+            connection.delete("#{path}/#{id}", arguments)
+          end
+
+        end
+
+
         def destroy(arguments = {})
           self.errors = []
           begin

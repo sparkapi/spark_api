@@ -1,3 +1,6 @@
+v1.4.20
+ - added destroy class method to Destroyable
+
 v1.4.19
  - create SparkQLErrors attribute for SparkApi::Response and populate when present
  - create Errors attribute for SparkApi::Response and populate when present
