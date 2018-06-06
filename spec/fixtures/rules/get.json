@@ -1,0 +1,39 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+          {
+            "Id":                    25,
+            "ResourceUri":           "/v1/listings/rules/25",
+            "PropertyType":          "A",
+            "Domain":                "StandardFields",
+            "Group":                 null,
+            "Field":                 "BathsTotal",
+            "Order":                 1,
+            "Action":                "SET_REQUIRED",
+            "Expression":            "StandardStatus = 'Active'",
+            "ModificationTimestamp": "2018-05-07T19:03:07Z",
+            "CreatedTimestamp":      "2017-12-20T19:00:30Z",
+            "ApprovalStatus":        "Published",
+            "Editable":              true,
+            "Status":                "Fatal"
+          },
+          {
+            "Id":                    370,
+            "ResourceUri":           "/v1/listings/rules/370",
+            "PropertyType":          "A",
+            "Domain":                "StandardFields",
+            "Group":                 null,
+            "Field":                 "City",
+            "Order":                 1,
+            "Action":                "SET_REQUIRED",
+            "Expression":            ".FALSE.",
+            "ModificationTimestamp": "2018-05-01T15:26:47Z",
+            "CreatedTimestamp":      "2018-01-24T16:01:14Z",
+            "ApprovalStatus":        "Published",
+            "Editable":              true,
+            "Status":                "Fatal"
+          }
+        ]
+    }
+}
