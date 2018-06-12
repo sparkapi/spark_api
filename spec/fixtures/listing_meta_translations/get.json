@@ -1,0 +1,47 @@
+{
+    "D": {
+        "Success": true,
+        "Results": [
+            {
+                "StandardFields": {
+                    "ParkingTotal": {
+                        "FlexmlsTableName":    "feature",
+                        "FlexmlsFieldId":      "# Parking Spaces",
+                        "FlexmlsDisplayId":    "20010531180858445022000000",
+                        "FlexmlsDisplayType":  "N",
+                        "FlexmlsGroupId":      "GA",
+                        "SparkDataType":       "Decimal"
+                    },
+                    "VOWAddressDisplayYN": {
+                        "FlexmlsTableName":    "list_extra",
+                        "FlexmlsFieldId":      "pub_addr",
+                        "FlexmlsDisplayId":    null,
+                        "FlexmlsDisplayType":  "S",
+                        "FlexmlsGroupId":      null,
+                        "SparkDataType":       "Boolean"
+                    }
+                },
+                "CustomFields": {
+                    "Garage": {
+                        "# Parking Spaces":   {
+                            "FlexmlsTableName":    "feature",
+                            "FlexmlsFieldId":      "# Parking Spaces",
+                            "FlexmlsDisplayId":    "20010531180858445022000000",
+                            "FlexmlsDisplayType":  "N",
+                            "FlexmlsGroupId":      "GA",
+                            "SparkDataType":       "Decimal"
+                        },
+                        "# Stalls Attached":  {
+                            "FlexmlsTableName":    "feature",
+                            "FlexmlsFieldId":      "# Stalls Attached",
+                            "FlexmlsDisplayId":    "20010531180812103075000000",
+                            "FlexmlsDisplayType":  "N",
+                            "FlexmlsGroupId":      "GA",
+                            "SparkDataType":       "Decimal"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
