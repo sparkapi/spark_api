@@ -1,3 +1,6 @@
+v1.4.24
+ - added method for /propertytypes/all
+
 v1.4.23
  - added ListingMetaTranslations model
 
