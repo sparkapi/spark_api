@@ -10,21 +10,30 @@ module SparkApi
   
   # Nice and handy class wrapper for the api response hash
   class ApiResponse < ::Array
+    MAGIC_D = 'D'
+    MESSAGE = 'Message'
+    CODE = 'Code'
+    RESULTS = 'Results'
+    SUCCESS = 'Success'
+    PAGINATION = 'Pagination'
+    DETAILS = 'Details'
+    ERRORS = 'Errors'
+    SPARKQL_ERRORS = 'SparkQLErrors'
     include SparkApi::Response
     def initialize d, request_id=nil
       begin
-        self.d = d["D"]
+        self.d = d[MAGIC_D]
         if self.d.nil? || self.d.empty?
           raise InvalidResponse, "The server response could not be understood"
         end
-        self.message    = self.d["Message"]
-        self.code       = self.d["Code"]
-        self.results    = Array(self.d["Results"])
-        self.success    = self.d["Success"]
-        self.pagination = self.d["Pagination"]
-        self.details    = self.d["Details"] || []
-        self.errors     = self.d["Errors"]
-        self.sparkql_errors = self.d['SparkQLErrors']
+        self.message    = self.d[MESSAGE]
+        self.code       = self.d[CODE]
+        self.results    = Array(self.d[RESULTS])
+        self.success    = self.d[SUCCESS]
+        self.pagination = self.d[PAGINATION]
+        self.details    = self.d[DETAILS] || []
+        self.errors     = self.d[ERRORS]
+        self.sparkql_errors = self.d[SPARKQL_ERRORS]
         self.request_id = request_id
         super(results)
       rescue Exception => e
