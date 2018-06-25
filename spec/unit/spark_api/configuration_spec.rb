@@ -13,6 +13,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.api_key = "my_api_key"
       SparkApi.api_key.should match("my_api_key")
       SparkApi.timeout.should eq(5)
+      SparkApi.request_id_chain.should be_nil
     end
   end
 
@@ -23,7 +24,8 @@ describe SparkApi::Client, "Client config"  do
                                     :api_user => "1234",
                                     :auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "http://api.wade.dev.fbsdata.com",
-                                    :timeout => 15)
+                                    :timeout => 15,
+                                    :request_id_chain => 'foobar')
  
       client.api_key.should match("key_of_wade")
       client.api_secret.should match("TopSecret")
@@ -32,6 +34,7 @@ describe SparkApi::Client, "Client config"  do
       client.endpoint.should match("http://api.wade.dev.fbsdata.com")
       client.version.should match("v1")
       client.timeout.should eq(15)
+      client.request_id_chain.should eq('foobar')
     end
     
     it "should allow unverified ssl certificates when verification is off" do
@@ -126,11 +129,14 @@ describe SparkApi::Client, "Client config"  do
         config.version = "veleventy"
         config.endpoint = "test.api.sparkapi.com"
         config.user_agent = "my useragent"
+        config.request_id_chain = 'foobar'
       end
       
       SparkApi.api_key.should match("my_key")
+      SparkApi.request_id_chain.should eq("foobar")
       SparkApi.reset
       SparkApi.api_key.should == SparkApi::Configuration::DEFAULT_API_KEY
+      SparkApi.request_id_chain.should SparkApi::Configuration::DEFAULT_REQUEST_ID_CHAIN
     
     end
   end
@@ -181,6 +187,31 @@ describe SparkApi::Client, "Client config"  do
           SparkApi::Configuration::X_SPARK_API_USER_AGENT => "my useragent",
           'Accept'=>'application/json', 
           'Content-Type'=>'application/json'
+        })
+    end
+
+    it "should pass along the request_id_chain header if set" do
+      reset_config
+      stub_auth_request
+      stub_request(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers").
+          with(:query => {
+            :ApiUser => "foobar",
+            :ApiSig => "717a066c4f4302c5ca9507e484db4812",
+            :AuthToken => "c401736bf3d3f754f07c04e460e09573"
+          }).
+          to_return(:body => '{"D":{"Success": true,"Results": []}}')
+      SparkApi.configure do |config|
+        config.user_agent = "my useragent"
+        config.request_id_chain = 'foobar'
+      end
+      SparkApi.client.get '/headers'
+      WebMock.should have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiUser=foobar&ApiSig=717a066c4f4302c5ca9507e484db4812&AuthToken=c401736bf3d3f754f07c04e460e09573").
+        with(:headers => {
+          'User-Agent' => SparkApi::Configuration::DEFAULT_USER_AGENT,
+          SparkApi::Configuration::X_SPARK_API_USER_AGENT => "my useragent",
+          'Accept'=>'application/json', 
+          'Content-Type'=>'application/json',
+          'X-Request-Id-Chain' => 'foobar'
         })
     end
 

@@ -1,7 +1,7 @@
 module SparkApi
   # API Response interface
   module Response
-    ATTRIBUTES = [:code, :message, :results, :success, :pagination, :details, :d, :errors, :sparkql_errors]
+    ATTRIBUTES = [:code, :message, :results, :success, :pagination, :details, :d, :errors, :sparkql_errors, :request_id]
     attr_accessor *ATTRIBUTES
     def success?
       @success
@@ -11,7 +11,7 @@ module SparkApi
   # Nice and handy class wrapper for the api response hash
   class ApiResponse < ::Array
     include SparkApi::Response
-    def initialize(d)
+    def initialize d, request_id=nil
       begin
         self.d = d["D"]
         if self.d.nil? || self.d.empty?
@@ -25,6 +25,7 @@ module SparkApi
         self.details    = self.d["Details"] || []
         self.errors     = self.d["Errors"]
         self.sparkql_errors = self.d['SparkQLErrors']
+        self.request_id = request_id
         super(results)
       rescue Exception => e
         SparkApi.logger.error "Unable to understand the response! #{d}"

@@ -22,6 +22,10 @@ module SparkApi
         opts[:headers]["Accept-Encoding"] = 'gzip, deflate'
       end
 
+      if request_id_chain
+        opts[:headers]['X-Request-Id-Chain'] = request_id_chain
+      end
+
       conn = Faraday.new(opts) do |conn|
         conn.response self.middleware.to_sym
         conn.options[:timeout] = self.timeout

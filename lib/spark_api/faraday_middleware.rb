@@ -22,7 +22,8 @@ module SparkApi
       unless body.is_a?(Hash) && body.key?("D")
         raise InvalidResponse, "The server response could not be understood"
       end
-      response = ApiResponse.new body
+      request_id = env[:response_headers]['x-request-id']
+      response = ApiResponse.new body, request_id
       paging = response.pagination
 
       if paging.nil?
@@ -38,6 +39,7 @@ module SparkApi
 
       error_hash = {
         :request_path => env[:url],
+        :request_id => request_id,
         :message => response.message,
         :code => response.code,
         :status => env[:status],

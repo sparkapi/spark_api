@@ -21,7 +21,7 @@ module SparkApi
   # Errors built from API responses
   class InvalidResponse < StandardError; end
   class ClientError < StandardError
-    attr_reader :code, :status, :details, :request_path, :errors
+    attr_reader :code, :status, :details, :request_path, :request_id, :errors
     def initialize (options = {})
       # Support the standard initializer for errors
       opts = options.is_a?(Hash) ? options : {:message => options.to_s}
@@ -29,6 +29,7 @@ module SparkApi
       @status = opts[:status]
       @details = opts[:details]
       @request_path = opts[:request_path]
+      @request_id = opts[:request_id]
       @errors = opts[:errors]
       super(opts[:message])
     end
