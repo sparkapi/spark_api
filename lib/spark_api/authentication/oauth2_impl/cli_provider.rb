@@ -1,5 +1,3 @@
-require "highline/import"
-
 module SparkApi
   module Authentication
     module OAuth2Impl
