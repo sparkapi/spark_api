@@ -337,10 +337,10 @@ describe Listing do
           #stub_api_get("/listings/20060725224713296297000000/tourofhomes", 'listings/tour_of_homes.json')
 
           #l = Listing.find('20060725224713296297000000')
-          #l.tour_of_homes().length.should == 2
-          #l.videos.length.should == 0
-          #l.photos.length.should == 0
-          #l.documents.length.should == 0
+          #expect(l.tour_of_homes().length).to eq 2
+          #expect(l.videos.length).to eq 0
+          #expect(l.photos.length).to eq 0
+          #expect(l.documents.length).to eq 0
         #end
 
         on_get_it "should return permissions" do
