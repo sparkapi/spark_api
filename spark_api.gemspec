@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.default_executable = %q{spark_api}
   s.require_paths      = ["lib"]
   
-  s.add_dependency 'faraday', '~> 0.9.0'                      # 0.15.2   2018-05-23
+  s.add_dependency 'faraday'
   s.add_dependency 'multi_json'
   s.add_dependency 'json'
   s.add_dependency 'will_paginate'
