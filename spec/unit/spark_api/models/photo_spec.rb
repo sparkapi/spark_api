@@ -25,9 +25,9 @@ describe Photo do
     end
 
     it "knows if it's the primary photo" do
-      subject.primary?.should be_true
+      subject.primary?.should be true
       subject.Primary = false
-      subject.primary?.should be_false
+      subject.primary?.should be false
     end
   end
 

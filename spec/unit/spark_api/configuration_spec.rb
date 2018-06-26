@@ -6,7 +6,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.api_key.should be_nil
       SparkApi.api_secret.should be_nil
       SparkApi.version.should match("v1")
-      SparkApi.ssl_verify.should be_true
+      SparkApi.ssl_verify.should be true
       SparkApi.auth_endpoint.should match("sparkplatform.com/openid")
       SparkApi.endpoint.should match("api.sparkapi.com")
       SparkApi.user_agent.should match(/Spark API Ruby Gem .*/)
@@ -42,15 +42,15 @@ describe SparkApi::Client, "Client config"  do
       client = SparkApi::Client.new(:auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "https://api.wade.dev.fbsdata.com",
                                     :ssl_verify => false)
-      client.ssl_verify.should be_false
-      client.connection.ssl.verify.should be_false
+      client.ssl_verify.should be false
+      client.connection.ssl.verify.should be false
     end
 
     it "should allow restrict ssl certificates when verification is on" do
       client = SparkApi::Client.new(:auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "https://api.wade.dev.fbsdata.com",
                                     :ssl_verify => true)
-      client.ssl_verify.should be_true
+      client.ssl_verify.should be true
       client.connection.ssl.should be_empty
     end
   end
@@ -71,7 +71,7 @@ describe SparkApi::Client, "Client config"  do
     end
 
     it "should say oauth2_enabled? when it is" do
-      oauth2_client.oauth2_enabled?().should be_true
+      oauth2_client.oauth2_enabled?().should be true
     end
 
     it "should say oauth2_enabled? is false" do
@@ -80,7 +80,7 @@ describe SparkApi::Client, "Client config"  do
                                     :callback => "http://wade.dev.fbsdata.com/callback",
                                     :auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "http://api.wade.dev.fbsdata.com")
-      client.oauth2_enabled?().should be_false
+      client.oauth2_enabled?().should be false
     end
 
     it "should properly build a grant_uri from the endpoint" do
@@ -106,7 +106,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.version.should match("veleventy")
       SparkApi.endpoint.should match("test.api.sparkapi.com")
       SparkApi.user_agent.should match("my useragent")
-      SparkApi.oauth2_enabled?().should be_false
+      SparkApi.oauth2_enabled?().should be false
       SparkApi.timeout.should eq(15)
     end
 
@@ -120,7 +120,7 @@ describe SparkApi::Client, "Client config"  do
         config.user_agent = "my useragent"
         config.authentication_mode = SparkApi::Authentication::OAuth2
       end
-      SparkApi.oauth2_enabled?().should be_true
+      SparkApi.oauth2_enabled?().should be true
     end
     
     it "should reset" do
