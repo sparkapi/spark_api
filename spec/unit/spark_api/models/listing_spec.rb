@@ -245,7 +245,7 @@ describe Listing do
 
         l = Listing.find(list_id)
         l.ListPrice = 10000.0
-        l.save.should be_false
+        l.save.should be false
         l.constraints.size.should eq(1)
         l.constraints.first.RuleName.should eq("MaxIncreasePercent")
         l.errors.size.should eq(1)
