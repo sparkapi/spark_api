@@ -74,91 +74,91 @@ describe Listing do
 
   describe "attributes" do
     it "should allow access to fields" do
-      @listing.StandardFields.should be_a(Hash)
-      @listing.StandardFields['ListingId'].should be_a(String)
-      @listing.StandardFields['ListPrice'].should match(@listing.ListPrice)
-      @listing.photos.should be_a(Array)
+      expect(@listing.StandardFields).to be_a(Hash)
+      expect(@listing.StandardFields['ListingId']).to be_a(String)
+      expect(@listing.StandardFields['ListPrice']).to match(@listing.ListPrice)
+      expect(@listing.photos).to be_a(Array)
     end
 
     it "should not respond to removed attributes" do
-      @listing.should_not respond_to(:Photos)
-      @listing.should_not respond_to(:Documents)
-      @listing.should_not respond_to(:VirtualTours)
-      @listing.should_not respond_to(:Videos)
+      expect(@listing).not_to respond_to(:Photos)
+      expect(@listing).not_to respond_to(:Documents)
+      expect(@listing).not_to respond_to(:VirtualTours)
+      expect(@listing).not_to respond_to(:Videos)
     end
 
     describe '.street_address' do
       it 'should return the street address' do
-        @listing.street_address.should eq("100 Someone's St")
+        expect(@listing.street_address).to eq("100 Someone's St")
       end
 
       it 'should remove data masks' do
         @listing.StandardFields["UnparsedFirstLineAddress"] = "********"
-        @listing.street_address.should eq("")
+        expect(@listing.street_address).to eq("")
       end
 
       it 'should handle a missing unparsed first line address' do
         [nil, '', ' '].each do |current|
           @listing.StandardFields['UnparsedFirstLineAddress'] = current
-          @listing.street_address.should eq('')
+          expect(@listing.street_address).to eq('')
         end
       end
     end
 
     it "should return the regional address" do
-      @listing.region_address.should eq("Fargo, ND 55320")
+      expect(@listing.region_address).to eq("Fargo, ND 55320")
     end
 
     it "should return full address" do
-      @listing.full_address.should eq("100 Someone's St, Fargo, ND 55320")
+      expect(@listing.full_address).to eq("100 Someone's St, Fargo, ND 55320")
     end
 
     it "should provide shortcut methods to standard fields" do
-      @listing.StreetName.should eq("Someone's")
-      @listing.YearBuilt.should eq(nil)
-      @listing.BuildingAreaTotal.should eq("1321.0")
-      @listing.PublicRemarks.should eq(nil)
-      @listing.PostalCode.should eq("55320")
-      @listing.ListPrice.should eq("100000.0")
+      expect(@listing.StreetName).to eq("Someone's")
+      expect(@listing.YearBuilt).to eq(nil)
+      expect(@listing.BuildingAreaTotal).to eq("1321.0")
+      expect(@listing.PublicRemarks).to eq(nil)
+      expect(@listing.PostalCode).to eq("55320")
+      expect(@listing.ListPrice).to eq("100000.0")
     end
 
     it "should report that it responds to shortcut methods to standard fields" do
-      @listing.should respond_to(:StreetName)
-      @listing.should respond_to(:YearBuilt)
-      @listing.should respond_to(:BuildingAreaTotal)
-      @listing.should respond_to(:PublicRemarks)
-      @listing.should respond_to(:PostalCode)
-      @listing.should respond_to(:ListPrice)
+      expect(@listing).to respond_to(:StreetName)
+      expect(@listing).to respond_to(:YearBuilt)
+      expect(@listing).to respond_to(:BuildingAreaTotal)
+      expect(@listing).to respond_to(:PublicRemarks)
+      expect(@listing).to respond_to(:PostalCode)
+      expect(@listing).to respond_to(:ListPrice)
 
-      @listing.should_not respond_to(:BogusField)
+      expect(@listing).not_to respond_to(:BogusField)
       @listing.StandardFields['BogusField'] = 'bogus'
-      @listing.should respond_to(:BogusField)
+      expect(@listing).to respond_to(:BogusField)
     end
   end
 
   describe "class methods" do
     it "should respond to find" do
-      Listing.should respond_to(:find)
+      expect(Listing).to respond_to(:find)
     end
 
     it "should respond to first" do
-      Listing.should respond_to(:first)
+      expect(Listing).to respond_to(:first)
     end
 
     it "should respond to last" do
-      Listing.should respond_to(:last)
+      expect(Listing).to respond_to(:last)
     end
 
     it "should respond to my" do
-      Listing.should respond_to(:my)
+      expect(Listing).to respond_to(:my)
     end
 
     it "should respond to find_by_cart_id" do
-      Listing.should respond_to(:find_by_cart_id)
+      expect(Listing).to respond_to(:find_by_cart_id)
     end
 
     it "should respond to count" do
-      Listing.should respond_to(:count)
+      expect(Listing).to respond_to(:count)
     end
   end
 
@@ -172,14 +172,14 @@ describe Listing do
         stub_api_get('/listings', 'listings/multiple.json', {:_filter => "PostalCode Eq '83805'"})
 
         listings = Listing.find(:all, :_filter => "PostalCode Eq '83805'")
-        listings.should be_an(Array)
-        listings.count.should eq(2)
+        expect(listings).to be_an(Array)
+        expect(listings.count).to eq(2)
       end
 
       on_get_it "should return the count" do
         stub_api_get("/listings", 'count.json', { :_pagination => "count"})
         count = Listing.count()
-        count.should == 2001
+        expect(count).to eq(2001)
       end
     end
 
@@ -188,10 +188,10 @@ describe Listing do
         stub_api_get("/listings/20060725224713296297000000", 'listings/no_subresources.json')
 
         l = Listing.find('20060725224713296297000000')
-        l.videos.length.should == 0
-        l.photos.length.should == 0
-        l.documents.length.should == 0
-        l.Id.should eq('20060725224713296297000000')
+        expect(l.videos.length).to eq(0)
+        expect(l.photos.length).to eq(0)
+        expect(l.documents.length).to eq(0)
+        expect(l.Id).to eq('20060725224713296297000000')
       end
 
       on_put_it "should save a listing that has modified ListPrice" do
@@ -200,7 +200,7 @@ describe Listing do
         stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json', 'success.json')
         l = Listing.find(list_id)
         l.ListPrice = 10000.0
-        l.save.should be(true)
+        expect(l.save).to be(true)
       end
 
       on_put_it "should save a listing that has modified ExpirationDate" do
@@ -209,7 +209,7 @@ describe Listing do
         stub_api_put("/flexmls/listings/#{list_id}", 'listings/put_expiration_date.json', 'success.json')
         l = Listing.find(list_id)
         l.ExpirationDate = "2011-10-04"
-        l.save.should be(true)
+        expect(l.save).to be(true)
       end
 
       it "should not save a listing that does not exist", :method => 'PUT' do
@@ -221,8 +221,8 @@ describe Listing do
         l = Listing.find(list_id)
         l.Id = "lolwut"
         l.ListPrice = 10000.0
-        l.save.should be(false)
-        expect{ l.save! }.to raise_error(SparkApi::ClientError){ |e| e.status.should == 400 }
+        expect(l.save).to be(false)
+        expect{ l.save! }.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to eq(400) }
       end
 
       on_put_it "should save a listing with constraints" do
@@ -231,9 +231,9 @@ describe Listing do
         stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json', 'listings/constraints.json')
         l = Listing.find(list_id)
         l.ListPrice = 10000.0
-        l.save.should be(true)
-        l.constraints.size.should eq(1)
-        l.constraints.first.RuleName.should eq("MaxValue")
+        expect(l.save).to be(true)
+        expect(l.constraints.size).to eq(1)
+        expect(l.constraints.first.RuleName).to eq("MaxValue")
       end
 
       on_put_it "should fail saving a listing with constraints and provide the constraints" do
@@ -245,10 +245,10 @@ describe Listing do
 
         l = Listing.find(list_id)
         l.ListPrice = 10000.0
-        l.save.should be false
-        l.constraints.size.should eq(1)
-        l.constraints.first.RuleName.should eq("MaxIncreasePercent")
-        l.errors.size.should eq(1)
+        expect(l.save).to be false
+        expect(l.constraints.size).to eq(1)
+        expect(l.constraints.first.RuleName).to eq("MaxIncreasePercent")
+        expect(l.errors.size).to eq(1)
       end
 
       on_put_it "should reorder a photo" do
@@ -257,7 +257,7 @@ describe Listing do
         stub_api_put("/listings/#{list_id}/photos/20110826220032167405000000", 'listings/put_reorder_photo.json', 'listings/reorder_photo.json')
         l = Listing.find(list_id)
         l.reorder_photo("20110826220032167405000000", "2")
-        l.photos.size.should eq(5)
+        expect(l.photos.size).to eq(5)
       end
 
       on_put_it "should raise an exception when an index is not an Integer" do
@@ -277,9 +277,9 @@ describe Listing do
           stub_api_put("/flexmls/listings/#{list_id}", 'listings/put.json', 'listings/constraints_with_pagination.json', :_pagination => '1')
           l = Listing.find(list_id)
           l.ListPrice = 10000.0
-          l.save(:_pagination => '1').should be(true)
-          l.constraints.size.should eq(1)
-          l.constraints.first.RuleName.should eq("MaxValue")
+          expect(l.save(:_pagination => '1')).to be(true)
+          expect(l.constraints.size).to eq(1)
+          expect(l.constraints.first.RuleName).to eq("MaxValue")
         end
       end
 
@@ -288,47 +288,47 @@ describe Listing do
           stub_api_get("/listings/1234", 'listings/with_photos.json', { :_expand => "Photos" })
 
           l = Listing.find('1234', :_expand => "Photos")
-          l.photos.length.should == 5
-          l.documents.length.should == 0
-          l.videos.length.should == 0
-          l.virtual_tours.length.should == 0
+          expect(l.photos.length).to eq(5)
+          expect(l.documents.length).to eq(0)
+          expect(l.videos.length).to eq(0)
+          expect(l.virtual_tours.length).to eq(0)
         end
 
         on_get_it "should return an array of documents" do
           stub_api_get("/listings/1234", 'listings/with_documents.json', { :_expand => "Documents" })
 
           l = Listing.find('1234', :_expand => "Documents")
-          l.photos.length.should == 0
-          l.documents.length.should == 2
-          l.videos.length.should == 0
-          l.virtual_tours.length.should == 0
+          expect(l.photos.length).to eq(0)
+          expect(l.documents.length).to eq(2)
+          expect(l.videos.length).to eq(0)
+          expect(l.virtual_tours.length).to eq(0)
         end
 
         on_get_it "should return an array of virtual tours" do
           stub_api_get("/listings/1234", 'listings/with_vtour.json', { :_expand => "VirtualTours" })
 
           l = Listing.find('1234', :_expand => "VirtualTours")
-          l.virtual_tours.length.should == 1
-          l.photos.length.should == 0
-          l.documents.length.should == 0
-          l.videos.length.should == 0
+          expect(l.virtual_tours.length).to eq(1)
+          expect(l.photos.length).to eq(0)
+          expect(l.documents.length).to eq(0)
+          expect(l.videos.length).to eq(0)
         end
 
         on_get_it "should return an array of videos" do
           stub_api_get("/listings/1234", 'listings/with_videos.json', { :_expand => "Videos" })
 
           l = Listing.find('1234', :_expand => "Videos")
-          l.videos.length.should == 2
-          l.virtual_tours.length.should == 0
-          l.photos.length.should == 0
-          l.documents.length.should == 0
+          expect(l.videos.length).to eq(2)
+          expect(l.virtual_tours.length).to eq(0)
+          expect(l.photos.length).to eq(0)
+          expect(l.documents.length).to eq(0)
         end
 
         on_get_it "should return an array of rental calendars" do
           stub_api_get("/listings/1234", 'listings/with_rental_calendar.json', { :_expand => "RentalCalendar" })
 
           l = Listing.find('1234', :_expand => "RentalCalendar")
-          l.rental_calendars.length.should == 2
+          expect(l.rental_calendars.length).to eq(2)
         end
         
         ## TourOfHomes: Not implemented yet ##
@@ -346,10 +346,10 @@ describe Listing do
         on_get_it "should return permissions" do
           stub_api_get("/listings/20060725224713296297000000", 'listings/with_permissions.json', { :_expand => "Permissions" })
           l = Listing.find('20060725224713296297000000', :_expand => "Permissions")
-          l.Permissions["Editable"].should eq(true)
-          l.editable?().should eq(true)
-          l.editable?(:PriceChange).should eq(true)
-          l.editable?(:Photos).should eq(false)
+          expect(l.Permissions["Editable"]).to eq(true)
+          expect(l.editable?()).to eq(true)
+          expect(l.editable?(:PriceChange)).to eq(true)
+          expect(l.editable?(:Photos)).to eq(false)
         end
 
         on_delete_it "should bulk delete listing photos" do
@@ -359,7 +359,7 @@ describe Listing do
           photo_id1 = l.photos[0].Id
           photo_id2 = l.photos[1].Id
           stub_api_delete("/listings/#{list_id}/photos/#{photo_id1},#{photo_id2}", 'listings/photos/index.json')
-          l.delete_photos(photo_id1 + "," + photo_id2).should_not be_empty
+          expect(l.delete_photos(photo_id1 + "," + photo_id2)).not_to be_empty
         end
       end
     end
@@ -369,8 +369,8 @@ describe Listing do
         stub_api_get('/my/listings', 'listings/multiple.json')
 
         listings = Listing.my
-        listings.should be_an(Array)
-        listings.count.should eq(2)
+        expect(listings).to be_an(Array)
+        expect(listings.count).to eq(2)
       end
     end
 
@@ -379,8 +379,8 @@ describe Listing do
         stub_api_get('/office/listings', 'listings/multiple.json')
 
         listings = Listing.office
-        listings.should be_an(Array)
-        listings.count.should eq(2)
+        expect(listings).to be_an(Array)
+        expect(listings.count).to eq(2)
       end
     end
 
@@ -389,8 +389,8 @@ describe Listing do
         stub_api_get('/company/listings', 'listings/multiple.json')
 
         listings = Listing.company
-        listings.should be_an(Array)
-        listings.count.should eq(2)
+        expect(listings).to be_an(Array)
+        expect(listings.count).to eq(2)
       end
     end
 
@@ -399,7 +399,7 @@ describe Listing do
         stub_api_get("/listings/nearby",
                      'listings/no_subresources.json', {:_lat => "45.45", :_lon => "-93.98"})
         l = Listing.nearby(45.45, -93.98)
-        l.length.should == 1
+        expect(l.length).to eq(1)
       end
     end
 
@@ -409,8 +409,8 @@ describe Listing do
 
         listings = Listing.tour_of_homes
         
-        listings.should be_an(Array)
-        listings.count.should eq(2)
+        expect(listings).to be_an(Array)
+        expect(listings.count).to eq(2)
 
       end
     end

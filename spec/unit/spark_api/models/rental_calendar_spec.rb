@@ -10,8 +10,8 @@ describe RentalCalendar do
 
     on_get_it "should get an array of rental calendars" do
       p = RentalCalendar.find_by_listing_key('1234')
-      p.should be_an(Array)
-      p.length.should == 2
+      expect(p).to be_an(Array)
+      expect(p.length).to eq(2)
     end
 
   end

@@ -6,9 +6,9 @@ describe SparkApi::OptionsHash do
          "parameter_two" => 2,
          3 => 3}
     o_h = SparkApi::OptionsHash.new(h)
-    o_h.keys.size.should eq(3)
-    o_h["parameter_one"].should eq(1)
-    o_h["parameter_two"].should eq(2)
-    o_h[3].should eq(3)
+    expect(o_h.keys.size).to eq(3)
+    expect(o_h["parameter_one"]).to eq(1)
+    expect(o_h["parameter_two"]).to eq(2)
+    expect(o_h[3]).to eq(3)
   end
 end
