@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   
   s.add_dependency 'faraday', '~> 0.9.0'                      # 0.15.2   2018-05-23
   s.add_dependency 'multi_json', '~> 1.0'                     # 1.13.1   2018-01-10
-  s.add_dependency 'json', '~> 1.7'                           # 2.1.0    2017-04-18
+  s.add_dependency 'json'
   s.add_dependency 'highline', '>= 1.0'                       # 2.0.0    2018-06-11
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'  # 3.1.6    2017-06-07
 
