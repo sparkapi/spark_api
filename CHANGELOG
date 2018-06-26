@@ -1,3 +1,6 @@
+v2.0.0
+ - Drop support for ruby 1.9.3, require a minimum of ruby 2.2
+
 v1.4.27
  - Added `dictionary_version` configuration option for RESO requests
 
