@@ -1,10 +1,10 @@
 require "rubygems"
 require "rspec"
-require 'rspec/autorun'
 require 'webmock/rspec'
 require 'spark_api'
 
 if ENV['COVERAGE'] == "on"
+  require 'simplecov'
   require 'simplecov-rcov'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
   SimpleCov.start { add_filter %w(/vendor /spec /test) }
@@ -23,7 +23,6 @@ RSpec.configure do |config|
   config.include WebMock::API
   config.include StubApiRequests
 
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.alias_example_to :on_get_it, :method => 'GET'
   config.alias_example_to :on_put_it, :method => 'PUT'
   config.alias_example_to :on_post_it, :method => 'POST'

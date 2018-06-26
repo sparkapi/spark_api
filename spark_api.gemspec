@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
 
   # TEST GEMS
   s.add_development_dependency 'rake', '~> 0.9.2'             # 12.3.1   2018-03-22
-  s.add_development_dependency 'rspec', '~> 2.99.0'           # 3.7.0    2017-10-17
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'ci_reporter_rspec'
   s.add_development_dependency 'simplecov-rcov'

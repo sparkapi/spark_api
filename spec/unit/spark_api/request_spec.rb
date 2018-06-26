@@ -235,11 +235,11 @@ describe SparkApi do
         result = subject.get('/listings/1000')[0]
         expect(result["StandardFields"]["BuildingAreaTotal"]).to be_a(Float)
         skip("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
-          result["StandardFields"]["BuildingAreaTotal"].should be_a(BigDecimal)
+          expect(result["StandardFields"]["BuildingAreaTotal"]).to be_a(BigDecimal)
           number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
-          number.to_s.should eq(BigDecimal.new("0.000000000000000000000000001").to_s)
+          expect(number.to_s).to eq(BigDecimal.new("0.000000000000000000000000001").to_s)
           number = BigDecimal.new(result["StandardFields"]["ListPrice"].to_s)
-          number.to_s.should eq(BigDecimal.new("9999999999999999999999999.99").to_s)
+          expect(number.to_s).to eq(BigDecimal.new("9999999999999999999999999.99").to_s)
         end
       end
       
@@ -379,7 +379,7 @@ describe SparkApi do
       it "should fail horribly on a get" do
         expect { subject.get('/system')}.to raise_error(SparkApi::PermissionDenied) do |e| 
           expect(e.code).to eq(SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED)
-          expect(e.request_path).to eq('/system')
+          expect(e.request_path.to_s).to match(/\/system/)
         end
         expect(subject.reauthenticated).to eq(2)
 
@@ -388,7 +388,7 @@ describe SparkApi do
         data = {"Contacts" => [{"DisplayName"=>"Wades Contact","PrimaryEmail"=>"wade11@fbsdata.com"}]}
         expect { subject.post('/contacts', data)}.to raise_error(SparkApi::PermissionDenied) do |e| 
           expect(e.code).to eq(SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED)
-          expect(e.request_path).to eq('/contacts')
+          expect(e.request_path.to_s).to match(/\/contacts/)
         end
         expect(subject.reauthenticated).to eq(2)
       end
