@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'will_paginate'
 
   # TEST GEMS
-  s.add_development_dependency 'rake', '~> 0.9.2'             # 12.3.1   2018-03-22
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'webmock'
   s.add_development_dependency 'ci_reporter_rspec'
