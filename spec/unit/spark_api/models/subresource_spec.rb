@@ -17,14 +17,14 @@ describe Subresource do
 
     dummy_class.parse_date_start_and_end_times(times)
 
-    times['Date'].should eq(date)
+    expect(times['Date']).to eq(date)
 
     if RUBY_VERSION < '1.9'
-      times['StartTime'].should eq(Time.parse(start_time.to_s))
-      times['EndTime'].should eq(Time.parse(end_time.to_s))
+      expect(times['StartTime']).to eq(Time.parse(start_time.to_s))
+      expect(times['EndTime']).to eq(Time.parse(end_time.to_s))
     else
-      times['StartTime'].should eq(start_time.to_time)
-      times['EndTime'].should eq(end_time.to_time)
+      expect(times['StartTime']).to eq(start_time.to_time)
+      expect(times['EndTime']).to eq(end_time.to_time)
     end
   end
 
@@ -36,14 +36,14 @@ describe Subresource do
 
     dummy_class.parse_date_start_and_end_times(times)
 
-    times['Date'].should eq(date)
+    expect(times['Date']).to eq(date)
 
     if RUBY_VERSION < '1.9'
-      times['StartTime'].should eq(Time.parse(start_time.to_s))
-      times['EndTime'].should eq(Time.parse(end_time.to_s))
+      expect(times['StartTime']).to eq(Time.parse(start_time.to_s))
+      expect(times['EndTime']).to eq(Time.parse(end_time.to_s))
     else
-      times['StartTime'].should eq(start_time.to_time)
-      times['EndTime'].should eq(end_time.to_time)
+      expect(times['StartTime']).to eq(start_time.to_time)
+      expect(times['EndTime']).to eq(end_time.to_time)
     end
   end
 
@@ -55,14 +55,14 @@ describe Subresource do
 
     dummy_class.parse_date_start_and_end_times(times)
 
-    times['Date'].should eq(date)
+    expect(times['Date']).to eq(date)
 
     if RUBY_VERSION < '1.9'
-      times['StartTime'].should eq(Time.parse(start_time.to_s))
-      times['EndTime'].should eq(Time.parse(end_time.to_s))
+      expect(times['StartTime']).to eq(Time.parse(start_time.to_s))
+      expect(times['EndTime']).to eq(Time.parse(end_time.to_s))
     else
-      times['StartTime'].should eq(start_time.to_time)
-      times['EndTime'].should eq(end_time.to_time)
+      expect(times['StartTime']).to eq(start_time.to_time)
+      expect(times['EndTime']).to eq(end_time.to_time)
     end
   end
 

@@ -11,13 +11,13 @@ describe Portal do
     it "should return a new portal if the current user doesn't have one yet" do
       stub_api_get("/portal", "portal/my_non_existant.json")
       portal = Portal.my
-      portal.persisted?.should eq(false)
+      expect(portal.persisted?).to eq(false)
     end
 
     it "should get the current user's portal" do
       stub_api_get("/portal", "portal/my.json")
       portal = Portal.my
-      portal.persisted?.should eq(true)
+      expect(portal.persisted?).to eq(true)
     end
 
     it "should create a portal for the current user" do
@@ -35,7 +35,7 @@ describe Portal do
       s = stub_api_put("/portal/20100912153422758914000000", "portal/enable.json", "portal/post.json")
       portal = Portal.my
       portal.enable
-      s.should have_been_requested
+      expect(s).to have_been_requested
     end
 
     it "should disable the current user's portal" do
@@ -43,7 +43,7 @@ describe Portal do
       s = stub_api_put("/portal/20100912153422758914000000", "portal/disable.json", "portal/post.json")
       portal = Portal.my
       portal.disable
-      s.should have_been_requested
+      expect(s).to have_been_requested
     end
 
   end

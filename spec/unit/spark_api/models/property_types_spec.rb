@@ -3,7 +3,7 @@ require './spec/spec_helper'
 describe PropertyTypes do
 
   it "should respond to get" do
-    PropertyTypes.should respond_to(:get)
+    expect(PropertyTypes).to respond_to(:get)
   end
 
   describe "/propertytypes", :support do
@@ -15,8 +15,8 @@ describe PropertyTypes do
       stub_api_get("/propertytypes", "property_types/property_types.json")
 
       types = PropertyTypes.get
-      types.should be_an(Array)
-      types.count.should be(6)
+      expect(types).to be_an(Array)
+      expect(types.count).to be(6)
     end
   end
 
@@ -29,8 +29,8 @@ describe PropertyTypes do
       stub_api_get("/propertytypes/all", "property_types/property_types.json")
 
       types = PropertyTypes.all
-      types.should be_an(Array)
-      types.count.should be(6)
+      expect(types).to be_an(Array)
+      expect(types.count).to be(6)
     end
   end
 
