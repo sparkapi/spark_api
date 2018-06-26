@@ -1,3 +1,6 @@
+v2.0.0
+ - Drop support for ruby 1.9.3, require a minimum of ruby 2.2
+
 v1.4.34
  - Version update for releasing v1.4.33 as the tags were set wrong for v1.4.32 release
 
