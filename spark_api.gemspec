@@ -40,9 +40,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0.9.2'             # 12.3.1   2018-03-22
   s.add_development_dependency 'rspec', '~> 2.14.0'           # 3.7.0    2017-10-17
   s.add_development_dependency 'webmock', '~> 1.9'            # 3.4.2    2018-06-03
-  s.add_development_dependency 'ci_reporter', '~> 1.7.0'      # 2.0.0    2014-07-21
-  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'ci_reporter_rspec'
   s.add_development_dependency 'simplecov-rcov'
-  s.add_development_dependency 'guard-rspec'
 end
 
