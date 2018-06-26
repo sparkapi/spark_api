@@ -13,7 +13,7 @@ describe SparkApi::Authentication do
     client = SparkApi.client
     stub_auth_request
     session = client.get "/session/c401736bf3d3f754f07c04e460e09573"
-    session[0]["AuthToken"].should eq("c401736bf3d3f754f07c04e460e09573")
+    expect(session[0]["AuthToken"]).to eq("c401736bf3d3f754f07c04e460e09573")
   end
   it "should delete a session" do
     stub_auth_request
@@ -26,7 +26,7 @@ describe SparkApi::Authentication do
       to_return(:body => fixture("success.json"))
     client = SparkApi.client
     client.logout
-    client.session.should eq(nil)
+    expect(client.session).to eq(nil)
   end
 
 end

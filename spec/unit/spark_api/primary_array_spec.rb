@@ -18,12 +18,12 @@ describe SparkApi::PrimaryArray do
     d = PrimaryModel.new(4, true)
     e = PrimaryModel.new(5)
     tester = subject.class.new([d,e])
-    tester.primary.should eq(d)
+    expect(tester.primary).to eq(d)
     tester = subject.class.new([a,b,c,d,e])
-    tester.primary.should eq(d)
+    expect(tester.primary).to eq(d)
     # Note, it doesn't care if there is more than one primary, just returns first in the list.
     b.Primary = true
-    tester.primary.should eq(b)
+    expect(tester.primary).to eq(b)
   end
   it "should return nil when there is no primary element" do
     a = PrimaryModel.new(1)
@@ -32,9 +32,9 @@ describe SparkApi::PrimaryArray do
     d = PrimaryModel.new(4)
     e = PrimaryModel.new(5)
     tester = subject.class.new([])
-    tester.primary.should be(nil)
+    expect(tester.primary).to be(nil)
     tester = subject.class.new([a,b,c,d,e])
-    tester.primary.should be(nil)
+    expect(tester.primary).to be(nil)
   end
 end
 

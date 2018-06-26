@@ -64,13 +64,13 @@ describe SparkApi do
     end
     
     it "should raised exception when token is expired" do
-      expect { @connection.get('/expired')}.to raise_error(SparkApi::PermissionDenied){ |e| e.code.should == SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED }
+      expect { @connection.get('/expired')}.to raise_error(SparkApi::PermissionDenied){ |e| expect(e.code).to eq(SparkApi::ResponseCodes::SESSION_TOKEN_EXPIRED) }
     end
 
     it "should raised exception on error" do
-      expect { @connection.get('/methodnotallowed')}.to raise_error(SparkApi::NotAllowed){ |e| e.message.should == "Method Not Allowed" }
-      expect { @connection.get('/epicfail')}.to raise_error(SparkApi::ClientError){ |e| e.status.should be(500) }
-      expect { @connection.get('/unknownerror')}.to raise_error(SparkApi::ClientError){ |e| e.status.should be(499) }
+      expect { @connection.get('/methodnotallowed')}.to raise_error(SparkApi::NotAllowed){ |e| expect(e.message).to eq("Method Not Allowed") }
+      expect { @connection.get('/epicfail')}.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to be(500) }
+      expect { @connection.get('/unknownerror')}.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to be(499) }
     end
 
     it "should raised exception on invalid responses" do
@@ -81,20 +81,20 @@ describe SparkApi do
 
     it "should give me a session response" do
       response = @connection.post('/session').body
-      response.success.should eq(true)
+      expect(response.success).to eq(true)
       session = SparkApi::Authentication::Session.new(response.results[0])
-      session.auth_token.should eq("xxxxx")
+      expect(session.auth_token).to eq("xxxxx")
     end
     
     it "should give me an api response" do
       response = @connection.get('/system').body
-      response.success.should eq(true)
-      response.results.length.should be > 0 
+      expect(response.success).to eq(true)
+      expect(response.results.length).to be > 0 
     end
 
     it "should include the errors in the response" do
       expect { @connection.get('/badresourcerequest')}.to raise_error(SparkApi::BadResourceRequest){ |e| 
-        e.errors.should == "Some errors and stuff."
+        expect(e.errors).to eq("Some errors and stuff.")
       }
     end
 
@@ -111,7 +111,7 @@ describe SparkApi do
         :response_headers => {}
       }
 
-      middleware.decompress_body(env).should eq("UNCOMPRESSED")
+      expect(middleware.decompress_body(env)).to eq("UNCOMPRESSED")
     end
 
     it "should unzip gzipped data" do
@@ -129,7 +129,7 @@ describe SparkApi do
         }
       }
 
-      middleware.decompress_body(env).should eq(bod)
+      expect(middleware.decompress_body(env)).to eq(bod)
     end
 
     it "should inflate deflated data" do
@@ -143,7 +143,7 @@ describe SparkApi do
         }
       }
 
-      middleware.decompress_body(env).should eq(bod)
+      expect(middleware.decompress_body(env)).to eq(bod)
     end
   end
   
