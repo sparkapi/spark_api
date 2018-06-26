@@ -2,7 +2,7 @@ require './spec/spec_helper'
 
 describe SparkApi do
   describe SparkApi::ClientError do
-    subject { SparkApi::ClientError.new({:message=>"OMG FAIL", :code=>1234, :status=>500, :request_path => '/v1/foo'}) }
+    subject { SparkApi::ClientError.new({:message=>"OMG FAIL", :code=>1234, :status=>500, :request_path => '/v1/foo', :request_id => 'deadbeef'}) }
     it "should print a helpful to_s" do
       subject.to_s.should == "OMG FAIL"
       subject.message.should == "OMG FAIL"
@@ -16,6 +16,10 @@ describe SparkApi do
 
     it "should have a request_path" do
       subject.request_path.should == '/v1/foo'
+    end
+
+    it "should have a request_id" do
+      subject.request_id.should == 'deadbeef'
     end
 
     it "should raise and exception with attached message" do
@@ -38,6 +42,7 @@ describe SparkApi do
         e.message.should == "My Message" 
         e.code.should be == nil
         e.status.should be == nil
+        e.request_id.should be == nil
       end
     end
   end
@@ -51,6 +56,13 @@ describe SparkApi do
       r = SparkApi::ApiResponse.new({"D"=>{"Success" => true, "Results" => []}})
       r.success?.should be(true)
       r.results.empty?.should be(true)
+      r.request_id.should eq nil
+    end
+
+    it "should return the request_id" do
+      r = SparkApi::ApiResponse.new({"D"=>{"Success" => true, "Results" => []}}, 'foobar')
+      r.success?.should be(true)
+      r.request_id.should eq('foobar')
     end
     it "should have a message on error" do
       r = SparkApi::ApiResponse.new({"D"=>{"Success" => false, "Message" => "I am a failure."}})

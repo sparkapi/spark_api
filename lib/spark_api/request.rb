@@ -79,7 +79,7 @@ module SparkApi
           response = authenticator.request(method, request_path, post_data, request_opts)
         end
         request_time = Time.now - start_time
-        SparkApi.logger.debug { "[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path}" }
+        SparkApi.logger.debug { "[#{(request_time * 1000).to_i}ms] Api: #{method.to_s.upcase} #{request_path} request_id=#{response.headers['x-request-id']}" }
       rescue PermissionDenied => e
         if(ResponseCodes::SESSION_TOKEN_EXPIRED == e.code)
           unless (attempts +=1) > 1

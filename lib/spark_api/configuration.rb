@@ -11,7 +11,7 @@ module SparkApi
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
       :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode, 
-      :auth_endpoint, :callback, :compress, :timeout, :middleware].freeze
+      :auth_endpoint, :callback, :compress, :timeout, :middleware, :request_id_chain].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
       :redirect_uri,  
@@ -44,6 +44,7 @@ module SparkApi
     DEFAULT_COMPRESS = false
     DEFAULT_TIMEOUT = 5 # seconds
     DEFAULT_MIDDLEWARE = 'spark_api'
+    DEFAULT_REQUEST_ID_CHAIN = nil
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
 
@@ -78,6 +79,7 @@ module SparkApi
       self.compress    = DEFAULT_COMPRESS
       self.timeout     = DEFAULT_TIMEOUT
       self.middleware = DEFAULT_MIDDLEWARE
+      self.request_id_chain = DEFAULT_REQUEST_ID_CHAIN
       self
     end
   end
