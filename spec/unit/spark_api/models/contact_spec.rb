@@ -57,7 +57,7 @@ describe Contact do
 
       c=Contact.new
       c.errors.length.should eq(0)
-      c.save.should be_false
+      c.save.should be false
       c.errors.length.should eq(1)
       c.errors.first[:code].should eq(1055)
     end
@@ -189,7 +189,7 @@ describe Contact do
         contact = Contact.my
         stub_api_get("/contacts/#{contact.Id}/portal", 'contacts/vow_accounts/get.json')
         vow_account = contact.vow_account
-        vow_account.persisted?.should be_true
+        vow_account.persisted?.should be true
       end
     end
 

@@ -240,7 +240,7 @@ describe SparkApi do
         MultiJson.default_adapter.should eq(:yajl) unless jruby?
         result = subject.get('/listings/1000')[0]
         result["StandardFields"]["BuildingAreaTotal"].should be_a(Float)
-        pending("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
+        skip("our JSON parser does not support large decimal types.  Anyone feel like writing some c code?") do
           result["StandardFields"]["BuildingAreaTotal"].should be_a(BigDecimal)
           number = BigDecimal.new(result["StandardFields"]["BuildingAreaTotal"].to_s)
           number.to_s.should eq(BigDecimal.new("0.000000000000000000000000001").to_s)

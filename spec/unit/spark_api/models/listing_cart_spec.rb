@@ -169,17 +169,17 @@ describe ListingCart do
   describe "#deletable?" do
     it "should return true for private custom carts" do
       resource = subject.class.new
-      expect(resource.deletable?).to be_true
+      expect(resource.deletable?).to be true
     end
     
     it "should return true for custom vow carts" do
       resource = subject.class.new PortalCartType: "Custom"
-      expect(resource.deletable?).to be_true
+      expect(resource.deletable?).to be true
     end
 
     it "should return false for vow carts" do
       resource = subject.class.new PortalCartType: "Favorites"
-      expect(resource.deletable?).to be_false
+      expect(resource.deletable?).to be false
     end
   end
 
