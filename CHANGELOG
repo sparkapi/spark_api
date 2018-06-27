@@ -1,3 +1,6 @@
+v1.4.26
+ - added `unread` and `unread_count` methods to `Message`
+
 v1.4.25
  - add request_id reader to error and response classes
  - log request_id on successful requests (debug level)

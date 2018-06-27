@@ -25,6 +25,14 @@ module SparkApi
         Message.collect(connection.get("#{self.class.path}/#{self.Id}/replies", arguments))
       end
 
+      def self.unread(args={})
+        collect(connection.get("#{path}/unread", args))
+      end
+
+      def self.unread_count
+        unread _pagination: 'count'
+      end
+
     end
   end
 end
