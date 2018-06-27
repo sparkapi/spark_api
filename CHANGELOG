@@ -1,5 +1,7 @@
 v2.0.0
  - Drop support for ruby 1.9.3, require a minimum of ruby 2.2
+ - Upgrade to Rspec 3
+ - Upgrade all dependencies to current stable versions
 
 v1.4.28
  - move public_suffix to development dependency where it belongs
