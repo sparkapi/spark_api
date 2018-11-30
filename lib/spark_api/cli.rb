@@ -32,6 +32,7 @@ module SparkApi
         # OTHER
         :debug=> "DEBUG",
         :middleware => "SPARK_MIDDLEWARE",
+        :dictionary_version => "DICTIONARY_VERSION",
         :console => "SPARK_API_CONSOLE"  # not a public option, meant to distinguish bin/spark_api and script/console
       }
       
@@ -71,7 +72,8 @@ module SparkApi
           :api_user => ENV[OPTIONS_ENV[:api_user]],
           :ssl_verify => ENV.fetch(OPTIONS_ENV[:ssl_verify], true),
           :console => ENV[OPTIONS_ENV[:console]],
-          :middleware => ENV[OPTIONS_ENV[:middleware]]
+          :middleware => ENV[OPTIONS_ENV[:middleware]],
+          :dictionary_version => ENV[OPTIONS_ENV[:dictionary_version]]
         }
         cli_options = {}
         file_options = {}
@@ -133,6 +135,9 @@ module SparkApi
           opts.on("--middleware SPARK_MIDDLEWARE",
                   "spark_api for accessing spark, reso_api for accessing reso adapter",
                   "Default: spark_api") { |arg| cli_options[:middleware] = arg }
+          opts.on("--dictionary_version DICTIONARY_VERSION",
+                  "spark_api for accessing spark, reso_api for accessing reso adapter",
+                  "Default: spark_api") { |arg| cli_options[:dictionary_version] = arg }
 
           # General           
           opts.on("-f", "--file FILE",

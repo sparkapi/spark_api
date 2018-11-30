@@ -66,7 +66,8 @@ module SparkApi
         request_opts = {}
         request_opts.merge!(options)
         request_path = if middleware && middleware.to_sym == :reso_api
-                         "/Reso/OData#{path}"
+                         dd_version = "Dictionary/#{dictionary_version}/" unless dictionary_version.nil?
+                         "/Reso/#{dd_version}OData#{path}"
                        else
                          "/#{version}#{path}"
                        end
