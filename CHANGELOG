@@ -1,3 +1,6 @@
+v1.4.27
+ - Added `dictionary_version` configuration option for RESO requests
+
 v1.4.26
  - added `unread` and `unread_count` methods to `Message`
 
