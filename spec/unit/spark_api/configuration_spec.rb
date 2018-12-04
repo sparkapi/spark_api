@@ -14,6 +14,7 @@ describe SparkApi::Client, "Client config"  do
       SparkApi.api_key.should match("my_api_key")
       SparkApi.timeout.should eq(5)
       SparkApi.request_id_chain.should be_nil
+      SparkApi.middleware.should eq('spark_api')
     end
   end
 
@@ -238,5 +239,26 @@ describe SparkApi::Client, "Client config"  do
     end
   end
 
+  describe "RESO configuration" do
+    it "should return a properly configured client" do
+      client = SparkApi::Client.new(:api_key => "key_of_cody", 
+                                    :api_secret => "TopSecret", 
+                                    :api_user => "1234",
+                                    :endpoint => "http://api.coolio.dev.fbsdata.com",
+                                    :timeout => 15,
+                                    :request_id_chain => 'foobar',
+                                    :middleware => 'reso_api',
+                                    :dictionary_version => '1.6')
+ 
+      client.api_key.should match("key_of_cody")
+      client.api_secret.should match("TopSecret")
+      client.api_user.should match("1234")
+      client.endpoint.should match("http://api.coolio.dev.fbsdata.com")
+      client.timeout.should eq(15)
+      client.request_id_chain.should eq('foobar')
+      client.middleware.should eq('reso_api')
+      client.dictionary_version.should eq('1.6')
+    end
+  end
 end
 

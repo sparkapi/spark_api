@@ -20,6 +20,7 @@ SparkApi.configure do |config|
   config.endpoint = ENV["API_ENDPOINT"] if ENV["API_ENDPOINT"]
   config.ssl_verify = ENV["SSL_VERIFY"].downcase != 'false' if ENV["SSL_VERIFY"]
   config.middleware = ENV["SPARK_MIDDLEWARE"]  if ENV["SPARK_MIDDLEWARE"]
+  config.dictionary_version = ENV["DICTIONARY_VERSION"] if ENV["DICTIONARY_VERSION"]
 end
 
 # Enables saving and loading serialized oauth2 sessions for the system user. 
