@@ -1,8 +1,9 @@
 language: ruby
 rvm:
   - 2.3.3
-  - 2.4.4
-  - 2.5.1
+  - 2.4.5
+  - 2.5.3
+  - 2.6.1
 
 # Try to work around a travisCI quirk
 # see https://git.io/vVf62 for more
