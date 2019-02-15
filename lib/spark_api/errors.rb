@@ -19,6 +19,7 @@ module SparkApi
   end
   
   # Errors built from API responses
+  class InvalidJSON < StandardError; end
   class InvalidResponse < StandardError; end
   class ClientError < StandardError
     attr_reader :code, :status, :details, :request_path, :request_id, :errors
