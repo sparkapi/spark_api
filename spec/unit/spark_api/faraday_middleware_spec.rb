@@ -76,7 +76,7 @@ describe SparkApi do
     it "should raised exception on invalid responses" do
       expect { @connection.get('/invalidjson')}.to raise_error(SparkApi::InvalidResponse)
       # This should be caught in the request code
-      expect { @connection.get('/garbage')}.to raise_error(MultiJson::DecodeError)
+      expect { @connection.get('/garbage')}.to raise_error(SparkApi::InvalidJSON)
     end
 
     it "should give me a session response" do
