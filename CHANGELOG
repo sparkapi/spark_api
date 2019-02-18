@@ -1,3 +1,6 @@
+v1.4.28
+ - move public_suffix to development dependency where it belongs
+
 v1.4.27
  - Added `dictionary_version` configuration option for RESO requests
 
