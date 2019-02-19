@@ -67,13 +67,13 @@ describe Message do
     on_get_it "gets unread messages" do
       stub_api_get("/messages/unread", 'messages/get.json', {})
       messages = Message.unread
-      messages.size.should == 2
-      messages.first.should be_a Message
+      expect(messages.size).to eq(2)
+      expect(messages.first).to be_a Message
     end
 
     on_get_it "gets unread messages count" do
       stub_api_get("/messages/unread", 'messages/count.json', _pagination: 'count')
-      Message.unread_count.should == 78
+      expect(Message.unread_count).to eq(78)
     end
 
   end

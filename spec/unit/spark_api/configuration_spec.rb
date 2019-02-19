@@ -249,14 +249,14 @@ describe SparkApi::Client, "Client config"  do
                                     :middleware => 'reso_api',
                                     :dictionary_version => '1.6')
  
-      client.api_key.should match("key_of_cody")
-      client.api_secret.should match("TopSecret")
-      client.api_user.should match("1234")
-      client.endpoint.should match("http://api.coolio.dev.fbsdata.com")
-      client.timeout.should eq(15)
-      client.request_id_chain.should eq('foobar')
-      client.middleware.should eq('reso_api')
-      client.dictionary_version.should eq('1.6')
+      expect(client.api_key).to match("key_of_cody")
+      expect(client.api_secret).to match("TopSecret")
+      expect(client.api_user).to match("1234")
+      expect(client.endpoint).to match("http://api.coolio.dev.fbsdata.com")
+      expect(client.timeout).to eq(15)
+      expect(client.request_id_chain).to eq('foobar')
+      expect(client.middleware).to eq('reso_api')
+      expect(client.dictionary_version).to eq('1.6')
     end
   end
 end
