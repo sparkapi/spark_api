@@ -3,6 +3,7 @@ v2.0.0
  - Upgrade to Rspec 3
  - Upgrade all dependencies to current stable versions
  - Catch MultiJson::ParseErrors and return SparkApi::InvalidJSON error instead
+ - Add default 1 second open_timeout to HTTP requests
 
 v1.4.34
  - Version update for releasing v1.4.33 as the tags were set wrong for v1.4.32 release

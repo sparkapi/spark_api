@@ -15,6 +15,7 @@ describe SparkApi::Client, "Client config"  do
       expect(SparkApi.timeout).to eq(5)
       expect(SparkApi.request_id_chain).to be_nil
       expect(SparkApi.middleware).to eq('spark_api')
+      expect(SparkApi.open_timeout).to eq(1)
     end
   end
 
@@ -25,6 +26,7 @@ describe SparkApi::Client, "Client config"  do
                                     :api_user => "1234",
                                     :auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "http://api.wade.dev.fbsdata.com",
+                                    :open_timeout => 2,
                                     :timeout => 15,
                                     :request_id_chain => 'foobar')
  
@@ -34,6 +36,7 @@ describe SparkApi::Client, "Client config"  do
       expect(client.auth_endpoint).to match("https://login.wade.dev.fbsdata.com")
       expect(client.endpoint).to match("http://api.wade.dev.fbsdata.com")
       expect(client.version).to match("v1")
+      expect(client.open_timeout).to eq(2)
       expect(client.timeout).to eq(15)
       expect(client.request_id_chain).to eq('foobar')
     end
@@ -97,6 +100,7 @@ describe SparkApi::Client, "Client config"  do
         config.version = "veleventy"
         config.endpoint = "test.api.sparkapi.com"
         config.user_agent = "my useragent"
+        config.open_timeout = 2
         config.timeout = 15
       end
 
@@ -107,6 +111,7 @@ describe SparkApi::Client, "Client config"  do
       expect(SparkApi.endpoint).to match("test.api.sparkapi.com")
       expect(SparkApi.user_agent).to match("my useragent")
       expect(SparkApi.oauth2_enabled?()).to be false
+      expect(SparkApi.open_timeout).to eq(2)
       expect(SparkApi.timeout).to eq(15)
     end
 
@@ -226,14 +231,21 @@ describe SparkApi::Client, "Client config"  do
       expect(c.connection.headers["Accept-Encoding"]).to eq("gzip, deflate")
     end
 
-    it "should set default timeout of 5 seconds" do
+    it "should set default read timeout of 5 seconds" do
       c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
       expect(c.connection.options[:timeout]).to eq(5)
     end
 
+    it "should set default open timeout of 1 second" do
+      c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
+      expect(c.connection.options[:open_timeout]).to eq(1)
+    end
+
     it "should set alternate timeout if specified" do
       c = SparkApi::Client.new(:endpoint => "https://sparkapi.com",
+        :open_timeout => 5,
         :timeout => 15)
+      expect(c.connection.options[:open_timeout]).to eq(5)
       expect(c.connection.options[:timeout]).to eq(15)
     end
   end
