@@ -51,27 +51,5 @@ describe AccountReport do
     end
     
   end
-
-  describe 'logo' do
-
-    it 'returns the logo' do
-      logo = SparkApi::Models::Base.new( {"Type" => "Logo"} )
-      not_logo = SparkApi::Models::Base.new( {"Type" => "Nope" } )
-      account_report.images = [logo, not_logo]
-      expect(account_report.logo).to be logo
-    end
-
-    it 'returns nil if there is no logo' do
-      not_logo = SparkApi::Models::Base.new( {"Type" => "Nope" } )
-      account_report.images = [not_logo]
-      expect(account_report.logo).to be nil
-    end
-
-    it 'returns nil if there are no images' do
-      expect(account_report.images).to be nil
-      expect(account_report.logo).to be nil
-    end
-    
-  end
   
 end

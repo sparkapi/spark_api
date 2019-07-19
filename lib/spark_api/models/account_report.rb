@@ -21,11 +21,6 @@ module SparkApi
         end
       end
 
-      def logo
-        if images.kind_of? Array
-          images.find { |image| image.Type == "Logo" }
-        end
-      end
     end
   end
 end
