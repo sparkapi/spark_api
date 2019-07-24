@@ -52,7 +52,13 @@ module SparkApi
           nil
         end
       end
-      
+
+      def logo
+        if images.kind_of? Array
+          images.find { |image| image.Type == "Logo" }
+        end
+      end
+            
       def save(arguments={})
         self.errors = [] # clear the errors hash
         begin

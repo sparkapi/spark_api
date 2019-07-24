@@ -2,6 +2,8 @@ require './spec/spec_helper'
 
 describe AccountReport do
 
+  it_behaves_like(:account, AccountReport)
+
   let(:account_report) { 
     AccountReport.new({
       "Id" => "12345",
@@ -48,28 +50,6 @@ describe AccountReport do
     it 'returns nil when there are no phone numbers' do
       allow(account_report).to receive(:phones).and_return nil
       expect(account_report.primary_phone).to eq nil
-    end
-    
-  end
-
-  describe 'logo' do
-
-    it 'returns the logo' do
-      logo = SparkApi::Models::Base.new( {"Type" => "Logo"} )
-      not_logo = SparkApi::Models::Base.new( {"Type" => "Nope" } )
-      account_report.images = [logo, not_logo]
-      expect(account_report.logo).to be logo
-    end
-
-    it 'returns nil if there is no logo' do
-      not_logo = SparkApi::Models::Base.new( {"Type" => "Nope" } )
-      account_report.images = [not_logo]
-      expect(account_report.logo).to be nil
-    end
-
-    it 'returns nil if there are no images' do
-      expect(account_report.images).to be nil
-      expect(account_report.logo).to be nil
     end
     
   end

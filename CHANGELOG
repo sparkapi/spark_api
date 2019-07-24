@@ -1,3 +1,6 @@
+v1.4.29
+ - moved `#logo` from AccountReport to Account
+
 v1.4.28
  - move public_suffix to development dependency where it belongs
 

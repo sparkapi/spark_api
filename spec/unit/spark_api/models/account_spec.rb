@@ -1,6 +1,9 @@
 require './spec/spec_helper'
 
 describe Account do
+
+  it_behaves_like(:account, Account)
+
   describe "units" do
     before(:each) do
       @account = Account.new({
@@ -176,6 +179,6 @@ describe Account do
     end
 
   end
-
+  
 end
 
