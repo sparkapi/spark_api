@@ -2,6 +2,8 @@ require './spec/spec_helper'
 
 describe AccountReport do
 
+  it_behaves_like(:account, AccountReport)
+
   let(:account_report) { 
     AccountReport.new({
       "Id" => "12345",
