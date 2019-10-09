@@ -1,3 +1,6 @@
+v1.4.30
+ - added `script/reso_middleware_example.rb`
+
 v1.4.29
  - moved `#logo` from AccountReport to Account
 
@@ -72,10 +75,10 @@ v1.4.8
 
 v1.4.7
  - store 'D' attribute in responses
- 
+
 v1.4.6
  - Added Idx model
- 
+
 v1.4.5
  - Fixed problem where options are dropped in Defaultable when `find` is called with 'default'
 
@@ -100,7 +103,7 @@ v1.3.28
 v1.3.27
  - added NewsFeedMeta model
  - updated SavedSearch to use NewsFeedMeta when figuring out if the search qualifies for a news feed
- 
+
 v1.3.26
  - fixed update_attributes method
 
