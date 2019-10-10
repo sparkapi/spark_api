@@ -12,8 +12,8 @@ jobs:
     - name: Set up Ruby 2.3
       uses: actions/setup-ruby@v1
       with:
-        ruby-version: 2.3.3
+        ruby-version: 2.3.8
     - name: Build and test
       run: |
         gem install bundler -v 1.14.6
-        sciprt/ci_build
+        script/ci_build
