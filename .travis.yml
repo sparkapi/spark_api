@@ -1,10 +1,8 @@
 language: ruby
 rvm:
-  - 1.9.3
-  - 2.1.6
-  - 2.2.4
+  - 2.5.7
 
 # Try to work around a travisCI quirk
 # see https://git.io/vVf62 for more
 before_install:
-  - gem install bundler
+  - gem install bundler -v 1.17.3
