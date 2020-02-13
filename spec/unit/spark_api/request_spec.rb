@@ -118,6 +118,8 @@ describe SparkApi do
         stub.put('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"WLMCEWENS Contact","PrimaryEmail":"wlmcewen789@fbsdata.com"}]}}') { [200, {}, '{"D": {
           "Success": true}}'] 
         }
+        stub.put('/v1/arraydata?ApiSig=SignedToken&AuthToken=1234', '{"D":["A","B","C"]}') {[200, {}, '{"D": {
+          "Success": true}}']}
         stub.delete('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
           "Success": true}}'] 
         }
@@ -221,6 +223,10 @@ describe SparkApi do
       it "post data should support non json data" do
         # Other MISC requests
         subject.post('/stringdata', 'I am a lonely String!').success?.should == true
+      end
+
+      it "should support arrays in the body" do
+        subject.put('/arraydata', ["A","B","C"]).success?.should == true
       end
 
       it "should allow response object to be returned instead of body" do

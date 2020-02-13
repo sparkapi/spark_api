@@ -1,3 +1,6 @@
+v1.4.31
+ - Updated requests to allow arrays as a body
+
 v1.4.30
  - added `script/reso_middleware_example.rb`
 
