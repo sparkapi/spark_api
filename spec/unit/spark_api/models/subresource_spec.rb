@@ -71,4 +71,22 @@ describe Subresource do
 
     expect {dummy_class.parse_date_start_and_end_times(times)}.to raise_error(ArgumentError)
   end
+
+  it "should ignore an empty Date" do
+    times = {'Date' => '', 'StartTime' => '09:12:34-0700', 'EndTime' => '12:43:21-0700'}
+    dummy_class.parse_date_start_and_end_times(times)
+    times['Date'].should eq('')
+  end
+
+  it "should ignore an empty StartTime" do
+    times = {'Date' => '10/01/2012', 'StartTime' => '', 'EndTime' => '12:43:21-0700'}
+    dummy_class.parse_date_start_and_end_times(times)
+    times['StartTime'].should eq('')
+  end
+
+  it "should ignore an empty EndTime" do
+    times = {'Date' => '10/01/2012', 'StartTime' => '09:12:34-0700', 'EndTime' => ''}
+    dummy_class.parse_date_start_and_end_times(times)
+    times['EndTime'].should eq('')
+  end
 end

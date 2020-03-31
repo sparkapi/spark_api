@@ -16,10 +16,10 @@ module SparkApi
 
       def parse_date_start_and_end_times(attributes)
         # Transform the date strings
-        unless attributes['Date'].nil?
+        unless attributes['Date'].nil? || attributes['Date'].empty?
           date = Date.strptime attributes['Date'], '%m/%d/%Y'
           ['StartTime','EndTime'].each do |time|
-            next if attributes[time].nil?
+            next if attributes[time].nil? || attributes[time].empty?
             formatted_date = "#{attributes['Date']}T#{attributes[time]}"
             datetime = nil
 
