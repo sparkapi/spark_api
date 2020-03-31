@@ -1,3 +1,6 @@
+v1.4.32
+ - Updated check on Open Houses and Tour of Homes for empty string
+
 v1.4.31
  - Updated requests to allow arrays as a body
 
