@@ -4,9 +4,9 @@
       "Id": 4300,
       "Name": "Feb 13",
       "Images": [
-        {"Uri": "https://floplan-videos.s3.amazonaws.com/4300%3A453?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4YOJWMZTQGZLLCOE%2F20200403%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200403T195143Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=7cb58791cdead136a09665934c0135dd1c7d1a4c9093c31213f84d1e14a612cc",
+        {"Uri": "https://foo.bar",
           "Type":"all_in_one_png"},
-        {"Uri": "https://floplan-videos.s3.amazonaws.com/4300%3A458?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4YOJWMZTQGZLLCOE%2F20200403%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200403T195143Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=36f1709ad3a9c1f4d8849ea52c070d61cd4acb4fbc220495bd33f41564859b79",
+        {"Uri": "https://foo.bar",
           "Type": "all_in_one_thumbnail_png"}
       ], 
   "Success":true
