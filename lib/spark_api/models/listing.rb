@@ -2,7 +2,7 @@ module SparkApi
   module Models
     class Listing < Base 
       extend Finders
-      attr_accessor :photos, :videos, :virtual_tours, :documents, :open_houses, :tour_of_homes, :rental_calendars
+      attr_accessor :photos, :videos, :virtual_tours, :documents, :open_houses, :tour_of_homes, :rental_calendars, :floplans
       attr_accessor :constraints
       self.element_name="listings"
       DATA_MASK = "********"
@@ -17,6 +17,7 @@ module SparkApi
         @constraints = []
         @tour_of_homes = []
         @open_houses = []
+        @floplans = []
 
         if attributes.has_key?('StandardFields')
           pics, vids, tours, docs, ohouses, tourhomes = attributes['StandardFields'].values_at('Photos','Videos', 'VirtualTours', 'Documents', 'OpenHouses', 'TourOfHomes')
@@ -24,6 +25,10 @@ module SparkApi
 
         if attributes.has_key?('RentalCalendar')
           rentalcalendars = attributes['RentalCalendar']
+        end
+
+        if attributes.has_key?('FloPlans')
+          floplans = attributes['FloPlans']
         end
 
         if pics != nil
@@ -59,6 +64,11 @@ module SparkApi
         if rentalcalendars != nil
           setup_attribute(@rental_calendars, rentalcalendars, RentalCalendar)
           attributes.delete('RentalCalendar')
+        end
+
+        if floplans != nil
+          setup_attribute(@floplans, floplans, FloPlan)
+          attributes.delete('FloPlans')
         end
 
         super(attributes)
