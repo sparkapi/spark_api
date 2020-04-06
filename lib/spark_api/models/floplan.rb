@@ -9,13 +9,12 @@ module SparkApi
       def initialize(attributes={})
         @images = []
         @thumbnails = []
-        unless attributes['Images'].nil?
-          attributes['Images'].each do |img|
-            if img["Type"].include?('thumbnail')
-              @thumbnails << img
-            else
-              @images << img
-            end
+
+        attributes['Images'].each do |img|
+          if img["Type"].include?('thumbnail')
+            @thumbnails << img
+          else
+            @images << img
           end
         end
         super(attributes)
