@@ -1,3 +1,6 @@
+v1.4.34
+ - Version update for releasing v1.4.33 as the tags were set wrong for v1.4.32 release
+
 v1.4.33
  - Add Support for FloPlan extension to Listings
 
