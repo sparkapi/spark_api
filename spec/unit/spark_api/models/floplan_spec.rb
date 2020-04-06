@@ -14,8 +14,9 @@ describe FloPlan do
 
     on_get_it "should correctly split images and thumbnails" do
       p = FloPlan.find_by_listing_key('1234').first
-      p.Images.length.should == 1
-      p.Thumbnails.length.should == 1
+      p.attributes['Images'].length.should == 2
+      p.images.length.should == 1
+      p.thumbnails.length.should == 1
     end
 
   end

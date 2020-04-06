@@ -4,21 +4,21 @@ module SparkApi
       extend Subresource
       self.element_name = 'floplans'
 
+      attr_accessor :images, :thumbnails
+
       def initialize(attributes={})
+        @images = []
+        @thumbnails = []
         unless attributes['Images'].nil?
-          images = []
-          thumbnails = []
           attributes['Images'].each do |img|
             if img["Type"].include?('thumbnail')
-              thumbnails << img
+              @thumbnails << img
             else
-              images << img
+              @images << img
             end
           end
-          attributes['Images'] = images
-          attributes['Thumbnails'] = thumbnails
-          super(attributes)
         end
+        super(attributes)
       end
     end
   end
