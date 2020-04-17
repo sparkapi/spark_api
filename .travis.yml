@@ -1,8 +1,0 @@
-language: ruby
-rvm:
-  - 2.5.7
-
-# Try to work around a travisCI quirk
-# see https://git.io/vVf62 for more
-before_install:
-  - gem install bundler -v 1.17.3
