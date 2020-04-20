@@ -1,0 +1,68 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: >-
+      ruby-${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.6', '2.7' ]
+
+    steps:
+      - name: repo checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: bundle install
+        run: |
+          ./script/bootstrap
+
+      - name: test
+        run: ./script/ci_build
+
+  publish:
+    runs-on: ubuntu-latest
+
+    # only run if we pushed a tag
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    # require that the build matrix passed
+    needs: build
+
+    steps:
+      - name: repo checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+
+      - name: bundle install
+        run: |
+          bundle install --jobs 4 --retry 3 --path=.bundle
+
+      - name: package
+        run: bundle exec rake build
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to rubygems
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          printf -- "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}\n" > $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          gem push pkg/*.gem
+        env:
+          RUBYGEMS_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
