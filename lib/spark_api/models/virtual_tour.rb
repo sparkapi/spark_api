@@ -2,6 +2,7 @@ module SparkApi
   module Models
     class VirtualTour < Base
       extend Subresource
+      include MediaPrivacy
       self.element_name="virtualtours"
       
 
