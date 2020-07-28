@@ -2,7 +2,7 @@ module SparkApi
   module Models
     class Video < Base
       extend Subresource
-      include MediaPrivacy
+      include SparkApi::Models::MediaPrivacy
       self.element_name = 'videos'
 
       def branded?
