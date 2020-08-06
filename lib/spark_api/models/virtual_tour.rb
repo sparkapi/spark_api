@@ -3,6 +3,8 @@ module SparkApi
     class VirtualTour < Base
       extend Subresource
       include MediaPrivacy
+      include Concerns::Savable,
+              Concerns::Destroyable
       self.element_name="virtualtours"
       
 
