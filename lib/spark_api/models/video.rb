@@ -6,7 +6,6 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
-      attr_accessor :update_path
       self.element_name = 'videos'
 
       def branded?
@@ -15,10 +14,6 @@ module SparkApi
 
       def unbranded?
         attributes['Type'] == 'unbranded'
-      end
-      
-      def self.path
-        update_path
       end
       
     end
