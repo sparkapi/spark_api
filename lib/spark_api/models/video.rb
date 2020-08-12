@@ -2,7 +2,7 @@ module SparkApi
   module Models
     class Video < Base
       extend Subresource
-      include MediaPrivacy
+      include Media
       include Concerns::Savable,
               Concerns::Destroyable
 
@@ -14,6 +14,14 @@ module SparkApi
 
       def unbranded?
         attributes['Type'] == 'unbranded'
+      end
+
+      def url
+        attributes['ObjectHtml']
+      end
+
+      def description
+        attributes['Name']
       end
       
     end
