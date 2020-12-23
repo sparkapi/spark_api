@@ -3,16 +3,16 @@ require './spec/spec_helper'
 describe Video do
 
   it "responds to" do
-    Video.should respond_to(:find_by_listing_key)
-    Video.new.should respond_to(:branded?)
-    Video.new.should respond_to(:unbranded?)
+    expect(Video).to respond_to(:find_by_listing_key)
+    expect(Video.new).to respond_to(:branded?)
+    expect(Video.new).to respond_to(:unbranded?)
   end
 
   it "has a type" do
-    Video.new(:Type => "branded").branded?.should == true
-    Video.new(:Type => "unbranded").branded?.should == false
-    Video.new(:Type => "unbranded").unbranded?.should == true
-    Video.new(:Type => "branded").unbranded?.should == false
+    expect(Video.new(:Type => "branded").branded?).to eq(true)
+    expect(Video.new(:Type => "unbranded").branded?).to eq(false)
+    expect(Video.new(:Type => "unbranded").unbranded?).to eq(true)
+    expect(Video.new(:Type => "branded").unbranded?).to eq(false)
   end
 
   describe "/listings/<listing_id>/videos", :support do
@@ -23,8 +23,8 @@ describe Video do
 
     on_get_it "should get an array of videos" do
       p = Video.find_by_listing_key('1234')
-      p.should be_an(Array)
-      p.length.should == 2
+      expect(p).to be_an(Array)
+      expect(p.length).to eq(2)
     end
 
   end

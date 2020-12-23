@@ -40,7 +40,7 @@ module SparkApi
       
       # Perform an HTTP request (no data)
       def request(method, path, body, options={})
-        escaped_path = URI.escape(path)
+        escaped_path = Addressable::URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
         connection.headers.merge!(self.auth_header)
 

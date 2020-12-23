@@ -4,15 +4,14 @@ describe SparkApi::Authentication::ApiAuth  do
   subject {SparkApi::Authentication::ApiAuth.new(nil) }
   describe "build_param_hash" do
     it "should return a blank string when passed nil" do
-      subject.build_param_string(nil).should be_empty
+      expect(subject.build_param_string(nil)).to be_empty
     end
     it "should return a correct param string for one item" do
-      subject.build_param_string({:foo => "bar"}).should match("foobar")
+      expect(subject.build_param_string({:foo => "bar"})).to match("foobar")
     end
     it "should alphabatize the param names by key first, then by value" do
-      subject.build_param_string({:zoo => "zar", :ooo => "car"}).should match("ooocarzoozar")
-      subject.build_param_string({:Akey => "aValue", :aNotherkey => "AnotherValue"}).should 
-           match "AkeyaValueaNotherkeyAnotherValue"
+      expect(subject.build_param_string({:zoo => "zar", :ooo => "car"})).to match("ooocarzoozar")
+      expect(subject.build_param_string({:Akey => "aValue", :aNotherkey => "AnotherValue"})).to match("AkeyaValueaNotherkeyAnotherValue")
     end
   end
   
@@ -33,7 +32,7 @@ describe SparkApi::Authentication::ApiAuth  do
       stub_request(:post, "https://api.sparkapi.com/#{SparkApi.version}/session").
                   with(:query => {:ApiKey => "my_key", :ApiSig => "c731cf2455fbc7a4ef937b2301108d7a"}).
                   to_return(:body => fixture("authentication_failure.json"), :status=>401)
-      expect {subject.authenticate()}.to raise_error(SparkApi::ClientError){ |e| e.status.should == 401 }
+      expect {subject.authenticate()}.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to eq(401) }
     end
   end
 
@@ -41,16 +40,16 @@ describe SparkApi::Authentication::ApiAuth  do
     let(:session) { Object.new }
     it "should return true when session is active" do
       subject.session = session
-      session.stub(:expired?) { false }
-      subject.authenticated?.should eq(true)
+      allow(session).to receive(:expired?) { false }
+      expect(subject.authenticated?).to eq(true)
     end
     it "should return false when session is expired" do
       subject.session = session
-      session.stub(:expired?) { true }
-      subject.authenticated?.should eq(false)
+      allow(session).to receive(:expired?) { true }
+      expect(subject.authenticated?).to eq(false)
     end
     it "should return false when session is uninitialized" do
-      subject.authenticated?.should eq(false)
+      expect(subject.authenticated?).to eq(false)
     end
   end
 
@@ -61,14 +60,14 @@ describe SparkApi::Authentication::ApiAuth  do
     it "should logout when there is an active session" do
       logged_out = false
       subject.session = session
-      client.stub(:delete).with("/session/1234") { logged_out = true }
+      allow(client).to receive(:delete).with("/session/1234") { logged_out = true }
       subject.logout
-      subject.session.should eq(nil)
-      logged_out.should eq(true)
+      expect(subject.session).to eq(nil)
+      expect(logged_out).to eq(true)
     end
     it "should skip logging out when there is no active session information" do 
-      client.stub(:delete) { raise "Should not be called" }
-      subject.logout.should eq(nil)
+      allow(client).to receive(:delete) { raise "Should not be called" }
+      expect(subject.logout).to eq(nil)
     end
   end
   
@@ -98,7 +97,7 @@ describe SparkApi::Authentication::ApiAuth  do
           :AuthToken => "1234"}.merge(args)).
         to_return(:body => fixture("listings/no_subresources.json"))
       subject.session = session
-      subject.request(:get, "/#{SparkApi.version}/listings", nil, args).status.should eq(200)
+      expect(subject.request(:get, "/#{SparkApi.version}/listings", nil, args).status).to eq(200)
     end
     it "should handle a post request" do
       stub_auth_request
@@ -118,14 +117,14 @@ describe SparkApi::Authentication::ApiAuth  do
             }]}
           }', 
           :status=>201)
-      subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status.should eq(201)
+      expect(subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status).to eq(201)
     end
   end
   
   describe "sign" do
     it "should sign the auth parameters correctly" do
       sign_token = "my_secretApiKeymy_key"
-      subject.sign(sign_token).should eq("c731cf2455fbc7a4ef937b2301108d7a")
+      expect(subject.sign(sign_token)).to eq("c731cf2455fbc7a4ef937b2301108d7a")
     end
   end
   
@@ -134,7 +133,7 @@ describe SparkApi::Authentication::ApiAuth  do
     subject {SparkApi::Authentication::ApiAuth.new(client) }
     it "should fully sign the token" do
       parms = {:AuthToken => "1234", :ApiUser => "CoolAsIce"}
-      subject.sign_token("/test", parms).should eq("7bbe3384a8b64368357f8551cab271e3")
+      expect(subject.sign_token("/test", parms)).to eq("7bbe3384a8b64368357f8551cab271e3")
     end
   end
   
@@ -160,8 +159,8 @@ describe SparkApi::Authentication::ApiAuth  do
           to_return(:body => fixture('listings/with_documents.json'))
       l = Listing.find('1234', :_expand => "Documents")
       
-      count.should eq(2)
-      SparkApi.client.session.expired?.should eq(false)
+      expect(count).to eq(2)
+      expect(SparkApi.client.session.expired?).to eq(false)
     end
   end
   
