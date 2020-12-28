@@ -20,6 +20,10 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
 
+      - name: Set up Bundler
+        run: gem install bundler
+
+
       - name: bundle install
         run: |
           ./script/bootstrap
