@@ -226,7 +226,7 @@ describe SparkApi do
       end
 
       it "should support arrays in the body" do
-        subject.put('/arraydata', ["A","B","C"]).success?.should == true
+        expect(subject.put('/arraydata', ["A","B","C"]).success?).to eq(true)
       end
 
       it "should allow response object to be returned instead of body" do
