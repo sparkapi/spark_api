@@ -16,7 +16,7 @@ describe TourOfHome do
   end
 
   it "should respond to a few methods" do
-    subject.class.should respond_to(:find_by_listing_key)
+    expect(subject.class).to respond_to(:find_by_listing_key)
   end
 
   context "/listings/<listing_id>/tourofhomes", :support do
@@ -24,8 +24,8 @@ describe TourOfHome do
       stub_auth_request
       stub_api_get('/listings/20060725224713296297000000/tourofhomes','listings/tour_of_homes.json')
       v = subject.class.find_by_listing_key('20060725224713296297000000')
-      v.should be_an(Array)
-      v.length.should == 2
+      expect(v).to be_an(Array)
+      expect(v.length).to eq(2)
     end
   end
 

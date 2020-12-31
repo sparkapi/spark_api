@@ -21,18 +21,18 @@ describe Message do
     on_get_it "should get all my messages" do
       stub_api_get("/messages", 'messages/get.json')
       messages = Message.find(:all)
-      messages.size.should == 2
+      expect(messages.size).to eq(2)
     end
 
     on_post_it "should save a new message" do
       stub_api_post("/messages", 'messages/new.json', 'messages/post.json')
-      subject.save.should be(true)
+      expect(subject.save).to be(true)
     end
 
     on_post_it "should save a new message with recipients" do
       stub_api_post("/messages", 'messages/new_with_recipients.json', 'messages/post.json')
       subject.attributes["Recipients"] =  ["20110112234857732941000000","20110092234857738467000000"]
-      subject.save.should be(true)
+      expect(subject.save).to be(true)
     end
 
     on_post_it "should fail saving" do
@@ -40,8 +40,8 @@ describe Message do
         request.to_return(:status => 400, :body => fixture('errors/failure.json'))
       end
       m=subject.class.new
-      m.save.should be(false)
-      expect{ m.save! }.to raise_error(SparkApi::ClientError){ |e| e.status.should == 400 }
+      expect(m.save).to be(false)
+      expect{ m.save! }.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to eq(400) }
     end
   end
 
@@ -49,7 +49,7 @@ describe Message do
     on_get_it "should get a single message" do
       subject.attributes["Id"] = "20110353423434130982000000"
       stub_api_get("/messages/#{subject.Id}", "messages/get.json")
-      subject.should be_a(Message)
+      expect(subject).to be_a(Message)
     end
   end
 
@@ -57,7 +57,7 @@ describe Message do
     on_get_it "should get all the replies" do
       subject.attributes["Id"] = "20110353423434130982000000"
       stub_api_get("/messages/#{subject.Id}/replies", "messages/get.json", :_expand => 'Body, Sender')
-      subject.replies.size.should == 2
+      expect(subject.replies.size).to eq(2)
     end
 
   end
@@ -67,13 +67,13 @@ describe Message do
     on_get_it "gets unread messages" do
       stub_api_get("/messages/unread", 'messages/get.json', {})
       messages = Message.unread
-      messages.size.should == 2
-      messages.first.should be_a Message
+      expect(messages.size).to eq(2)
+      expect(messages.first).to be_a Message
     end
 
     on_get_it "gets unread messages count" do
       stub_api_get("/messages/unread", 'messages/count.json', _pagination: 'count')
-      Message.unread_count.should == 78
+      expect(Message.unread_count).to eq(78)
     end
 
   end

@@ -11,7 +11,7 @@ describe Document do
   end
 
   it "should respond to a few methods" do
-    Document.should respond_to(:find_by_listing_key)
+    expect(Document).to respond_to(:find_by_listing_key)
   end
 
   context "/listings/<listing_id>/documents" do
@@ -20,8 +20,8 @@ describe Document do
       stub_api_get('/listings/1234/documents','listings/document_index.json')
 
       v = Document.find_by_listing_key('1234')
-      v.should be_an(Array)
-      v.length.should == 2
+      expect(v).to be_an(Array)
+      expect(v.length).to eq(2)
     end
   end
 

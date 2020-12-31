@@ -22,31 +22,31 @@ describe MyExampleModel, "Example model" do
   end
 
   it "should be persisted" do
-    @model.persisted?.should eq(true)
+    expect(@model.persisted?).to eq(true)
   end
 
   it "should not be persisted" do
     @new_model = MyExampleModel.new()
-    @new_model.persisted?.should eq(false)
+    expect(@new_model.persisted?).to eq(false)
   end
 
   it "should parse and return ResourceUri without v1" do
-    @model.resource_uri.should eq("/some/place/20101230223226074201000000")
+    expect(@model.resource_uri).to eq("/some/place/20101230223226074201000000")
   end
 
   it "should parse and return the correct path for a persisted resource" do
-    @model.path.should eq("/some/place")
+    expect(@model.path).to eq("/some/place")
   end
 
   it "should parse and return the correct path" do
     @model = MyExampleModel.new
-    @model.path.should eq("/test/example")
+    expect(@model.path).to eq("/test/example")
   end
 
   it "should parse and return the correct path for resource with a parent" do
     @model = MyExampleModel.new
     @model.parent = Contact.new({ :Id => "20101230223226074201000000" })
-    @model.path.should eq("/contacts/20101230223226074201000000/test/example")
+    expect(@model.path).to eq("/contacts/20101230223226074201000000/test/example")
   end
 
 end
@@ -55,16 +55,16 @@ describe Base, "Base model" do
 
   describe "class methods" do
     it "should set the element name" do
-      MyExampleModel.element_name.should eq("example")
-      MyDefaultModel.element_name.should eq("resource")
+      expect(MyExampleModel.element_name).to eq("example")
+      expect(MyDefaultModel.element_name).to eq("resource")
     end
     it "should set the prefix" do
-      MyExampleModel.prefix.should eq("/test/")
-      MyDefaultModel.prefix.should eq("/")
+      expect(MyExampleModel.prefix).to eq("/test/")
+      expect(MyDefaultModel.prefix).to eq("/")
     end
     it "should set the path" do
-      MyExampleModel.path.should eq("/test/example")
-      MyDefaultModel.path.should eq("/resource")
+      expect(MyExampleModel.path).to eq("/test/example")
+      expect(MyDefaultModel.path).to eq("/resource")
     end
     describe "finders" do
       before(:each) do
@@ -72,11 +72,11 @@ describe Base, "Base model" do
         stub_api_get("/test/example", 'base.json')
       end
       it "should get all results" do
-        MyExampleModel.get.length.should == 2
+        expect(MyExampleModel.get.length).to eq(2)
       end
       it "should get first result" do
-        MyExampleModel.first.Id.should == 1
-        MyExampleModel.first.Id.should eq(MyExampleModel.first.id)
+        expect(MyExampleModel.first.Id).to eq(1)
+        expect(MyExampleModel.first.Id).to eq(MyExampleModel.first.id)
       end
     end
   end
@@ -89,71 +89,71 @@ describe Base, "Base model" do
     end
 
     it "should access existing attributes" do
-      @model.Name.should == 'My Example'
+      expect(@model.Name).to eq('My Example')
     end
 
     it "should raise errors on access to non-existant attributes" do
-      lambda { @model.Nonsense }.should raise_error(NoMethodError)
+      expect { @model.Nonsense }.to raise_error(NoMethodError)
     end
 
     it "should set existing attributes" do
       new_name = 'John Jacob Jingleheimerschmidt'
       @model.Name = new_name
-      @model.Name.should == new_name
+      expect(@model.Name).to eq(new_name)
     end
 
     it "should set non-existant attributes" do
       nonsense = 'nonsense'
       @model.Nonsense = nonsense
-      @model.Nonsense.should == nonsense
+      expect(@model.Nonsense).to eq(nonsense)
     end
 
     it "should return a boolean for a predicate for an existing attribute" do
-      @model.Name?.should satisfy { |p| [true, false].include?(p) }
+      expect(@model.Name?).to satisfy { |p| [true, false].include?(p) }
     end
 
     it "should return a boolean for whether or not a model is persisted through the api" do
-      @model.persisted?.should satisfy { |p| [true, false].include?(p) }
+      expect(@model.persisted?).to satisfy { |p| [true, false].include?(p) }
     end
 
     it "should raise an Error for a predicate for a non-existant attribute" do
-      lambda { @model.Nonsense? }.should raise_error(NoMethodError)
+      expect { @model.Nonsense? }.to raise_error(NoMethodError)
     end
 
     it "should repond_to existing attributes" do
-      @model.should respond_to(:Name)
+      expect(@model).to respond_to(:Name)
     end
 
     it "should not respond_to non-existant attributes" do
-      @model.should_not respond_to(:Nonsense)
+      expect(@model).not_to respond_to(:Nonsense)
     end
 
     it "should respond_to a setter for an existing attribute" do
-      @model.should respond_to(:Name=)
+      expect(@model).to respond_to(:Name=)
     end
 
     it "should respond_to a setter for a non-existant attribute" do
-      @model.should respond_to(:Nonsense=)
+      expect(@model).to respond_to(:Nonsense=)
     end
 
     it "should respond_to a predicate for an existing attribute" do
-      @model.should respond_to(:Name?)
+      expect(@model).to respond_to(:Name?)
     end
 
     it "should not respond_to a predicate for a non-existant attribute" do
-      @model.should_not respond_to(:Nonsense?)
+      expect(@model).not_to respond_to(:Nonsense?)
     end
 
     it "should respond_to methods inherited from parent classes" do
-      @model.should respond_to(:freeze)
+      expect(@model).to respond_to(:freeze)
     end
 
     it "should respond_to a will_change! method for an existing attribute" do
-      @model.should respond_to(:Name_will_change!)
+      expect(@model).to respond_to(:Name_will_change!)
     end
 
     it "should not respond_to a will_change! method for a non-existant attribute" do
-      @model.should_not respond_to(:Nonsense_will_change!)
+      expect(@model).not_to respond_to(:Nonsense_will_change!)
     end
 
   end
@@ -161,7 +161,7 @@ describe Base, "Base model" do
   describe "to_partial_path" do
     it "should return the partial path" do
       model = MyExampleModel.new()
-      model.to_partial_path.should eq("my_example_models/my_example_model")
+      expect(model.to_partial_path).to eq("my_example_models/my_example_model")
     end
   end
 

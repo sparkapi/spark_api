@@ -9,8 +9,8 @@ describe Rule do
       stub_api_get('/listings/rules/propertytypes/A','rules/get.json')
 
       rules = Rule.for_property_type('A')
-      rules.should be_an(Array)
-      rules.length.should == 2
+      expect(rules).to be_an(Array)
+      expect(rules.length).to eq(2)
     end
 
   end

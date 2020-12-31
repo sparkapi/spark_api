@@ -17,7 +17,12 @@ module SparkApi
     def on_complete(env)
       env[:body] = decompress_body(env)
 
-      body = MultiJson.decode(env[:body])
+      begin
+        body = MultiJson.decode(env[:body])
+      rescue MultiJson::ParseError => e
+        raise InvalidJSON, "Invalid JSON returned with HTTP #{env[:status]} for URI #{env[:url]}"
+      end
+
       SparkApi.logger.debug{ "Response Body: #{body.inspect}" }
       unless body.is_a?(Hash) && body.key?("D")
         raise InvalidResponse, "The server response could not be understood"

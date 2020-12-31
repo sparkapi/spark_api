@@ -10,7 +10,7 @@ describe SparkApi::Authentication::OAuth2Impl::SparkbarFaradayMiddleware do
       :status => 201
     }
     subject.on_complete env
-    env[:body]["token"].should eq("sp4rkb4rt0k3n")
+    expect(env[:body]["token"]).to eq("sp4rkb4rt0k3n")
   end
   
   it "should raise error on unsuccessful response" do

@@ -7,7 +7,7 @@ describe SharedListing do
   end
 
   it "should respond to the finders" do
-    SharedListing.should respond_to(:find)
+    expect(SharedListing).to respond_to(:find)
   end
 
   context "/sharedlistings", :support do
@@ -15,11 +15,11 @@ describe SharedListing do
       stub_api_post("/#{subject.class.element_name}", 'listings/shared_listing_new.json', 'listings/shared_listing_post.json')
       subject.ListingIds = ["20110224152431857619000000","20110125122333785431000000"]
       subject.ViewId = "20080125122333787615000000"
-      subject.save.should be(true)
-      subject.Id.should eq("15Ar")
-      subject.Mode.should eq("Public")
-      subject.ResourceUri.should eq("/v1/sharedlistings/15Ar")
-      subject.SharedUri.should eq("http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Tucson-AZ-85719")
+      expect(subject.save).to be(true)
+      expect(subject.Id).to eq("15Ar")
+      expect(subject.Mode).to eq("Public")
+      expect(subject.ResourceUri).to eq("/v1/sharedlistings/15Ar")
+      expect(subject.SharedUri).to eq("http://www.flexmls.com/share/15Ar/3544-N-Olsen-Avenue-Tucson-AZ-85719")
     end
 
     on_post_it "should fail creating" do
@@ -27,8 +27,8 @@ describe SharedListing do
         request.to_return(:status => 400, :body => fixture('errors/failure.json'))
       end
       subject
-      subject.save.should be(false)
-      expect{ subject.save! }.to raise_error(SparkApi::ClientError){ |e| e.status.should == 400 }
+      expect(subject.save).to be(false)
+      expect{ subject.save! }.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to eq(400) }
     end
   end
 
@@ -39,10 +39,10 @@ describe SharedListing do
                    'listings/shared_listing_get.json')
 
       shared = SharedListing.find(shared_id)
-      shared.should respond_to('SharedUri')
-      shared.should respond_to('Mode')
-      shared.Mode.should eq('Public')
-      shared.ListingIds.should be_an(Array)
+      expect(shared).to respond_to('SharedUri')
+      expect(shared).to respond_to('Mode')
+      expect(shared.Mode).to eq('Public')
+      expect(shared.ListingIds).to be_an(Array)
     end
   end
 

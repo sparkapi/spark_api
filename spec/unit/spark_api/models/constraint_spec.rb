@@ -13,7 +13,7 @@ describe Constraint do
   end
   
   it "should print to string" do
-    subject.to_s.should eq("MaxValue: Field(ListPrice,1.0) Value(1000000.0,1000001.0)")
+    expect(subject.to_s).to eq("MaxValue: Field(ListPrice,1.0) Value(1000000.0,1000001.0)")
   end
 
 end

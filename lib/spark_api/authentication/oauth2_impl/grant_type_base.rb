@@ -45,7 +45,7 @@ module SparkApi
           response.expires_in = provider.session_timeout if response.expires_in.nil?
           SparkApi.logger.debug { "[oauth2] New session created #{response}" }
           response
-        rescue Faraday::Error::ConnectionFailed => e
+        rescue Faraday::ConnectionFailed => e
           if @client.ssl_verify && e.message =~ /certificate verify failed/
             SparkApi.logger.error { SparkApi::Errors.ssl_verification_error }
           end

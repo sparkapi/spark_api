@@ -37,54 +37,54 @@ describe SparkApi::PaginateResponse do
       json = "{#{paginate_json}}"
       hash = JSON.parse(json)
       results = subject.paginate_response([1,2,3,4,5,6,7,8,9,10], hash["Pagination"])
-      results.offset.should eq(0)
-      results.next_page.should eq(2)
-      results.previous_page.should eq(nil)
-      results.current_page.should eq(1)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
-      results[0].should eq(1)
+      expect(results.offset).to eq(0)
+      expect(results.next_page).to eq(2)
+      expect(results.previous_page).to eq(nil)
+      expect(results.current_page).to eq(1)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
+      expect(results[0]).to eq(1)
     end
     it "should give me the second page" do
       json = "{#{paginate_json(2)}}"
       hash = JSON.parse(json)
       results = subject.paginate_response([11,12,13,14,15,16,17,18,19,20], hash["Pagination"])
-      results.offset.should eq(10)
-      results.next_page.should eq(3)
-      results.previous_page.should eq(1)
-      results.current_page.should eq(2)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
-      results[0].should eq(11)
+      expect(results.offset).to eq(10)
+      expect(results.next_page).to eq(3)
+      expect(results.previous_page).to eq(1)
+      expect(results.current_page).to eq(2)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
+      expect(results[0]).to eq(11)
     end
     it "should give me the third page" do
       json = "{#{paginate_json(3)}}"
       hash = JSON.parse(json)
       results = subject.paginate_response([21,22,23,24,25,26,27,28,29,30], hash["Pagination"])
-      results.offset.should eq(20)
-      results.next_page.should eq(4)
-      results.previous_page.should eq(2)
-      results.current_page.should eq(3)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
-      results[0].should eq(21)
+      expect(results.offset).to eq(20)
+      expect(results.next_page).to eq(4)
+      expect(results.previous_page).to eq(2)
+      expect(results.current_page).to eq(3)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
+      expect(results[0]).to eq(21)
     end
     it "should give me the last page" do
       json = "{#{paginate_json(4)}}"
       hash = JSON.parse(json)
       results = subject.paginate_response([31,32,33,34,35,36,37,38], hash["Pagination"])
-      results.offset.should eq(30)
-      results.next_page.should eq(nil)
-      results.previous_page.should eq(3)
-      results.current_page.should eq(4)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
-      results[0].should eq(31)
-      results[-1].should eq(38)
+      expect(results.offset).to eq(30)
+      expect(results.next_page).to eq(nil)
+      expect(results.previous_page).to eq(3)
+      expect(results.current_page).to eq(4)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
+      expect(results[0]).to eq(31)
+      expect(results[-1]).to eq(38)
     end
   end
 end
@@ -93,27 +93,27 @@ describe SparkApi::Paginate do
   describe "paginate" do
     it "should give me a will paginate collection" do
       results = PaginateModelTester.paginate(:page => 1)
-      results.should be_a(WillPaginate::Collection)
-      results.offset.should eq(0)
-      results.next_page.should eq(2)
-      results.previous_page.should eq(nil)
-      results.current_page.should eq(1)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
+      expect(results).to be_a(WillPaginate::Collection)
+      expect(results.offset).to eq(0)
+      expect(results.next_page).to eq(2)
+      expect(results.previous_page).to eq(nil)
+      expect(results.current_page).to eq(1)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
       
-      results[0].should be_a(PaginateModelTester)
-      results[0].val.should eq(1)
+      expect(results[0]).to be_a(PaginateModelTester)
+      expect(results[0].val).to eq(1)
       
     end
       
     it "should give me pagination options" do
       PaginateModelTester.paginate(:page => 1)
       opts = PaginateModelTester.options
-      opts["_pagination"].should eq(1)
-      opts["_limit"].should eq(25)
-      opts["_page"].should eq(1)
-      opts.has_key?(:page).should eq(false)
+      expect(opts["_pagination"]).to eq(1)
+      expect(opts["_limit"]).to eq(25)
+      expect(opts["_page"]).to eq(1)
+      expect(opts.has_key?(:page)).to eq(false)
     end
   end
 
@@ -121,7 +121,7 @@ describe SparkApi::Paginate do
     it "should set the default model max results per page" do
       results = PaginateModelTester50.paginate(:page => 1)
       opts = PaginateModelTester50.options
-      opts["_limit"].should eq(50)
+      expect(opts["_limit"]).to eq(50)
     end
   end
   
@@ -151,18 +151,18 @@ describe SparkApi::Paginate do
         }).
         to_return(:body => json)
       results = subject.paginate(:page=>1, :per_page=>10)
-      results.should be_a(WillPaginate::Collection)
-      results.offset.should eq(0)
-      results.next_page.should eq(2)
-      results.previous_page.should eq(nil)
-      results.current_page.should eq(1)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
-      results.length.should eq(10)
+      expect(results).to be_a(WillPaginate::Collection)
+      expect(results.offset).to eq(0)
+      expect(results.next_page).to eq(2)
+      expect(results.previous_page).to eq(nil)
+      expect(results.current_page).to eq(1)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
+      expect(results.length).to eq(10)
       
-      results[0].should be_a(subject)
-      results[0].ListPrice.should eq(50000.0)
+      expect(results[0]).to be_a(subject)
+      expect(results[0].ListPrice).to eq(50000.0)
       
     end
     it "gives me page two of listings" do
@@ -184,9 +184,9 @@ describe SparkApi::Paginate do
         }).
         to_return(:body => json)
       results = subject.paginate(:page=>2, :per_page=>10)
-      results.next_page.should eq(3)
-      results.previous_page.should eq(1)
-      results.current_page.should eq(2)
+      expect(results.next_page).to eq(3)
+      expect(results.previous_page).to eq(1)
+      expect(results.current_page).to eq(2)
     end
     it "gives me page four of listings" do
       json = <<-JSON 
@@ -207,16 +207,16 @@ describe SparkApi::Paginate do
         }).
         to_return(:body => json)
       results = subject.paginate(:page=>4, :per_page=>10)
-      results.next_page.should eq(nil)
-      results.previous_page.should eq(3)
-      results.current_page.should eq(4)
-      results.per_page.should eq(10)
-      results.total_pages.should eq(4)
-      results.total_entries.should eq(38)
+      expect(results.next_page).to eq(nil)
+      expect(results.previous_page).to eq(3)
+      expect(results.current_page).to eq(4)
+      expect(results.per_page).to eq(10)
+      expect(results.total_pages).to eq(4)
+      expect(results.total_entries).to eq(38)
       
-      results.length.should eq(8)
-      results[0].should be_a(subject)
-      results[0].ListPrice.should eq(50000.0)
+      expect(results.length).to eq(8)
+      expect(results[0]).to be_a(subject)
+      expect(results[0].ListPrice).to eq(50000.0)
     end
     
   end

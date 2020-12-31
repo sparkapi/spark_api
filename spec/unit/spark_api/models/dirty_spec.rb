@@ -15,15 +15,15 @@ describe Dirty do
   end
 
   it "lets you know if you've changed any attributes" do
-    @model.changed?.should be true
+    expect(@model.changed?).to be true
   end
 
   it "should return an array of the attributes that have been changed" do
-    @model.changed.should eq(["Name"])
+    expect(@model.changed).to eq(["Name"])
   end
 
   it "should return a hash diff of current changes on a model" do
-    @model.changes.should eq({
+    expect(@model.changes).to eq({
       "Name" => ["some old name", "a new name"]
     })
   end
@@ -31,34 +31,34 @@ describe Dirty do
   it "should return previously changed attributes after save" do
     stub_api_post('/test/example', { :MyExampleModels => [ @model.attributes ] }, 'base.json')
     @model.save
-    @model.previous_changes.should eq({
+    expect(@model.previous_changes).to eq({
     })
   end
 
   it "should return changed attributes with old values" do
-    @model.changed_attributes.should eq({
+    expect(@model.changed_attributes).to eq({
       "Name" => "some old name"
     })
   end
 
   it "should return changed attributes with new values" do
-    @model.dirty_attributes.should eq({
+    expect(@model.dirty_attributes).to eq({
       "Name" => "a new name"
     })
   end
 
   it "does not mark attributes dirty when initialized" do
     @model = MyExampleModel.new(:Name => "some sort of name")
-    @model.attributes.size.should eq(1)
-    @model.changed_attributes.should eq({})
-    @model.dirty_attributes.should eq({})
+    expect(@model.attributes.size).to eq(1)
+    expect(@model.changed_attributes).to eq({})
+    expect(@model.dirty_attributes).to eq({})
   end
 
   it "marks attributes dirty that are loaded later" do
     @model.load(:Name => "some sort of name")
-    @model.attributes.size.should eq(1)
-    @model.changed_attributes.should eq({"Name"=>"some old name"})
-    @model.dirty_attributes.should eq({"Name"=>"some sort of name"})
+    expect(@model.attributes.size).to eq(1)
+    expect(@model.changed_attributes).to eq({"Name"=>"some old name"})
+    expect(@model.dirty_attributes).to eq({"Name"=>"some sort of name"})
   end
 
 end

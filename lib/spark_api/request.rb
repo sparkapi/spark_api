@@ -99,7 +99,7 @@ module SparkApi
       else
         return response.body
       end
-    rescue Faraday::Error::ConnectionFailed => e
+    rescue Faraday::ConnectionFailed => e
       if self.ssl_verify && e.message =~ /certificate verify failed/
         SparkApi.logger.error { SparkApi::Errors.ssl_verification_error }
       end

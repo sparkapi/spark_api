@@ -20,14 +20,14 @@ describe Photo do
     end
 
     it "responds to" do
-      subject.should respond_to(:primary?)
-      Photo.should respond_to(:find_by_listing_key)
+      expect(subject).to respond_to(:primary?)
+      expect(Photo).to respond_to(:find_by_listing_key)
     end
 
     it "knows if it's the primary photo" do
-      subject.primary?.should be_true
+      expect(subject.primary?).to be true
       subject.Primary = false
-      subject.primary?.should be_false
+      expect(subject.primary?).to be false
     end
   end
 
@@ -42,7 +42,7 @@ describe Photo do
     end
 
     it "should be scoped to a listing" do
-      subject.class.path.should eq("/listings/1234/photos")
+      expect(subject.class.path).to eq("/listings/1234/photos")
     end
 
     describe "/listings/<listing_id>/photos", :support  do
@@ -53,7 +53,7 @@ describe Photo do
 
       on_get_it "should get an array of photos" do
         p = Photo.find_by_listing_key('1234')
-        p.should be_an(Array)
+        expect(p).to be_an(Array)
       end
 
       on_post_it "should upload a new photo" do
@@ -62,7 +62,7 @@ describe Photo do
         subject.Caption = "Creators of flexMLS!"
         subject.load_picture("spec/fixtures/logo_fbs.png")
         subject.save!
-        subject.Id.should eq("20110826220032167405000000")
+        expect(subject.Id).to eq("20110826220032167405000000")
       end
     end
 
@@ -78,7 +78,7 @@ describe Photo do
         subject.Caption = "Creators of flexMLS!"
         subject.load_picture("spec/fixtures/logo_fbs.png")
         subject.save!
-        subject.Id.should eq("20110826220032167405000000")
+        expect(subject.Id).to eq("20110826220032167405000000")
       end
 
       on_put_it "should rotate a photo" do

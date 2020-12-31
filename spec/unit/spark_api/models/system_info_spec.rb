@@ -16,22 +16,22 @@ describe SystemInfo do
   end
 
   it "should respond to get" do
-    SystemInfo.should respond_to(:get)
+    expect(SystemInfo).to respond_to(:get)
   end
   
   it "should have a primary_logo instance method" do
-    @sysinfo.should respond_to(:primary_logo)
+    expect(@sysinfo).to respond_to(:primary_logo)
   end
 
   it "should respond to attributes" do
     ['Name','OfficeId','Id','MlsId','Office','Mls'].each do |k|
-      (@sysinfo.send k.to_sym).should be_a(String)
+      expect(@sysinfo.send k.to_sym).to be_a(String)
     end
-    @sysinfo.Configuration.should be_a(Array)
+    expect(@sysinfo.Configuration).to be_a(Array)
   end
 
   it "should have an array of config items" do
-    @sysinfo.Configuration.should be_a(Array)
+    expect(@sysinfo.Configuration).to be_a(Array)
   end
 
   describe "#primary_logo" do
@@ -56,11 +56,11 @@ describe SystemInfo do
     end 
 
     it "should return nil when no logo is present" do
-      @sysinfo.primary_logo.should == nil
+      expect(@sysinfo.primary_logo).to eq(nil)
     end
 
     it "should return the first logo when several are present" do
-      @sysinfo_with_logos.primary_logo.should be_a(Hash)
+      expect(@sysinfo_with_logos.primary_logo).to be_a(Hash)
     end 
   end
 

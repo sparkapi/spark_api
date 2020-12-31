@@ -19,13 +19,13 @@ describe Notification do
       stub_api_get('/notifications', 'notifications/notifications.json')
 
       notifications = Notification.get
-      notifications.should be_an(Array)
-      notifications.count.should equal(3)
+      expect(notifications).to be_an(Array)
+      expect(notifications.count).to equal(3)
     end
 
     on_post_it "should create a new notification" do
       stub_api_post("/notifications", 'notifications/new.json', 'notifications/post.json')
-      subject.save.should be(true)
+      expect(subject.save).to be(true)
     end
 
     on_post_it "should fail saving" do
@@ -36,8 +36,8 @@ describe Notification do
       m.attributes['Message'] = 'Your PDF generation has completed!'
       m.attributes['BrowserUri'] = 'http://myapplication.com/cmas/19581825.pdf'
       m.attributes['ResourceUri'] = 'http://myapplication.com/cmas/19581825.json'
-      m.save.should be(false)
-      expect{ m.save! }.to raise_error(SparkApi::ClientError){ |e| e.status.should == 400 }
+      expect(m.save).to be(false)
+      expect{ m.save! }.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to eq(400) }
     end
   end
 
@@ -56,7 +56,7 @@ describe Notification do
       stub_api_get('/notifications/unread', 'notifications/unread.json', {:_pagination => 'count'})
 
       notification_count = Notification.unread
-      notification_count.should equal(30)
+      expect(notification_count).to equal(30)
     end
   end
 end

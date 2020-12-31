@@ -14,7 +14,7 @@ describe OpenHouse do
   end
 
   it "should respond to a few methods" do
-    subject.class.should respond_to(:find_by_listing_key)
+    expect(subject.class).to respond_to(:find_by_listing_key)
   end
 
   context "/listings/<listing_id>/openhouses", :support do
@@ -22,9 +22,9 @@ describe OpenHouse do
       stub_auth_request
       stub_api_get('/listings/20060412165917817933000000/openhouses','listings/open_houses.json')
       houses = subject.class.find_by_listing_key('20060412165917817933000000')
-      houses.should be_an(Array)
-      houses.length.should eq(2)
-      houses.first.Id.should eq("20101127153422574618000000")
+      expect(houses).to be_an(Array)
+      expect(houses.length).to eq(2)
+      expect(houses.first.Id).to eq("20101127153422574618000000")
     end
   end
 

@@ -7,7 +7,7 @@ describe Fields do
 
   context "/fields/order", :support do
     on_get_it "should find field orders for all property types" do
-      Fields.should respond_to(:order)
+      expect(Fields).to respond_to(:order)
 
       # stub request
       stub_api_get('/fields/order','fields/order.json')
@@ -16,20 +16,20 @@ describe Fields do
       resources = subject.class.order
 
       # a standard array of results
-      resources.should be_an(Array)
-      resources.length.should eq(1)
+      expect(resources).to be_an(Array)
+      expect(resources.length).to eq(1)
 
       # make sure multiple property types are present
-      resources.first.should have_key("A")
-      resources.first.should have_key("B")
+      expect(resources.first).to have_key("A")
+      expect(resources.first).to have_key("B")
 
-      resources.first["A"].should be_an(Array)
+      expect(resources.first["A"]).to be_an(Array)
     end
   end
 
   context "/fields/order/<property_type>", :support do
     on_get_it "should find field order for a single property type" do
-      Fields.should respond_to(:order)
+      expect(Fields).to respond_to(:order)
 
       # stub request
       stub_api_get('/fields/order/A','fields/order_a.json')
@@ -38,15 +38,15 @@ describe Fields do
       resources = subject.class.order("A")
 
       # a standard array of results
-      resources.should be_an(Array)
-      resources.length.should eq(2)
+      expect(resources).to be_an(Array)
+      expect(resources.length).to eq(2)
 
       # validate a single entity
       group = resources.first[resources.first.keys.first]
-      group.should be_an(Array)
-      group.length.should eq(2)
+      expect(group).to be_an(Array)
+      expect(group.length).to eq(2)
       group.each do |field|
-        field.should have_key("Field")
+        expect(field).to have_key("Field")
       end
 
     end
@@ -54,7 +54,7 @@ describe Fields do
 
   context "/fields/order/settings", :support do
     on_get_it "returns the field order settings" do
-      Fields.should respond_to(:settings)
+      expect(Fields).to respond_to(:settings)
 
       # stub request
       stub_api_get('/fields/order/settings','fields/settings.json')
@@ -63,12 +63,12 @@ describe Fields do
       settings = subject.class.settings
 
       # a standard array of results
-      settings.should be_an(Array)
-      settings.length.should eq(1)
+      expect(settings).to be_an(Array)
+      expect(settings.length).to eq(1)
 
       # make sure ShowingInstructions is present
-      settings.first.should have_key("ShowingInstructions")
-      settings.first["ShowingInstructions"].should be_an(Array)
+      expect(settings.first).to have_key("ShowingInstructions")
+      expect(settings.first["ShowingInstructions"]).to be_an(Array)
     end
   end
 
