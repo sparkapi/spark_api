@@ -28,33 +28,26 @@ Gem::Specification.new do |s|
   s.files              = Dir["{History.txt,LICENSE,Rakefile,README.md,VERSION}", "{bin,lib,script}/**/*"]
   s.test_files         = Dir["spec/{fixtures,unit}/**/*", "spec/*.rb"]
   s.executables        = ["spark_api"]
-  s.default_executable = %q{spark_api}
   s.require_paths      = ["lib"]
-  
-  s.add_dependency 'faraday', '~> 0.9.0'
+
+  s.add_dependency 'faraday', '>= 0.17.3'
   s.add_dependency 'multi_json', '~> 1.0'
-  s.add_dependency 'json', '~> 1.7'
+  s.add_dependency 'json', '>= 1.7'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
   s.add_dependency 'highline', '>= 1.0'
 
-  # spark_api doesn't use public_suffix directly. spark_api uses Webmock, which 
-  # uses addressable, which uses public_suffix. Bundler has suddenly started 
-  # trying to install public_suffix 2.0.4, which requires Ruby 2. When spark_api 
-  # starts to require Ruby 2, this dependency can be removed.
-  s.add_development_dependency 'public_suffix', '~> 1.4.6'
-
   # TEST GEMS
-  s.add_development_dependency 'rake', '~> 0.9.2'  
-  s.add_development_dependency 'rspec', '~> 2.14.0'
-  s.add_development_dependency 'webmock', '~> 1.9'
-  s.add_development_dependency 'typhoeus', '~> 0.3'
-  s.add_development_dependency 'ci_reporter', '~> 1.7.0'
-  s.add_development_dependency 'rb-readline'
-  s.add_development_dependency 'rb-fsevent'
-  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'webmock'
+  s.add_development_dependency 'rexml'  #needed for ruby 3
+  s.add_development_dependency 'typhoeus'
+  s.add_development_dependency 'ci_reporter_rspec'
+  # s.add_development_dependency 'rb-readline'
+  # s.add_development_dependency 'rb-fsevent'
+  # s.add_development_dependency 'simplecov'
   s.add_development_dependency 'simplecov-rcov'
-  s.add_development_dependency 'listen', '~> 3.0.8' # for guard-rspec with ruby 1.9.3
-  s.add_development_dependency 'guard-rspec'
+  # s.add_development_dependency 'guard-rspec'
 end
 

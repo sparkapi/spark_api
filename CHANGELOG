@@ -1,3 +1,11 @@
+v1.5.0
+ Why upgrade?
+ - Adding support for Ruby 3
+ - Relaxed version requirement on json
+
+ Why wait?
+ - Minimum version of Faraday brought up to v0.17.3
+
 v1.4.34
  - Version update for releasing v1.4.33 as the tags were set wrong for v1.4.32 release
 

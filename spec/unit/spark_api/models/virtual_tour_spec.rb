@@ -12,14 +12,14 @@ describe VirtualTour do
   end
 
   it "should respond to a few methods" do
-    VirtualTour.should respond_to(:find_by_listing_key)
-    @virtualtour.should respond_to(:branded?)
-    @virtualtour.should respond_to(:unbranded?)
+    expect(VirtualTour).to respond_to(:find_by_listing_key)
+    expect(@virtualtour).to respond_to(:branded?)
+    expect(@virtualtour).to respond_to(:unbranded?)
   end
 
   it "should know if it's branded" do
-    @virtualtour.branded?.should == true
-    @virtualtour.unbranded?.should == false
+    expect(@virtualtour.branded?).to eq(true)
+    expect(@virtualtour.unbranded?).to eq(false)
   end
 
   context "/listings/<listing_id>/virtualtours", :support do
@@ -28,8 +28,8 @@ describe VirtualTour do
       stub_api_get('/listings/1234/virtualtours','listings/virtual_tours_index.json')
 
       v = VirtualTour.find_by_listing_key('1234')
-      v.should be_an(Array)
-      v.length.should == 5
+      expect(v).to be_an(Array)
+      expect(v.length).to eq(5)
     end
   end
 

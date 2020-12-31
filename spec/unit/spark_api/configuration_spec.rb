@@ -3,18 +3,18 @@ require './spec/spec_helper'
 describe SparkApi::Client, "Client config"  do
   describe "default settings" do
     it "should return the proper defaults when called with no arguments" do
-      SparkApi.api_key.should be_nil
-      SparkApi.api_secret.should be_nil
-      SparkApi.version.should match("v1")
-      SparkApi.ssl_verify.should be_true
-      SparkApi.auth_endpoint.should match("sparkplatform.com/openid")
-      SparkApi.endpoint.should match("api.sparkapi.com")
-      SparkApi.user_agent.should match(/Spark API Ruby Gem .*/)
+      expect(SparkApi.api_key).to be_nil
+      expect(SparkApi.api_secret).to be_nil
+      expect(SparkApi.version).to match("v1")
+      expect(SparkApi.ssl_verify).to be true
+      expect(SparkApi.auth_endpoint).to match("sparkplatform.com/openid")
+      expect(SparkApi.endpoint).to match("api.sparkapi.com")
+      expect(SparkApi.user_agent).to match(/Spark API Ruby Gem .*/)
       SparkApi.api_key = "my_api_key"
-      SparkApi.api_key.should match("my_api_key")
-      SparkApi.timeout.should eq(5)
-      SparkApi.request_id_chain.should be_nil
-      SparkApi.middleware.should eq('spark_api')
+      expect(SparkApi.api_key).to match("my_api_key")
+      expect(SparkApi.timeout).to eq(5)
+      expect(SparkApi.request_id_chain).to be_nil
+      expect(SparkApi.middleware).to eq('spark_api')
     end
   end
 
@@ -28,30 +28,30 @@ describe SparkApi::Client, "Client config"  do
                                     :timeout => 15,
                                     :request_id_chain => 'foobar')
  
-      client.api_key.should match("key_of_wade")
-      client.api_secret.should match("TopSecret")
-      client.api_user.should match("1234")
-      client.auth_endpoint.should match("https://login.wade.dev.fbsdata.com")
-      client.endpoint.should match("http://api.wade.dev.fbsdata.com")
-      client.version.should match("v1")
-      client.timeout.should eq(15)
-      client.request_id_chain.should eq('foobar')
+      expect(client.api_key).to match("key_of_wade")
+      expect(client.api_secret).to match("TopSecret")
+      expect(client.api_user).to match("1234")
+      expect(client.auth_endpoint).to match("https://login.wade.dev.fbsdata.com")
+      expect(client.endpoint).to match("http://api.wade.dev.fbsdata.com")
+      expect(client.version).to match("v1")
+      expect(client.timeout).to eq(15)
+      expect(client.request_id_chain).to eq('foobar')
     end
     
     it "should allow unverified ssl certificates when verification is off" do
       client = SparkApi::Client.new(:auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "https://api.wade.dev.fbsdata.com",
                                     :ssl_verify => false)
-      client.ssl_verify.should be_false
-      client.connection.ssl.verify.should be_false
+      expect(client.ssl_verify).to be false
+      expect(client.connection.ssl.verify).to be false
     end
 
     it "should allow restrict ssl certificates when verification is on" do
       client = SparkApi::Client.new(:auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "https://api.wade.dev.fbsdata.com",
                                     :ssl_verify => true)
-      client.ssl_verify.should be_true
-      client.connection.ssl.should be_empty
+      expect(client.ssl_verify).to be true
+      expect(client.connection.ssl).to be_empty
     end
   end
 
@@ -67,11 +67,11 @@ describe SparkApi::Client, "Client config"  do
     
     it "should convert the configuration to oauth2 when specified" do
       oauth2_client.oauthify!
-      oauth2_client.oauth2_provider.should be_a(SparkApi::Authentication::SimpleProvider)
+      expect(oauth2_client.oauth2_provider).to be_a(SparkApi::Authentication::SimpleProvider)
     end
 
     it "should say oauth2_enabled? when it is" do
-      oauth2_client.oauth2_enabled?().should be_true
+      expect(oauth2_client.oauth2_enabled?()).to be true
     end
 
     it "should say oauth2_enabled? is false" do
@@ -80,11 +80,11 @@ describe SparkApi::Client, "Client config"  do
                                     :callback => "http://wade.dev.fbsdata.com/callback",
                                     :auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "http://api.wade.dev.fbsdata.com")
-      client.oauth2_enabled?().should be_false
+      expect(client.oauth2_enabled?()).to be false
     end
 
     it "should properly build a grant_uri from the endpoint" do
-      oauth2_client.grant_uri.should eq("http://api.wade.dev.fbsdata.com/v1/oauth2/grant")
+      expect(oauth2_client.grant_uri).to eq("http://api.wade.dev.fbsdata.com/v1/oauth2/grant")
     end
   end
 
@@ -100,14 +100,14 @@ describe SparkApi::Client, "Client config"  do
         config.timeout = 15
       end
 
-      SparkApi.api_key.should match("my_key")
-      SparkApi.api_secret.should match("my_secret")
-      SparkApi.api_user.should match("1234")
-      SparkApi.version.should match("veleventy")
-      SparkApi.endpoint.should match("test.api.sparkapi.com")
-      SparkApi.user_agent.should match("my useragent")
-      SparkApi.oauth2_enabled?().should be_false
-      SparkApi.timeout.should eq(15)
+      expect(SparkApi.api_key).to match("my_key")
+      expect(SparkApi.api_secret).to match("my_secret")
+      expect(SparkApi.api_user).to match("1234")
+      expect(SparkApi.version).to match("veleventy")
+      expect(SparkApi.endpoint).to match("test.api.sparkapi.com")
+      expect(SparkApi.user_agent).to match("my useragent")
+      expect(SparkApi.oauth2_enabled?()).to be false
+      expect(SparkApi.timeout).to eq(15)
     end
 
     it "should correctly set up the client for oauth2" do
@@ -120,7 +120,7 @@ describe SparkApi::Client, "Client config"  do
         config.user_agent = "my useragent"
         config.authentication_mode = SparkApi::Authentication::OAuth2
       end
-      SparkApi.oauth2_enabled?().should be_true
+      expect(SparkApi.oauth2_enabled?()).to be true
     end
     
     it "should reset" do
@@ -133,12 +133,11 @@ describe SparkApi::Client, "Client config"  do
         config.request_id_chain = 'foobar'
       end
       
-      SparkApi.api_key.should match("my_key")
-      SparkApi.request_id_chain.should eq("foobar")
+      expect(SparkApi.api_key).to match("my_key")
+      expect(SparkApi.request_id_chain).to eq("foobar")
       SparkApi.reset
-      SparkApi.api_key.should == SparkApi::Configuration::DEFAULT_API_KEY
-      SparkApi.request_id_chain.should SparkApi::Configuration::DEFAULT_REQUEST_ID_CHAIN
-    
+      expect(SparkApi.api_key).to eq(SparkApi::Configuration::DEFAULT_API_KEY)
+      expect(SparkApi.request_id_chain).to eq(SparkApi::Configuration::DEFAULT_REQUEST_ID_CHAIN)
     end
   end
 
@@ -152,7 +151,7 @@ describe SparkApi::Client, "Client config"  do
           }).
           to_return(:body => '{"D":{"Success": true,"Results": [{"SSL":false}]}}')
           
-      SparkApi.client.get('/connections')[0]["SSL"].should eq(false)
+      expect(SparkApi.client.get('/connections')[0]["SSL"]).to eq(false)
     end
 
     it "should use https when ssl is enabled" do
@@ -165,7 +164,7 @@ describe SparkApi::Client, "Client config"  do
           to_return(:body => '{"D":{"Success": true,"Results": [{"SSL":true}]}}')
           
       c = SparkApi::Client.new(:endpoint => "https://api.sparkapi.com", :ssl => true)
-      c.get('/connections')[0]["SSL"].should eq(true)
+      expect(c.get('/connections')[0]["SSL"]).to eq(true)
     end
     
     it "should have correct headers based on configuration" do
@@ -182,7 +181,7 @@ describe SparkApi::Client, "Client config"  do
         config.user_agent = "my useragent"
       end
       SparkApi.client.get '/headers'
-      WebMock.should have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiUser=foobar&ApiSig=717a066c4f4302c5ca9507e484db4812&AuthToken=c401736bf3d3f754f07c04e460e09573").
+      expect(WebMock).to have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiUser=foobar&ApiSig=717a066c4f4302c5ca9507e484db4812&AuthToken=c401736bf3d3f754f07c04e460e09573").
         with(:headers => {
           'User-Agent' => SparkApi::Configuration::DEFAULT_USER_AGENT,
           SparkApi::Configuration::X_SPARK_API_USER_AGENT => "my useragent",
@@ -206,7 +205,7 @@ describe SparkApi::Client, "Client config"  do
         config.request_id_chain = 'foobar'
       end
       SparkApi.client.get '/headers'
-      WebMock.should have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiUser=foobar&ApiSig=717a066c4f4302c5ca9507e484db4812&AuthToken=c401736bf3d3f754f07c04e460e09573").
+      expect(WebMock).to have_requested(:get, "#{SparkApi.endpoint}/#{SparkApi.version}/headers?ApiUser=foobar&ApiSig=717a066c4f4302c5ca9507e484db4812&AuthToken=c401736bf3d3f754f07c04e460e09573").
         with(:headers => {
           'User-Agent' => SparkApi::Configuration::DEFAULT_USER_AGENT,
           SparkApi::Configuration::X_SPARK_API_USER_AGENT => "my useragent",
@@ -218,24 +217,24 @@ describe SparkApi::Client, "Client config"  do
 
     it "should not set gzip header by default" do
       c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
-      c.connection.headers["Accept-Encoding"].should be_nil
+      expect(c.connection.headers["Accept-Encoding"]).to be_nil
     end
 
     it "should set gzip header if compress option is set" do
       c = SparkApi::Client.new(:endpoint => "https://api.sparkapi.com",
         :compress => true) 
-      c.connection.headers["Accept-Encoding"].should eq("gzip, deflate")
+      expect(c.connection.headers["Accept-Encoding"]).to eq("gzip, deflate")
     end
 
     it "should set default timeout of 5 seconds" do
       c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
-      c.connection.options[:timeout].should eq(5)
+      expect(c.connection.options[:timeout]).to eq(5)
     end
 
     it "should set alternate timeout if specified" do
       c = SparkApi::Client.new(:endpoint => "https://sparkapi.com",
         :timeout => 15)
-      c.connection.options[:timeout].should eq(15)
+      expect(c.connection.options[:timeout]).to eq(15)
     end
   end
 
@@ -250,14 +249,14 @@ describe SparkApi::Client, "Client config"  do
                                     :middleware => 'reso_api',
                                     :dictionary_version => '1.6')
  
-      client.api_key.should match("key_of_cody")
-      client.api_secret.should match("TopSecret")
-      client.api_user.should match("1234")
-      client.endpoint.should match("http://api.coolio.dev.fbsdata.com")
-      client.timeout.should eq(15)
-      client.request_id_chain.should eq('foobar')
-      client.middleware.should eq('reso_api')
-      client.dictionary_version.should eq('1.6')
+      expect(client.api_key).to match("key_of_cody")
+      expect(client.api_secret).to match("TopSecret")
+      expect(client.api_user).to match("1234")
+      expect(client.endpoint).to match("http://api.coolio.dev.fbsdata.com")
+      expect(client.timeout).to eq(15)
+      expect(client.request_id_chain).to eq('foobar')
+      expect(client.middleware).to eq('reso_api')
+      expect(client.dictionary_version).to eq('1.6')
     end
   end
 end

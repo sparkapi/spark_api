@@ -20,13 +20,13 @@ describe SparkApi::MultiClient do
 
   it "should activate a client implemenation when activate()" do
     SparkApi.activate(:test_client_a)
-    SparkApi.client.api_key.should eq('a')
+    expect(SparkApi.client.api_key).to eq('a')
     SparkApi.activate(:test_client_b)
-    SparkApi.client.api_key.should eq('b')
+    expect(SparkApi.client.api_key).to eq('b')
     SparkApi.activate(:test_client_c)
-    SparkApi.client.api_key.should eq('c')
+    expect(SparkApi.client.api_key).to eq('c')
     SparkApi.activate(:test_client_a)
-    SparkApi.client.api_key.should eq('a')
+    expect(SparkApi.client.api_key).to eq('a')
   end
   it "should fail to activate symbols that do not have implementations" do
     expect { SparkApi.activate(:test_client_d) }.to raise_error(ArgumentError)
@@ -34,35 +34,35 @@ describe SparkApi::MultiClient do
   
   it "should temporarily activate a client implemenation when activate() block" do
     SparkApi.activate(:test_client_a)
-    SparkApi.client.api_key.should eq('a')
+    expect(SparkApi.client.api_key).to eq('a')
     SparkApi.activate(:test_client_b) do
-      SparkApi.client.api_key.should eq('b')
+      expect(SparkApi.client.api_key).to eq('b')
     end
-    SparkApi.client.api_key.should eq('a')
+    expect(SparkApi.client.api_key).to eq('a')
     expect do
       SparkApi.activate(:test_client_c) do
-        SparkApi.client.api_key.should eq('c')
+        expect(SparkApi.client.api_key).to eq('c')
         raise "OH MY GOODNESS I BLEW UP!!!"
       end
     end.to raise_error
-    SparkApi.client.api_key.should eq('a')
+    expect(SparkApi.client.api_key).to eq('a')
   end
 
   context "yaml" do
     before :each do
-      SparkApi::Configuration::YamlConfig.stub(:config_path) { "spec/config/spark_api" }
+      allow(SparkApi::Configuration::YamlConfig).to receive(:config_path) { "spec/config/spark_api" }
     end
 
     it "should activate a client implemenation when activate()" do
       SparkApi.activate(:test_key)
-      SparkApi.client.api_key.should eq('demo_key')
+      expect(SparkApi.client.api_key).to eq('demo_key')
     end
 
     it "should activate a single session key" do
-      SparkApi::Configuration::YamlConfig.stub(:config_path) { "spec/config/spark_api" }
+      allow(SparkApi::Configuration::YamlConfig).to receive(:config_path) { "spec/config/spark_api" }
       SparkApi.activate(:test_single_session_oauth)
-      SparkApi.client.session.should respond_to(:access_token)
-      SparkApi.client.session.access_token.should eq("yay success!")
+      expect(SparkApi.client.session).to respond_to(:access_token)
+      expect(SparkApi.client.session.access_token).to eq("yay success!")
     end
   end
   

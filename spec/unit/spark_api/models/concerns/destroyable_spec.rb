@@ -17,7 +17,7 @@ describe Concerns::Destroyable, "Destroyable Concern" do
   describe 'destroyed?' do
     
     it "should not be destroyed" do
-      @model.destroyed?.should eq(false)
+      expect(@model.destroyed?).to eq(false)
     end
   end
 
@@ -27,7 +27,7 @@ describe Concerns::Destroyable, "Destroyable Concern" do
       stub_api_delete("/some/place/20101230223226074201000000")
       @model = MyExampleModel.first
       @model.destroy
-      @model.destroyed?.should eq(true)
+      expect(@model.destroyed?).to eq(true)
     end
 
   end

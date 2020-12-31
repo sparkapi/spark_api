@@ -11,7 +11,7 @@ describe SparkApi::Authentication::OAuth2  do
   # Make sure the client boostraps the right plugin based on configuration.
   describe "plugin" do
     it "should load the oauth2 authenticator" do
-      client.authenticator.class.should eq(SparkApi::Authentication::OAuth2)
+      expect(client.authenticator.class).to eq(SparkApi::Authentication::OAuth2)
     end
   end
   describe "authenticate" do
@@ -21,8 +21,8 @@ describe SparkApi::Authentication::OAuth2  do
           '{"client_id":"example-id","client_secret":"example-password","code":"my_code","grant_type":"authorization_code","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback"}' 
         ).
         to_return(:body => fixture("oauth2/access.json"), :status=>200)
-      subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
-      subject.authenticate.expires_in.should eq(57600)
+      expect(subject.authenticate.access_token).to eq("04u7h-4cc355-70k3n")
+      expect(subject.authenticate.expires_in).to eq(57600)
     end
     
     it "should raise an error when api credentials are invalid" do
@@ -31,7 +31,7 @@ describe SparkApi::Authentication::OAuth2  do
           '{"client_id":"example-id","client_secret":"example-password","code":"my_code","grant_type":"authorization_code","redirect_uri":"https://exampleapp.fbsdata.com/oauth-callback"}'
         ).
         to_return(:body => fixture("oauth2/error.json"), :status=>400)
-      expect {subject.authenticate()}.to raise_error(SparkApi::ClientError){ |e| e.status.should == 400 }
+      expect {subject.authenticate()}.to raise_error(SparkApi::ClientError){ |e| expect(e.status).to eq(400) }
     end
     
   end
@@ -40,16 +40,16 @@ describe SparkApi::Authentication::OAuth2  do
     let(:session) { Object.new }
     it "should return true when session is active" do
       subject.session = session
-      session.stub(:expired?) { false }
-      subject.authenticated?.should eq(true)
+      allow(session).to receive(:expired?) { false }
+      expect(subject.authenticated?).to eq(true)
     end
     it "should return false when session is expired" do
       subject.session = session
-      session.stub(:expired?) { true }
-      subject.authenticated?.should eq(false)
+      allow(session).to receive(:expired?) { true }
+      expect(subject.authenticated?).to eq(false)
     end
     it "should return false when session is uninitialized" do
-      subject.authenticated?.should eq(false)
+      expect(subject.authenticated?).to eq(false)
     end
   end
 
@@ -58,11 +58,11 @@ describe SparkApi::Authentication::OAuth2  do
     it "should logout when there is an active session" do
       subject.session = session
       subject.logout
-      subject.session.should eq(nil)
+      expect(subject.session).to eq(nil)
     end
     it "should skip logging out when there is no active session information" do 
-      client.stub(:delete) { raise "Should not be called" }
-      subject.logout.should eq(nil)
+      allow(client).to receive(:delete) { raise "Should not be called" }
+      expect(subject.logout).to eq(nil)
     end
   end
   
@@ -79,7 +79,7 @@ describe SparkApi::Authentication::OAuth2  do
         with(:query => args).
         to_return(:body => fixture("listings/no_subresources.json"))
       subject.session = session
-      subject.request(:get, "/#{SparkApi.version}/listings", nil, args).status.should eq(200)
+      expect(subject.request(:get, "/#{SparkApi.version}/listings", nil, args).status).to eq(200)
     end
     it "should handle a post request" do
       subject.session = session
@@ -95,7 +95,7 @@ describe SparkApi::Authentication::OAuth2  do
             }]}
           }', 
           :status=>201)
-      subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status.should eq(201)
+      expect(subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status).to eq(201)
     end
   end
   
@@ -106,7 +106,7 @@ describe SparkApi::Authentication::OAuth2  do
         with(:body => "access_token=#{session.access_token}").
         to_return(:body => '{"token":"sp4rkb4rt0k3n"}')
       subject.session = session
-      subject.sparkbar_token.should eq("sp4rkb4rt0k3n")
+      expect(subject.sparkbar_token).to eq("sp4rkb4rt0k3n")
     end
     it "should raise an error on missing sparkbar token" do
       c = stub_request(:post, "https://test.sparkplatform.com/appbar/authorize").
@@ -142,9 +142,9 @@ describe SparkApi::Authentication::OAuth2  do
           to_return(:body => fixture('errors/expired.json'), :status => 401).times(1).then.
           to_return(:body => fixture('listings/with_documents.json'))
         client.get("/listings/1234")
-        count.should eq(1)
-        refresh_count.should eq(1)
-        client.session.expired?.should eq(false)
+        expect(count).to eq(1)
+        expect(refresh_count).to eq(1)
+        expect(client.session.expired?).to eq(false)
       end
     end
     context "and an invalid refresh token" do
@@ -164,8 +164,8 @@ describe SparkApi::Authentication::OAuth2  do
           to_return(:body => fixture('listings/with_documents.json'))
               
         client.get("/listings/1234")
-        count.should eq(2)
-        client.session.expired?.should eq(false)
+        expect(count).to eq(2)
+        expect(client.session.expired?).to eq(false)
       end
     end
   end
@@ -186,16 +186,16 @@ describe SparkApi::Authentication::OpenIdOAuth2Hybrid do
   end
   describe "plugin" do
     it "should load the hybrid authenticator" do
-      client.authenticator.class.should eq(SparkApi::Authentication::OpenIdOAuth2Hybrid)
+      expect(client.authenticator.class).to eq(SparkApi::Authentication::OpenIdOAuth2Hybrid)
     end
   end
 
   describe "#authorization_url" do
     it "should include combined flow parameter" do
-      client.authenticator.authorization_url.should match("openid.spark.combined_flow=true")
+      expect(client.authenticator.authorization_url).to match("openid.spark.combined_flow=true")
     end
     it "should allow custom parameters" do
-      client.authenticator.authorization_url({"joshua" => "iscool"}).should match("joshua=iscool")
+      expect(client.authenticator.authorization_url({"joshua" => "iscool"})).to match("joshua=iscool")
     end
   end
 end
@@ -215,24 +215,24 @@ describe SparkApi::Authentication::OpenId do
 
   describe "plugin" do
     it "should not include combined flow parameter" do
-      client.authenticator.authorization_url.should_not match("openid.spark.combined_flow=true")
+      expect(client.authenticator.authorization_url).not_to match("openid.spark.combined_flow=true")
     end
     it "should load the oauth2 authenticator" do
-      client.authenticator.class.should eq(SparkApi::Authentication::OpenId)
+      expect(client.authenticator.class).to eq(SparkApi::Authentication::OpenId)
     end
   end
 
   describe "#authorization_url" do
     it "should allow custom parameters" do
-      client.authenticator.authorization_url({"joshua" => "iscool"}).should match("joshua=iscool")
+      expect(client.authenticator.authorization_url({"joshua" => "iscool"})).to match("joshua=iscool")
     end
   end
 
   describe "forbidden methods" do
     it "should not allow authentication" do
-      lambda {
+      expect {
         client.authenticate
-      }.should raise_error(RuntimeError)
+      }.to raise_error(RuntimeError)
     end
   end
 end
@@ -240,12 +240,12 @@ end
 describe SparkApi::Authentication::BaseOAuth2Provider  do
   context "session_timeout" do
     it "should provide a default" do
-      subject.session_timeout.should eq(86400)
+      expect(subject.session_timeout).to eq(86400)
     end
     describe TestOAuth2Provider do
       subject { TestOAuth2Provider.new }
       it "should be able to override the session timeout" do
-        subject.session_timeout.should eq(57600)
+        expect(subject.session_timeout).to eq(57600)
       end
     end
   end
@@ -260,18 +260,18 @@ describe "password authentication" do
       with(:body =>
         '{"client_id":"example-id","client_secret":"example-secret","grant_type":"password","password":"example-password","username":"example-user"}' 
       ).to_return(:body => fixture("oauth2/access.json"), :status=>200)
-    subject.authenticate.access_token.should eq("04u7h-4cc355-70k3n")
-    subject.authenticate.expires_in.should eq(60)
+    expect(subject.authenticate.access_token).to eq("04u7h-4cc355-70k3n")
+    expect(subject.authenticate.expires_in).to eq(60)
   end
 end
 describe SparkApi::Authentication::OAuth2Impl  do
   it "should load a provider" do
     example = "SparkApi::Authentication::OAuth2Impl::CLIProvider"
-    SparkApi::Authentication::OAuth2Impl.load_provider(example,{}).class.to_s.should eq(example)
+    expect(SparkApi::Authentication::OAuth2Impl.load_provider(example,{}).class.to_s).to eq(example)
     prefix = "::#{example}"
-    SparkApi::Authentication::OAuth2Impl.load_provider(prefix,{}).class.to_s.should eq(example)
+    expect(SparkApi::Authentication::OAuth2Impl.load_provider(prefix,{}).class.to_s).to eq(example)
     bad_example = "Derp::Derp::Derp::DerpProvider"
-    expect{SparkApi::Authentication::OAuth2Impl.load_provider(bad_example,{}).class.to_s.should eq(bad_example)}.to raise_error(ArgumentError)
+    expect{expect(SparkApi::Authentication::OAuth2Impl.load_provider(bad_example,{}).class.to_s).to eq(bad_example)}.to raise_error(ArgumentError)
   end
 
 end
@@ -286,8 +286,8 @@ describe SparkApi::Authentication::OAuthSession do
       "start_time" => "2012-01-01T00:00:00+00:00"
     }
     session = SparkApi::Authentication::OAuthSession.new(args)
-    session.start_time.should eq(DateTime.parse(args["start_time"]))
-    JSON.parse(session.to_json).should eq(args)
+    expect(session.start_time).to eq(DateTime.parse(args["start_time"]))
+    expect(JSON.parse(session.to_json)).to eq(args)
   end
 
   it "should accept symbolized parameters" do
@@ -299,12 +299,12 @@ describe SparkApi::Authentication::OAuthSession do
       :start_time => "2012-01-01T00:00:00+00:00"
     }
     session = SparkApi::Authentication::OAuthSession.new(args)
-    session.start_time.should eq(DateTime.parse(args[:start_time]))
-    JSON.parse(session.to_json).should eq(JSON.parse(args.to_json))
+    expect(session.start_time).to eq(DateTime.parse(args[:start_time]))
+    expect(JSON.parse(session.to_json)).to eq(JSON.parse(args.to_json))
   end
 
   it "should not expire if expires_in is nil" do
     session = SparkApi::Authentication::OAuthSession.new
-    session.expired?.should eq(false)
+    expect(session.expired?).to eq(false)
   end
 end

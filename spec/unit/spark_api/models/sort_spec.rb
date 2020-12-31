@@ -6,14 +6,14 @@ describe Sort do
   end
 
   it "should include the finders module" do
-    Sort.should respond_to(:find)
+    expect(Sort).to respond_to(:find)
   end
 
   it "should return sorts" do
     stub_api_get("/searchtemplates/sorts", 'sorts/get.json')
     sorts = Sort.find(:all)
-    sorts.should be_an(Array)
-    sorts.length.should eq(1)
+    expect(sorts).to be_an(Array)
+    expect(sorts.length).to eq(1)
   end
 
 end
