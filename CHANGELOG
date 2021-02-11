@@ -1,3 +1,6 @@
+v1.5.1
+ - Add support for video thumbnails and 'media' interface to unify shared parts of videos/virtual tours
+
 v1.5.0
  Why upgrade?
  - Adding support for Ruby 3
