@@ -26,13 +26,8 @@ module SparkApi
       end
 
       def display_image
-        begin
-          response = Faraday::Connection.new.get(self.Uri) { |request| request.options.timeout = 20 }
-          open_graph = OGP::OpenGraph.new(response.body)
-          open_graph.image.url
-        rescue
-          return nil
-        end
+        # Currently we have no universally good mechanism to get images for virtual tours
+        return nil
       end
     end
   end
