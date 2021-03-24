@@ -7,6 +7,10 @@ module SparkApi
       include Concerns::Savable,
               Concerns::Destroyable
 
+      # Regex to find YouTube's and Vimeo's video ID
+      YOUTUBE_REGEX = %r(^(http[s]*:\/\/)?(www.)?(youtube.com|youtu.be)\/(watch\?v=){0,1}([a-zA-Z0-9_-]{11}))
+      VIMEO_REGEX = %r(^https?:\/\/(?:.*?)\.?(vimeo)\.com\/(\d+).*$)
+
       self.element_name = 'videos'
 
       def branded?
@@ -59,6 +63,14 @@ module SparkApi
             youtube_link
         elsif self.ObjectHtml.include?('vimeo')
             vimeo_link
+        end
+      end
+
+      def get_video_in_iframe(width: "560px", height: "315px")
+        if find_vimeo_id(url)
+          get_vimeo_iframe(url, width, height) 
+        elsif find_youtube_id(url)
+          get_youtube_iframe(url, width, height) 
         end
       end
 
@@ -117,6 +129,35 @@ module SparkApi
 
       def normalize_youtube_url
         self.ObjectHtml.sub!('-nocookie', '')
+      end
+
+      def find_youtube_id full_url
+        matches = YOUTUBE_REGEX.match full_url.to_str
+        if matches
+          matches[6] || matches[5]
+        end
+      end
+
+      def get_youtube_iframe full_url, width, height
+        youtube_id = find_youtube_id full_url
+
+        result = %(<iframe title="YouTube video player" width="#{width}"
+                    height="#{height}" src="//www.youtube.com/embed/#{ youtube_id }"
+                    frameborder="0" allowfullscreen></iframe>)
+        result.html_safe
+      end
+
+      def find_vimeo_id full_url
+        matches = VIMEO_REGEX.match full_url.to_str
+        matches[2] if matches
+      end
+
+      def get_vimeo_iframe full_url, width, height
+        vimeo_id = find_vimeo_id full_url
+        uri = "https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/#{ vimeo_id }&width=#{ width }&height=#{ height }"
+        response = Net::HTTP.get( URI.parse( uri ))
+        json = JSON.parse response
+        json['html'].html_safe
       end
       
     end
