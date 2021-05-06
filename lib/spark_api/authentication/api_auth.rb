@@ -62,7 +62,7 @@ module SparkApi
       
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
-        escaped_path = Addressable::URI.escape(path)
+        escaped_path = URI.escape(path)
         request_opts = {
           :AuthToken => @session.auth_token
         }
