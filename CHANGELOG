@@ -1,3 +1,6 @@
+v1.5.2
+ - Add dependency of addressable
+
 v1.5.1
  - Add support for video thumbnails and 'media' interface to unify shared parts of videos/virtual tours
 

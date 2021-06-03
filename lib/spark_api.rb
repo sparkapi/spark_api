@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'logger'
 require 'multi_json'
+require 'addressable'
 
 require 'spark_api/version'
 require 'spark_api/errors'
