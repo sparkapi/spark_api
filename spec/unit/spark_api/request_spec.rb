@@ -160,7 +160,13 @@ describe SparkApi do
           }
           }'] 
         }
-
+        # For testing http_method_override. See associated test for more details.
+        stub.post('/v1/routetoproveweareposting?ApiSig=SignedToken&AuthToken=1234&override_headers=%7B%22X-HTTP-Method-Override%22%3D%3E%22GET%22%2C+%22Content-Type%22%3D%3E%22application%2Fx-www-form-urlencoded%22%7D', 'some_param=some_value') { [200, {}, '{"D": {
+          "Success": true,
+          "Results": []
+          }
+          }']
+        }
       end
       @connection = test_connection(stubs)
     end  
@@ -230,7 +236,7 @@ describe SparkApi do
       end
 
       it "should allow response object to be returned instead of body" do
-        r = subject.get('/system', { full_response: true })
+        r = subject.get('/system', { some_param: 'something', full_response: true })
 
         expect(r.is_a?(Faraday::Response)).to be(true)
         expect(r.status).to eq(200)
@@ -248,7 +254,23 @@ describe SparkApi do
           expect(number.to_s).to eq(BigDecimal.new("9999999999999999999999999.99").to_s)
         end
       end
-      
+
+      # This is a weird feature and it also gets a weird test that probably
+      # merits explanation:
+      #
+      # We have only stubbed POST for this route, so the below succeeding
+      # proves that we have converted our GET into a POST. That POST also is
+      # stubbed such that it proves that we are passing along the expected
+      # override_headers options, though they get converted to params on the URL
+      # by the mock connection along the way. Additionally, it demonstrates that
+      # we turn the params into a body which excludes the http_method_override
+      # param as well as the override_headers param. Another approach would to
+      # create a smarter stubbed connection that processes the options like
+      # SparkApi::Authentication::Oauth2 does but this did not seem worthwhile
+      # given the limited scope of this.
+      it "should should convert GET to POST if we http_method_override: true is supplied" do
+        expect(subject.get('/routetoproveweareposting', { http_method_override: true, some_param: "some_value" }).success?).to be true
+      end
     end
     
     context "when unauthenticated" do
