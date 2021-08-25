@@ -63,6 +63,8 @@ module SparkApi
       # Perform an HTTP request (no data)
       def request(method, path, body, options)
         escaped_path = Addressable::URI.escape(path)
+        connection = @client.connection
+        connection.headers.merge!(options.delete(:override_headers) || {})
         request_opts = {
           :AuthToken => @session.auth_token
         }
@@ -76,10 +78,10 @@ module SparkApi
         request_path = "#{escaped_path}?#{build_url_parameters({"ApiSig"=>sig}.merge(request_opts))}"
         SparkApi.logger.debug { "Request: #{request_path}" }
         if body.nil?
-          response = @client.connection.send(method, request_path)
+          response = connection.send(method, request_path)
         else
           SparkApi.logger.debug { "Data: #{body}" }
-          response = @client.connection.send(method, request_path, body)
+          response = connection.send(method, request_path, body)
         end
         response
       end

@@ -97,6 +97,24 @@ describe SparkApi::Authentication::OAuth2  do
           :status=>201)
       expect(subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status).to eq(201)
     end
+    it "should incorporate any override_headers it is given while excluding them from the resulting request" do
+      subject.session = session
+      args = {
+        override_headers: {
+          "Some-Header" => "Some-Value"
+        },
+        some_other_param: "some_other_value"
+      }
+      body = "somerequestbodytext"
+      stub_request(:post, "https://api.sparkapi.com/#{SparkApi.version}/someservice?some_other_param=some_other_value").
+        with(body: body, headers: args[:override_headers]).
+        to_return(body: '{"D": {
+          "Success": true,
+          "Results": []
+        }',
+        status: 200)
+        expect(subject.request(:post, "/#{SparkApi.version}/someservice", body, args).status).to eq(200)
+    end
   end
   
   describe "sparkbar_token" do

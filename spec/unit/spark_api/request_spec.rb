@@ -160,7 +160,13 @@ describe SparkApi do
           }
           }'] 
         }
-
+        # For testing http_method_override. See associated test for more details.
+        stub.post('/v1/routetoproveweareposting?ApiSig=SignedToken&AuthToken=1234', 'some_param=some_value') { [200, {}, '{"D": {
+          "Success": true,
+          "Results": []
+          }
+          }']
+        }
       end
       @connection = test_connection(stubs)
     end  
@@ -230,7 +236,7 @@ describe SparkApi do
       end
 
       it "should allow response object to be returned instead of body" do
-        r = subject.get('/system', { full_response: true })
+        r = subject.get('/system', { some_param: 'something', full_response: true })
 
         expect(r.is_a?(Faraday::Response)).to be(true)
         expect(r.status).to eq(200)
@@ -248,7 +254,17 @@ describe SparkApi do
           expect(number.to_s).to eq(BigDecimal.new("9999999999999999999999999.99").to_s)
         end
       end
-      
+
+      # This is a weird feature and it also gets a weird test that probably
+      # merits explanation:
+      #
+      # We have only stubbed POST for this route, so the below succeeding
+      # proves that we have converted our GET into a POST. It is additionally
+      # stubbed to prove that we turn the params into a body which excludes the
+      # http_method_override options as well as the override_headers options.
+      it "should convert GET to POST if http_method_override: true is supplied" do
+        expect(subject.get('/routetoproveweareposting', { http_method_override: true, some_param: "some_value" }).success?).to be true
+      end
     end
     
     context "when unauthenticated" do

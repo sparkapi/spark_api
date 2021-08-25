@@ -42,6 +42,7 @@ module SparkApi
       def request(method, path, body, options={})
         escaped_path = Addressable::URI.escape(path)
         connection = @client.connection(true)  # SSL Only!
+        connection.headers.merge!(options.delete(:override_headers) || {})
         connection.headers.merge!(self.auth_header)
 
         unless (@client.api_user.nil? || options[:ApiUser])

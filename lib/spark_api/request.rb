@@ -61,6 +61,22 @@ module SparkApi
       unless authenticated?
         authenticate
       end
+
+      # Allow use of the X-HTTP-Method-Override header to disguise excessively
+      # large GET/DELETE/HEAD requests as POST requests.
+      if options[:http_method_override]
+        options = options.clone
+        options.delete(:http_method_override)
+        body = URI.encode_www_form(options)
+        options = {
+          override_headers: {
+            "X-HTTP-Method-Override" => method.to_s.upcase,
+            "Content-Type" => "application/x-www-form-urlencoded"
+          }
+        }
+        method = :post
+      end
+
       attempts = 0
       begin
         request_opts = {}

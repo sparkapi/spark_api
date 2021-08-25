@@ -119,6 +119,25 @@ describe SparkApi::Authentication::ApiAuth  do
           :status=>201)
       expect(subject.request(:post, "/#{SparkApi.version}/contacts", contact, args).status).to eq(201)
     end
+    it "should incorporate any override_headers it is given while excluding them from the resulting request" do
+      stub_auth_request
+      args = {
+        override_headers: {
+          "Some-Header" => "Some-Value"
+        },
+        ApiUser: "foobar",
+        some_other_param: "some_other_value"
+      }
+      body = "somerequestbodytext"
+      stub_request(:post, "https://api.sparkapi.com/v1/someservice?ApiSig=856f5c036137c0cef5d4d223cd0f42be&ApiUser=foobar&AuthToken=1234&some_other_param=some_other_value").
+        with(body: "somerequestbodytext", headers: args[:override_headers]).
+        to_return(body: '{"D": {
+          "Success": true,
+          "Results": []
+        }',
+        status: 200)
+        expect(subject.request(:post, "/#{SparkApi.version}/someservice", body, args).status).to eq(200)
+    end
   end
   
   describe "sign" do
