@@ -181,6 +181,12 @@ describe Listing do
         count = Listing.count()
         expect(count).to eq(2001)
       end
+
+      on_get_it "should return the count even if http_method_override: true is passed" do
+        stub_api_post('/listings', '_pagination=count', 'count.json')
+        count = Listing.count(http_method_override: true)
+        expect(count).to eq(2001)
+      end
     end
 
     context "/listings/<listing_id>", :support do
