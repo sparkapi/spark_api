@@ -1,3 +1,6 @@
+v1.5.4
+ - Fix a problem with fetching counts with the http_method_override: true option supplied.
+
 v1.5.3
  - Add support for http_method_override (true/false) option to client, which when supplied results in a POST with appropriate X-HTTP-Method-Override header.
 
