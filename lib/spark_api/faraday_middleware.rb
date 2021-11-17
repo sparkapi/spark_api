@@ -29,7 +29,11 @@ module SparkApi
       if paging.nil?
         results = response
       else
-        q = CGI.parse(env[:url].query)
+        q = if http_method_override_request?(env)
+              CGI.parse(env[:request_body])
+            else
+              CGI.parse(env[:url].query)
+            end
         if q.key?("_pagination") && q["_pagination"].first == "count"
           results = paging['TotalRows']
         else
@@ -87,7 +91,13 @@ module SparkApi
 
       env[:body]
     end
-    
+
+    private
+
+    def http_method_override_request?(env)
+      env[:request_headers]["X-HTTP-Method-Override"] == "GET"
+    end
+
   end
 
   Faraday::Response.register_middleware :spark_api => FaradayMiddleware

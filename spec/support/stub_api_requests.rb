@@ -41,11 +41,14 @@ module StubApiRequests
 
   def with_args(service_path, opts, body=nil)
     if body.is_a?(Hash)
-      body = { :D => body } unless body.empty? 
-    elsif !body.nil?
+      body = { :D => body } unless body.empty?
+      body_str = body.nil? ? body : MultiJson.dump(body)
+    elsif body =~ /\.json\z/
       body = MultiJson.load(fixture(body).read)
+      body_str = body.nil? ? body : MultiJson.dump(body)
+    else
+      body_str = body
     end
-    body_str = body.nil? ? body : MultiJson.dump(body)
 
     params = {:ApiUser => "foobar", :AuthToken => "c401736bf3d3f754f07c04e460e09573"}.merge(opts)
     query = {:ApiSig => get_signature(service_path, params, body_str) }
