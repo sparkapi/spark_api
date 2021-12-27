@@ -1,3 +1,6 @@
+v1.5.5
+ - Add logging of an errored oauth2 response
+
 v1.5.4
  - Fix a problem with fetching counts with the http_method_override: true option supplied.
 

@@ -15,14 +15,18 @@ module SparkApi
         def on_complete(env)
           body = MultiJson.decode(env[:body])
           SparkApi.logger.debug { "[oauth2] Response Body: #{body.inspect}" }
+
           unless body.is_a?(Hash)
             raise InvalidResponse, "The server response could not be understood"
           end
+
           case env[:status]
           when 200..299
             SparkApi.logger.debug{ "[oauth2] Success!" }
             session = OAuthSession.new(body)
-          else 
+          else
+            SparkApi.logger.warn { "[oauth2] failure #{body.inspect}" }
+
             # Handle the WWW-Authenticate Response Header Field if present. This can be returned by 
             # OAuth2 implementations and wouldn't hurt to log.
             auth_header_error = env[:request_headers]["WWW-Authenticate"]
