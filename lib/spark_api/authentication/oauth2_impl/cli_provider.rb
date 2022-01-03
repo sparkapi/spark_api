@@ -1,4 +1,4 @@
-require "highline/import"
+require "highline"
 
 module SparkApi
   module Authentication
@@ -18,7 +18,7 @@ module SparkApi
         def redirect(url)
           puts "Missing OAuth2 session, redirecting..."
           puts "Please visit #{url}, login as a user, and paste the authorization code here:"
-          self.code = ask("Authorization code?") do |q|
+          self.code = HighLine.ask("Authorization code?") do |q|
             q.whitespace = :strip_and_collapse
             q.validate = /^\w+$/
           end
