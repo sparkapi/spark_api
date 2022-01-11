@@ -2,7 +2,7 @@ if ENV['COVERAGE'] == "on"
   require 'simplecov'
   require 'simplecov-rcov'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-  unless SimpleCov.running
+  unless SimpleCov.running   # Hack to prevent starting SimpleCov multiple times  see: https://github.com/simplecov-ruby/simplecov/issues/1003
     SimpleCov.start do
       add_filter '/vendor'
       add_filter '/spec'
