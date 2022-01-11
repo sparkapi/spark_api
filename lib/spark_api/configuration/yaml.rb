@@ -16,7 +16,9 @@ module SparkApi
       def load_file(file)
         @file = file
         @name = File.basename(file, ".yml")
-        config = YAML.load(ERB.new(File.read(file)).result)[api_env]
+
+        erb_file = ERB.new(File.read(file)).result
+        config = (YAML.respond_to?(:unsafe_load) ? YAML.unsafe_load(erb_file) : YAML.load(erb_file))[api_env]
         config["oauth2"] == true  ? load_oauth2(config) : load_api_auth(config)
       rescue => e
         SparkApi.logger().error("Unable to load config file #{file}[#{api_env}]")

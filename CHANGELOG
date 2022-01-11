@@ -1,3 +1,6 @@
+v1.5.7
+ - Add support for psych 4.0 yaml loading
+
 v1.5.6
  - Modify usage of HighLine so that it does not pollute the global namespace
 
