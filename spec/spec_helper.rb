@@ -2,10 +2,12 @@ if ENV['COVERAGE'] == "on"
   require 'simplecov'
   require 'simplecov-rcov'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-  SimpleCov.start do
-    add_filter '/vendor'
-    add_filter '/spec'
-    add_filter '/test'
+  unless SimpleCov.running
+    SimpleCov.start do
+      add_filter '/vendor'
+      add_filter '/spec'
+      add_filter '/test'
+    end
   end
 end
 
@@ -20,13 +22,6 @@ $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require path + '/spark_api'
 
 require 'spark_api'
-
-if ENV['COVERAGE'] == "on"
-  require 'simplecov'
-  require 'simplecov-rcov'
-  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-  SimpleCov.start { add_filter %w(/vendor /spec /test) }
-end
 
 FileUtils.mkdir 'log' unless File.exists? 'log'
 
@@ -51,7 +46,7 @@ end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # # in spec/support/ and its subdirectories.
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
+Dir[File.expand_path(File.join(File.dirname(__FILE__), 'support', '**', '*.rb'))].each { |f| require f }
 
 RSpec.configure do |config|
 
@@ -66,6 +61,6 @@ RSpec.configure do |config|
   config.color = true
 end
 
-def jruby? 
+def jruby?
   RUBY_PLATFORM == "java"
 end
