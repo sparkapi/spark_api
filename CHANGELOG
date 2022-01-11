@@ -1,3 +1,8 @@
+v1.6.0
+ - Adding support for Ruby 3.1
+ - Add support for psych 4.0 yaml loading
+ - Lock Faraday down to < 2.0
+
 v1.5.6
  - Modify usage of HighLine so that it does not pollute the global namespace
 

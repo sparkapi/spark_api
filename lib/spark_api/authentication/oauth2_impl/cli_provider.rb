@@ -82,8 +82,8 @@ module SparkApi
         
         def load_file
           yaml = {}
-          begin 
-            yaml = YAML.load(File.open(filename))
+          begin
+            yaml = YAML.respond_to?(:unsafe_load) ? YAML.unsafe_load(File.open(filename)) : YAML.load(File.open(filename))
             yaml = {} if yaml == false
           rescue => e
             puts "no file: #{e.message}"
