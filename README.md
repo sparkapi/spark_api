@@ -10,35 +10,76 @@ Documentation
 
 For further client documentation, please consult our [wiki](https://github.com/sparkapi/spark_api/wiki).
 
-For full information on the API, see [http://sparkplatform.com/docs/overview/api](http://sparkplatform.com/docs/overview/api)
+For full information on the Spark API, see [http://sparkplatform.com/docs/overview/api](http://sparkplatform.com/docs/overview/api). If you would instead like information on the RESO Web API, see [http://sparkplatform.com/docs/reso/overview](http://sparkplatform.com/docs/reso/overview)
 
 
 Installation
 ---------
     gem install spark_api
 
+
+Authentication Types
+--------------
+Authentication is handled transparently by the request framework in the gem, so you should never need to manually make an authentication request.  More than one mode of authentication is supported, so the client needs to be configured accordingly.
+
+#### [Access Token Authentication](https://github.com/sparkapi/spark_api/wiki/Spark-Authentication) (Preferred)
+Also known as Bearer Token Authentication. If you've been provided a single non-expiring access (bearer) token for the purpose of accessing data on behalf of one or more MLS users, this method of authentication should be used. See "script/access_token_example.rb" for an example. 
+
+#### [OpenId/OAuth2 Combined Flow](https://github.com/sparkapi/spark_api/wiki/Hybrid-Authentication)
+Authorization mode that separates application and user authentication. This mode requires the end user to be redirected to Spark Platform's openid endpoint in a web browser window. See "script/combined_flow_example.rb" for an example.
+
+Read more about Spark Platform's combined flow <a href="http://sparkplatform.com/docs/authentication/openid_oauth2_authentication">here</a>.
+
+#### [OAuth2 Authorization](https://github.com/sparkapi/spark_api/wiki/OAuth2-Only-Authentication)
+Authorization mode that separates application and user authentication. This mode requires the end user to be redirected to Spark Platform's auth endpoint in a web browser window. See "script/oauth2_example.rb" for an example.
+
+Read more about Spark Platform's OAuth 2 flow <a href="http://sparkplatform.com/docs/authentication/oauth2_authentication">here</a>.
+
+#### [Spark API Authentication](https://github.com/sparkapi/spark_api/wiki/Spark-Authentication) (Deprecated)
+Usually supplied for a single user, this authentication mode was our old standard, however, is now deprecated in favor of bearer token authentication. See "script/spark_auth_example.rb" for an example. 
+
+
 Usage Examples
 ------------------------
-
+#### Accessing the Spark API (Default)
 ```ruby
 require 'spark_api'
 SparkApi.configure do |config|
   config.endpoint   = 'https://sparkapi.com'
-  # Using Spark API Authentication, refer to the Authentication documentation for OAuth2
-  config.api_key    = 'MY_SPARK_API_KEY'
-  config.api_secret = 'MY_SPARK_API_SECRET'
+  config.authentication_mode = SparkApi::Authentication::OAuth2  
 end
-SparkApi.client.get '/my/account'
+  #Non-expiring bearer token auth. See below if you are using a different authentication method.
+SparkApi.client.session = SparkApi::Authentication::OAuthSession.new({ :access_token => "your_bearer_token_here" })
+puts SparkApi.client.get '/system'
 ```
 
+#### Accessing the RESO Web API
+```ruby
+require "spark_api"
+
+# set up session and set the client to hit the RESO API endpoints.
+SparkApi.configure do |config|
+    config.authentication_mode = SparkApi::Authentication::OAuth2
+    config.middleware = :reso_api
+end
+  #Non-expiring bearer token auth. See below if you are using a different authentication method.
+SparkApi.client.session = SparkApi::Authentication::OAuthSession.new({ :access_token => "your_access_token_here" })
+
+puts SparkApi.client.get("/Property", {:$top => 10 })
+```
+
+The examples above utilize access token authentication. For examples using different authentication methods review the wiki and /script folder within this project.
 
 #### Interactive Console
-Included in the gem is an interactive spark_api console to interact with the api in a manner similar to the rails console. Below is a brief example of interacting with the console:
+Included in the gem is an interactive spark_api console to interact with the api in a manner similar to the rails console. Here are a few examples using various auth methods:
 
-    > spark_api --api_key MY_SPARK_API_KEY --api_secret MY_SPARK_API_SECRET
-    SparkApi> SparkApi.client.get '/my/account'
+Access Token Auth:
 
-Using OAuth2 requires different arguments, and is a bit more complicated as it requires a step for logging in through the browser to gain access to the access code for a client_id. 
+    > spark_api --oauth2
+    SparkApi:001:0> SparkApi.client.session = SparkApi::Authentication::OAuthSession.new({ :access_token => "your_access_token_here" })
+    SparkApi:002:0> SparkApi.client.get '/my/account'
+
+Standard OAuth2 access is a bit more complicated as it requires a step for logging in through the browser to gain access to the access code for a client_id. 
 
     > bundle exec spark_api --oauth2 --client_id my_oauth2_client_id --client_secret my_oauth2_client_secret 
     Loading spark_api gem...
@@ -51,13 +92,18 @@ Using OAuth2 requires different arguments, and is a bit more complicated as it r
     SparkApi:002:0> Account.my.UserType
     "Member"
 
+[Spark Auth (deprecated)](http://sparkplatform.com/docs/authentication/spark_api_authentication):
+
+    > spark_api --api_key MY_SPARK_API_KEY --api_secret MY_SPARK_API_SECRET
+    SparkApi> SparkApi.client.get '/my/account'
+
 You can also provide other options from the command line, see "spark_api -h" for more information.
 
 #### HTTP Interface
 The base client provides a bare bones HTTP interface for working with the RESTful Spark API. This is basically a stylized curl interface that handles authentication, error handling, and processes JSON results as Ruby Hashes.
 
 ```ruby
-SparkApi.client.get     "/listings/#{listing_id}", :_expand => "CustomFields"
+SparkApi.client.get     "/listings", :_expand => "CustomFields", :_filter => "MlsStatus Eq 'Active'", :_limit => 1
 SparkApi.client.post    "/listings/#{listing_id}/photos", photo_body_hash
 SparkApi.client.put     "/listings/#{listing_id}/photos/#{photo_id}", updated_photo_name_hash
 SparkApi.client.delete  "/listings/#{listing_id}/photos/#{photo_id}"
@@ -81,20 +127,3 @@ JSON Parsing
 --------------
 By default, this gem uses the pure ruby json gem for parsing API responses for cross platform compatibility. Projects that include the yajl-ruby gem will see noticeable speed improvements when installed.
 
-
-Authentication Types
---------------
-Authentication is handled transparently by the request framework in the gem, so you should never need to manually make an authentication request.  More than one mode of authentication is supported, so the client needs to be configured accordingly.
-
-#### [Spark API Authentication](https://github.com/sparkapi/spark_api/wiki/Spark-Authentication) (Default)
-Usually supplied for a single user, this authentication mode is the simplest, and is setup as the default.  The example usage above demonstrates how to get started using this authentication mode.
-
-#### [OpenId/OAuth2 Combined Flow](https://github.com/sparkapi/spark_api/wiki/Hybrid-Authentication) (Preferred)
-Authorization mode the separates application and user authentication.  This mode requires the end user to be redirected to Spark Platform's openid endpoint.  See "script/combined_flow_example.rb" for an example.
-
-Read more about Spark Platform's combined flow <a href="http://sparkplatform.com/docs/authentication/openid_oauth2_authentication">here</a>.
-
-#### [OAuth2 Authorization](https://github.com/sparkapi/spark_api/wiki/OAuth2-Only-Authentication)
-Authorization mode the separates application and user authentication.  This mode requires the end user to be redirected to Spark Platform's auth endpoint.  See "script/oauth2_example.rb" for an example.
-
-Read more about Spark Platform's OAuth 2 flow <a href="http://sparkplatform.com/docs/authentication/oauth2_authentication">here</a>.

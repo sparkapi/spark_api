@@ -9,12 +9,13 @@ require path + '/spark_api'
 
 SparkApi.logger.info("Hello!")
 
+  #### COPY/PASTE YOUR API KEY AND SECRET BELOW
 SparkApi.configure do |config|
-  config.endpoint   = 'https://sparkapi.com'
-  config.authentication_mode = SparkApi::Authentication::OAuth2  
+  config.api_key = "agent_key"
+  config.api_secret = "agent_secret"
+  config.version = "v1"
+  config.endpoint = "https://api.sparkapi.com"
 end
-
-SparkApi.client.session = SparkApi::Authentication::OAuthSession.new({ :access_token => "your_access_token_here" })
 
 client = SparkApi.client
 
@@ -22,6 +23,4 @@ list = client.get '/contacts'
 puts "client: #{list.inspect}"
 list = SparkApi::Models::Contact.get
 puts "model: #{list.inspect}"
-
-
 
