@@ -44,8 +44,9 @@ describe Defaultable do
     end
 
     it "passes options to 'default'" do
-      expect(TestClass).to receive(:default).with(foo: true)
-      TestClass.find(TestClass::DEFAULT_ID, foo: true)
+      args = { foo: true }
+      expect(TestClass).to receive(:default).with(args)
+      TestClass.find(TestClass::DEFAULT_ID, args)
     end
 
     it "calls Finders.find when given a normal id" do
