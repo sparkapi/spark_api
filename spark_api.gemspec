@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
 
   s.add_dependency 'addressable'
-  s.add_dependency 'faraday', '>= 0.17.3'
+  s.add_dependency 'faraday', '>= 0.17.3', '< 2.0'
   s.add_dependency 'multi_json', '~> 1.0'
   s.add_dependency 'json', '>= 1.7'
   s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
