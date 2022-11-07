@@ -83,7 +83,7 @@ module SparkApi
         request_opts.merge!(options)
         request_path = if middleware && middleware.to_sym == :reso_api
                          dd_version = "Dictionary/#{dictionary_version}/" unless dictionary_version.nil?
-                         reso_version = "/Version/#{version}" unless version == SparkApi::Configuration::DEFAULT_VERSION
+                         reso_version = "/Version/#{version}" unless version == SparkApi::Configuration::DEFAULT_VERSION || version.nil?
                          "#{reso_version}/Reso/#{dd_version}OData#{path}"
                        else
                          "/#{version}#{path}"
