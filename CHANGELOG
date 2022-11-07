@@ -1,3 +1,6 @@
+v1.6.2
+ - Add support for versioning the RESO Web API
+
 v1.6.1
  - forward port of v1.5.7
  - add addressable as a named runtime dependency (fixes regression from
