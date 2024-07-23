@@ -11,7 +11,7 @@ module SparkApi
     # valid configuration options
     VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
       :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode, 
-      :auth_endpoint, :callback, :compress, :timeout, :middleware, :dictionary_version, :request_id_chain].freeze
+      :auth_endpoint, :callback, :compress, :timeout, :middleware, :dictionary_version, :request_id_chain, :user_ip_address].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
       :redirect_uri,  
@@ -46,8 +46,10 @@ module SparkApi
     DEFAULT_MIDDLEWARE = 'spark_api'
     DEFAULT_DICTIONARY_VERSION = nil
     DEFAULT_REQUEST_ID_CHAIN = nil
+    DEFAULT_USER_IP_ADDRESS = nil
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
+    X_USER_IP_ADDRESS = "X-User-IP-Address"
 
     attr_accessor *VALID_OPTION_KEYS
     def configure
@@ -82,6 +84,7 @@ module SparkApi
       self.middleware = DEFAULT_MIDDLEWARE
       self.dictionary_version = DEFAULT_DICTIONARY_VERSION
       self.request_id_chain = DEFAULT_REQUEST_ID_CHAIN
+      self.user_ip_address = DEFAULT_USER_IP_ADDRESS
       self
     end
   end
