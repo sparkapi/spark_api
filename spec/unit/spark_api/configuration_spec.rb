@@ -14,6 +14,7 @@ describe SparkApi::Client, "Client config"  do
       expect(SparkApi.api_key).to match("my_api_key")
       expect(SparkApi.timeout).to eq(5)
       expect(SparkApi.request_id_chain).to be_nil
+      expect(SparkApi.user_ip_address).to be_nil
       expect(SparkApi.middleware).to eq('spark_api')
     end
   end
@@ -26,7 +27,8 @@ describe SparkApi::Client, "Client config"  do
                                     :auth_endpoint => "https://login.wade.dev.fbsdata.com",
                                     :endpoint => "http://api.wade.dev.fbsdata.com",
                                     :timeout => 15,
-                                    :request_id_chain => 'foobar')
+                                    :request_id_chain => 'foobar',
+                                    :user_ip_address => 'barfoo')
  
       expect(client.api_key).to match("key_of_wade")
       expect(client.api_secret).to match("TopSecret")
@@ -36,6 +38,7 @@ describe SparkApi::Client, "Client config"  do
       expect(client.version).to match("v1")
       expect(client.timeout).to eq(15)
       expect(client.request_id_chain).to eq('foobar')
+      expect(client.user_ip_address).to eq('barfoo')
     end
     
     it "should allow unverified ssl certificates when verification is off" do

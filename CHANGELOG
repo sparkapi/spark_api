@@ -1,3 +1,6 @@
+v1.6.3
+ - Add support for sending end user ip address in request headers
+
 v1.6.2
  - Add support for versioning the RESO Web API
 
