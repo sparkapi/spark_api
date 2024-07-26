@@ -22,7 +22,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
 
       - name: Set up Bundler
-        run: gem install bundler
+        run: gem install bundler -v 2.1.4
 
 
       - name: bundle install
