@@ -23,7 +23,7 @@ require path + '/spark_api'
 
 require 'spark_api'
 
-FileUtils.mkdir 'log' unless File.exists? 'log'
+FileUtils.mkdir 'log' unless File.exist? 'log'
 
 module SparkApi
   def self.logger

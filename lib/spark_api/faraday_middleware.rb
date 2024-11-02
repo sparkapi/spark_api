@@ -5,7 +5,7 @@ require 'zlib'
 module SparkApi
   #=Spark API Faraday middleware
   # HTTP Response after filter to package api responses and bubble up basic api errors.
-  class FaradayMiddleware < Faraday::Response::Middleware
+  class FaradayMiddleware < Faraday::Middleware
     include SparkApi::PaginateHelper      
     
     def initialize(app)
