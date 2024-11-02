@@ -16,6 +16,7 @@ describe SparkApi::Client, "Client config"  do
       expect(SparkApi.request_id_chain).to be_nil
       expect(SparkApi.user_ip_address).to be_nil
       expect(SparkApi.middleware).to eq('spark_api')
+      expect(SparkApi.verbose).to be false
     end
   end
 
@@ -28,7 +29,8 @@ describe SparkApi::Client, "Client config"  do
                                     :endpoint => "http://api.wade.dev.fbsdata.com",
                                     :timeout => 15,
                                     :request_id_chain => 'foobar',
-                                    :user_ip_address => 'barfoo')
+                                    :user_ip_address => 'barfoo',
+                                    :verbose => true)
  
       expect(client.api_key).to match("key_of_wade")
       expect(client.api_secret).to match("TopSecret")
@@ -39,6 +41,7 @@ describe SparkApi::Client, "Client config"  do
       expect(client.timeout).to eq(15)
       expect(client.request_id_chain).to eq('foobar')
       expect(client.user_ip_address).to eq('barfoo')
+      expect(client.verbose).to be true
     end
     
     it "should allow unverified ssl certificates when verification is off" do
@@ -101,6 +104,7 @@ describe SparkApi::Client, "Client config"  do
         config.endpoint = "test.api.sparkapi.com"
         config.user_agent = "my useragent"
         config.timeout = 15
+        config.verbose = true
       end
 
       expect(SparkApi.api_key).to match("my_key")
@@ -111,6 +115,7 @@ describe SparkApi::Client, "Client config"  do
       expect(SparkApi.user_agent).to match("my useragent")
       expect(SparkApi.oauth2_enabled?()).to be false
       expect(SparkApi.timeout).to eq(15)
+      expect(SparkApi.verbose).to be true
     end
 
     it "should correctly set up the client for oauth2" do

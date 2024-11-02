@@ -18,7 +18,9 @@ module SparkApi
       env[:body] = decompress_body(env)
 
       body = MultiJson.decode(env[:body])
-      SparkApi.logger.debug{ "Response Body: #{body.inspect}" }
+      if SparkApi.verbose
+        SparkApi.logger.debug{ "Response Body: #{body.inspect}" }
+      end
       unless body.is_a?(Hash) && body.key?("D")
         raise InvalidResponse, "The server response could not be understood"
       end

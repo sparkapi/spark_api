@@ -40,7 +40,9 @@ module SparkApi
         conn.options[:timeout] = self.timeout
         conn.adapter Faraday.default_adapter
       end
-      SparkApi.logger.debug { "Connection: #{conn.inspect}" }
+      if self.verbose
+        SparkApi.logger.debug { "Connection: #{conn.inspect}" }
+      end
       conn
     end
     
