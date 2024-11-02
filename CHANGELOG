@@ -1,4 +1,4 @@
-v1.7.0
+v2.0.0
  - Drop support for ruby 2.7
  - Add support for ruby 3.2+
  - Require minimum version of faraday 2.0

@@ -1,6 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: 'master'
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: published
+
 
 jobs:
   build:
@@ -13,7 +20,7 @@ jobs:
 
     steps:
       - name: repo checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Ruby ${{ matrix.ruby }}
         # https://github.com/ruby/setup-ruby
@@ -36,14 +43,14 @@ jobs:
     runs-on: ubuntu-latest
 
     # only run if we pushed a tag
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'release'
 
     # require that the build matrix passed
     needs: build
 
     steps:
       - name: repo checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
