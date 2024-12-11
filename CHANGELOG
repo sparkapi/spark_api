@@ -4,6 +4,8 @@ v2.0.0
  - Require minimum version of faraday 2.0
  - Disabled request/response logging by default. Old behavior can be restored
    by setting a new `verbose` configuration option to true
+ - BREAKING: remove `compress` from configuration. gzip compression is now
+   always enabled
 
 v1.6.3
  - Add support for sending end user ip address in request headers

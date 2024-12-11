@@ -228,12 +228,6 @@ describe SparkApi::Client, "Client config"  do
       expect(c.connection.headers["Accept-Encoding"]).to be_nil
     end
 
-    it "should set gzip header if compress option is set" do
-      c = SparkApi::Client.new(:endpoint => "https://api.sparkapi.com",
-        :compress => true) 
-      expect(c.connection.headers["Accept-Encoding"]).to eq("gzip, deflate")
-    end
-
     it "should set default timeout of 5 seconds" do
       c = SparkApi::Client.new(:endpoint => "https://sparkapi.com")
       expect(c.connection.options[:timeout]).to eq(5)

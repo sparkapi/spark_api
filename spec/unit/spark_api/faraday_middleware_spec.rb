@@ -97,55 +97,6 @@ describe SparkApi do
         expect(e.errors).to eq("Some errors and stuff.")
       }
     end
-
   end
-
-  describe "#decompress_body" do
-    let(:middleware) do
-      SparkApi::FaradayMiddleware.new(SparkApi)
-    end
-
-    it "should leave the body along if content-encoding not set" do
-      env = {
-        :body => "UNCOMPRESSED",
-        :response_headers => {}
-      }
-
-      expect(middleware.decompress_body(env)).to eq("UNCOMPRESSED")
-    end
-
-    it "should unzip gzipped data" do
-      bod = "OUTPUT BODY"
-
-      out = StringIO.new
-      gz = Zlib::GzipWriter.new(out)
-      gz.write bod
-      gz.close
-
-      env = {
-        :body => out.string,
-        :response_headers => {
-          'content-encoding' => 'gzip'
-        }
-      }
-
-      expect(middleware.decompress_body(env)).to eq(bod)
-    end
-
-    it "should inflate deflated data" do
-      bod = "INFLATED BODY"
-      deflated_bod = Zlib::Deflate.deflate(bod)
-
-      env = {
-        :body => deflated_bod,
-        :response_headers => {
-          'content-encoding' => 'deflate'
-        }
-      }
-
-      expect(middleware.decompress_body(env)).to eq(bod)
-    end
-  end
-  
 end
 

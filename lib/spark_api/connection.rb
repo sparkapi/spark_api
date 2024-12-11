@@ -10,7 +10,6 @@ module SparkApi
     HTTP_SCHEME = 'http:'
     HTTPS_SCHEME = 'https:'
     ACCEPT_ENCODING = 'Accept-Encoding'
-    COMPRESS_ACCEPT_ENCODING = 'gzip, deflate'
     X_REQUEST_ID_CHAIN = 'X-Request-Id-Chain'
     MIME_JSON = 'application/json'
     MIME_RESO = 'application/json, application/xml'
@@ -25,10 +24,6 @@ module SparkApi
         opts[:url] = @endpoint.sub REG_HTTP, HTTPS_SCHEME
       else 
         opts[:url] = @endpoint.sub REG_HTTPS, HTTP_SCHEME
-      end
-
-      if self.compress
-        opts[:headers][ACCEPT_ENCODING] = COMPRESS_ACCEPT_ENCODING
       end
 
       if request_id_chain

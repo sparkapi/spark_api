@@ -15,8 +15,6 @@ module SparkApi
     # Handles pretty much all the api response parsing and error handling.  All responses that
     # indicate a failure will raise a SparkApi::ClientError exception
     def on_complete(env)
-      env[:body] = decompress_body(env)
-
       body = MultiJson.decode(env[:body])
       if SparkApi.verbose
         SparkApi.logger.debug{ "Response Body: #{body.inspect}" }
@@ -80,18 +78,6 @@ module SparkApi
         raise ClientError, error_hash
       end
       env[:body] = results
-    end
-
-    def decompress_body(env)
-      encoding = env[:response_headers]['content-encoding'].to_s.downcase
-
-      if encoding == 'gzip'
-        env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body])).read
-      elsif encoding == 'deflate'
-        env[:body] = Zlib::Inflate.inflate(env[:body])
-      end
-
-      env[:body]
     end
 
     private
