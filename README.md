@@ -1,6 +1,6 @@
 Spark API
 =====================
-![CI](https://github.com/sparkapi/spark_api/workflows/CI/badge.svg) ![Code Climate](https://codeclimate.com/badge.png)
+![CI](https://github.com/sparkapi/spark_api/workflows/CI/badge.svg) 
 
 A Ruby wrapper for the Spark REST API. Loosely based on ActiveResource to provide models to interact with remote services.
 
