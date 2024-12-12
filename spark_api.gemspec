@@ -35,7 +35,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_json', '> 1.0'
   s.add_dependency 'json', '>= 1.7'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
-  s.add_dependency 'highline', '>= 1.0'
 
   # TEST GEMS
   s.add_development_dependency 'rake'
