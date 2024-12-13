@@ -3,7 +3,7 @@ module SparkApi
   class ResoFaradayMiddleware < FaradayMiddleware
     def on_complete(env)
       begin
-        body = MultiJson.decode(body)
+        body = MultiJson.decode(env[:body])
 
         if body["D"]
           super(env)
