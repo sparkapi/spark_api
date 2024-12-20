@@ -31,12 +31,10 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
 
   s.add_dependency 'addressable'
-  s.add_dependency 'faraday', '>= 0.17.3', '< 2.0'
-  s.add_dependency 'multi_json', '~> 1.0'
+  s.add_dependency 'faraday', '>= 2.0.0'
+  s.add_dependency 'multi_json', '> 1.0'
   s.add_dependency 'json', '>= 1.7'
-  s.add_dependency 'builder', '>= 2.1.2', '< 4.0.0'
   s.add_dependency 'will_paginate', '>= 3.0.pre2', '< 4.0.0'
-  s.add_dependency 'highline', '>= 1.0'
 
   # TEST GEMS
   s.add_development_dependency 'rake'
@@ -45,10 +43,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rexml'  #needed for ruby 3
   s.add_development_dependency 'typhoeus'
   s.add_development_dependency 'ci_reporter_rspec'
-  # s.add_development_dependency 'rb-readline'
-  # s.add_development_dependency 'rb-fsevent'
-  # s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'builder', '>= 2.1.2', '< 4.0.0'
   s.add_development_dependency 'simplecov-rcov'
-  # s.add_development_dependency 'guard-rspec'
 end
 

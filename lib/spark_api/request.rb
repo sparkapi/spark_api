@@ -93,7 +93,9 @@ module SparkApi
           response = authenticator.request(method, request_path, nil, request_opts)
         else
           post_data = process_request_body(body)
-          SparkApi.logger.debug { "#{method.to_s.upcase} Data:   #{post_data}" }
+          if self.verbose
+            SparkApi.logger.debug { "#{method.to_s.upcase} Data:   #{post_data}" }
+          end
           response = authenticator.request(method, request_path, post_data, request_opts)
         end
         request_time = Time.now - start_time

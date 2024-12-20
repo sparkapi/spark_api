@@ -1,14 +1,9 @@
 
 module SparkApi
-
   class ResoFaradayMiddleware < FaradayMiddleware
-
     def on_complete(env)
-
-      body = decompress_body(env)
-
       begin
-        body = MultiJson.decode(body)
+        body = MultiJson.decode(env[:body])
 
         if body["D"]
           super(env)
@@ -21,9 +16,7 @@ module SparkApi
         # some minor format verification
         raise e if body.strip[/\A<\?xml/].nil?
       end
-
     end
-
   end
 
   Faraday::Response.register_middleware :reso_api => ResoFaradayMiddleware

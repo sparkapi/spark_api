@@ -27,9 +27,9 @@ describe SparkApi::Configuration::YamlConfig, "Yaml Config"  do
     end
     it "should raise an error for a bad configuration" do
       allow(subject).to receive(:env){ {} }
-      expect { subject.load_file("spec/config/spark_api/some_random_key.yml")}.to raise_error
+      expect { subject.load_file("spec/config/spark_api/some_random_key.yml")}.to raise_error(Errno::ENOENT)
       allow(subject).to receive(:env){ {"RAILS_ENV" => "fake_env"} }
-      expect { subject.load_file(api_file)}.to raise_error
+      expect { subject.load_file(api_file)}.to raise_error(NoMethodError) 
     end
   end
   describe "oauth2" do

@@ -223,7 +223,7 @@ describe SparkApi do
       it "should escape a path correctly" do
         expect(subject.get('/test path with spaces').length).to eq(0)
         # now try this with an already escaped path.  Kaboom!
-        expect { subject.get('/test%20path%20with%20spaces') }.to raise_error()
+        expect { subject.get('/test%20path%20with%20spaces') }.to raise_error(Faraday::Adapter::Test::Stubs::NotFound)
       end
       
       it "post data should support non json data" do

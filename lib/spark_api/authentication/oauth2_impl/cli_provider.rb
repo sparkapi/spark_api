@@ -1,5 +1,3 @@
-require "highline"
-
 module SparkApi
   module Authentication
     module OAuth2Impl
@@ -18,9 +16,11 @@ module SparkApi
         def redirect(url)
           puts "Missing OAuth2 session, redirecting..."
           puts "Please visit #{url}, login as a user, and paste the authorization code here:"
-          self.code = HighLine.ask("Authorization code?") do |q|
-            q.whitespace = :strip_and_collapse
-            q.validate = /^\w+$/
+          puts "Authorization code?"
+          raw_code = gets.strip
+
+          unless raw_code.match?(/^\w+$/)
+            raise "Invalid authorization code. Please try again."
           end
         end
                 

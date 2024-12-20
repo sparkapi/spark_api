@@ -60,7 +60,7 @@ module SparkApi
       end
       
       def self.exists?(name)
-        File.exists? "#{config_path}/#{name}.yml"
+        File.exist? "#{config_path}/#{name}.yml"
       end
 
       def self.build(name)

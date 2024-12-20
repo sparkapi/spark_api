@@ -1,6 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: 'master'
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: published
+
 
 jobs:
   build:
@@ -9,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: [ '2.7', '3.0', '3.1' ]
+        ruby: [ '3.1', '3.2', '3.3' ]
 
     steps:
       - name: repo checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Ruby ${{ matrix.ruby }}
         # https://github.com/ruby/setup-ruby
@@ -22,7 +29,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
 
       - name: Set up Bundler
-        run: gem install bundler -v 2.1.4
+        run: gem install bundler
 
 
       - name: bundle install
@@ -36,19 +43,19 @@ jobs:
     runs-on: ubuntu-latest
 
     # only run if we pushed a tag
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'release'
 
     # require that the build matrix passed
     needs: build
 
     steps:
       - name: repo checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.3'
 
       - name: bundle install
         run: |

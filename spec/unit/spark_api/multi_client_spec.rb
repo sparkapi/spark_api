@@ -44,7 +44,7 @@ describe SparkApi::MultiClient do
         expect(SparkApi.client.api_key).to eq('c')
         raise "OH MY GOODNESS I BLEW UP!!!"
       end
-    end.to raise_error
+    end.to raise_error(RuntimeError)
     expect(SparkApi.client.api_key).to eq('a')
   end
 

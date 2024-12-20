@@ -9,9 +9,9 @@ module SparkApi
     end
     
     # valid configuration options
-    VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint, 
-      :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode, 
-      :auth_endpoint, :callback, :compress, :timeout, :middleware, :dictionary_version, :request_id_chain, :user_ip_address].freeze
+    VALID_OPTION_KEYS = [:api_key, :api_secret, :api_user, :endpoint,
+      :user_agent, :version, :ssl, :ssl_verify, :oauth2_provider, :authentication_mode,
+      :auth_endpoint, :callback, :timeout, :middleware, :dictionary_version, :request_id_chain, :user_ip_address, :verbose].freeze
     OAUTH2_KEYS = [:authorization_uri, :access_uri, :client_id, :client_secret,
       # Requirements for authorization_code grant type
       :redirect_uri,  
@@ -41,12 +41,12 @@ module SparkApi
     DEFAULT_SSL = true
     DEFAULT_SSL_VERIFY = true
     DEFAULT_OAUTH2 = nil
-    DEFAULT_COMPRESS = false
     DEFAULT_TIMEOUT = 5 # seconds
     DEFAULT_MIDDLEWARE = 'spark_api'
     DEFAULT_DICTIONARY_VERSION = nil
     DEFAULT_REQUEST_ID_CHAIN = nil
     DEFAULT_USER_IP_ADDRESS = nil
+    DEFAULT_VERBOSE = false
     
     X_SPARK_API_USER_AGENT = "X-SparkApi-User-Agent"
     X_USER_IP_ADDRESS = "X-User-IP-Address"
@@ -79,12 +79,12 @@ module SparkApi
       self.ssl         = DEFAULT_SSL
       self.ssl_verify  = DEFAULT_SSL_VERIFY
       self.version     = DEFAULT_VERSION
-      self.compress    = DEFAULT_COMPRESS
       self.timeout     = DEFAULT_TIMEOUT
       self.middleware = DEFAULT_MIDDLEWARE
       self.dictionary_version = DEFAULT_DICTIONARY_VERSION
       self.request_id_chain = DEFAULT_REQUEST_ID_CHAIN
       self.user_ip_address = DEFAULT_USER_IP_ADDRESS
+      self.verbose = DEFAULT_VERBOSE
       self
     end
   end

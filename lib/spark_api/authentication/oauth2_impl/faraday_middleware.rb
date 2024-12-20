@@ -6,7 +6,7 @@ module SparkApi
   
       #==OAuth2 Faraday response middleware
       # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
-      class FaradayMiddleware < Faraday::Response::Middleware
+      class FaradayMiddleware < Faraday::Middleware
 
         def initialize(app)
           super(app)
@@ -42,7 +42,7 @@ module SparkApi
       
       #==OAuth2 Faraday response middleware
       # HTTP Response after filter to package oauth2 responses and bubble up basic api errors.
-      class SparkbarFaradayMiddleware < Faraday::Response::Middleware
+      class SparkbarFaradayMiddleware < Faraday::Middleware
   
         def initialize(app)
           super(app)
