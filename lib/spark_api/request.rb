@@ -42,6 +42,19 @@ module SparkApi
       request(:put, path, body, options)
     end
 
+    # Perform an HTTP PATCH request
+    #
+    # * path - Path of an api resource, excluding version and endpoint (domain) information
+    # * body - Hash for patch body data
+    # * options - Resource request options as specified being supported via and api resource
+    # :returns:
+    #   Hash of the json results as documented in the api.
+    # :raises:
+    #   SparkApi::ClientError or subclass if the request failed.
+    def patch(path, body = nil, options={})
+      request(:patch, path, body, options)
+    end
+
     # Perform an HTTP DELETE request
     # 
     # * path - Path of an api resource, excluding version and endpoint (domain) information

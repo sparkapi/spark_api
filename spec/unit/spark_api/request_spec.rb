@@ -120,8 +120,11 @@ describe SparkApi do
         }
         stub.put('/v1/arraydata?ApiSig=SignedToken&AuthToken=1234', '{"D":["A","B","C"]}') {[200, {}, '{"D": {
           "Success": true}}']}
+        stub.patch('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234', '{"D":{"Contacts":[{"DisplayName":"WLMCEWENS Contact","PrimaryEmail":"wlmcewen789@fbsdata.com"}]}}') { [200, {}, '{"D": {
+          "Success": true}}']
+        }
         stub.delete('/v1/contacts/1000?ApiSig=SignedToken&AuthToken=1234') { [200, {}, '{"D": {
-          "Success": true}}'] 
+          "Success": true}}']
         }
         # Other MISC requests
         stub.post('/v1/stringdata?ApiSig=SignedToken&AuthToken=1234', 'I am a lonely String!') { [200, {}, '{"D": {
@@ -212,6 +215,11 @@ describe SparkApi do
         # This is a hypothetical unsupported service action at this time
         data = {"Contacts" => [{"DisplayName"=>"WLMCEWENS Contact","PrimaryEmail"=>"wlmcewen789@fbsdata.com"}]}
         expect(subject.put('/contacts/1000', data).size).to be(0)
+        # No validation here, if no error is raised, everything is hunky dory
+      end
+      it "should patch to a service" do
+        data = {"Contacts" => [{"DisplayName"=>"WLMCEWENS Contact","PrimaryEmail"=>"wlmcewen789@fbsdata.com"}]}
+        expect(subject.patch('/contacts/1000', data).size).to be(0)
         # No validation here, if no error is raised, everything is hunky dory
       end
       it "should delete from a service" do
