@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'webmock'
+  s.add_development_dependency 'multi_json', '~> 1.15.0'
   s.add_development_dependency 'rexml'  #needed for ruby 3
   s.add_development_dependency 'typhoeus'
   s.add_development_dependency 'ci_reporter_rspec'

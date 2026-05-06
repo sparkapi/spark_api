@@ -1,3 +1,6 @@
+v2.0.1
+ - Add PATCH support
+
 v2.0.0
  - Drop support for ruby 2.7
  - Add support for ruby 3.2+
