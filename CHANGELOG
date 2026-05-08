@@ -1,3 +1,6 @@
+v2.0.2
+ - Fix ResoFaradayMiddleware NoMethodError on XML responses
+
 v2.0.1
  - Add PATCH support
 
