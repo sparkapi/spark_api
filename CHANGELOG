@@ -1,3 +1,6 @@
+v2.0.3
+ - Update CHANGELOG and version files with the current version
+
 v2.0.2
  - Fix ResoFaradayMiddleware NoMethodError on XML responses
 
