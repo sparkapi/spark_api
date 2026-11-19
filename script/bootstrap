@@ -2,7 +2,7 @@
 
 ruby -v
 echo "==> Installing gems..."
-bundle config set path 'vendor/bundle'
+bundle config --local path 'vendor/bundle'
 bundle check 2>&1 > /dev/null || {
   bundle install
 }

@@ -23,7 +23,7 @@ module SparkApi
   extend Configuration
   extend MultiClient
  
-  #:nocov:
+  # simplecov:disable
   def self.logger
     if @logger.nil?
       @logger = Logger.new(STDOUT)
@@ -35,7 +35,7 @@ module SparkApi
   def self.logger= logger
     @logger = logger
   end
-  #:nocov:
+  # simplecov:enable
 
   def self.client(opts={})
     Thread.current[:spark_api_client] ||= SparkApi::Client.new(opts)
