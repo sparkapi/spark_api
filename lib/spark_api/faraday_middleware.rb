@@ -1,5 +1,5 @@
 require 'faraday'
-require 'cgi'
+require 'uri'
 require 'zlib'
 
 module SparkApi
@@ -29,12 +29,12 @@ module SparkApi
       if paging.nil?
         results = response
       else
-        q = if http_method_override_request?(env)
-              CGI.parse(env[:request_body])
-            else
-              CGI.parse(env[:url].query)
-            end
-        if q.key?("_pagination") && q["_pagination"].first == "count"
+        query = if http_method_override_request?(env)
+                  env[:request_body]
+                else
+                  env[:url].query
+                end
+        if URI.decode_www_form(query.to_s).assoc("_pagination")&.last == "count"
           results = paging['TotalRows']
         else
           results = paginate_response(response, paging)

@@ -2,11 +2,14 @@ if ENV['COVERAGE'] == "on"
   require 'simplecov'
   require 'simplecov-rcov'
   SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-  unless SimpleCov.running   # Hack to prevent starting SimpleCov multiple times  see: https://github.com/simplecov-ruby/simplecov/issues/1003
+  # Hack to prevent starting SimpleCov multiple times  see: https://github.com/simplecov-ruby/simplecov/issues/1003
+  # SimpleCov 1.x removed .running; it records the pid of the process that started it instead
+  simplecov_started = SimpleCov.respond_to?(:running) ? SimpleCov.running : SimpleCov.pid == Process.pid
+  unless simplecov_started
     SimpleCov.start do
-      add_filter '/vendor'
-      add_filter '/spec'
-      add_filter '/test'
+      skip '/vendor'
+      skip '/spec'
+      skip '/test'
     end
   end
 end

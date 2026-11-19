@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
 
   s.add_dependency 'addressable'
+  s.add_dependency 'base64'
   s.add_dependency 'faraday', '>= 2.0.0'
   s.add_dependency 'multi_json', '> 1.0'
   s.add_dependency 'json', '>= 1.7'
