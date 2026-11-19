@@ -2,6 +2,15 @@ v2.1.0
  - Drop support for ruby 3.1
  - add support for ruby 3.3, 3.4, and 4.0
 
+v2.0.3
+ - Update CHANGELOG and version files with the current version
+
+v2.0.2
+ - Fix ResoFaradayMiddleware NoMethodError on XML responses
+
+v2.0.1
+ - Add PATCH support
+
 v2.0.0
  - Drop support for ruby 2.7
  - Add support for ruby 3.2+

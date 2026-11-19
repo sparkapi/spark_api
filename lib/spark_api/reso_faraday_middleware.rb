@@ -13,8 +13,11 @@ module SparkApi
         env[:body] = body
       rescue MultiJson::ParseError => e
         # We will allow the client to choose their XML parser, but should do
-        # some minor format verification
-        raise e if body.strip[/\A<\?xml/].nil?
+        # some minor format verification.
+        # Note: the JSON decode above raised before assigning +body+, so the
+        # local +body+ is still nil here. Reference the raw +env[:body]+
+        # instead — that's what we actually want to inspect for an XML prolog.
+        raise e if env[:body].to_s.strip[/\A<\?xml/].nil?
       end
     end
   end
